@@ -9,7 +9,7 @@
 | DFAS (military pay, BAS) | Blocked by DFAS's own servers (403) | Same. |
 | DTMO (BAH) | Blocked by DTMO's own servers (403) | Same. |
 
-Ways to get the blocked sources: a person downloads the official files in a browser and commits them under `data/raw/`, or a GitHub Action fetches them if GitHub's runners aren't blocked (see the `probe-sources` workflow).
+GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO all return 403, while GSA returns 200). So for these three sources, a person downloads the official files in a browser and commits them under `data/raw/<source>/<year>/`. Scripts then convert them to JSON. That's a few files once a year.
 
 ## What's in the prototype
 | Dataset | Years | Coverage | Status |
