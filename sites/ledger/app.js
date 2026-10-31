@@ -104,7 +104,7 @@
     if (status === "simulated") return '<span class="pb-stamp pb-stamp--estimate">Simulated</span>';
     return `<span class="pb-stamp pb-stamp--estimate">${mil ? "BAH estimate" : "Estimate"}</span>`;
   }
-  function placeName(id) { const l = G.location(id); return l.simulated ? l.stateName + " (simulated)" : l.name; }
+  function placeName(id) { return G.location(id).name; }
   function sourceLine(year) { return year === 2025 ? "EO 14132" : year === 2026 ? "EO 14368" : "projected"; }
 
   // ------------------------------------------------------------ first visit
@@ -197,9 +197,17 @@
   const T = window.GovPayTax;
   function taxOpts() {
     const t = state.tax, loc = G.location(state.loc);
-    if (!t.chosen) { t.state = T.defaultState(loc.state); t.county = T.PLACE_COUNTY[loc.id] || (loc.state === "MD" ? "Montgomery" : t.county); }
+    if (!t.chosen) { t.state = T.defaultState(loc.state); t.county = T.PLACE_COUNTY[loc.id] || mdCountyOf(loc) || (loc.state === "MD" ? "Montgomery" : t.county); }
     if (t.state === "MD" && !t.county) t.county = "Montgomery";
     return Object.assign({}, t, { dutyState: loc.state });
+  }
+  // "Howard County, MD" -> "Howard"; "Baltimore city, MD" -> "Baltimore City"; "Baltimore County, MD" -> "Baltimore County"
+  function mdCountyOf(loc) {
+    if (loc.kind !== "county" || loc.state !== "MD") return null;
+    if (loc.short === "Baltimore city") return "Baltimore City";
+    if (loc.short === "Baltimore County") return "Baltimore County";
+    const n = loc.short.replace(/ County$/, "");
+    return T.MD_COUNTIES[n] != null ? n : null;
   }
   const round10 = (n) => f.usd(Math.round(n / 10) * 10);
   function renderTakeHome(r, p) {

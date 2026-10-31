@@ -199,22 +199,35 @@
     gsLocality: r[4], fwsArea: r[5], bahMha: r[6], perDiem: r[7], x: r[8], y: r[9],
     status: "approx", simulated: false,
   }));
-  Object.keys(OTHER_STATES).forEach((st) => {
+  // Every U.S. county (and county equivalent) from shared/data/places.js:
+  // REAL GS locality area (5 CFR 531.603) and GSA per diem area for each one.
+  // BAH stays an estimate outside the researched bases until DTMO data is added.
+  const ALL_STATES = Object.assign({}, FOCUS_STATES, OTHER_STATES);
+  const PLACES = (global.GOVPAY_DATA && global.GOVPAY_DATA.places) || null;
+  // County FIPS of the researched places, so a county shares its base's BAH and wage area.
+  const FOCUS_FIPS = { dc: "11001", "fort-belvoir": "51059", quantico: "51153", dahlgren: "51099", norfolk: "51710", "langley-eustis": "51650",
+    richmond: "51760", "fort-gregg-adams": "51149", "fort-meade": "24003", andrews: "24033", aberdeen: "24025", baltimore: "24510",
+    "pax-river": "24037", "fort-detrick": "24021", philadelphia: "42101", pittsburgh: "42003", carlisle: "42041", harrisburg: "42043",
+    "hill-afb": "49011", "salt-lake-city": "49035", dugway: "49045", "park-city": "49043" };
+  const byFips = {};
+  LOCATIONS.forEach((l) => { const f = FOCUS_FIPS[l.id]; if (f && !byFips[f]) byFips[f] = l; if (f) l.fips = f; });
+  Object.keys(ALL_STATES).forEach((st) => {
+    // Per-state placeholder BAH and wage area, used only where no researched base applies.
     const rnd = seeded(st);
-    const id = "sim-" + st.toLowerCase();
-    // Simulated locality: 17%..36%; simulated BAH E-5: $1,550..$3,600; per diem 110..230
-    const locPct = round2(17.06 + rnd() * 19);
-    const locId = "SIM_" + st;
-    GS_LOCALITIES[locId] = { name: OTHER_STATES[st] + " (simulated locality)", pct: locPct, status: "simulated" };
-    const mha = "SIM" + st;
-    BAH_MHAS[mha] = { name: OTHER_STATES[st] + " (simulated MHA)", e5: Math.round(1550 + rnd() * 2050), simulated: true };
-    const fwsId = "SIMF_" + st;
-    FWS_AREAS[fwsId] = { name: OTHER_STATES[st] + " (simulated wage area)", factor: round2(0.9 + rnd() * 0.25), simulated: true };
-    LOCATIONS.push({
-      id, name: OTHER_STATES[st] + " (simulated)", state: st, stateName: OTHER_STATES[st], kind: "state",
-      gsLocality: locId, fwsArea: fwsId, bahMha: mha, perDiem: null, status: "simulated", simulated: true,
-    });
+    BAH_MHAS["SIM" + st] = { name: ALL_STATES[st] + " (estimated housing area)", e5: Math.round(1550 + rnd() * 2050), simulated: true };
+    FWS_AREAS["SIMF_" + st] = { name: ALL_STATES[st] + " (simulated wage area)", factor: round2(0.9 + rnd() * 0.25), simulated: true };
   });
+  if (PLACES) {
+    PLACES.areas.forEach((n) => { if (!GS_LOCALITIES[n]) GS_LOCALITIES[n] = { name: n, pct: 0, status: "verified" }; });
+    PLACES.counties.forEach(([fips, name, st, ai, pd]) => {
+      const base = byFips[fips];
+      LOCATIONS.push({
+        id: "c" + fips, fips, name: `${name}, ${st}`, short: name, state: st, stateName: ALL_STATES[st] || st, kind: "county",
+        gsLocality: PLACES.areas[ai], fwsArea: base ? base.fwsArea : "SIMF_" + st, bahMha: base ? base.bahMha : "SIM" + st,
+        perDiem: pd, perDiemNA: st === "AK" || st === "HI", status: "approx", simulated: false, bahSimulated: !base,
+      });
+    });
+  }
 
   // ---------------------------------------------------------------------------
   // Helpers
@@ -240,7 +253,15 @@
     if (year < anchor) for (let y = anchor; y > year; y--) f /= 1 + (series[y] || 0);
     return f;
   }
-  function location(id) { return LOCATIONS.find((l) => l.id === id) || LOCATIONS[0]; }
+  const LOC_INDEX = new Map(LOCATIONS.map((l) => [l.id, l]));
+  // Old links used "sim-xx" for a whole state; send them to that state's first county.
+  function location(id) {
+    const l = LOC_INDEX.get(id);
+    if (l) return l;
+    const m = /^sim-([a-z]{2})$/.exec(id || "");
+    if (m) { const st = m[1].toUpperCase(); return LOCATIONS.find((x) => x.state === st) || LOCATIONS[0]; }
+    return LOCATIONS[0];
+  }
   function exFor(year) {
     if (EX[year]) return EX[year];
     const f = factor(RAISES.gs, year, LATEST);           // projected year
@@ -412,7 +433,8 @@
     const junior = ["E-1", "E-2", "E-3", "E-4"].indexOf(grade) >= 0;
     let v = m.e5 * ratio * factor(RAISES.bah, year, 2026);
     if (!withDependents) v *= junior ? BAH_NODEP.junior : BAH_NODEP.other;
-    return { monthly: Math.round(v), mhaName: m.name, mha: loc.bahMha, status: m.simulated ? "simulated" : yearStatus(year) };
+    // BAH is hand-entered or simulated until the DTMO rate file is added, so never "verified".
+    return { monthly: Math.round(v), mhaName: m.name, mha: loc.bahMha, status: m.simulated ? "simulated" : year > LATEST ? "projected" : "approx" };
   }
   // Very rough federal tax advantage of tax-free allowances (BAH + BAS), for
   // illustration only: assumes 12% marginal federal + 4.5% state.
@@ -451,6 +473,7 @@
     let fy = year, status = "verified";
     if (!PD_DATA[fy]) { fy = PD_YEARS.length ? PD_YEARS[PD_YEARS.length - 1] : year; status = PD_YEARS.length ? "projected" : "approx"; }
     const a = perDiemArea(fy, loc.perDiem);
+    if (loc.perDiemNA) { a.name = "Not covered yet"; a.counties = "Alaska and Hawaii use overseas (OCONUS) per diem rates from DTMO, which aren't in Paybook yet."; status = "simulated"; }
     const lodging = a.lodging[(month || 1) - 1];
     return {
       lodging, mie: a.mie, total: lodging + a.mie, firstLastMie: round2(a.mie * MIE_FIRST_LAST_DAY),
@@ -628,7 +651,7 @@
 
   global.GovPay = {
     CURRENT_YEAR, YEARS, RAISES, STATUS_INFO, EQUIVALENTS, MIL_GRADES, MIL_YOS,
-    FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES,
+    FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES, ALL_STATES,
     locations: () => LOCATIONS.slice(),
     focusLocations: () => LOCATIONS.filter((l) => !l.simulated),
     location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,

@@ -76,3 +76,18 @@ test("Area slugs are unique and readable", () => {
   assert.equal(new Set(slugs).size, slugs.length);
   assert.ok(slugs.includes("washington-dc") && slugs.includes("san-diego-ca") && slugs.includes("rest-of-us"));
 });
+
+test("Every county maps to its locality area (5 CFR 531.603) and per diem area", () => {
+  const counties = G.locations().filter((l) => l.kind === "county");
+  assert.ok(counties.length > 3100);
+  const area = (fips) => G.gs(2026, 12, 5, "c" + fips).localityName;
+  assert.equal(area("51059"), DC);                                   // Fairfax County, VA
+  assert.equal(area("51099"), DC);                                   // King George, VA (listed explicitly)
+  assert.equal(area("42133"), DC);                                   // York County, PA (moved from Harrisburg by the CFR)
+  assert.equal(area("51710"), "Virginia Beach-Norfolk, VA-NC");      // Norfolk city
+  assert.equal(area("06073"), "San Diego-Chula Vista-Carlsbad, CA");
+  assert.equal(area("49011"), "Rest of U.S.");                       // Davis County, UT (Hill AFB)
+  assert.equal(G.gs(2026, 12, 5, "c51059").annual, 116071);
+  assert.equal(G.perDiem(2027, "c49045", 7).areaName, "Salt Lake City");   // Tooele County uses SLC per diem
+  assert.equal(G.bah(2026, "E-5", true, "c51059").status, "approx");       // BAH is never shown as official yet
+});

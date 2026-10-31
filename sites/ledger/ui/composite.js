@@ -115,7 +115,7 @@
     const gw = words(g.localityName);
     const bahDiff = !words(b.mhaName).some((w) => gw.indexOf(w) >= 0);
     const pdDiff = p.standard ? g.localityName !== "Rest of U.S." : !words(p.areaName + " " + p.areaDetail).some((w) => gw.indexOf(w) >= 0);
-    return { gs: `${g.localityName} · ${g.localityPct.toFixed(2)}%`, bah: b.mhaName, pd: p.standard ? "Standard rate (no special area)" : p.areaName, bahDiff, pdDiff, simulated: G.location(locId).simulated };
+    return { gs: `${g.localityName} · ${g.localityPct.toFixed(2)}%`, bah: b.mhaName, pd: G.location(locId).perDiemNA ? "Not covered yet (Alaska and Hawaii)" : p.standard ? "Standard rate (no special area)" : p.areaName, bahDiff, pdDiff, bahEstimate: b.status === "simulated" };
   }
 
   function locationPicker(el, opts) {
@@ -128,31 +128,33 @@
       const all = G.locations();
       const q = query.trim().toLowerCase();
       let list;
-      if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0);   // search always covers every state
-      else if (filter) list = all.filter((l) => l.state === filter);
-      else list = all.filter((l) => !l.simulated);
+      const rank = (l) => (l.kind === "county" ? 1 : 0);              // researched bases and cities first, then counties
+      if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0).sort((a, b) => rank(a) - rank(b)).slice(0, 60);   // search covers every state
+      else if (filter) list = all.filter((l) => l.state === filter).sort((a, b) => rank(a) - rank(b));
+      else list = all.filter((l) => l.kind !== "county");
       const recent = getRecent().filter((r) => all.some((l) => l.id === r));
       const k = placeKeys(value, year());
       const cur = G.location(value);
       el.innerHTML = `
         <div class="pb-field pb-picker__search"><label class="pb-field__label" for="${id}-q">Where you work</label>
           <input class="pb-input" id="${id}-q" type="search" placeholder="City, base or state" value="${esc(query)}" autocomplete="off"></div>
-        ${recent.length ? `<div class="pb-picker__row"><span class="cap">Recent</span>${recent.map((r) => `<button type="button" class="pb-chip" data-recent="${r}">${esc(G.location(r).simulated ? G.location(r).stateName : G.location(r).name)}</button>`).join("")}</div>` : ""}
+        ${recent.length ? `<div class="pb-picker__row"><span class="cap">Recent</span>${recent.map((r) => `<button type="button" class="pb-chip" data-recent="${r}">${esc(G.location(r).name)}</button>`).join("")}</div>` : ""}
         <div class="pb-tiles" role="group" aria-label="Filter places by state">${Object.keys(TILES).map((st) => {
           const c = TILES[st], has = !!G.FOCUS_STATES[st];
-          return `<button type="button" style="grid-column:${c[0] + 1};grid-row:${c[1] + 1}" class="${has ? "has-data" : ""}" aria-pressed="${filter === st}" data-st="${st}" aria-label="${esc(STATE_NAMES[st] || st)}${has ? "" : ", simulated data"}">${st}</button>`;
+          return `<button type="button" style="grid-column:${c[0] + 1};grid-row:${c[1] + 1}" class="${has ? "has-data" : ""}" aria-pressed="${filter === st}" data-st="${st}" aria-label="${esc(STATE_NAMES[st] || st)}${has ? ", has researched bases" : ""}">${st}</button>`;
         }).join("")}</div>
-        <div class="pb-tiles__legend">States with a bar along the bottom have researched places. The others are simulated for now.</div>
+        <div class="pb-tiles__legend">Tap a state to see its counties. States with a bar have researched bases with housing (BAH) estimates.</div>
         ${filter && !q ? `<div class="pb-picker__row"><button type="button" class="pb-chip pb-chip--on" data-clear>${esc(STATE_NAMES[filter])} <span class="pb-chip__x" aria-hidden="true">×</span><span class="sr">clear filter</span></button></div>` : ""}
+        ${!q && !filter ? '<div class="pb-picker__row"><span class="cap">Researched bases and cities · or search any county</span></div>' : ""}
         <ul class="pb-places" aria-label="Places">${list.length ? list.map((l) => {
           const g = G.gs(year(), 1, 1, l.id);
-          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.simulated ? l.stateName : l.name)}</b><span class="tag">${l.simulated ? "simulated" : l.kind === "base" ? "base" : "city"}</span><small>${esc(l.state)} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
+          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" ? l.short : l.name)}</b><span class="tag">${l.kind}</span><small>${esc(l.state)} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
         }).join("") : `<li class="pb-places__empty">No place matches "${esc(query)}". Try a state name.</li>`}</ul>
-        <div class="pb-uses" aria-live="polite"><b>${esc(cur.simulated ? cur.stateName : cur.name)}</b> uses three different area lists:
+        <div class="pb-uses" aria-live="polite"><b>${esc(cur.name)}</b> uses three different area lists:
           <dl><dt>GS pay</dt><dd>${esc(k.gs)}</dd>
           <dt>BAH</dt><dd class="${k.bahDiff ? "differs" : ""}">${esc(k.bah)}${k.bahDiff ? " · a different area" : ""}</dd>
           <dt>Per diem</dt><dd class="${k.pdDiff ? "differs" : ""}">${esc(k.pd)}${k.pdDiff ? " · a different area" : ""}</dd></dl>
-          ${k.simulated ? '<div style="margin-top:6px">GS and BAH here are simulated; per diem is real.</div>' : ""}</div>`;
+          ${k.bahEstimate ? '<div style="margin-top:6px">GS and per diem are official. BAH here is a rough estimate until DTMO rates are added.</div>' : ""}</div>`;
       const qi = $("input", el);
       qi.oninput = () => { query = qi.value; render(true); };
       if (keepFocus) { qi.focus(); qi.setSelectionRange(qi.value.length, qi.value.length); }

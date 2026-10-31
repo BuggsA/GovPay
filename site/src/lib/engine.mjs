@@ -2,6 +2,7 @@
 // scripts that attach GovPay, GovPayTax and the data to globalThis.
 import "../../../shared/data/payorder.js";
 import "../../../shared/data/perdiem.js";
+import "../../../shared/data/places.js";
 import "../../../shared/govpay.js";
 import "../../../shared/tax.js";
 

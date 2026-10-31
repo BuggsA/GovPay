@@ -1,0 +1,22060 @@
+{
+"source": "5 CFR 531.603(b) (eCFR, Oct 29 2026) \u00b7 OMB/Census delineation March 2020 \u00b7 Census county list 2020 \u00b7 GSA per diem FY2025-FY2027",
+"note": "Locality areas are defined by metro areas plus listed counties. Edge counties should be checked against OPM's published definitions.",
+"areas": [
+"Alaska",
+"Albany-Schenectady, NY-MA",
+"Albuquerque-Santa Fe-Las Vegas, NM",
+"Atlanta-Athens-Clarke County-Sandy Springs, GA-AL",
+"Austin-Round Rock-Georgetown, TX",
+"Birmingham-Hoover-Talladega, AL",
+"Boston-Worcester-Providence, MA-RI-NH-CT-ME-VT",
+"Buffalo-Cheektowaga-Olean, NY",
+"Burlington-South Burlington-Barre, VT",
+"Charlotte-Concord, NC-SC",
+"Chicago-Naperville, IL-IN-WI",
+"Cincinnati-Wilmington-Maysville, OH-KY-IN",
+"Cleveland-Akron-Canton, OH-PA",
+"Colorado Springs, CO",
+"Columbus-Marion-Zanesville, OH",
+"Corpus Christi-Kingsville-Alice, TX",
+"Dallas-Fort Worth, TX-OK",
+"Davenport-Moline, IA-IL",
+"Dayton-Springfield-Kettering, OH",
+"Denver-Aurora, CO",
+"Des Moines-Ames-West Des Moines, IA",
+"Detroit-Warren-Ann Arbor, MI",
+"Fresno-Madera-Hanford, CA",
+"Harrisburg-Lebanon, PA",
+"Hartford-East Hartford, CT-MA",
+"Hawaii",
+"Houston-The Woodlands, TX",
+"Huntsville-Decatur, AL-TN",
+"Indianapolis-Carmel-Muncie, IN",
+"Kansas City-Overland Park-Kansas City, MO-KS",
+"Laredo, TX",
+"Las Vegas-Henderson, NV-AZ",
+"Los Angeles-Long Beach, CA",
+"Miami-Port St. Lucie-Fort Lauderdale, FL",
+"Milwaukee-Racine-Waukesha, WI",
+"Minneapolis-St. Paul, MN-WI",
+"New York-Newark, NY-NJ-CT-PA",
+"Omaha-Council Bluffs-Fremont, NE-IA",
+"Palm Bay-Melbourne-Titusville, FL",
+"Philadelphia-Reading-Camden, PA-NJ-DE-MD",
+"Phoenix-Mesa, AZ",
+"Pittsburgh-New Castle-Weirton, PA-OH-WV",
+"Portland-Vancouver-Salem, OR-WA",
+"Raleigh-Durham-Cary, NC",
+"Reno-Fernley, NV",
+"Rest of U.S.",
+"Richmond, VA",
+"Rochester-Batavia-Seneca Falls, NY",
+"Sacramento-Roseville, CA-NV",
+"San Antonio-New Braunfels-Pearsall, TX",
+"San Diego-Chula Vista-Carlsbad, CA",
+"San Jose-San Francisco-Oakland, CA",
+"Seattle-Tacoma, WA",
+"Spokane-Spokane Valley-Coeur d'Alene, WA-ID",
+"St. Louis-St. Charles-Farmington, MO-IL",
+"Tucson-Nogales, AZ",
+"Virginia Beach-Norfolk, VA-NC",
+"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA"
+],
+"counties": [
+[
+"01001",
+"Autauga County",
+"AL",
+45,
+null
+],
+[
+"01003",
+"Baldwin County",
+"AL",
+45,
+"AL:Gulf Shores"
+],
+[
+"01005",
+"Barbour County",
+"AL",
+45,
+null
+],
+[
+"01007",
+"Bibb County",
+"AL",
+5,
+null
+],
+[
+"01009",
+"Blount County",
+"AL",
+5,
+null
+],
+[
+"01011",
+"Bullock County",
+"AL",
+45,
+null
+],
+[
+"01013",
+"Butler County",
+"AL",
+45,
+null
+],
+[
+"01015",
+"Calhoun County",
+"AL",
+5,
+null
+],
+[
+"01017",
+"Chambers County",
+"AL",
+3,
+null
+],
+[
+"01019",
+"Cherokee County",
+"AL",
+3,
+null
+],
+[
+"01021",
+"Chilton County",
+"AL",
+5,
+null
+],
+[
+"01023",
+"Choctaw County",
+"AL",
+45,
+null
+],
+[
+"01025",
+"Clarke County",
+"AL",
+45,
+null
+],
+[
+"01027",
+"Clay County",
+"AL",
+5,
+null
+],
+[
+"01029",
+"Cleburne County",
+"AL",
+3,
+null
+],
+[
+"01031",
+"Coffee County",
+"AL",
+45,
+null
+],
+[
+"01033",
+"Colbert County",
+"AL",
+27,
+null
+],
+[
+"01035",
+"Conecuh County",
+"AL",
+45,
+null
+],
+[
+"01037",
+"Coosa County",
+"AL",
+5,
+null
+],
+[
+"01039",
+"Covington County",
+"AL",
+45,
+null
+],
+[
+"01041",
+"Crenshaw County",
+"AL",
+45,
+null
+],
+[
+"01043",
+"Cullman County",
+"AL",
+5,
+null
+],
+[
+"01045",
+"Dale County",
+"AL",
+45,
+null
+],
+[
+"01047",
+"Dallas County",
+"AL",
+45,
+null
+],
+[
+"01049",
+"DeKalb County",
+"AL",
+27,
+null
+],
+[
+"01051",
+"Elmore County",
+"AL",
+45,
+null
+],
+[
+"01053",
+"Escambia County",
+"AL",
+45,
+null
+],
+[
+"01055",
+"Etowah County",
+"AL",
+5,
+null
+],
+[
+"01057",
+"Fayette County",
+"AL",
+45,
+null
+],
+[
+"01059",
+"Franklin County",
+"AL",
+45,
+null
+],
+[
+"01061",
+"Geneva County",
+"AL",
+45,
+null
+],
+[
+"01063",
+"Greene County",
+"AL",
+5,
+null
+],
+[
+"01065",
+"Hale County",
+"AL",
+5,
+null
+],
+[
+"01067",
+"Henry County",
+"AL",
+45,
+null
+],
+[
+"01069",
+"Houston County",
+"AL",
+45,
+null
+],
+[
+"01071",
+"Jackson County",
+"AL",
+45,
+null
+],
+[
+"01073",
+"Jefferson County",
+"AL",
+5,
+"AL:Birmingham"
+],
+[
+"01075",
+"Lamar County",
+"AL",
+45,
+null
+],
+[
+"01077",
+"Lauderdale County",
+"AL",
+27,
+null
+],
+[
+"01079",
+"Lawrence County",
+"AL",
+27,
+null
+],
+[
+"01081",
+"Lee County",
+"AL",
+3,
+null
+],
+[
+"01083",
+"Limestone County",
+"AL",
+27,
+null
+],
+[
+"01085",
+"Lowndes County",
+"AL",
+45,
+null
+],
+[
+"01087",
+"Macon County",
+"AL",
+45,
+null
+],
+[
+"01089",
+"Madison County",
+"AL",
+27,
+"AL:Huntsville"
+],
+[
+"01091",
+"Marengo County",
+"AL",
+45,
+null
+],
+[
+"01093",
+"Marion County",
+"AL",
+45,
+null
+],
+[
+"01095",
+"Marshall County",
+"AL",
+27,
+null
+],
+[
+"01097",
+"Mobile County",
+"AL",
+45,
+"AL:Mobile"
+],
+[
+"01099",
+"Monroe County",
+"AL",
+45,
+null
+],
+[
+"01101",
+"Montgomery County",
+"AL",
+45,
+null
+],
+[
+"01103",
+"Morgan County",
+"AL",
+27,
+null
+],
+[
+"01105",
+"Perry County",
+"AL",
+45,
+null
+],
+[
+"01107",
+"Pickens County",
+"AL",
+5,
+null
+],
+[
+"01109",
+"Pike County",
+"AL",
+45,
+null
+],
+[
+"01111",
+"Randolph County",
+"AL",
+3,
+null
+],
+[
+"01113",
+"Russell County",
+"AL",
+3,
+null
+],
+[
+"01115",
+"St. Clair County",
+"AL",
+5,
+null
+],
+[
+"01117",
+"Shelby County",
+"AL",
+5,
+null
+],
+[
+"01119",
+"Sumter County",
+"AL",
+45,
+null
+],
+[
+"01121",
+"Talladega County",
+"AL",
+5,
+null
+],
+[
+"01123",
+"Tallapoosa County",
+"AL",
+5,
+null
+],
+[
+"01125",
+"Tuscaloosa County",
+"AL",
+5,
+null
+],
+[
+"01127",
+"Walker County",
+"AL",
+5,
+null
+],
+[
+"01129",
+"Washington County",
+"AL",
+45,
+null
+],
+[
+"01131",
+"Wilcox County",
+"AL",
+45,
+null
+],
+[
+"01133",
+"Winston County",
+"AL",
+5,
+null
+],
+[
+"02013",
+"Aleutians East Borough",
+"AK",
+0,
+null
+],
+[
+"02016",
+"Aleutians West Census Area",
+"AK",
+0,
+null
+],
+[
+"02020",
+"Anchorage Municipality",
+"AK",
+0,
+null
+],
+[
+"02050",
+"Bethel Census Area",
+"AK",
+0,
+null
+],
+[
+"02060",
+"Bristol Bay Borough",
+"AK",
+0,
+null
+],
+[
+"02063",
+"Chugach Census Area",
+"AK",
+0,
+null
+],
+[
+"02066",
+"Copper River Census Area",
+"AK",
+0,
+null
+],
+[
+"02068",
+"Denali Borough",
+"AK",
+0,
+null
+],
+[
+"02070",
+"Dillingham Census Area",
+"AK",
+0,
+null
+],
+[
+"02090",
+"Fairbanks North Star Borough",
+"AK",
+0,
+null
+],
+[
+"02100",
+"Haines Borough",
+"AK",
+0,
+null
+],
+[
+"02105",
+"Hoonah-Angoon Census Area",
+"AK",
+0,
+null
+],
+[
+"02110",
+"Juneau City and Borough",
+"AK",
+0,
+null
+],
+[
+"02122",
+"Kenai Peninsula Borough",
+"AK",
+0,
+null
+],
+[
+"02130",
+"Ketchikan Gateway Borough",
+"AK",
+0,
+null
+],
+[
+"02150",
+"Kodiak Island Borough",
+"AK",
+0,
+null
+],
+[
+"02158",
+"Kusilvak Census Area",
+"AK",
+0,
+null
+],
+[
+"02164",
+"Lake and Peninsula Borough",
+"AK",
+0,
+null
+],
+[
+"02170",
+"Matanuska-Susitna Borough",
+"AK",
+0,
+null
+],
+[
+"02180",
+"Nome Census Area",
+"AK",
+0,
+null
+],
+[
+"02185",
+"North Slope Borough",
+"AK",
+0,
+null
+],
+[
+"02188",
+"Northwest Arctic Borough",
+"AK",
+0,
+null
+],
+[
+"02195",
+"Petersburg Borough",
+"AK",
+0,
+null
+],
+[
+"02198",
+"Prince of Wales-Hyder Census Area",
+"AK",
+0,
+null
+],
+[
+"02220",
+"Sitka City and Borough",
+"AK",
+0,
+null
+],
+[
+"02230",
+"Skagway Municipality",
+"AK",
+0,
+null
+],
+[
+"02240",
+"Southeast Fairbanks Census Area",
+"AK",
+0,
+null
+],
+[
+"02275",
+"Wrangell City and Borough",
+"AK",
+0,
+null
+],
+[
+"02282",
+"Yakutat City and Borough",
+"AK",
+0,
+null
+],
+[
+"02290",
+"Yukon-Koyukuk Census Area",
+"AK",
+0,
+null
+],
+[
+"04001",
+"Apache County",
+"AZ",
+45,
+null
+],
+[
+"04003",
+"Cochise County",
+"AZ",
+55,
+null
+],
+[
+"04005",
+"Coconino County",
+"AZ",
+45,
+"AZ:Grand Canyon / Flagstaff"
+],
+[
+"04007",
+"Gila County",
+"AZ",
+40,
+null
+],
+[
+"04009",
+"Graham County",
+"AZ",
+45,
+null
+],
+[
+"04011",
+"Greenlee County",
+"AZ",
+45,
+null
+],
+[
+"04012",
+"La Paz County",
+"AZ",
+45,
+null
+],
+[
+"04013",
+"Maricopa County",
+"AZ",
+40,
+"AZ:Phoenix / Scottsdale"
+],
+[
+"04015",
+"Mohave County",
+"AZ",
+31,
+null
+],
+[
+"04017",
+"Navajo County",
+"AZ",
+45,
+"AZ:Kayenta"
+],
+[
+"04019",
+"Pima County",
+"AZ",
+55,
+"AZ:Tucson"
+],
+[
+"04021",
+"Pinal County",
+"AZ",
+40,
+null
+],
+[
+"04023",
+"Santa Cruz County",
+"AZ",
+55,
+null
+],
+[
+"04025",
+"Yavapai County",
+"AZ",
+45,
+"AZ:Grand Canyon / Flagstaff"
+],
+[
+"04027",
+"Yuma County",
+"AZ",
+45,
+null
+],
+[
+"05001",
+"Arkansas County",
+"AR",
+45,
+null
+],
+[
+"05003",
+"Ashley County",
+"AR",
+45,
+null
+],
+[
+"05005",
+"Baxter County",
+"AR",
+45,
+null
+],
+[
+"05007",
+"Benton County",
+"AR",
+45,
+null
+],
+[
+"05009",
+"Boone County",
+"AR",
+45,
+null
+],
+[
+"05011",
+"Bradley County",
+"AR",
+45,
+null
+],
+[
+"05013",
+"Calhoun County",
+"AR",
+45,
+null
+],
+[
+"05015",
+"Carroll County",
+"AR",
+45,
+null
+],
+[
+"05017",
+"Chicot County",
+"AR",
+45,
+null
+],
+[
+"05019",
+"Clark County",
+"AR",
+45,
+null
+],
+[
+"05021",
+"Clay County",
+"AR",
+45,
+null
+],
+[
+"05023",
+"Cleburne County",
+"AR",
+45,
+null
+],
+[
+"05025",
+"Cleveland County",
+"AR",
+45,
+null
+],
+[
+"05027",
+"Columbia County",
+"AR",
+45,
+null
+],
+[
+"05029",
+"Conway County",
+"AR",
+45,
+null
+],
+[
+"05031",
+"Craighead County",
+"AR",
+45,
+null
+],
+[
+"05033",
+"Crawford County",
+"AR",
+45,
+null
+],
+[
+"05035",
+"Crittenden County",
+"AR",
+45,
+null
+],
+[
+"05037",
+"Cross County",
+"AR",
+45,
+null
+],
+[
+"05039",
+"Dallas County",
+"AR",
+45,
+null
+],
+[
+"05041",
+"Desha County",
+"AR",
+45,
+null
+],
+[
+"05043",
+"Drew County",
+"AR",
+45,
+null
+],
+[
+"05045",
+"Faulkner County",
+"AR",
+45,
+null
+],
+[
+"05047",
+"Franklin County",
+"AR",
+45,
+null
+],
+[
+"05049",
+"Fulton County",
+"AR",
+45,
+null
+],
+[
+"05051",
+"Garland County",
+"AR",
+45,
+"AR:Hot Springs"
+],
+[
+"05053",
+"Grant County",
+"AR",
+45,
+null
+],
+[
+"05055",
+"Greene County",
+"AR",
+45,
+null
+],
+[
+"05057",
+"Hempstead County",
+"AR",
+45,
+null
+],
+[
+"05059",
+"Hot Spring County",
+"AR",
+45,
+null
+],
+[
+"05061",
+"Howard County",
+"AR",
+45,
+null
+],
+[
+"05063",
+"Independence County",
+"AR",
+45,
+null
+],
+[
+"05065",
+"Izard County",
+"AR",
+45,
+null
+],
+[
+"05067",
+"Jackson County",
+"AR",
+45,
+null
+],
+[
+"05069",
+"Jefferson County",
+"AR",
+45,
+null
+],
+[
+"05071",
+"Johnson County",
+"AR",
+45,
+null
+],
+[
+"05073",
+"Lafayette County",
+"AR",
+45,
+null
+],
+[
+"05075",
+"Lawrence County",
+"AR",
+45,
+null
+],
+[
+"05077",
+"Lee County",
+"AR",
+45,
+null
+],
+[
+"05079",
+"Lincoln County",
+"AR",
+45,
+null
+],
+[
+"05081",
+"Little River County",
+"AR",
+45,
+null
+],
+[
+"05083",
+"Logan County",
+"AR",
+45,
+null
+],
+[
+"05085",
+"Lonoke County",
+"AR",
+45,
+null
+],
+[
+"05087",
+"Madison County",
+"AR",
+45,
+null
+],
+[
+"05089",
+"Marion County",
+"AR",
+45,
+null
+],
+[
+"05091",
+"Miller County",
+"AR",
+45,
+null
+],
+[
+"05093",
+"Mississippi County",
+"AR",
+45,
+null
+],
+[
+"05095",
+"Monroe County",
+"AR",
+45,
+null
+],
+[
+"05097",
+"Montgomery County",
+"AR",
+45,
+null
+],
+[
+"05099",
+"Nevada County",
+"AR",
+45,
+null
+],
+[
+"05101",
+"Newton County",
+"AR",
+45,
+null
+],
+[
+"05103",
+"Ouachita County",
+"AR",
+45,
+null
+],
+[
+"05105",
+"Perry County",
+"AR",
+45,
+null
+],
+[
+"05107",
+"Phillips County",
+"AR",
+45,
+null
+],
+[
+"05109",
+"Pike County",
+"AR",
+45,
+null
+],
+[
+"05111",
+"Poinsett County",
+"AR",
+45,
+null
+],
+[
+"05113",
+"Polk County",
+"AR",
+45,
+null
+],
+[
+"05115",
+"Pope County",
+"AR",
+45,
+null
+],
+[
+"05117",
+"Prairie County",
+"AR",
+45,
+null
+],
+[
+"05119",
+"Pulaski County",
+"AR",
+45,
+null
+],
+[
+"05121",
+"Randolph County",
+"AR",
+45,
+null
+],
+[
+"05123",
+"St. Francis County",
+"AR",
+45,
+null
+],
+[
+"05125",
+"Saline County",
+"AR",
+45,
+null
+],
+[
+"05127",
+"Scott County",
+"AR",
+45,
+null
+],
+[
+"05129",
+"Searcy County",
+"AR",
+45,
+null
+],
+[
+"05131",
+"Sebastian County",
+"AR",
+45,
+null
+],
+[
+"05133",
+"Sevier County",
+"AR",
+45,
+null
+],
+[
+"05135",
+"Sharp County",
+"AR",
+45,
+null
+],
+[
+"05137",
+"Stone County",
+"AR",
+45,
+null
+],
+[
+"05139",
+"Union County",
+"AR",
+45,
+null
+],
+[
+"05141",
+"Van Buren County",
+"AR",
+45,
+null
+],
+[
+"05143",
+"Washington County",
+"AR",
+45,
+null
+],
+[
+"05145",
+"White County",
+"AR",
+45,
+null
+],
+[
+"05147",
+"Woodruff County",
+"AR",
+45,
+null
+],
+[
+"05149",
+"Yell County",
+"AR",
+45,
+null
+],
+[
+"06001",
+"Alameda County",
+"CA",
+51,
+"CA:Oakland"
+],
+[
+"06003",
+"Alpine County",
+"CA",
+48,
+null
+],
+[
+"06005",
+"Amador County",
+"CA",
+48,
+null
+],
+[
+"06007",
+"Butte County",
+"CA",
+48,
+null
+],
+[
+"06009",
+"Calaveras County",
+"CA",
+51,
+null
+],
+[
+"06011",
+"Colusa County",
+"CA",
+48,
+null
+],
+[
+"06013",
+"Contra Costa County",
+"CA",
+51,
+"CA:Antioch / Brentwood / Concord"
+],
+[
+"06015",
+"Del Norte County",
+"CA",
+45,
+null
+],
+[
+"06017",
+"El Dorado County",
+"CA",
+48,
+"CA:South Lake Tahoe"
+],
+[
+"06019",
+"Fresno County",
+"CA",
+22,
+"CA:Fresno"
+],
+[
+"06021",
+"Glenn County",
+"CA",
+45,
+null
+],
+[
+"06023",
+"Humboldt County",
+"CA",
+45,
+"CA:Eureka / Arcata / McKinleyville"
+],
+[
+"06025",
+"Imperial County",
+"CA",
+32,
+null
+],
+[
+"06027",
+"Inyo County",
+"CA",
+45,
+"CA:Death Valley"
+],
+[
+"06029",
+"Kern County",
+"CA",
+32,
+"CA:Bakersfield / Ridgecrest"
+],
+[
+"06031",
+"Kings County",
+"CA",
+22,
+null
+],
+[
+"06033",
+"Lake County",
+"CA",
+45,
+null
+],
+[
+"06035",
+"Lassen County",
+"CA",
+45,
+null
+],
+[
+"06037",
+"Los Angeles County",
+"CA",
+32,
+"CA:Los Angeles"
+],
+[
+"06039",
+"Madera County",
+"CA",
+22,
+"CA:Oakhurst"
+],
+[
+"06041",
+"Marin County",
+"CA",
+51,
+"CA:Mill Valley / San Rafael / Novato"
+],
+[
+"06043",
+"Mariposa County",
+"CA",
+22,
+"CA:Yosemite National Park"
+],
+[
+"06045",
+"Mendocino County",
+"CA",
+45,
+"CA:Point Arena / Gualala"
+],
+[
+"06047",
+"Merced County",
+"CA",
+51,
+null
+],
+[
+"06049",
+"Modoc County",
+"CA",
+45,
+null
+],
+[
+"06051",
+"Mono County",
+"CA",
+45,
+"CA:Mammoth Lakes"
+],
+[
+"06053",
+"Monterey County",
+"CA",
+51,
+"CA:Monterey"
+],
+[
+"06055",
+"Napa County",
+"CA",
+51,
+"CA:Napa"
+],
+[
+"06057",
+"Nevada County",
+"CA",
+48,
+"CA:Truckee"
+],
+[
+"06059",
+"Orange County",
+"CA",
+32,
+"CA:Los Angeles"
+],
+[
+"06061",
+"Placer County",
+"CA",
+48,
+"CA:Tahoe City"
+],
+[
+"06063",
+"Plumas County",
+"CA",
+45,
+null
+],
+[
+"06065",
+"Riverside County",
+"CA",
+32,
+"CA:Palm Springs"
+],
+[
+"06067",
+"Sacramento County",
+"CA",
+48,
+"CA:Sacramento"
+],
+[
+"06069",
+"San Benito County",
+"CA",
+51,
+null
+],
+[
+"06071",
+"San Bernardino County",
+"CA",
+32,
+"CA:Barstow / Ontario / Victorville"
+],
+[
+"06073",
+"San Diego County",
+"CA",
+50,
+"CA:San Diego"
+],
+[
+"06075",
+"San Francisco County",
+"CA",
+51,
+"CA:San Francisco"
+],
+[
+"06077",
+"San Joaquin County",
+"CA",
+51,
+"CA:Stockton"
+],
+[
+"06079",
+"San Luis Obispo County",
+"CA",
+32,
+"CA:San Luis Obispo"
+],
+[
+"06081",
+"San Mateo County",
+"CA",
+51,
+"CA:San Mateo / Foster City / Belmont"
+],
+[
+"06083",
+"Santa Barbara County",
+"CA",
+32,
+"CA:Santa Barbara"
+],
+[
+"06085",
+"Santa Clara County",
+"CA",
+51,
+"CA:Sunnyvale / Palo Alto / San Jose"
+],
+[
+"06087",
+"Santa Cruz County",
+"CA",
+51,
+"CA:Santa Cruz"
+],
+[
+"06089",
+"Shasta County",
+"CA",
+45,
+null
+],
+[
+"06091",
+"Sierra County",
+"CA",
+48,
+null
+],
+[
+"06093",
+"Siskiyou County",
+"CA",
+45,
+null
+],
+[
+"06095",
+"Solano County",
+"CA",
+51,
+null
+],
+[
+"06097",
+"Sonoma County",
+"CA",
+51,
+"CA:Santa Rosa"
+],
+[
+"06099",
+"Stanislaus County",
+"CA",
+51,
+null
+],
+[
+"06101",
+"Sutter County",
+"CA",
+48,
+null
+],
+[
+"06103",
+"Tehama County",
+"CA",
+45,
+null
+],
+[
+"06105",
+"Trinity County",
+"CA",
+45,
+null
+],
+[
+"06107",
+"Tulare County",
+"CA",
+22,
+"CA:Visalia"
+],
+[
+"06109",
+"Tuolumne County",
+"CA",
+45,
+null
+],
+[
+"06111",
+"Ventura County",
+"CA",
+32,
+"CA:Los Angeles"
+],
+[
+"06113",
+"Yolo County",
+"CA",
+48,
+"CA:West Sacramento / Davis"
+],
+[
+"06115",
+"Yuba County",
+"CA",
+48,
+null
+],
+[
+"08001",
+"Adams County",
+"CO",
+19,
+"CO:Denver / Aurora"
+],
+[
+"08003",
+"Alamosa County",
+"CO",
+45,
+null
+],
+[
+"08005",
+"Arapahoe County",
+"CO",
+19,
+"CO:Denver / Aurora"
+],
+[
+"08007",
+"Archuleta County",
+"CO",
+45,
+null
+],
+[
+"08009",
+"Baca County",
+"CO",
+45,
+null
+],
+[
+"08011",
+"Bent County",
+"CO",
+45,
+null
+],
+[
+"08013",
+"Boulder County",
+"CO",
+19,
+"CO:Boulder / Broomfield"
+],
+[
+"08014",
+"Broomfield County",
+"CO",
+19,
+"CO:Boulder / Broomfield"
+],
+[
+"08015",
+"Chaffee County",
+"CO",
+45,
+null
+],
+[
+"08017",
+"Cheyenne County",
+"CO",
+45,
+null
+],
+[
+"08019",
+"Clear Creek County",
+"CO",
+19,
+null
+],
+[
+"08021",
+"Conejos County",
+"CO",
+45,
+null
+],
+[
+"08023",
+"Costilla County",
+"CO",
+45,
+null
+],
+[
+"08025",
+"Crowley County",
+"CO",
+45,
+null
+],
+[
+"08027",
+"Custer County",
+"CO",
+45,
+null
+],
+[
+"08029",
+"Delta County",
+"CO",
+45,
+null
+],
+[
+"08031",
+"Denver County",
+"CO",
+19,
+"CO:Denver / Aurora"
+],
+[
+"08033",
+"Dolores County",
+"CO",
+45,
+null
+],
+[
+"08035",
+"Douglas County",
+"CO",
+19,
+"CO:Douglas"
+],
+[
+"08037",
+"Eagle County",
+"CO",
+45,
+"CO:Vail"
+],
+[
+"08039",
+"Elbert County",
+"CO",
+19,
+null
+],
+[
+"08041",
+"El Paso County",
+"CO",
+13,
+"CO:Colorado Springs"
+],
+[
+"08043",
+"Fremont County",
+"CO",
+13,
+null
+],
+[
+"08045",
+"Garfield County",
+"CO",
+45,
+null
+],
+[
+"08047",
+"Gilpin County",
+"CO",
+19,
+null
+],
+[
+"08049",
+"Grand County",
+"CO",
+45,
+"CO:Grand Lake"
+],
+[
+"08051",
+"Gunnison County",
+"CO",
+45,
+"CO:Crested Butte / Gunnison"
+],
+[
+"08053",
+"Hinsdale County",
+"CO",
+45,
+null
+],
+[
+"08055",
+"Huerfano County",
+"CO",
+45,
+null
+],
+[
+"08057",
+"Jackson County",
+"CO",
+45,
+null
+],
+[
+"08059",
+"Jefferson County",
+"CO",
+19,
+"CO:Denver / Aurora"
+],
+[
+"08061",
+"Kiowa County",
+"CO",
+45,
+null
+],
+[
+"08063",
+"Kit Carson County",
+"CO",
+45,
+null
+],
+[
+"08065",
+"Lake County",
+"CO",
+45,
+null
+],
+[
+"08067",
+"La Plata County",
+"CO",
+45,
+"CO:Durango"
+],
+[
+"08069",
+"Larimer County",
+"CO",
+19,
+"CO:Fort Collins / Loveland"
+],
+[
+"08071",
+"Las Animas County",
+"CO",
+45,
+null
+],
+[
+"08073",
+"Lincoln County",
+"CO",
+19,
+null
+],
+[
+"08075",
+"Logan County",
+"CO",
+45,
+null
+],
+[
+"08077",
+"Mesa County",
+"CO",
+45,
+null
+],
+[
+"08079",
+"Mineral County",
+"CO",
+45,
+null
+],
+[
+"08081",
+"Moffat County",
+"CO",
+45,
+null
+],
+[
+"08083",
+"Montezuma County",
+"CO",
+45,
+"CO:Cortez"
+],
+[
+"08085",
+"Montrose County",
+"CO",
+45,
+"CO:Montrose"
+],
+[
+"08087",
+"Morgan County",
+"CO",
+45,
+null
+],
+[
+"08089",
+"Otero County",
+"CO",
+45,
+null
+],
+[
+"08091",
+"Ouray County",
+"CO",
+45,
+null
+],
+[
+"08093",
+"Park County",
+"CO",
+19,
+null
+],
+[
+"08095",
+"Phillips County",
+"CO",
+45,
+null
+],
+[
+"08097",
+"Pitkin County",
+"CO",
+45,
+"CO:Aspen"
+],
+[
+"08099",
+"Prowers County",
+"CO",
+45,
+null
+],
+[
+"08101",
+"Pueblo County",
+"CO",
+13,
+null
+],
+[
+"08103",
+"Rio Blanco County",
+"CO",
+45,
+null
+],
+[
+"08105",
+"Rio Grande County",
+"CO",
+45,
+null
+],
+[
+"08107",
+"Routt County",
+"CO",
+45,
+"CO:Steamboat Springs"
+],
+[
+"08109",
+"Saguache County",
+"CO",
+45,
+null
+],
+[
+"08111",
+"San Juan County",
+"CO",
+45,
+null
+],
+[
+"08113",
+"San Miguel County",
+"CO",
+45,
+"CO:Telluride"
+],
+[
+"08115",
+"Sedgwick County",
+"CO",
+45,
+null
+],
+[
+"08117",
+"Summit County",
+"CO",
+45,
+"CO:Silverthorne / Breckenridge"
+],
+[
+"08119",
+"Teller County",
+"CO",
+13,
+null
+],
+[
+"08121",
+"Washington County",
+"CO",
+45,
+null
+],
+[
+"08123",
+"Weld County",
+"CO",
+19,
+null
+],
+[
+"08125",
+"Yuma County",
+"CO",
+45,
+null
+],
+[
+"09001",
+"Fairfield County",
+"CT",
+36,
+"CT:Bridgeport / Danbury"
+],
+[
+"09003",
+"Hartford County",
+"CT",
+24,
+"CT:Hartford"
+],
+[
+"09005",
+"Litchfield County",
+"CT",
+36,
+null
+],
+[
+"09007",
+"Middlesex County",
+"CT",
+24,
+null
+],
+[
+"09009",
+"New Haven County",
+"CT",
+36,
+"CT:New Haven"
+],
+[
+"09011",
+"New London County",
+"CT",
+24,
+"CT:New London / Groton"
+],
+[
+"09013",
+"Tolland County",
+"CT",
+24,
+null
+],
+[
+"09015",
+"Windham County",
+"CT",
+6,
+null
+],
+[
+"10001",
+"Kent County",
+"DE",
+39,
+null
+],
+[
+"10003",
+"New Castle County",
+"DE",
+39,
+"DE:Wilmington"
+],
+[
+"10005",
+"Sussex County",
+"DE",
+39,
+"DE:Lewes"
+],
+[
+"11001",
+"District of Columbia",
+"DC",
+57,
+"DC:District of Columbia"
+],
+[
+"12001",
+"Alachua County",
+"FL",
+45,
+null
+],
+[
+"12003",
+"Baker County",
+"FL",
+45,
+null
+],
+[
+"12005",
+"Bay County",
+"FL",
+45,
+"FL:Panama City"
+],
+[
+"12007",
+"Bradford County",
+"FL",
+45,
+null
+],
+[
+"12009",
+"Brevard County",
+"FL",
+38,
+"FL:Cocoa Beach"
+],
+[
+"12011",
+"Broward County",
+"FL",
+33,
+"FL:Fort Lauderdale"
+],
+[
+"12013",
+"Calhoun County",
+"FL",
+45,
+null
+],
+[
+"12015",
+"Charlotte County",
+"FL",
+45,
+"FL:Punta Gorda"
+],
+[
+"12017",
+"Citrus County",
+"FL",
+45,
+null
+],
+[
+"12019",
+"Clay County",
+"FL",
+45,
+null
+],
+[
+"12021",
+"Collier County",
+"FL",
+45,
+"FL:Naples"
+],
+[
+"12023",
+"Columbia County",
+"FL",
+45,
+null
+],
+[
+"12027",
+"DeSoto County",
+"FL",
+45,
+null
+],
+[
+"12029",
+"Dixie County",
+"FL",
+45,
+null
+],
+[
+"12031",
+"Duval County",
+"FL",
+45,
+null
+],
+[
+"12033",
+"Escambia County",
+"FL",
+45,
+"FL:Pensacola"
+],
+[
+"12035",
+"Flagler County",
+"FL",
+45,
+null
+],
+[
+"12037",
+"Franklin County",
+"FL",
+45,
+null
+],
+[
+"12039",
+"Gadsden County",
+"FL",
+45,
+null
+],
+[
+"12041",
+"Gilchrist County",
+"FL",
+45,
+null
+],
+[
+"12043",
+"Glades County",
+"FL",
+45,
+null
+],
+[
+"12045",
+"Gulf County",
+"FL",
+45,
+null
+],
+[
+"12047",
+"Hamilton County",
+"FL",
+45,
+null
+],
+[
+"12049",
+"Hardee County",
+"FL",
+45,
+null
+],
+[
+"12051",
+"Hendry County",
+"FL",
+45,
+"FL:Boca Raton / Delray Beach / Jupiter"
+],
+[
+"12053",
+"Hernando County",
+"FL",
+45,
+null
+],
+[
+"12055",
+"Highlands County",
+"FL",
+45,
+"FL:Sebring"
+],
+[
+"12057",
+"Hillsborough County",
+"FL",
+45,
+"FL:Tampa / St. Petersburg"
+],
+[
+"12059",
+"Holmes County",
+"FL",
+45,
+null
+],
+[
+"12061",
+"Indian River County",
+"FL",
+33,
+"FL:Vero Beach"
+],
+[
+"12063",
+"Jackson County",
+"FL",
+45,
+null
+],
+[
+"12065",
+"Jefferson County",
+"FL",
+45,
+null
+],
+[
+"12067",
+"Lafayette County",
+"FL",
+45,
+null
+],
+[
+"12069",
+"Lake County",
+"FL",
+45,
+null
+],
+[
+"12071",
+"Lee County",
+"FL",
+45,
+"FL:Fort Myers"
+],
+[
+"12073",
+"Leon County",
+"FL",
+45,
+"FL:Tallahassee"
+],
+[
+"12075",
+"Levy County",
+"FL",
+45,
+null
+],
+[
+"12077",
+"Liberty County",
+"FL",
+45,
+null
+],
+[
+"12079",
+"Madison County",
+"FL",
+45,
+null
+],
+[
+"12081",
+"Manatee County",
+"FL",
+45,
+"FL:Bradenton"
+],
+[
+"12083",
+"Marion County",
+"FL",
+45,
+null
+],
+[
+"12085",
+"Martin County",
+"FL",
+33,
+"FL:Stuart"
+],
+[
+"12086",
+"Miami-Dade County",
+"FL",
+33,
+"FL:Miami"
+],
+[
+"12087",
+"Monroe County",
+"FL",
+33,
+"FL:Key West"
+],
+[
+"12089",
+"Nassau County",
+"FL",
+45,
+null
+],
+[
+"12091",
+"Okaloosa County",
+"FL",
+45,
+"FL:Fort Walton Beach / De Funiak Springs"
+],
+[
+"12093",
+"Okeechobee County",
+"FL",
+33,
+null
+],
+[
+"12095",
+"Orange County",
+"FL",
+45,
+"FL:Orlando"
+],
+[
+"12097",
+"Osceola County",
+"FL",
+45,
+null
+],
+[
+"12099",
+"Palm Beach County",
+"FL",
+33,
+"FL:Boca Raton / Delray Beach / Jupiter"
+],
+[
+"12101",
+"Pasco County",
+"FL",
+45,
+null
+],
+[
+"12103",
+"Pinellas County",
+"FL",
+45,
+"FL:Tampa / St. Petersburg"
+],
+[
+"12105",
+"Polk County",
+"FL",
+45,
+null
+],
+[
+"12107",
+"Putnam County",
+"FL",
+45,
+null
+],
+[
+"12109",
+"St. Johns County",
+"FL",
+45,
+"FL:St. Augustine"
+],
+[
+"12111",
+"St. Lucie County",
+"FL",
+33,
+null
+],
+[
+"12113",
+"Santa Rosa County",
+"FL",
+45,
+"FL:Gulf Breeze"
+],
+[
+"12115",
+"Sarasota County",
+"FL",
+45,
+"FL:Sarasota"
+],
+[
+"12117",
+"Seminole County",
+"FL",
+45,
+null
+],
+[
+"12119",
+"Sumter County",
+"FL",
+45,
+null
+],
+[
+"12121",
+"Suwannee County",
+"FL",
+45,
+null
+],
+[
+"12123",
+"Taylor County",
+"FL",
+45,
+null
+],
+[
+"12125",
+"Union County",
+"FL",
+45,
+null
+],
+[
+"12127",
+"Volusia County",
+"FL",
+45,
+"FL:Daytona Beach"
+],
+[
+"12129",
+"Wakulla County",
+"FL",
+45,
+null
+],
+[
+"12131",
+"Walton County",
+"FL",
+45,
+"FL:Fort Walton Beach / De Funiak Springs"
+],
+[
+"12133",
+"Washington County",
+"FL",
+45,
+null
+],
+[
+"13001",
+"Appling County",
+"GA",
+45,
+null
+],
+[
+"13003",
+"Atkinson County",
+"GA",
+45,
+null
+],
+[
+"13005",
+"Bacon County",
+"GA",
+45,
+null
+],
+[
+"13007",
+"Baker County",
+"GA",
+45,
+null
+],
+[
+"13009",
+"Baldwin County",
+"GA",
+45,
+null
+],
+[
+"13011",
+"Banks County",
+"GA",
+3,
+null
+],
+[
+"13013",
+"Barrow County",
+"GA",
+3,
+null
+],
+[
+"13015",
+"Bartow County",
+"GA",
+3,
+null
+],
+[
+"13017",
+"Ben Hill County",
+"GA",
+45,
+null
+],
+[
+"13019",
+"Berrien County",
+"GA",
+45,
+null
+],
+[
+"13021",
+"Bibb County",
+"GA",
+45,
+null
+],
+[
+"13023",
+"Bleckley County",
+"GA",
+45,
+null
+],
+[
+"13025",
+"Brantley County",
+"GA",
+45,
+null
+],
+[
+"13027",
+"Brooks County",
+"GA",
+45,
+null
+],
+[
+"13029",
+"Bryan County",
+"GA",
+45,
+null
+],
+[
+"13031",
+"Bulloch County",
+"GA",
+45,
+null
+],
+[
+"13033",
+"Burke County",
+"GA",
+45,
+null
+],
+[
+"13035",
+"Butts County",
+"GA",
+3,
+null
+],
+[
+"13037",
+"Calhoun County",
+"GA",
+45,
+null
+],
+[
+"13039",
+"Camden County",
+"GA",
+45,
+null
+],
+[
+"13043",
+"Candler County",
+"GA",
+45,
+null
+],
+[
+"13045",
+"Carroll County",
+"GA",
+3,
+null
+],
+[
+"13047",
+"Catoosa County",
+"GA",
+45,
+null
+],
+[
+"13049",
+"Charlton County",
+"GA",
+45,
+null
+],
+[
+"13051",
+"Chatham County",
+"GA",
+45,
+"GA:Savannah"
+],
+[
+"13053",
+"Chattahoochee County",
+"GA",
+3,
+null
+],
+[
+"13055",
+"Chattooga County",
+"GA",
+45,
+null
+],
+[
+"13057",
+"Cherokee County",
+"GA",
+3,
+null
+],
+[
+"13059",
+"Clarke County",
+"GA",
+3,
+"GA:Athens"
+],
+[
+"13061",
+"Clay County",
+"GA",
+45,
+null
+],
+[
+"13063",
+"Clayton County",
+"GA",
+3,
+null
+],
+[
+"13065",
+"Clinch County",
+"GA",
+45,
+null
+],
+[
+"13067",
+"Cobb County",
+"GA",
+3,
+"GA:Marietta"
+],
+[
+"13069",
+"Coffee County",
+"GA",
+45,
+null
+],
+[
+"13071",
+"Colquitt County",
+"GA",
+45,
+null
+],
+[
+"13073",
+"Columbia County",
+"GA",
+45,
+null
+],
+[
+"13075",
+"Cook County",
+"GA",
+45,
+null
+],
+[
+"13077",
+"Coweta County",
+"GA",
+3,
+null
+],
+[
+"13079",
+"Crawford County",
+"GA",
+45,
+null
+],
+[
+"13081",
+"Crisp County",
+"GA",
+45,
+null
+],
+[
+"13083",
+"Dade County",
+"GA",
+45,
+null
+],
+[
+"13085",
+"Dawson County",
+"GA",
+3,
+null
+],
+[
+"13087",
+"Decatur County",
+"GA",
+45,
+null
+],
+[
+"13089",
+"DeKalb County",
+"GA",
+3,
+"GA:Atlanta"
+],
+[
+"13091",
+"Dodge County",
+"GA",
+45,
+null
+],
+[
+"13093",
+"Dooly County",
+"GA",
+45,
+null
+],
+[
+"13095",
+"Dougherty County",
+"GA",
+45,
+null
+],
+[
+"13097",
+"Douglas County",
+"GA",
+3,
+null
+],
+[
+"13099",
+"Early County",
+"GA",
+45,
+null
+],
+[
+"13101",
+"Echols County",
+"GA",
+45,
+null
+],
+[
+"13103",
+"Effingham County",
+"GA",
+45,
+null
+],
+[
+"13105",
+"Elbert County",
+"GA",
+3,
+null
+],
+[
+"13107",
+"Emanuel County",
+"GA",
+45,
+null
+],
+[
+"13109",
+"Evans County",
+"GA",
+45,
+null
+],
+[
+"13111",
+"Fannin County",
+"GA",
+45,
+null
+],
+[
+"13113",
+"Fayette County",
+"GA",
+3,
+null
+],
+[
+"13115",
+"Floyd County",
+"GA",
+3,
+null
+],
+[
+"13117",
+"Forsyth County",
+"GA",
+3,
+null
+],
+[
+"13119",
+"Franklin County",
+"GA",
+3,
+null
+],
+[
+"13121",
+"Fulton County",
+"GA",
+3,
+"GA:Atlanta"
+],
+[
+"13123",
+"Gilmer County",
+"GA",
+3,
+null
+],
+[
+"13125",
+"Glascock County",
+"GA",
+45,
+null
+],
+[
+"13127",
+"Glynn County",
+"GA",
+45,
+"GA:Jekyll Island / Brunswick"
+],
+[
+"13129",
+"Gordon County",
+"GA",
+3,
+null
+],
+[
+"13131",
+"Grady County",
+"GA",
+45,
+null
+],
+[
+"13133",
+"Greene County",
+"GA",
+3,
+null
+],
+[
+"13135",
+"Gwinnett County",
+"GA",
+3,
+null
+],
+[
+"13137",
+"Habersham County",
+"GA",
+3,
+null
+],
+[
+"13139",
+"Hall County",
+"GA",
+3,
+null
+],
+[
+"13141",
+"Hancock County",
+"GA",
+45,
+null
+],
+[
+"13143",
+"Haralson County",
+"GA",
+3,
+null
+],
+[
+"13145",
+"Harris County",
+"GA",
+3,
+null
+],
+[
+"13147",
+"Hart County",
+"GA",
+45,
+null
+],
+[
+"13149",
+"Heard County",
+"GA",
+3,
+null
+],
+[
+"13151",
+"Henry County",
+"GA",
+3,
+null
+],
+[
+"13153",
+"Houston County",
+"GA",
+45,
+null
+],
+[
+"13155",
+"Irwin County",
+"GA",
+45,
+null
+],
+[
+"13157",
+"Jackson County",
+"GA",
+3,
+null
+],
+[
+"13159",
+"Jasper County",
+"GA",
+3,
+null
+],
+[
+"13161",
+"Jeff Davis County",
+"GA",
+45,
+null
+],
+[
+"13163",
+"Jefferson County",
+"GA",
+45,
+null
+],
+[
+"13165",
+"Jenkins County",
+"GA",
+45,
+null
+],
+[
+"13167",
+"Johnson County",
+"GA",
+45,
+null
+],
+[
+"13169",
+"Jones County",
+"GA",
+45,
+null
+],
+[
+"13171",
+"Lamar County",
+"GA",
+3,
+null
+],
+[
+"13173",
+"Lanier County",
+"GA",
+45,
+null
+],
+[
+"13175",
+"Laurens County",
+"GA",
+45,
+null
+],
+[
+"13177",
+"Lee County",
+"GA",
+45,
+null
+],
+[
+"13179",
+"Liberty County",
+"GA",
+45,
+null
+],
+[
+"13181",
+"Lincoln County",
+"GA",
+45,
+null
+],
+[
+"13183",
+"Long County",
+"GA",
+45,
+null
+],
+[
+"13185",
+"Lowndes County",
+"GA",
+45,
+null
+],
+[
+"13187",
+"Lumpkin County",
+"GA",
+3,
+null
+],
+[
+"13189",
+"McDuffie County",
+"GA",
+45,
+null
+],
+[
+"13191",
+"McIntosh County",
+"GA",
+45,
+null
+],
+[
+"13193",
+"Macon County",
+"GA",
+45,
+null
+],
+[
+"13195",
+"Madison County",
+"GA",
+3,
+null
+],
+[
+"13197",
+"Marion County",
+"GA",
+3,
+null
+],
+[
+"13199",
+"Meriwether County",
+"GA",
+3,
+null
+],
+[
+"13201",
+"Miller County",
+"GA",
+45,
+null
+],
+[
+"13205",
+"Mitchell County",
+"GA",
+45,
+null
+],
+[
+"13207",
+"Monroe County",
+"GA",
+45,
+null
+],
+[
+"13209",
+"Montgomery County",
+"GA",
+45,
+null
+],
+[
+"13211",
+"Morgan County",
+"GA",
+3,
+null
+],
+[
+"13213",
+"Murray County",
+"GA",
+45,
+null
+],
+[
+"13215",
+"Muscogee County",
+"GA",
+3,
+null
+],
+[
+"13217",
+"Newton County",
+"GA",
+3,
+null
+],
+[
+"13219",
+"Oconee County",
+"GA",
+3,
+null
+],
+[
+"13221",
+"Oglethorpe County",
+"GA",
+3,
+null
+],
+[
+"13223",
+"Paulding County",
+"GA",
+3,
+null
+],
+[
+"13225",
+"Peach County",
+"GA",
+45,
+null
+],
+[
+"13227",
+"Pickens County",
+"GA",
+3,
+null
+],
+[
+"13229",
+"Pierce County",
+"GA",
+45,
+null
+],
+[
+"13231",
+"Pike County",
+"GA",
+3,
+null
+],
+[
+"13233",
+"Polk County",
+"GA",
+3,
+null
+],
+[
+"13235",
+"Pulaski County",
+"GA",
+45,
+null
+],
+[
+"13237",
+"Putnam County",
+"GA",
+3,
+null
+],
+[
+"13239",
+"Quitman County",
+"GA",
+45,
+null
+],
+[
+"13241",
+"Rabun County",
+"GA",
+3,
+null
+],
+[
+"13243",
+"Randolph County",
+"GA",
+45,
+null
+],
+[
+"13245",
+"Richmond County",
+"GA",
+45,
+"GA:Augusta"
+],
+[
+"13247",
+"Rockdale County",
+"GA",
+3,
+null
+],
+[
+"13249",
+"Schley County",
+"GA",
+45,
+null
+],
+[
+"13251",
+"Screven County",
+"GA",
+45,
+null
+],
+[
+"13253",
+"Seminole County",
+"GA",
+45,
+null
+],
+[
+"13255",
+"Spalding County",
+"GA",
+3,
+null
+],
+[
+"13257",
+"Stephens County",
+"GA",
+3,
+null
+],
+[
+"13259",
+"Stewart County",
+"GA",
+3,
+null
+],
+[
+"13261",
+"Sumter County",
+"GA",
+45,
+null
+],
+[
+"13263",
+"Talbot County",
+"GA",
+3,
+null
+],
+[
+"13265",
+"Taliaferro County",
+"GA",
+3,
+null
+],
+[
+"13267",
+"Tattnall County",
+"GA",
+45,
+null
+],
+[
+"13269",
+"Taylor County",
+"GA",
+45,
+null
+],
+[
+"13271",
+"Telfair County",
+"GA",
+45,
+null
+],
+[
+"13273",
+"Terrell County",
+"GA",
+45,
+null
+],
+[
+"13275",
+"Thomas County",
+"GA",
+45,
+null
+],
+[
+"13277",
+"Tift County",
+"GA",
+45,
+null
+],
+[
+"13279",
+"Toombs County",
+"GA",
+45,
+null
+],
+[
+"13281",
+"Towns County",
+"GA",
+45,
+null
+],
+[
+"13283",
+"Treutlen County",
+"GA",
+45,
+null
+],
+[
+"13285",
+"Troup County",
+"GA",
+3,
+null
+],
+[
+"13287",
+"Turner County",
+"GA",
+45,
+null
+],
+[
+"13289",
+"Twiggs County",
+"GA",
+45,
+null
+],
+[
+"13291",
+"Union County",
+"GA",
+45,
+null
+],
+[
+"13293",
+"Upson County",
+"GA",
+3,
+null
+],
+[
+"13295",
+"Walker County",
+"GA",
+45,
+null
+],
+[
+"13297",
+"Walton County",
+"GA",
+3,
+null
+],
+[
+"13299",
+"Ware County",
+"GA",
+45,
+null
+],
+[
+"13301",
+"Warren County",
+"GA",
+45,
+null
+],
+[
+"13303",
+"Washington County",
+"GA",
+45,
+null
+],
+[
+"13305",
+"Wayne County",
+"GA",
+45,
+null
+],
+[
+"13307",
+"Webster County",
+"GA",
+45,
+null
+],
+[
+"13309",
+"Wheeler County",
+"GA",
+45,
+null
+],
+[
+"13311",
+"White County",
+"GA",
+3,
+null
+],
+[
+"13313",
+"Whitfield County",
+"GA",
+45,
+null
+],
+[
+"13315",
+"Wilcox County",
+"GA",
+45,
+null
+],
+[
+"13317",
+"Wilkes County",
+"GA",
+45,
+null
+],
+[
+"13319",
+"Wilkinson County",
+"GA",
+45,
+null
+],
+[
+"13321",
+"Worth County",
+"GA",
+45,
+null
+],
+[
+"15001",
+"Hawaii County",
+"HI",
+25,
+null
+],
+[
+"15003",
+"Honolulu County",
+"HI",
+25,
+null
+],
+[
+"15007",
+"Kauai County",
+"HI",
+25,
+null
+],
+[
+"15009",
+"Maui County",
+"HI",
+25,
+null
+],
+[
+"16001",
+"Ada County",
+"ID",
+45,
+"ID:Boise"
+],
+[
+"16003",
+"Adams County",
+"ID",
+45,
+null
+],
+[
+"16005",
+"Bannock County",
+"ID",
+45,
+null
+],
+[
+"16007",
+"Bear Lake County",
+"ID",
+45,
+null
+],
+[
+"16009",
+"Benewah County",
+"ID",
+53,
+null
+],
+[
+"16011",
+"Bingham County",
+"ID",
+45,
+null
+],
+[
+"16013",
+"Blaine County",
+"ID",
+45,
+"ID:Sun Valley / Ketchum"
+],
+[
+"16015",
+"Boise County",
+"ID",
+45,
+null
+],
+[
+"16017",
+"Bonner County",
+"ID",
+45,
+null
+],
+[
+"16019",
+"Bonneville County",
+"ID",
+45,
+null
+],
+[
+"16021",
+"Boundary County",
+"ID",
+45,
+null
+],
+[
+"16023",
+"Butte County",
+"ID",
+45,
+null
+],
+[
+"16025",
+"Camas County",
+"ID",
+45,
+null
+],
+[
+"16027",
+"Canyon County",
+"ID",
+45,
+null
+],
+[
+"16029",
+"Caribou County",
+"ID",
+45,
+null
+],
+[
+"16031",
+"Cassia County",
+"ID",
+45,
+null
+],
+[
+"16033",
+"Clark County",
+"ID",
+45,
+null
+],
+[
+"16035",
+"Clearwater County",
+"ID",
+45,
+null
+],
+[
+"16037",
+"Custer County",
+"ID",
+45,
+null
+],
+[
+"16039",
+"Elmore County",
+"ID",
+45,
+"ID:Sun Valley / Ketchum"
+],
+[
+"16041",
+"Franklin County",
+"ID",
+45,
+null
+],
+[
+"16043",
+"Fremont County",
+"ID",
+45,
+null
+],
+[
+"16045",
+"Gem County",
+"ID",
+45,
+null
+],
+[
+"16047",
+"Gooding County",
+"ID",
+45,
+null
+],
+[
+"16049",
+"Idaho County",
+"ID",
+45,
+null
+],
+[
+"16051",
+"Jefferson County",
+"ID",
+45,
+null
+],
+[
+"16053",
+"Jerome County",
+"ID",
+45,
+null
+],
+[
+"16055",
+"Kootenai County",
+"ID",
+53,
+"ID:Coeur d'Alene"
+],
+[
+"16057",
+"Latah County",
+"ID",
+45,
+null
+],
+[
+"16059",
+"Lemhi County",
+"ID",
+45,
+null
+],
+[
+"16061",
+"Lewis County",
+"ID",
+45,
+null
+],
+[
+"16063",
+"Lincoln County",
+"ID",
+45,
+null
+],
+[
+"16065",
+"Madison County",
+"ID",
+45,
+null
+],
+[
+"16067",
+"Minidoka County",
+"ID",
+45,
+null
+],
+[
+"16069",
+"Nez Perce County",
+"ID",
+45,
+null
+],
+[
+"16071",
+"Oneida County",
+"ID",
+45,
+null
+],
+[
+"16073",
+"Owyhee County",
+"ID",
+45,
+null
+],
+[
+"16075",
+"Payette County",
+"ID",
+45,
+null
+],
+[
+"16077",
+"Power County",
+"ID",
+45,
+null
+],
+[
+"16079",
+"Shoshone County",
+"ID",
+53,
+null
+],
+[
+"16081",
+"Teton County",
+"ID",
+45,
+null
+],
+[
+"16083",
+"Twin Falls County",
+"ID",
+45,
+null
+],
+[
+"16085",
+"Valley County",
+"ID",
+45,
+null
+],
+[
+"16087",
+"Washington County",
+"ID",
+45,
+null
+],
+[
+"17001",
+"Adams County",
+"IL",
+45,
+null
+],
+[
+"17003",
+"Alexander County",
+"IL",
+45,
+null
+],
+[
+"17005",
+"Bond County",
+"IL",
+54,
+null
+],
+[
+"17007",
+"Boone County",
+"IL",
+10,
+null
+],
+[
+"17009",
+"Brown County",
+"IL",
+45,
+null
+],
+[
+"17011",
+"Bureau County",
+"IL",
+10,
+null
+],
+[
+"17013",
+"Calhoun County",
+"IL",
+54,
+null
+],
+[
+"17015",
+"Carroll County",
+"IL",
+17,
+null
+],
+[
+"17017",
+"Cass County",
+"IL",
+45,
+null
+],
+[
+"17019",
+"Champaign County",
+"IL",
+45,
+null
+],
+[
+"17021",
+"Christian County",
+"IL",
+45,
+null
+],
+[
+"17023",
+"Clark County",
+"IL",
+45,
+null
+],
+[
+"17025",
+"Clay County",
+"IL",
+45,
+null
+],
+[
+"17027",
+"Clinton County",
+"IL",
+54,
+null
+],
+[
+"17029",
+"Coles County",
+"IL",
+45,
+null
+],
+[
+"17031",
+"Cook County",
+"IL",
+10,
+"IL:Chicago"
+],
+[
+"17033",
+"Crawford County",
+"IL",
+45,
+null
+],
+[
+"17035",
+"Cumberland County",
+"IL",
+45,
+null
+],
+[
+"17037",
+"DeKalb County",
+"IL",
+10,
+null
+],
+[
+"17039",
+"De Witt County",
+"IL",
+45,
+null
+],
+[
+"17041",
+"Douglas County",
+"IL",
+45,
+null
+],
+[
+"17043",
+"DuPage County",
+"IL",
+10,
+"IL:Oakbrook Terrace"
+],
+[
+"17045",
+"Edgar County",
+"IL",
+45,
+null
+],
+[
+"17047",
+"Edwards County",
+"IL",
+45,
+null
+],
+[
+"17049",
+"Effingham County",
+"IL",
+45,
+null
+],
+[
+"17051",
+"Fayette County",
+"IL",
+54,
+null
+],
+[
+"17053",
+"Ford County",
+"IL",
+45,
+null
+],
+[
+"17055",
+"Franklin County",
+"IL",
+45,
+null
+],
+[
+"17057",
+"Fulton County",
+"IL",
+45,
+null
+],
+[
+"17059",
+"Gallatin County",
+"IL",
+45,
+null
+],
+[
+"17061",
+"Greene County",
+"IL",
+54,
+null
+],
+[
+"17063",
+"Grundy County",
+"IL",
+10,
+null
+],
+[
+"17065",
+"Hamilton County",
+"IL",
+45,
+null
+],
+[
+"17067",
+"Hancock County",
+"IL",
+45,
+null
+],
+[
+"17069",
+"Hardin County",
+"IL",
+45,
+null
+],
+[
+"17071",
+"Henderson County",
+"IL",
+45,
+null
+],
+[
+"17073",
+"Henry County",
+"IL",
+17,
+null
+],
+[
+"17075",
+"Iroquois County",
+"IL",
+10,
+null
+],
+[
+"17077",
+"Jackson County",
+"IL",
+45,
+null
+],
+[
+"17079",
+"Jasper County",
+"IL",
+45,
+null
+],
+[
+"17081",
+"Jefferson County",
+"IL",
+45,
+null
+],
+[
+"17083",
+"Jersey County",
+"IL",
+54,
+null
+],
+[
+"17085",
+"Jo Daviess County",
+"IL",
+45,
+null
+],
+[
+"17087",
+"Johnson County",
+"IL",
+45,
+null
+],
+[
+"17089",
+"Kane County",
+"IL",
+10,
+null
+],
+[
+"17091",
+"Kankakee County",
+"IL",
+10,
+null
+],
+[
+"17093",
+"Kendall County",
+"IL",
+10,
+null
+],
+[
+"17095",
+"Knox County",
+"IL",
+45,
+null
+],
+[
+"17097",
+"Lake County",
+"IL",
+10,
+"IL:Chicago"
+],
+[
+"17099",
+"LaSalle County",
+"IL",
+10,
+null
+],
+[
+"17101",
+"Lawrence County",
+"IL",
+45,
+null
+],
+[
+"17103",
+"Lee County",
+"IL",
+17,
+null
+],
+[
+"17105",
+"Livingston County",
+"IL",
+45,
+null
+],
+[
+"17107",
+"Logan County",
+"IL",
+45,
+null
+],
+[
+"17109",
+"McDonough County",
+"IL",
+45,
+null
+],
+[
+"17111",
+"McHenry County",
+"IL",
+10,
+null
+],
+[
+"17113",
+"McLean County",
+"IL",
+45,
+null
+],
+[
+"17115",
+"Macon County",
+"IL",
+45,
+null
+],
+[
+"17117",
+"Macoupin County",
+"IL",
+54,
+null
+],
+[
+"17119",
+"Madison County",
+"IL",
+54,
+null
+],
+[
+"17121",
+"Marion County",
+"IL",
+54,
+null
+],
+[
+"17123",
+"Marshall County",
+"IL",
+45,
+null
+],
+[
+"17125",
+"Mason County",
+"IL",
+45,
+null
+],
+[
+"17127",
+"Massac County",
+"IL",
+45,
+null
+],
+[
+"17129",
+"Menard County",
+"IL",
+45,
+null
+],
+[
+"17131",
+"Mercer County",
+"IL",
+17,
+null
+],
+[
+"17133",
+"Monroe County",
+"IL",
+54,
+null
+],
+[
+"17135",
+"Montgomery County",
+"IL",
+54,
+null
+],
+[
+"17137",
+"Morgan County",
+"IL",
+45,
+null
+],
+[
+"17139",
+"Moultrie County",
+"IL",
+45,
+null
+],
+[
+"17141",
+"Ogle County",
+"IL",
+10,
+null
+],
+[
+"17143",
+"Peoria County",
+"IL",
+45,
+null
+],
+[
+"17145",
+"Perry County",
+"IL",
+45,
+null
+],
+[
+"17147",
+"Piatt County",
+"IL",
+45,
+null
+],
+[
+"17149",
+"Pike County",
+"IL",
+45,
+null
+],
+[
+"17151",
+"Pope County",
+"IL",
+45,
+null
+],
+[
+"17153",
+"Pulaski County",
+"IL",
+45,
+null
+],
+[
+"17155",
+"Putnam County",
+"IL",
+10,
+null
+],
+[
+"17157",
+"Randolph County",
+"IL",
+54,
+null
+],
+[
+"17159",
+"Richland County",
+"IL",
+45,
+null
+],
+[
+"17161",
+"Rock Island County",
+"IL",
+17,
+null
+],
+[
+"17163",
+"St. Clair County",
+"IL",
+54,
+"IL:East St. Louis / O'Fallon / Fairview Heights"
+],
+[
+"17165",
+"Saline County",
+"IL",
+45,
+null
+],
+[
+"17167",
+"Sangamon County",
+"IL",
+45,
+null
+],
+[
+"17169",
+"Schuyler County",
+"IL",
+45,
+null
+],
+[
+"17171",
+"Scott County",
+"IL",
+45,
+null
+],
+[
+"17173",
+"Shelby County",
+"IL",
+45,
+null
+],
+[
+"17175",
+"Stark County",
+"IL",
+45,
+null
+],
+[
+"17177",
+"Stephenson County",
+"IL",
+10,
+null
+],
+[
+"17179",
+"Tazewell County",
+"IL",
+45,
+null
+],
+[
+"17181",
+"Union County",
+"IL",
+45,
+null
+],
+[
+"17183",
+"Vermilion County",
+"IL",
+45,
+null
+],
+[
+"17185",
+"Wabash County",
+"IL",
+45,
+null
+],
+[
+"17187",
+"Warren County",
+"IL",
+45,
+null
+],
+[
+"17189",
+"Washington County",
+"IL",
+54,
+null
+],
+[
+"17191",
+"Wayne County",
+"IL",
+45,
+null
+],
+[
+"17193",
+"White County",
+"IL",
+45,
+null
+],
+[
+"17195",
+"Whiteside County",
+"IL",
+17,
+null
+],
+[
+"17197",
+"Will County",
+"IL",
+10,
+"IL:Bolingbrook / Romeoville / Lemont"
+],
+[
+"17199",
+"Williamson County",
+"IL",
+45,
+null
+],
+[
+"17201",
+"Winnebago County",
+"IL",
+10,
+null
+],
+[
+"17203",
+"Woodford County",
+"IL",
+45,
+null
+],
+[
+"18001",
+"Adams County",
+"IN",
+45,
+null
+],
+[
+"18003",
+"Allen County",
+"IN",
+45,
+null
+],
+[
+"18005",
+"Bartholomew County",
+"IN",
+28,
+null
+],
+[
+"18007",
+"Benton County",
+"IN",
+28,
+null
+],
+[
+"18009",
+"Blackford County",
+"IN",
+28,
+null
+],
+[
+"18011",
+"Boone County",
+"IN",
+28,
+null
+],
+[
+"18013",
+"Brown County",
+"IN",
+28,
+null
+],
+[
+"18015",
+"Carroll County",
+"IN",
+28,
+null
+],
+[
+"18017",
+"Cass County",
+"IN",
+45,
+null
+],
+[
+"18019",
+"Clark County",
+"IN",
+45,
+null
+],
+[
+"18021",
+"Clay County",
+"IN",
+45,
+null
+],
+[
+"18023",
+"Clinton County",
+"IN",
+28,
+null
+],
+[
+"18025",
+"Crawford County",
+"IN",
+45,
+null
+],
+[
+"18027",
+"Daviess County",
+"IN",
+45,
+null
+],
+[
+"18029",
+"Dearborn County",
+"IN",
+11,
+null
+],
+[
+"18031",
+"Decatur County",
+"IN",
+28,
+null
+],
+[
+"18033",
+"DeKalb County",
+"IN",
+45,
+null
+],
+[
+"18035",
+"Delaware County",
+"IN",
+28,
+null
+],
+[
+"18037",
+"Dubois County",
+"IN",
+45,
+null
+],
+[
+"18039",
+"Elkhart County",
+"IN",
+45,
+null
+],
+[
+"18041",
+"Fayette County",
+"IN",
+28,
+null
+],
+[
+"18043",
+"Floyd County",
+"IN",
+45,
+null
+],
+[
+"18045",
+"Fountain County",
+"IN",
+28,
+null
+],
+[
+"18047",
+"Franklin County",
+"IN",
+11,
+null
+],
+[
+"18049",
+"Fulton County",
+"IN",
+45,
+null
+],
+[
+"18051",
+"Gibson County",
+"IN",
+45,
+null
+],
+[
+"18053",
+"Grant County",
+"IN",
+28,
+null
+],
+[
+"18055",
+"Greene County",
+"IN",
+45,
+null
+],
+[
+"18057",
+"Hamilton County",
+"IN",
+28,
+"IN:Indianapolis / Carmel"
+],
+[
+"18059",
+"Hancock County",
+"IN",
+28,
+null
+],
+[
+"18061",
+"Harrison County",
+"IN",
+45,
+null
+],
+[
+"18063",
+"Hendricks County",
+"IN",
+28,
+null
+],
+[
+"18065",
+"Henry County",
+"IN",
+28,
+null
+],
+[
+"18067",
+"Howard County",
+"IN",
+45,
+null
+],
+[
+"18069",
+"Huntington County",
+"IN",
+45,
+null
+],
+[
+"18071",
+"Jackson County",
+"IN",
+28,
+null
+],
+[
+"18073",
+"Jasper County",
+"IN",
+10,
+null
+],
+[
+"18075",
+"Jay County",
+"IN",
+45,
+null
+],
+[
+"18077",
+"Jefferson County",
+"IN",
+45,
+null
+],
+[
+"18079",
+"Jennings County",
+"IN",
+28,
+null
+],
+[
+"18081",
+"Johnson County",
+"IN",
+28,
+null
+],
+[
+"18083",
+"Knox County",
+"IN",
+45,
+null
+],
+[
+"18085",
+"Kosciusko County",
+"IN",
+45,
+null
+],
+[
+"18087",
+"LaGrange County",
+"IN",
+45,
+null
+],
+[
+"18089",
+"Lake County",
+"IN",
+10,
+null
+],
+[
+"18091",
+"LaPorte County",
+"IN",
+10,
+null
+],
+[
+"18093",
+"Lawrence County",
+"IN",
+28,
+null
+],
+[
+"18095",
+"Madison County",
+"IN",
+28,
+null
+],
+[
+"18097",
+"Marion County",
+"IN",
+28,
+"IN:Indianapolis / Carmel"
+],
+[
+"18099",
+"Marshall County",
+"IN",
+45,
+null
+],
+[
+"18101",
+"Martin County",
+"IN",
+45,
+null
+],
+[
+"18103",
+"Miami County",
+"IN",
+45,
+null
+],
+[
+"18105",
+"Monroe County",
+"IN",
+28,
+"IN:Bloomington"
+],
+[
+"18107",
+"Montgomery County",
+"IN",
+28,
+null
+],
+[
+"18109",
+"Morgan County",
+"IN",
+28,
+null
+],
+[
+"18111",
+"Newton County",
+"IN",
+10,
+null
+],
+[
+"18113",
+"Noble County",
+"IN",
+45,
+null
+],
+[
+"18115",
+"Ohio County",
+"IN",
+11,
+null
+],
+[
+"18117",
+"Orange County",
+"IN",
+45,
+null
+],
+[
+"18119",
+"Owen County",
+"IN",
+28,
+null
+],
+[
+"18121",
+"Parke County",
+"IN",
+45,
+null
+],
+[
+"18123",
+"Perry County",
+"IN",
+45,
+null
+],
+[
+"18125",
+"Pike County",
+"IN",
+45,
+null
+],
+[
+"18127",
+"Porter County",
+"IN",
+10,
+null
+],
+[
+"18129",
+"Posey County",
+"IN",
+45,
+null
+],
+[
+"18131",
+"Pulaski County",
+"IN",
+45,
+null
+],
+[
+"18133",
+"Putnam County",
+"IN",
+28,
+null
+],
+[
+"18135",
+"Randolph County",
+"IN",
+28,
+null
+],
+[
+"18137",
+"Ripley County",
+"IN",
+11,
+null
+],
+[
+"18139",
+"Rush County",
+"IN",
+28,
+null
+],
+[
+"18141",
+"St. Joseph County",
+"IN",
+45,
+null
+],
+[
+"18143",
+"Scott County",
+"IN",
+45,
+null
+],
+[
+"18145",
+"Shelby County",
+"IN",
+28,
+null
+],
+[
+"18147",
+"Spencer County",
+"IN",
+45,
+null
+],
+[
+"18149",
+"Starke County",
+"IN",
+10,
+null
+],
+[
+"18151",
+"Steuben County",
+"IN",
+45,
+null
+],
+[
+"18153",
+"Sullivan County",
+"IN",
+45,
+null
+],
+[
+"18155",
+"Switzerland County",
+"IN",
+11,
+null
+],
+[
+"18157",
+"Tippecanoe County",
+"IN",
+28,
+"IN:Lafayette / West Lafayette"
+],
+[
+"18159",
+"Tipton County",
+"IN",
+28,
+null
+],
+[
+"18161",
+"Union County",
+"IN",
+11,
+null
+],
+[
+"18163",
+"Vanderburgh County",
+"IN",
+45,
+null
+],
+[
+"18165",
+"Vermillion County",
+"IN",
+45,
+null
+],
+[
+"18167",
+"Vigo County",
+"IN",
+45,
+null
+],
+[
+"18169",
+"Wabash County",
+"IN",
+45,
+null
+],
+[
+"18171",
+"Warren County",
+"IN",
+28,
+null
+],
+[
+"18173",
+"Warrick County",
+"IN",
+45,
+null
+],
+[
+"18175",
+"Washington County",
+"IN",
+45,
+null
+],
+[
+"18177",
+"Wayne County",
+"IN",
+28,
+null
+],
+[
+"18179",
+"Wells County",
+"IN",
+45,
+null
+],
+[
+"18181",
+"White County",
+"IN",
+45,
+null
+],
+[
+"18183",
+"Whitley County",
+"IN",
+45,
+null
+],
+[
+"19001",
+"Adair County",
+"IA",
+20,
+null
+],
+[
+"19003",
+"Adams County",
+"IA",
+45,
+null
+],
+[
+"19005",
+"Allamakee County",
+"IA",
+45,
+null
+],
+[
+"19007",
+"Appanoose County",
+"IA",
+45,
+null
+],
+[
+"19009",
+"Audubon County",
+"IA",
+45,
+null
+],
+[
+"19011",
+"Benton County",
+"IA",
+45,
+null
+],
+[
+"19013",
+"Black Hawk County",
+"IA",
+45,
+null
+],
+[
+"19015",
+"Boone County",
+"IA",
+20,
+null
+],
+[
+"19017",
+"Bremer County",
+"IA",
+45,
+null
+],
+[
+"19019",
+"Buchanan County",
+"IA",
+45,
+null
+],
+[
+"19021",
+"Buena Vista County",
+"IA",
+45,
+null
+],
+[
+"19023",
+"Butler County",
+"IA",
+45,
+null
+],
+[
+"19025",
+"Calhoun County",
+"IA",
+45,
+null
+],
+[
+"19027",
+"Carroll County",
+"IA",
+45,
+null
+],
+[
+"19029",
+"Cass County",
+"IA",
+45,
+null
+],
+[
+"19031",
+"Cedar County",
+"IA",
+17,
+null
+],
+[
+"19033",
+"Cerro Gordo County",
+"IA",
+45,
+null
+],
+[
+"19035",
+"Cherokee County",
+"IA",
+45,
+null
+],
+[
+"19037",
+"Chickasaw County",
+"IA",
+45,
+null
+],
+[
+"19039",
+"Clarke County",
+"IA",
+20,
+null
+],
+[
+"19041",
+"Clay County",
+"IA",
+45,
+null
+],
+[
+"19043",
+"Clayton County",
+"IA",
+45,
+null
+],
+[
+"19045",
+"Clinton County",
+"IA",
+17,
+null
+],
+[
+"19047",
+"Crawford County",
+"IA",
+45,
+null
+],
+[
+"19049",
+"Dallas County",
+"IA",
+20,
+"IA:Dallas"
+],
+[
+"19051",
+"Davis County",
+"IA",
+45,
+null
+],
+[
+"19053",
+"Decatur County",
+"IA",
+45,
+null
+],
+[
+"19055",
+"Delaware County",
+"IA",
+45,
+null
+],
+[
+"19057",
+"Des Moines County",
+"IA",
+45,
+null
+],
+[
+"19059",
+"Dickinson County",
+"IA",
+45,
+null
+],
+[
+"19061",
+"Dubuque County",
+"IA",
+45,
+null
+],
+[
+"19063",
+"Emmet County",
+"IA",
+45,
+null
+],
+[
+"19065",
+"Fayette County",
+"IA",
+45,
+null
+],
+[
+"19067",
+"Floyd County",
+"IA",
+45,
+null
+],
+[
+"19069",
+"Franklin County",
+"IA",
+45,
+null
+],
+[
+"19071",
+"Fremont County",
+"IA",
+37,
+null
+],
+[
+"19073",
+"Greene County",
+"IA",
+20,
+null
+],
+[
+"19075",
+"Grundy County",
+"IA",
+45,
+null
+],
+[
+"19077",
+"Guthrie County",
+"IA",
+20,
+null
+],
+[
+"19079",
+"Hamilton County",
+"IA",
+20,
+null
+],
+[
+"19081",
+"Hancock County",
+"IA",
+45,
+null
+],
+[
+"19083",
+"Hardin County",
+"IA",
+45,
+null
+],
+[
+"19085",
+"Harrison County",
+"IA",
+37,
+null
+],
+[
+"19087",
+"Henry County",
+"IA",
+45,
+null
+],
+[
+"19089",
+"Howard County",
+"IA",
+45,
+null
+],
+[
+"19091",
+"Humboldt County",
+"IA",
+45,
+null
+],
+[
+"19093",
+"Ida County",
+"IA",
+45,
+null
+],
+[
+"19095",
+"Iowa County",
+"IA",
+45,
+null
+],
+[
+"19097",
+"Jackson County",
+"IA",
+17,
+null
+],
+[
+"19099",
+"Jasper County",
+"IA",
+20,
+null
+],
+[
+"19101",
+"Jefferson County",
+"IA",
+45,
+null
+],
+[
+"19103",
+"Johnson County",
+"IA",
+45,
+null
+],
+[
+"19105",
+"Jones County",
+"IA",
+45,
+null
+],
+[
+"19107",
+"Keokuk County",
+"IA",
+45,
+null
+],
+[
+"19109",
+"Kossuth County",
+"IA",
+45,
+null
+],
+[
+"19111",
+"Lee County",
+"IA",
+45,
+null
+],
+[
+"19113",
+"Linn County",
+"IA",
+45,
+null
+],
+[
+"19115",
+"Louisa County",
+"IA",
+17,
+null
+],
+[
+"19117",
+"Lucas County",
+"IA",
+20,
+null
+],
+[
+"19119",
+"Lyon County",
+"IA",
+45,
+null
+],
+[
+"19121",
+"Madison County",
+"IA",
+20,
+null
+],
+[
+"19123",
+"Mahaska County",
+"IA",
+20,
+null
+],
+[
+"19125",
+"Marion County",
+"IA",
+20,
+null
+],
+[
+"19127",
+"Marshall County",
+"IA",
+45,
+null
+],
+[
+"19129",
+"Mills County",
+"IA",
+37,
+null
+],
+[
+"19131",
+"Mitchell County",
+"IA",
+45,
+null
+],
+[
+"19133",
+"Monona County",
+"IA",
+45,
+null
+],
+[
+"19135",
+"Monroe County",
+"IA",
+20,
+null
+],
+[
+"19137",
+"Montgomery County",
+"IA",
+45,
+null
+],
+[
+"19139",
+"Muscatine County",
+"IA",
+17,
+null
+],
+[
+"19141",
+"O'Brien County",
+"IA",
+45,
+null
+],
+[
+"19143",
+"Osceola County",
+"IA",
+45,
+null
+],
+[
+"19145",
+"Page County",
+"IA",
+45,
+null
+],
+[
+"19147",
+"Palo Alto County",
+"IA",
+45,
+null
+],
+[
+"19149",
+"Plymouth County",
+"IA",
+45,
+null
+],
+[
+"19151",
+"Pocahontas County",
+"IA",
+45,
+null
+],
+[
+"19153",
+"Polk County",
+"IA",
+20,
+"IA:Des Moines"
+],
+[
+"19155",
+"Pottawattamie County",
+"IA",
+37,
+null
+],
+[
+"19157",
+"Poweshiek County",
+"IA",
+20,
+null
+],
+[
+"19159",
+"Ringgold County",
+"IA",
+45,
+null
+],
+[
+"19161",
+"Sac County",
+"IA",
+45,
+null
+],
+[
+"19163",
+"Scott County",
+"IA",
+17,
+null
+],
+[
+"19165",
+"Shelby County",
+"IA",
+37,
+null
+],
+[
+"19167",
+"Sioux County",
+"IA",
+45,
+null
+],
+[
+"19169",
+"Story County",
+"IA",
+20,
+null
+],
+[
+"19171",
+"Tama County",
+"IA",
+45,
+null
+],
+[
+"19173",
+"Taylor County",
+"IA",
+45,
+null
+],
+[
+"19175",
+"Union County",
+"IA",
+45,
+null
+],
+[
+"19177",
+"Van Buren County",
+"IA",
+45,
+null
+],
+[
+"19179",
+"Wapello County",
+"IA",
+45,
+null
+],
+[
+"19181",
+"Warren County",
+"IA",
+20,
+null
+],
+[
+"19183",
+"Washington County",
+"IA",
+45,
+null
+],
+[
+"19185",
+"Wayne County",
+"IA",
+45,
+null
+],
+[
+"19187",
+"Webster County",
+"IA",
+45,
+null
+],
+[
+"19189",
+"Winnebago County",
+"IA",
+45,
+null
+],
+[
+"19191",
+"Winneshiek County",
+"IA",
+45,
+null
+],
+[
+"19193",
+"Woodbury County",
+"IA",
+45,
+null
+],
+[
+"19195",
+"Worth County",
+"IA",
+45,
+null
+],
+[
+"19197",
+"Wright County",
+"IA",
+45,
+null
+],
+[
+"20001",
+"Allen County",
+"KS",
+45,
+null
+],
+[
+"20003",
+"Anderson County",
+"KS",
+29,
+null
+],
+[
+"20005",
+"Atchison County",
+"KS",
+29,
+null
+],
+[
+"20007",
+"Barber County",
+"KS",
+45,
+null
+],
+[
+"20009",
+"Barton County",
+"KS",
+45,
+null
+],
+[
+"20011",
+"Bourbon County",
+"KS",
+45,
+null
+],
+[
+"20013",
+"Brown County",
+"KS",
+45,
+null
+],
+[
+"20015",
+"Butler County",
+"KS",
+45,
+null
+],
+[
+"20017",
+"Chase County",
+"KS",
+45,
+null
+],
+[
+"20019",
+"Chautauqua County",
+"KS",
+45,
+null
+],
+[
+"20021",
+"Cherokee County",
+"KS",
+45,
+null
+],
+[
+"20023",
+"Cheyenne County",
+"KS",
+45,
+null
+],
+[
+"20025",
+"Clark County",
+"KS",
+45,
+null
+],
+[
+"20027",
+"Clay County",
+"KS",
+45,
+null
+],
+[
+"20029",
+"Cloud County",
+"KS",
+45,
+null
+],
+[
+"20031",
+"Coffey County",
+"KS",
+45,
+null
+],
+[
+"20033",
+"Comanche County",
+"KS",
+45,
+null
+],
+[
+"20035",
+"Cowley County",
+"KS",
+45,
+null
+],
+[
+"20037",
+"Crawford County",
+"KS",
+45,
+null
+],
+[
+"20039",
+"Decatur County",
+"KS",
+45,
+null
+],
+[
+"20041",
+"Dickinson County",
+"KS",
+45,
+null
+],
+[
+"20043",
+"Doniphan County",
+"KS",
+29,
+null
+],
+[
+"20045",
+"Douglas County",
+"KS",
+29,
+null
+],
+[
+"20047",
+"Edwards County",
+"KS",
+45,
+null
+],
+[
+"20049",
+"Elk County",
+"KS",
+45,
+null
+],
+[
+"20051",
+"Ellis County",
+"KS",
+45,
+null
+],
+[
+"20053",
+"Ellsworth County",
+"KS",
+45,
+null
+],
+[
+"20055",
+"Finney County",
+"KS",
+45,
+null
+],
+[
+"20057",
+"Ford County",
+"KS",
+45,
+null
+],
+[
+"20059",
+"Franklin County",
+"KS",
+29,
+null
+],
+[
+"20061",
+"Geary County",
+"KS",
+45,
+null
+],
+[
+"20063",
+"Gove County",
+"KS",
+45,
+null
+],
+[
+"20065",
+"Graham County",
+"KS",
+45,
+null
+],
+[
+"20067",
+"Grant County",
+"KS",
+45,
+null
+],
+[
+"20069",
+"Gray County",
+"KS",
+45,
+null
+],
+[
+"20071",
+"Greeley County",
+"KS",
+45,
+null
+],
+[
+"20073",
+"Greenwood County",
+"KS",
+45,
+null
+],
+[
+"20075",
+"Hamilton County",
+"KS",
+45,
+null
+],
+[
+"20077",
+"Harper County",
+"KS",
+45,
+null
+],
+[
+"20079",
+"Harvey County",
+"KS",
+45,
+null
+],
+[
+"20081",
+"Haskell County",
+"KS",
+45,
+null
+],
+[
+"20083",
+"Hodgeman County",
+"KS",
+45,
+null
+],
+[
+"20085",
+"Jackson County",
+"KS",
+29,
+null
+],
+[
+"20087",
+"Jefferson County",
+"KS",
+29,
+null
+],
+[
+"20089",
+"Jewell County",
+"KS",
+45,
+null
+],
+[
+"20091",
+"Johnson County",
+"KS",
+29,
+"KS:Kansas City / Overland Park"
+],
+[
+"20093",
+"Kearny County",
+"KS",
+45,
+null
+],
+[
+"20095",
+"Kingman County",
+"KS",
+45,
+null
+],
+[
+"20097",
+"Kiowa County",
+"KS",
+45,
+null
+],
+[
+"20099",
+"Labette County",
+"KS",
+45,
+null
+],
+[
+"20101",
+"Lane County",
+"KS",
+45,
+null
+],
+[
+"20103",
+"Leavenworth County",
+"KS",
+29,
+"KS:Kansas City / Overland Park"
+],
+[
+"20105",
+"Lincoln County",
+"KS",
+45,
+null
+],
+[
+"20107",
+"Linn County",
+"KS",
+29,
+null
+],
+[
+"20109",
+"Logan County",
+"KS",
+45,
+null
+],
+[
+"20111",
+"Lyon County",
+"KS",
+45,
+null
+],
+[
+"20113",
+"McPherson County",
+"KS",
+45,
+null
+],
+[
+"20115",
+"Marion County",
+"KS",
+45,
+null
+],
+[
+"20117",
+"Marshall County",
+"KS",
+45,
+null
+],
+[
+"20119",
+"Meade County",
+"KS",
+45,
+null
+],
+[
+"20121",
+"Miami County",
+"KS",
+29,
+null
+],
+[
+"20123",
+"Mitchell County",
+"KS",
+45,
+null
+],
+[
+"20125",
+"Montgomery County",
+"KS",
+45,
+null
+],
+[
+"20127",
+"Morris County",
+"KS",
+45,
+null
+],
+[
+"20129",
+"Morton County",
+"KS",
+45,
+null
+],
+[
+"20131",
+"Nemaha County",
+"KS",
+45,
+null
+],
+[
+"20133",
+"Neosho County",
+"KS",
+45,
+null
+],
+[
+"20135",
+"Ness County",
+"KS",
+45,
+null
+],
+[
+"20137",
+"Norton County",
+"KS",
+45,
+null
+],
+[
+"20139",
+"Osage County",
+"KS",
+29,
+null
+],
+[
+"20141",
+"Osborne County",
+"KS",
+45,
+null
+],
+[
+"20143",
+"Ottawa County",
+"KS",
+45,
+null
+],
+[
+"20145",
+"Pawnee County",
+"KS",
+45,
+null
+],
+[
+"20147",
+"Phillips County",
+"KS",
+45,
+null
+],
+[
+"20149",
+"Pottawatomie County",
+"KS",
+45,
+null
+],
+[
+"20151",
+"Pratt County",
+"KS",
+45,
+null
+],
+[
+"20153",
+"Rawlins County",
+"KS",
+45,
+null
+],
+[
+"20155",
+"Reno County",
+"KS",
+45,
+null
+],
+[
+"20157",
+"Republic County",
+"KS",
+45,
+null
+],
+[
+"20159",
+"Rice County",
+"KS",
+45,
+null
+],
+[
+"20161",
+"Riley County",
+"KS",
+45,
+null
+],
+[
+"20163",
+"Rooks County",
+"KS",
+45,
+null
+],
+[
+"20165",
+"Rush County",
+"KS",
+45,
+null
+],
+[
+"20167",
+"Russell County",
+"KS",
+45,
+null
+],
+[
+"20169",
+"Saline County",
+"KS",
+45,
+null
+],
+[
+"20171",
+"Scott County",
+"KS",
+45,
+null
+],
+[
+"20173",
+"Sedgwick County",
+"KS",
+45,
+null
+],
+[
+"20175",
+"Seward County",
+"KS",
+45,
+null
+],
+[
+"20177",
+"Shawnee County",
+"KS",
+29,
+null
+],
+[
+"20179",
+"Sheridan County",
+"KS",
+45,
+null
+],
+[
+"20181",
+"Sherman County",
+"KS",
+45,
+null
+],
+[
+"20183",
+"Smith County",
+"KS",
+45,
+null
+],
+[
+"20185",
+"Stafford County",
+"KS",
+45,
+null
+],
+[
+"20187",
+"Stanton County",
+"KS",
+45,
+null
+],
+[
+"20189",
+"Stevens County",
+"KS",
+45,
+null
+],
+[
+"20191",
+"Sumner County",
+"KS",
+45,
+null
+],
+[
+"20193",
+"Thomas County",
+"KS",
+45,
+null
+],
+[
+"20195",
+"Trego County",
+"KS",
+45,
+null
+],
+[
+"20197",
+"Wabaunsee County",
+"KS",
+29,
+null
+],
+[
+"20199",
+"Wallace County",
+"KS",
+45,
+null
+],
+[
+"20201",
+"Washington County",
+"KS",
+45,
+null
+],
+[
+"20203",
+"Wichita County",
+"KS",
+45,
+null
+],
+[
+"20205",
+"Wilson County",
+"KS",
+45,
+null
+],
+[
+"20207",
+"Woodson County",
+"KS",
+45,
+null
+],
+[
+"20209",
+"Wyandotte County",
+"KS",
+29,
+"KS:Kansas City / Overland Park"
+],
+[
+"21001",
+"Adair County",
+"KY",
+45,
+null
+],
+[
+"21003",
+"Allen County",
+"KY",
+45,
+null
+],
+[
+"21005",
+"Anderson County",
+"KY",
+45,
+null
+],
+[
+"21007",
+"Ballard County",
+"KY",
+45,
+null
+],
+[
+"21009",
+"Barren County",
+"KY",
+45,
+null
+],
+[
+"21011",
+"Bath County",
+"KY",
+45,
+null
+],
+[
+"21013",
+"Bell County",
+"KY",
+45,
+null
+],
+[
+"21015",
+"Boone County",
+"KY",
+11,
+"KY:Boone"
+],
+[
+"21017",
+"Bourbon County",
+"KY",
+45,
+null
+],
+[
+"21019",
+"Boyd County",
+"KY",
+45,
+null
+],
+[
+"21021",
+"Boyle County",
+"KY",
+45,
+null
+],
+[
+"21023",
+"Bracken County",
+"KY",
+11,
+null
+],
+[
+"21025",
+"Breathitt County",
+"KY",
+45,
+null
+],
+[
+"21027",
+"Breckinridge County",
+"KY",
+45,
+null
+],
+[
+"21029",
+"Bullitt County",
+"KY",
+45,
+null
+],
+[
+"21031",
+"Butler County",
+"KY",
+45,
+null
+],
+[
+"21033",
+"Caldwell County",
+"KY",
+45,
+null
+],
+[
+"21035",
+"Calloway County",
+"KY",
+45,
+null
+],
+[
+"21037",
+"Campbell County",
+"KY",
+11,
+null
+],
+[
+"21039",
+"Carlisle County",
+"KY",
+45,
+null
+],
+[
+"21041",
+"Carroll County",
+"KY",
+11,
+null
+],
+[
+"21043",
+"Carter County",
+"KY",
+45,
+null
+],
+[
+"21045",
+"Casey County",
+"KY",
+45,
+null
+],
+[
+"21047",
+"Christian County",
+"KY",
+45,
+null
+],
+[
+"21049",
+"Clark County",
+"KY",
+45,
+null
+],
+[
+"21051",
+"Clay County",
+"KY",
+45,
+null
+],
+[
+"21053",
+"Clinton County",
+"KY",
+45,
+null
+],
+[
+"21055",
+"Crittenden County",
+"KY",
+45,
+null
+],
+[
+"21057",
+"Cumberland County",
+"KY",
+45,
+null
+],
+[
+"21059",
+"Daviess County",
+"KY",
+45,
+null
+],
+[
+"21061",
+"Edmonson County",
+"KY",
+45,
+null
+],
+[
+"21063",
+"Elliott County",
+"KY",
+45,
+null
+],
+[
+"21065",
+"Estill County",
+"KY",
+45,
+null
+],
+[
+"21067",
+"Fayette County",
+"KY",
+45,
+"KY:Lexington"
+],
+[
+"21069",
+"Fleming County",
+"KY",
+11,
+null
+],
+[
+"21071",
+"Floyd County",
+"KY",
+45,
+null
+],
+[
+"21073",
+"Franklin County",
+"KY",
+45,
+null
+],
+[
+"21075",
+"Fulton County",
+"KY",
+45,
+null
+],
+[
+"21077",
+"Gallatin County",
+"KY",
+11,
+null
+],
+[
+"21079",
+"Garrard County",
+"KY",
+45,
+null
+],
+[
+"21081",
+"Grant County",
+"KY",
+11,
+null
+],
+[
+"21083",
+"Graves County",
+"KY",
+45,
+null
+],
+[
+"21085",
+"Grayson County",
+"KY",
+45,
+null
+],
+[
+"21087",
+"Green County",
+"KY",
+45,
+null
+],
+[
+"21089",
+"Greenup County",
+"KY",
+45,
+null
+],
+[
+"21091",
+"Hancock County",
+"KY",
+45,
+null
+],
+[
+"21093",
+"Hardin County",
+"KY",
+45,
+null
+],
+[
+"21095",
+"Harlan County",
+"KY",
+45,
+null
+],
+[
+"21097",
+"Harrison County",
+"KY",
+45,
+null
+],
+[
+"21099",
+"Hart County",
+"KY",
+45,
+null
+],
+[
+"21101",
+"Henderson County",
+"KY",
+45,
+null
+],
+[
+"21103",
+"Henry County",
+"KY",
+45,
+null
+],
+[
+"21105",
+"Hickman County",
+"KY",
+45,
+null
+],
+[
+"21107",
+"Hopkins County",
+"KY",
+45,
+null
+],
+[
+"21109",
+"Jackson County",
+"KY",
+45,
+null
+],
+[
+"21111",
+"Jefferson County",
+"KY",
+45,
+"KY:Louisville"
+],
+[
+"21113",
+"Jessamine County",
+"KY",
+45,
+null
+],
+[
+"21115",
+"Johnson County",
+"KY",
+45,
+null
+],
+[
+"21117",
+"Kenton County",
+"KY",
+11,
+"KY:Kenton"
+],
+[
+"21119",
+"Knott County",
+"KY",
+45,
+null
+],
+[
+"21121",
+"Knox County",
+"KY",
+45,
+null
+],
+[
+"21123",
+"Larue County",
+"KY",
+45,
+null
+],
+[
+"21125",
+"Laurel County",
+"KY",
+45,
+null
+],
+[
+"21127",
+"Lawrence County",
+"KY",
+45,
+null
+],
+[
+"21129",
+"Lee County",
+"KY",
+45,
+null
+],
+[
+"21131",
+"Leslie County",
+"KY",
+45,
+null
+],
+[
+"21133",
+"Letcher County",
+"KY",
+45,
+null
+],
+[
+"21135",
+"Lewis County",
+"KY",
+11,
+null
+],
+[
+"21137",
+"Lincoln County",
+"KY",
+45,
+null
+],
+[
+"21139",
+"Livingston County",
+"KY",
+45,
+null
+],
+[
+"21141",
+"Logan County",
+"KY",
+45,
+null
+],
+[
+"21143",
+"Lyon County",
+"KY",
+45,
+null
+],
+[
+"21145",
+"McCracken County",
+"KY",
+45,
+null
+],
+[
+"21147",
+"McCreary County",
+"KY",
+45,
+null
+],
+[
+"21149",
+"McLean County",
+"KY",
+45,
+null
+],
+[
+"21151",
+"Madison County",
+"KY",
+45,
+null
+],
+[
+"21153",
+"Magoffin County",
+"KY",
+45,
+null
+],
+[
+"21155",
+"Marion County",
+"KY",
+45,
+null
+],
+[
+"21157",
+"Marshall County",
+"KY",
+45,
+null
+],
+[
+"21159",
+"Martin County",
+"KY",
+45,
+null
+],
+[
+"21161",
+"Mason County",
+"KY",
+11,
+null
+],
+[
+"21163",
+"Meade County",
+"KY",
+45,
+null
+],
+[
+"21165",
+"Menifee County",
+"KY",
+45,
+null
+],
+[
+"21167",
+"Mercer County",
+"KY",
+45,
+null
+],
+[
+"21169",
+"Metcalfe County",
+"KY",
+45,
+null
+],
+[
+"21171",
+"Monroe County",
+"KY",
+45,
+null
+],
+[
+"21173",
+"Montgomery County",
+"KY",
+45,
+null
+],
+[
+"21175",
+"Morgan County",
+"KY",
+45,
+null
+],
+[
+"21177",
+"Muhlenberg County",
+"KY",
+45,
+null
+],
+[
+"21179",
+"Nelson County",
+"KY",
+45,
+null
+],
+[
+"21181",
+"Nicholas County",
+"KY",
+45,
+null
+],
+[
+"21183",
+"Ohio County",
+"KY",
+45,
+null
+],
+[
+"21185",
+"Oldham County",
+"KY",
+45,
+null
+],
+[
+"21187",
+"Owen County",
+"KY",
+11,
+null
+],
+[
+"21189",
+"Owsley County",
+"KY",
+45,
+null
+],
+[
+"21191",
+"Pendleton County",
+"KY",
+11,
+null
+],
+[
+"21193",
+"Perry County",
+"KY",
+45,
+null
+],
+[
+"21195",
+"Pike County",
+"KY",
+45,
+null
+],
+[
+"21197",
+"Powell County",
+"KY",
+45,
+null
+],
+[
+"21199",
+"Pulaski County",
+"KY",
+45,
+null
+],
+[
+"21201",
+"Robertson County",
+"KY",
+11,
+null
+],
+[
+"21203",
+"Rockcastle County",
+"KY",
+45,
+null
+],
+[
+"21205",
+"Rowan County",
+"KY",
+45,
+null
+],
+[
+"21207",
+"Russell County",
+"KY",
+45,
+null
+],
+[
+"21209",
+"Scott County",
+"KY",
+45,
+null
+],
+[
+"21211",
+"Shelby County",
+"KY",
+45,
+null
+],
+[
+"21213",
+"Simpson County",
+"KY",
+45,
+null
+],
+[
+"21215",
+"Spencer County",
+"KY",
+45,
+null
+],
+[
+"21217",
+"Taylor County",
+"KY",
+45,
+null
+],
+[
+"21219",
+"Todd County",
+"KY",
+45,
+null
+],
+[
+"21221",
+"Trigg County",
+"KY",
+45,
+null
+],
+[
+"21223",
+"Trimble County",
+"KY",
+45,
+null
+],
+[
+"21225",
+"Union County",
+"KY",
+45,
+null
+],
+[
+"21227",
+"Warren County",
+"KY",
+45,
+null
+],
+[
+"21229",
+"Washington County",
+"KY",
+45,
+null
+],
+[
+"21231",
+"Wayne County",
+"KY",
+45,
+null
+],
+[
+"21233",
+"Webster County",
+"KY",
+45,
+null
+],
+[
+"21235",
+"Whitley County",
+"KY",
+45,
+null
+],
+[
+"21237",
+"Wolfe County",
+"KY",
+45,
+null
+],
+[
+"21239",
+"Woodford County",
+"KY",
+45,
+null
+],
+[
+"22001",
+"Acadia Parish",
+"LA",
+45,
+null
+],
+[
+"22003",
+"Allen Parish",
+"LA",
+45,
+"LA:Alexandria / Leesville / Natchitoches"
+],
+[
+"22005",
+"Ascension Parish",
+"LA",
+45,
+null
+],
+[
+"22007",
+"Assumption Parish",
+"LA",
+45,
+null
+],
+[
+"22009",
+"Avoyelles Parish",
+"LA",
+45,
+null
+],
+[
+"22011",
+"Beauregard Parish",
+"LA",
+45,
+null
+],
+[
+"22013",
+"Bienville Parish",
+"LA",
+45,
+null
+],
+[
+"22015",
+"Bossier Parish",
+"LA",
+45,
+null
+],
+[
+"22017",
+"Caddo Parish",
+"LA",
+45,
+null
+],
+[
+"22019",
+"Calcasieu Parish",
+"LA",
+45,
+null
+],
+[
+"22021",
+"Caldwell Parish",
+"LA",
+45,
+null
+],
+[
+"22023",
+"Cameron Parish",
+"LA",
+45,
+null
+],
+[
+"22025",
+"Catahoula Parish",
+"LA",
+45,
+null
+],
+[
+"22027",
+"Claiborne Parish",
+"LA",
+45,
+null
+],
+[
+"22029",
+"Concordia Parish",
+"LA",
+45,
+null
+],
+[
+"22031",
+"De Soto Parish",
+"LA",
+45,
+null
+],
+[
+"22033",
+"East Baton Rouge Parish",
+"LA",
+45,
+null
+],
+[
+"22035",
+"East Carroll Parish",
+"LA",
+45,
+null
+],
+[
+"22037",
+"East Feliciana Parish",
+"LA",
+45,
+null
+],
+[
+"22039",
+"Evangeline Parish",
+"LA",
+45,
+null
+],
+[
+"22041",
+"Franklin Parish",
+"LA",
+45,
+null
+],
+[
+"22043",
+"Grant Parish",
+"LA",
+45,
+null
+],
+[
+"22045",
+"Iberia Parish",
+"LA",
+45,
+null
+],
+[
+"22047",
+"Iberville Parish",
+"LA",
+45,
+null
+],
+[
+"22049",
+"Jackson Parish",
+"LA",
+45,
+null
+],
+[
+"22051",
+"Jefferson Parish",
+"LA",
+45,
+"LA:New Orleans"
+],
+[
+"22053",
+"Jefferson Davis Parish",
+"LA",
+45,
+"LA:Alexandria / Leesville / Natchitoches"
+],
+[
+"22055",
+"Lafayette Parish",
+"LA",
+45,
+null
+],
+[
+"22057",
+"Lafourche Parish",
+"LA",
+45,
+null
+],
+[
+"22059",
+"LaSalle Parish",
+"LA",
+45,
+null
+],
+[
+"22061",
+"Lincoln Parish",
+"LA",
+45,
+null
+],
+[
+"22063",
+"Livingston Parish",
+"LA",
+45,
+null
+],
+[
+"22065",
+"Madison Parish",
+"LA",
+45,
+null
+],
+[
+"22067",
+"Morehouse Parish",
+"LA",
+45,
+null
+],
+[
+"22069",
+"Natchitoches Parish",
+"LA",
+45,
+"LA:Alexandria / Leesville / Natchitoches"
+],
+[
+"22071",
+"Orleans Parish",
+"LA",
+45,
+"LA:New Orleans"
+],
+[
+"22073",
+"Ouachita Parish",
+"LA",
+45,
+null
+],
+[
+"22075",
+"Plaquemines Parish",
+"LA",
+45,
+null
+],
+[
+"22077",
+"Pointe Coupee Parish",
+"LA",
+45,
+null
+],
+[
+"22079",
+"Rapides Parish",
+"LA",
+45,
+"LA:Alexandria / Leesville / Natchitoches"
+],
+[
+"22081",
+"Red River Parish",
+"LA",
+45,
+null
+],
+[
+"22083",
+"Richland Parish",
+"LA",
+45,
+null
+],
+[
+"22085",
+"Sabine Parish",
+"LA",
+45,
+null
+],
+[
+"22087",
+"St. Bernard Parish",
+"LA",
+45,
+null
+],
+[
+"22089",
+"St. Charles Parish",
+"LA",
+45,
+null
+],
+[
+"22091",
+"St. Helena Parish",
+"LA",
+45,
+null
+],
+[
+"22093",
+"St. James Parish",
+"LA",
+45,
+null
+],
+[
+"22095",
+"St. John the Baptist Parish",
+"LA",
+45,
+null
+],
+[
+"22097",
+"St. Landry Parish",
+"LA",
+45,
+null
+],
+[
+"22099",
+"St. Martin Parish",
+"LA",
+45,
+null
+],
+[
+"22101",
+"St. Mary Parish",
+"LA",
+45,
+null
+],
+[
+"22103",
+"St. Tammany Parish",
+"LA",
+45,
+null
+],
+[
+"22105",
+"Tangipahoa Parish",
+"LA",
+45,
+null
+],
+[
+"22107",
+"Tensas Parish",
+"LA",
+45,
+null
+],
+[
+"22109",
+"Terrebonne Parish",
+"LA",
+45,
+null
+],
+[
+"22111",
+"Union Parish",
+"LA",
+45,
+null
+],
+[
+"22113",
+"Vermilion Parish",
+"LA",
+45,
+null
+],
+[
+"22115",
+"Vernon Parish",
+"LA",
+45,
+"LA:Alexandria / Leesville / Natchitoches"
+],
+[
+"22117",
+"Washington Parish",
+"LA",
+45,
+null
+],
+[
+"22119",
+"Webster Parish",
+"LA",
+45,
+null
+],
+[
+"22121",
+"West Baton Rouge Parish",
+"LA",
+45,
+null
+],
+[
+"22123",
+"West Carroll Parish",
+"LA",
+45,
+null
+],
+[
+"22125",
+"West Feliciana Parish",
+"LA",
+45,
+null
+],
+[
+"22127",
+"Winn Parish",
+"LA",
+45,
+null
+],
+[
+"23001",
+"Androscoggin County",
+"ME",
+6,
+null
+],
+[
+"23003",
+"Aroostook County",
+"ME",
+45,
+null
+],
+[
+"23005",
+"Cumberland County",
+"ME",
+6,
+"ME:Portland"
+],
+[
+"23007",
+"Franklin County",
+"ME",
+45,
+null
+],
+[
+"23009",
+"Hancock County",
+"ME",
+45,
+"ME:Bar Harbor / Rockport"
+],
+[
+"23011",
+"Kennebec County",
+"ME",
+45,
+null
+],
+[
+"23013",
+"Knox County",
+"ME",
+45,
+"ME:Bar Harbor / Rockport"
+],
+[
+"23015",
+"Lincoln County",
+"ME",
+45,
+null
+],
+[
+"23017",
+"Oxford County",
+"ME",
+45,
+null
+],
+[
+"23019",
+"Penobscot County",
+"ME",
+45,
+null
+],
+[
+"23021",
+"Piscataquis County",
+"ME",
+45,
+null
+],
+[
+"23023",
+"Sagadahoc County",
+"ME",
+6,
+"ME:Portland"
+],
+[
+"23025",
+"Somerset County",
+"ME",
+45,
+null
+],
+[
+"23027",
+"Waldo County",
+"ME",
+45,
+null
+],
+[
+"23029",
+"Washington County",
+"ME",
+45,
+null
+],
+[
+"23031",
+"York County",
+"ME",
+6,
+"ME:Kennebunk / Kittery / Sanford"
+],
+[
+"24001",
+"Allegany County",
+"MD",
+57,
+null
+],
+[
+"24003",
+"Anne Arundel County",
+"MD",
+57,
+"MD:Annapolis"
+],
+[
+"24005",
+"Baltimore County",
+"MD",
+57,
+null
+],
+[
+"24009",
+"Calvert County",
+"MD",
+57,
+null
+],
+[
+"24011",
+"Caroline County",
+"MD",
+57,
+null
+],
+[
+"24013",
+"Carroll County",
+"MD",
+57,
+null
+],
+[
+"24015",
+"Cecil County",
+"MD",
+39,
+null
+],
+[
+"24017",
+"Charles County",
+"MD",
+57,
+null
+],
+[
+"24019",
+"Dorchester County",
+"MD",
+57,
+"MD:Cambridge / St. Michaels"
+],
+[
+"24021",
+"Frederick County",
+"MD",
+57,
+null
+],
+[
+"24023",
+"Garrett County",
+"MD",
+45,
+null
+],
+[
+"24025",
+"Harford County",
+"MD",
+57,
+"MD:Aberdeen / Bel Air / Belcamp"
+],
+[
+"24027",
+"Howard County",
+"MD",
+57,
+"MD:Columbia"
+],
+[
+"24029",
+"Kent County",
+"MD",
+57,
+null
+],
+[
+"24031",
+"Montgomery County",
+"MD",
+57,
+"DC:District of Columbia"
+],
+[
+"24033",
+"Prince George's County",
+"MD",
+57,
+"DC:District of Columbia"
+],
+[
+"24035",
+"Queen Anne's County",
+"MD",
+57,
+"MD:Centreville"
+],
+[
+"24037",
+"St. Mary's County",
+"MD",
+57,
+null
+],
+[
+"24039",
+"Somerset County",
+"MD",
+39,
+null
+],
+[
+"24041",
+"Talbot County",
+"MD",
+57,
+"MD:Cambridge / St. Michaels"
+],
+[
+"24043",
+"Washington County",
+"MD",
+57,
+null
+],
+[
+"24045",
+"Wicomico County",
+"MD",
+39,
+null
+],
+[
+"24047",
+"Worcester County",
+"MD",
+39,
+"MD:Ocean City"
+],
+[
+"24510",
+"Baltimore city",
+"MD",
+57,
+"MD:Baltimore City"
+],
+[
+"25001",
+"Barnstable County",
+"MA",
+6,
+"MA:Hyannis"
+],
+[
+"25003",
+"Berkshire County",
+"MA",
+1,
+"MA:Pittsfield"
+],
+[
+"25005",
+"Bristol County",
+"MA",
+6,
+"MA:Plymouth / Taunton / New Bedford"
+],
+[
+"25007",
+"Dukes County",
+"MA",
+6,
+"MA:Martha's Vineyard"
+],
+[
+"25009",
+"Essex County",
+"MA",
+6,
+"MA:Andover"
+],
+[
+"25011",
+"Franklin County",
+"MA",
+24,
+null
+],
+[
+"25013",
+"Hampden County",
+"MA",
+24,
+"MA:Springfield"
+],
+[
+"25015",
+"Hampshire County",
+"MA",
+24,
+"MA:Northampton"
+],
+[
+"25017",
+"Middlesex County",
+"MA",
+6,
+"MA:Burlington / Woburn"
+],
+[
+"25019",
+"Nantucket County",
+"MA",
+6,
+"MA:Nantucket"
+],
+[
+"25021",
+"Norfolk County",
+"MA",
+6,
+"MA:Quincy"
+],
+[
+"25023",
+"Plymouth County",
+"MA",
+6,
+"MA:Plymouth / Taunton / New Bedford"
+],
+[
+"25025",
+"Suffolk County",
+"MA",
+6,
+"MA:Boston / Cambridge"
+],
+[
+"25027",
+"Worcester County",
+"MA",
+6,
+"MA:Worcester"
+],
+[
+"26001",
+"Alcona County",
+"MI",
+45,
+null
+],
+[
+"26003",
+"Alger County",
+"MI",
+45,
+null
+],
+[
+"26005",
+"Allegan County",
+"MI",
+45,
+null
+],
+[
+"26007",
+"Alpena County",
+"MI",
+45,
+null
+],
+[
+"26009",
+"Antrim County",
+"MI",
+45,
+null
+],
+[
+"26011",
+"Arenac County",
+"MI",
+45,
+null
+],
+[
+"26013",
+"Baraga County",
+"MI",
+45,
+null
+],
+[
+"26015",
+"Barry County",
+"MI",
+45,
+null
+],
+[
+"26017",
+"Bay County",
+"MI",
+45,
+null
+],
+[
+"26019",
+"Benzie County",
+"MI",
+45,
+null
+],
+[
+"26021",
+"Berrien County",
+"MI",
+45,
+null
+],
+[
+"26023",
+"Branch County",
+"MI",
+45,
+null
+],
+[
+"26025",
+"Calhoun County",
+"MI",
+45,
+null
+],
+[
+"26027",
+"Cass County",
+"MI",
+45,
+null
+],
+[
+"26029",
+"Charlevoix County",
+"MI",
+45,
+null
+],
+[
+"26031",
+"Cheboygan County",
+"MI",
+45,
+null
+],
+[
+"26033",
+"Chippewa County",
+"MI",
+45,
+null
+],
+[
+"26035",
+"Clare County",
+"MI",
+45,
+null
+],
+[
+"26037",
+"Clinton County",
+"MI",
+21,
+null
+],
+[
+"26039",
+"Crawford County",
+"MI",
+45,
+null
+],
+[
+"26041",
+"Delta County",
+"MI",
+45,
+null
+],
+[
+"26043",
+"Dickinson County",
+"MI",
+45,
+null
+],
+[
+"26045",
+"Eaton County",
+"MI",
+21,
+null
+],
+[
+"26047",
+"Emmet County",
+"MI",
+45,
+"MI:Petoskey"
+],
+[
+"26049",
+"Genesee County",
+"MI",
+21,
+null
+],
+[
+"26051",
+"Gladwin County",
+"MI",
+45,
+null
+],
+[
+"26053",
+"Gogebic County",
+"MI",
+45,
+null
+],
+[
+"26055",
+"Grand Traverse County",
+"MI",
+45,
+"MI:Traverse City"
+],
+[
+"26057",
+"Gratiot County",
+"MI",
+45,
+null
+],
+[
+"26059",
+"Hillsdale County",
+"MI",
+45,
+null
+],
+[
+"26061",
+"Houghton County",
+"MI",
+45,
+null
+],
+[
+"26063",
+"Huron County",
+"MI",
+21,
+null
+],
+[
+"26065",
+"Ingham County",
+"MI",
+21,
+null
+],
+[
+"26067",
+"Ionia County",
+"MI",
+45,
+null
+],
+[
+"26069",
+"Iosco County",
+"MI",
+45,
+null
+],
+[
+"26071",
+"Iron County",
+"MI",
+45,
+null
+],
+[
+"26073",
+"Isabella County",
+"MI",
+45,
+null
+],
+[
+"26075",
+"Jackson County",
+"MI",
+21,
+null
+],
+[
+"26077",
+"Kalamazoo County",
+"MI",
+45,
+null
+],
+[
+"26079",
+"Kalkaska County",
+"MI",
+45,
+null
+],
+[
+"26081",
+"Kent County",
+"MI",
+45,
+"MI:Grand Rapids"
+],
+[
+"26083",
+"Keweenaw County",
+"MI",
+45,
+null
+],
+[
+"26085",
+"Lake County",
+"MI",
+45,
+null
+],
+[
+"26087",
+"Lapeer County",
+"MI",
+21,
+null
+],
+[
+"26089",
+"Leelanau County",
+"MI",
+45,
+null
+],
+[
+"26091",
+"Lenawee County",
+"MI",
+21,
+null
+],
+[
+"26093",
+"Livingston County",
+"MI",
+21,
+null
+],
+[
+"26095",
+"Luce County",
+"MI",
+45,
+null
+],
+[
+"26097",
+"Mackinac County",
+"MI",
+45,
+"MI:Mackinac Island"
+],
+[
+"26099",
+"Macomb County",
+"MI",
+21,
+null
+],
+[
+"26101",
+"Manistee County",
+"MI",
+45,
+null
+],
+[
+"26103",
+"Marquette County",
+"MI",
+45,
+null
+],
+[
+"26105",
+"Mason County",
+"MI",
+45,
+null
+],
+[
+"26107",
+"Mecosta County",
+"MI",
+45,
+null
+],
+[
+"26109",
+"Menominee County",
+"MI",
+45,
+null
+],
+[
+"26111",
+"Midland County",
+"MI",
+45,
+"MI:Midland"
+],
+[
+"26113",
+"Missaukee County",
+"MI",
+45,
+null
+],
+[
+"26115",
+"Monroe County",
+"MI",
+21,
+null
+],
+[
+"26117",
+"Montcalm County",
+"MI",
+45,
+null
+],
+[
+"26119",
+"Montmorency County",
+"MI",
+45,
+null
+],
+[
+"26121",
+"Muskegon County",
+"MI",
+45,
+"MI:Muskegon"
+],
+[
+"26123",
+"Newaygo County",
+"MI",
+45,
+null
+],
+[
+"26125",
+"Oakland County",
+"MI",
+21,
+"MI:Pontiac / Auburn Hills"
+],
+[
+"26127",
+"Oceana County",
+"MI",
+45,
+null
+],
+[
+"26129",
+"Ogemaw County",
+"MI",
+45,
+null
+],
+[
+"26131",
+"Ontonagon County",
+"MI",
+45,
+null
+],
+[
+"26133",
+"Osceola County",
+"MI",
+45,
+null
+],
+[
+"26135",
+"Oscoda County",
+"MI",
+45,
+null
+],
+[
+"26137",
+"Otsego County",
+"MI",
+45,
+null
+],
+[
+"26139",
+"Ottawa County",
+"MI",
+45,
+"MI:Holland"
+],
+[
+"26141",
+"Presque Isle County",
+"MI",
+45,
+null
+],
+[
+"26143",
+"Roscommon County",
+"MI",
+45,
+null
+],
+[
+"26145",
+"Saginaw County",
+"MI",
+45,
+null
+],
+[
+"26147",
+"St. Clair County",
+"MI",
+21,
+null
+],
+[
+"26149",
+"St. Joseph County",
+"MI",
+45,
+null
+],
+[
+"26151",
+"Sanilac County",
+"MI",
+21,
+null
+],
+[
+"26153",
+"Schoolcraft County",
+"MI",
+45,
+null
+],
+[
+"26155",
+"Shiawassee County",
+"MI",
+21,
+null
+],
+[
+"26157",
+"Tuscola County",
+"MI",
+21,
+null
+],
+[
+"26159",
+"Van Buren County",
+"MI",
+45,
+"MI:South Haven"
+],
+[
+"26161",
+"Washtenaw County",
+"MI",
+21,
+"MI:Ann Arbor"
+],
+[
+"26163",
+"Wayne County",
+"MI",
+21,
+"MI:Detroit"
+],
+[
+"26165",
+"Wexford County",
+"MI",
+45,
+null
+],
+[
+"27001",
+"Aitkin County",
+"MN",
+45,
+null
+],
+[
+"27003",
+"Anoka County",
+"MN",
+35,
+null
+],
+[
+"27005",
+"Becker County",
+"MN",
+45,
+null
+],
+[
+"27007",
+"Beltrami County",
+"MN",
+45,
+null
+],
+[
+"27009",
+"Benton County",
+"MN",
+35,
+null
+],
+[
+"27011",
+"Big Stone County",
+"MN",
+45,
+null
+],
+[
+"27013",
+"Blue Earth County",
+"MN",
+35,
+null
+],
+[
+"27015",
+"Brown County",
+"MN",
+35,
+null
+],
+[
+"27017",
+"Carlton County",
+"MN",
+45,
+null
+],
+[
+"27019",
+"Carver County",
+"MN",
+35,
+null
+],
+[
+"27021",
+"Cass County",
+"MN",
+45,
+null
+],
+[
+"27023",
+"Chippewa County",
+"MN",
+45,
+null
+],
+[
+"27025",
+"Chisago County",
+"MN",
+35,
+null
+],
+[
+"27027",
+"Clay County",
+"MN",
+45,
+null
+],
+[
+"27029",
+"Clearwater County",
+"MN",
+45,
+null
+],
+[
+"27031",
+"Cook County",
+"MN",
+45,
+null
+],
+[
+"27033",
+"Cottonwood County",
+"MN",
+45,
+null
+],
+[
+"27035",
+"Crow Wing County",
+"MN",
+45,
+null
+],
+[
+"27037",
+"Dakota County",
+"MN",
+35,
+null
+],
+[
+"27039",
+"Dodge County",
+"MN",
+35,
+null
+],
+[
+"27041",
+"Douglas County",
+"MN",
+45,
+null
+],
+[
+"27043",
+"Faribault County",
+"MN",
+45,
+null
+],
+[
+"27045",
+"Fillmore County",
+"MN",
+35,
+null
+],
+[
+"27047",
+"Freeborn County",
+"MN",
+45,
+null
+],
+[
+"27049",
+"Goodhue County",
+"MN",
+35,
+null
+],
+[
+"27051",
+"Grant County",
+"MN",
+45,
+null
+],
+[
+"27053",
+"Hennepin County",
+"MN",
+35,
+"MN:Minneapolis / St. Paul"
+],
+[
+"27055",
+"Houston County",
+"MN",
+45,
+null
+],
+[
+"27057",
+"Hubbard County",
+"MN",
+45,
+null
+],
+[
+"27059",
+"Isanti County",
+"MN",
+35,
+null
+],
+[
+"27061",
+"Itasca County",
+"MN",
+45,
+null
+],
+[
+"27063",
+"Jackson County",
+"MN",
+45,
+null
+],
+[
+"27065",
+"Kanabec County",
+"MN",
+35,
+null
+],
+[
+"27067",
+"Kandiyohi County",
+"MN",
+45,
+null
+],
+[
+"27069",
+"Kittson County",
+"MN",
+45,
+null
+],
+[
+"27071",
+"Koochiching County",
+"MN",
+45,
+null
+],
+[
+"27073",
+"Lac qui Parle County",
+"MN",
+45,
+null
+],
+[
+"27075",
+"Lake County",
+"MN",
+45,
+null
+],
+[
+"27077",
+"Lake of the Woods County",
+"MN",
+45,
+null
+],
+[
+"27079",
+"Le Sueur County",
+"MN",
+35,
+null
+],
+[
+"27081",
+"Lincoln County",
+"MN",
+45,
+null
+],
+[
+"27083",
+"Lyon County",
+"MN",
+45,
+null
+],
+[
+"27085",
+"McLeod County",
+"MN",
+35,
+null
+],
+[
+"27087",
+"Mahnomen County",
+"MN",
+45,
+null
+],
+[
+"27089",
+"Marshall County",
+"MN",
+45,
+null
+],
+[
+"27091",
+"Martin County",
+"MN",
+45,
+null
+],
+[
+"27093",
+"Meeker County",
+"MN",
+35,
+null
+],
+[
+"27095",
+"Mille Lacs County",
+"MN",
+35,
+null
+],
+[
+"27097",
+"Morrison County",
+"MN",
+35,
+null
+],
+[
+"27099",
+"Mower County",
+"MN",
+35,
+null
+],
+[
+"27101",
+"Murray County",
+"MN",
+45,
+null
+],
+[
+"27103",
+"Nicollet County",
+"MN",
+35,
+null
+],
+[
+"27105",
+"Nobles County",
+"MN",
+45,
+null
+],
+[
+"27107",
+"Norman County",
+"MN",
+45,
+null
+],
+[
+"27109",
+"Olmsted County",
+"MN",
+35,
+"MN:Rochester"
+],
+[
+"27111",
+"Otter Tail County",
+"MN",
+45,
+null
+],
+[
+"27113",
+"Pennington County",
+"MN",
+45,
+null
+],
+[
+"27115",
+"Pine County",
+"MN",
+35,
+null
+],
+[
+"27117",
+"Pipestone County",
+"MN",
+45,
+null
+],
+[
+"27119",
+"Polk County",
+"MN",
+45,
+null
+],
+[
+"27121",
+"Pope County",
+"MN",
+45,
+null
+],
+[
+"27123",
+"Ramsey County",
+"MN",
+35,
+"MN:Minneapolis / St. Paul"
+],
+[
+"27125",
+"Red Lake County",
+"MN",
+45,
+null
+],
+[
+"27127",
+"Redwood County",
+"MN",
+45,
+null
+],
+[
+"27129",
+"Renville County",
+"MN",
+45,
+null
+],
+[
+"27131",
+"Rice County",
+"MN",
+35,
+null
+],
+[
+"27133",
+"Rock County",
+"MN",
+45,
+null
+],
+[
+"27135",
+"Roseau County",
+"MN",
+45,
+null
+],
+[
+"27137",
+"St. Louis County",
+"MN",
+45,
+"MN:Duluth"
+],
+[
+"27139",
+"Scott County",
+"MN",
+35,
+null
+],
+[
+"27141",
+"Sherburne County",
+"MN",
+35,
+null
+],
+[
+"27143",
+"Sibley County",
+"MN",
+35,
+null
+],
+[
+"27145",
+"Stearns County",
+"MN",
+35,
+null
+],
+[
+"27147",
+"Steele County",
+"MN",
+35,
+null
+],
+[
+"27149",
+"Stevens County",
+"MN",
+45,
+null
+],
+[
+"27151",
+"Swift County",
+"MN",
+45,
+null
+],
+[
+"27153",
+"Todd County",
+"MN",
+45,
+null
+],
+[
+"27155",
+"Traverse County",
+"MN",
+45,
+null
+],
+[
+"27157",
+"Wabasha County",
+"MN",
+35,
+null
+],
+[
+"27159",
+"Wadena County",
+"MN",
+45,
+null
+],
+[
+"27161",
+"Waseca County",
+"MN",
+35,
+null
+],
+[
+"27163",
+"Washington County",
+"MN",
+35,
+null
+],
+[
+"27165",
+"Watonwan County",
+"MN",
+45,
+null
+],
+[
+"27167",
+"Wilkin County",
+"MN",
+45,
+null
+],
+[
+"27169",
+"Winona County",
+"MN",
+45,
+null
+],
+[
+"27171",
+"Wright County",
+"MN",
+35,
+null
+],
+[
+"27173",
+"Yellow Medicine County",
+"MN",
+45,
+null
+],
+[
+"28001",
+"Adams County",
+"MS",
+45,
+null
+],
+[
+"28003",
+"Alcorn County",
+"MS",
+45,
+null
+],
+[
+"28005",
+"Amite County",
+"MS",
+45,
+null
+],
+[
+"28007",
+"Attala County",
+"MS",
+45,
+null
+],
+[
+"28009",
+"Benton County",
+"MS",
+45,
+null
+],
+[
+"28011",
+"Bolivar County",
+"MS",
+45,
+null
+],
+[
+"28013",
+"Calhoun County",
+"MS",
+45,
+null
+],
+[
+"28015",
+"Carroll County",
+"MS",
+45,
+null
+],
+[
+"28017",
+"Chickasaw County",
+"MS",
+45,
+null
+],
+[
+"28019",
+"Choctaw County",
+"MS",
+45,
+null
+],
+[
+"28021",
+"Claiborne County",
+"MS",
+45,
+null
+],
+[
+"28023",
+"Clarke County",
+"MS",
+45,
+null
+],
+[
+"28025",
+"Clay County",
+"MS",
+45,
+null
+],
+[
+"28027",
+"Coahoma County",
+"MS",
+45,
+null
+],
+[
+"28029",
+"Copiah County",
+"MS",
+45,
+null
+],
+[
+"28031",
+"Covington County",
+"MS",
+45,
+null
+],
+[
+"28033",
+"DeSoto County",
+"MS",
+45,
+"MS:Southaven"
+],
+[
+"28035",
+"Forrest County",
+"MS",
+45,
+null
+],
+[
+"28037",
+"Franklin County",
+"MS",
+45,
+null
+],
+[
+"28039",
+"George County",
+"MS",
+45,
+null
+],
+[
+"28041",
+"Greene County",
+"MS",
+45,
+null
+],
+[
+"28043",
+"Grenada County",
+"MS",
+45,
+null
+],
+[
+"28045",
+"Hancock County",
+"MS",
+45,
+null
+],
+[
+"28047",
+"Harrison County",
+"MS",
+45,
+null
+],
+[
+"28049",
+"Hinds County",
+"MS",
+45,
+null
+],
+[
+"28051",
+"Holmes County",
+"MS",
+45,
+null
+],
+[
+"28053",
+"Humphreys County",
+"MS",
+45,
+null
+],
+[
+"28055",
+"Issaquena County",
+"MS",
+45,
+null
+],
+[
+"28057",
+"Itawamba County",
+"MS",
+45,
+null
+],
+[
+"28059",
+"Jackson County",
+"MS",
+45,
+null
+],
+[
+"28061",
+"Jasper County",
+"MS",
+45,
+null
+],
+[
+"28063",
+"Jefferson County",
+"MS",
+45,
+null
+],
+[
+"28065",
+"Jefferson Davis County",
+"MS",
+45,
+null
+],
+[
+"28067",
+"Jones County",
+"MS",
+45,
+null
+],
+[
+"28069",
+"Kemper County",
+"MS",
+45,
+null
+],
+[
+"28071",
+"Lafayette County",
+"MS",
+45,
+"MS:Oxford"
+],
+[
+"28073",
+"Lamar County",
+"MS",
+45,
+null
+],
+[
+"28075",
+"Lauderdale County",
+"MS",
+45,
+null
+],
+[
+"28077",
+"Lawrence County",
+"MS",
+45,
+null
+],
+[
+"28079",
+"Leake County",
+"MS",
+45,
+null
+],
+[
+"28081",
+"Lee County",
+"MS",
+45,
+null
+],
+[
+"28083",
+"Leflore County",
+"MS",
+45,
+null
+],
+[
+"28085",
+"Lincoln County",
+"MS",
+45,
+null
+],
+[
+"28087",
+"Lowndes County",
+"MS",
+45,
+null
+],
+[
+"28089",
+"Madison County",
+"MS",
+45,
+null
+],
+[
+"28091",
+"Marion County",
+"MS",
+45,
+null
+],
+[
+"28093",
+"Marshall County",
+"MS",
+45,
+null
+],
+[
+"28095",
+"Monroe County",
+"MS",
+45,
+null
+],
+[
+"28097",
+"Montgomery County",
+"MS",
+45,
+null
+],
+[
+"28099",
+"Neshoba County",
+"MS",
+45,
+null
+],
+[
+"28101",
+"Newton County",
+"MS",
+45,
+null
+],
+[
+"28103",
+"Noxubee County",
+"MS",
+45,
+null
+],
+[
+"28105",
+"Oktibbeha County",
+"MS",
+45,
+"MS:Starkville"
+],
+[
+"28107",
+"Panola County",
+"MS",
+45,
+null
+],
+[
+"28109",
+"Pearl River County",
+"MS",
+45,
+null
+],
+[
+"28111",
+"Perry County",
+"MS",
+45,
+null
+],
+[
+"28113",
+"Pike County",
+"MS",
+45,
+null
+],
+[
+"28115",
+"Pontotoc County",
+"MS",
+45,
+null
+],
+[
+"28117",
+"Prentiss County",
+"MS",
+45,
+null
+],
+[
+"28119",
+"Quitman County",
+"MS",
+45,
+null
+],
+[
+"28121",
+"Rankin County",
+"MS",
+45,
+null
+],
+[
+"28123",
+"Scott County",
+"MS",
+45,
+null
+],
+[
+"28125",
+"Sharkey County",
+"MS",
+45,
+null
+],
+[
+"28127",
+"Simpson County",
+"MS",
+45,
+null
+],
+[
+"28129",
+"Smith County",
+"MS",
+45,
+null
+],
+[
+"28131",
+"Stone County",
+"MS",
+45,
+null
+],
+[
+"28133",
+"Sunflower County",
+"MS",
+45,
+null
+],
+[
+"28135",
+"Tallahatchie County",
+"MS",
+45,
+null
+],
+[
+"28137",
+"Tate County",
+"MS",
+45,
+null
+],
+[
+"28139",
+"Tippah County",
+"MS",
+45,
+null
+],
+[
+"28141",
+"Tishomingo County",
+"MS",
+45,
+null
+],
+[
+"28143",
+"Tunica County",
+"MS",
+45,
+null
+],
+[
+"28145",
+"Union County",
+"MS",
+45,
+null
+],
+[
+"28147",
+"Walthall County",
+"MS",
+45,
+null
+],
+[
+"28149",
+"Warren County",
+"MS",
+45,
+null
+],
+[
+"28151",
+"Washington County",
+"MS",
+45,
+null
+],
+[
+"28153",
+"Wayne County",
+"MS",
+45,
+null
+],
+[
+"28155",
+"Webster County",
+"MS",
+45,
+null
+],
+[
+"28157",
+"Wilkinson County",
+"MS",
+45,
+null
+],
+[
+"28159",
+"Winston County",
+"MS",
+45,
+null
+],
+[
+"28161",
+"Yalobusha County",
+"MS",
+45,
+null
+],
+[
+"28163",
+"Yazoo County",
+"MS",
+45,
+null
+],
+[
+"29001",
+"Adair County",
+"MO",
+45,
+null
+],
+[
+"29003",
+"Andrew County",
+"MO",
+29,
+null
+],
+[
+"29005",
+"Atchison County",
+"MO",
+45,
+null
+],
+[
+"29007",
+"Audrain County",
+"MO",
+45,
+null
+],
+[
+"29009",
+"Barry County",
+"MO",
+45,
+null
+],
+[
+"29011",
+"Barton County",
+"MO",
+45,
+null
+],
+[
+"29013",
+"Bates County",
+"MO",
+29,
+null
+],
+[
+"29015",
+"Benton County",
+"MO",
+45,
+null
+],
+[
+"29017",
+"Bollinger County",
+"MO",
+45,
+null
+],
+[
+"29019",
+"Boone County",
+"MO",
+45,
+null
+],
+[
+"29021",
+"Buchanan County",
+"MO",
+29,
+null
+],
+[
+"29023",
+"Butler County",
+"MO",
+45,
+null
+],
+[
+"29025",
+"Caldwell County",
+"MO",
+29,
+null
+],
+[
+"29027",
+"Callaway County",
+"MO",
+45,
+null
+],
+[
+"29029",
+"Camden County",
+"MO",
+45,
+null
+],
+[
+"29031",
+"Cape Girardeau County",
+"MO",
+45,
+null
+],
+[
+"29033",
+"Carroll County",
+"MO",
+29,
+null
+],
+[
+"29035",
+"Carter County",
+"MO",
+45,
+null
+],
+[
+"29037",
+"Cass County",
+"MO",
+29,
+"MO:Kansas City"
+],
+[
+"29039",
+"Cedar County",
+"MO",
+45,
+null
+],
+[
+"29041",
+"Chariton County",
+"MO",
+45,
+null
+],
+[
+"29043",
+"Christian County",
+"MO",
+45,
+null
+],
+[
+"29045",
+"Clark County",
+"MO",
+45,
+null
+],
+[
+"29047",
+"Clay County",
+"MO",
+29,
+"MO:Kansas City"
+],
+[
+"29049",
+"Clinton County",
+"MO",
+29,
+null
+],
+[
+"29051",
+"Cole County",
+"MO",
+45,
+null
+],
+[
+"29053",
+"Cooper County",
+"MO",
+45,
+null
+],
+[
+"29055",
+"Crawford County",
+"MO",
+54,
+null
+],
+[
+"29057",
+"Dade County",
+"MO",
+45,
+null
+],
+[
+"29059",
+"Dallas County",
+"MO",
+45,
+null
+],
+[
+"29061",
+"Daviess County",
+"MO",
+29,
+null
+],
+[
+"29063",
+"DeKalb County",
+"MO",
+29,
+null
+],
+[
+"29065",
+"Dent County",
+"MO",
+45,
+null
+],
+[
+"29067",
+"Douglas County",
+"MO",
+45,
+null
+],
+[
+"29069",
+"Dunklin County",
+"MO",
+45,
+null
+],
+[
+"29071",
+"Franklin County",
+"MO",
+54,
+null
+],
+[
+"29073",
+"Gasconade County",
+"MO",
+54,
+null
+],
+[
+"29075",
+"Gentry County",
+"MO",
+29,
+null
+],
+[
+"29077",
+"Greene County",
+"MO",
+45,
+null
+],
+[
+"29079",
+"Grundy County",
+"MO",
+45,
+null
+],
+[
+"29081",
+"Harrison County",
+"MO",
+45,
+null
+],
+[
+"29083",
+"Henry County",
+"MO",
+29,
+null
+],
+[
+"29085",
+"Hickory County",
+"MO",
+45,
+null
+],
+[
+"29087",
+"Holt County",
+"MO",
+29,
+null
+],
+[
+"29089",
+"Howard County",
+"MO",
+45,
+null
+],
+[
+"29091",
+"Howell County",
+"MO",
+45,
+null
+],
+[
+"29093",
+"Iron County",
+"MO",
+54,
+null
+],
+[
+"29095",
+"Jackson County",
+"MO",
+29,
+"MO:Kansas City"
+],
+[
+"29097",
+"Jasper County",
+"MO",
+45,
+null
+],
+[
+"29099",
+"Jefferson County",
+"MO",
+54,
+null
+],
+[
+"29101",
+"Johnson County",
+"MO",
+29,
+null
+],
+[
+"29103",
+"Knox County",
+"MO",
+45,
+null
+],
+[
+"29105",
+"Laclede County",
+"MO",
+45,
+null
+],
+[
+"29107",
+"Lafayette County",
+"MO",
+29,
+null
+],
+[
+"29109",
+"Lawrence County",
+"MO",
+45,
+null
+],
+[
+"29111",
+"Lewis County",
+"MO",
+45,
+null
+],
+[
+"29113",
+"Lincoln County",
+"MO",
+54,
+null
+],
+[
+"29115",
+"Linn County",
+"MO",
+45,
+null
+],
+[
+"29117",
+"Livingston County",
+"MO",
+45,
+null
+],
+[
+"29119",
+"McDonald County",
+"MO",
+45,
+null
+],
+[
+"29121",
+"Macon County",
+"MO",
+45,
+null
+],
+[
+"29123",
+"Madison County",
+"MO",
+54,
+null
+],
+[
+"29125",
+"Maries County",
+"MO",
+45,
+null
+],
+[
+"29127",
+"Marion County",
+"MO",
+45,
+null
+],
+[
+"29129",
+"Mercer County",
+"MO",
+45,
+null
+],
+[
+"29131",
+"Miller County",
+"MO",
+45,
+null
+],
+[
+"29133",
+"Mississippi County",
+"MO",
+45,
+null
+],
+[
+"29135",
+"Moniteau County",
+"MO",
+45,
+null
+],
+[
+"29137",
+"Monroe County",
+"MO",
+45,
+null
+],
+[
+"29139",
+"Montgomery County",
+"MO",
+54,
+null
+],
+[
+"29141",
+"Morgan County",
+"MO",
+45,
+null
+],
+[
+"29143",
+"New Madrid County",
+"MO",
+45,
+null
+],
+[
+"29145",
+"Newton County",
+"MO",
+45,
+null
+],
+[
+"29147",
+"Nodaway County",
+"MO",
+45,
+null
+],
+[
+"29149",
+"Oregon County",
+"MO",
+45,
+null
+],
+[
+"29151",
+"Osage County",
+"MO",
+45,
+null
+],
+[
+"29153",
+"Ozark County",
+"MO",
+45,
+null
+],
+[
+"29155",
+"Pemiscot County",
+"MO",
+45,
+null
+],
+[
+"29157",
+"Perry County",
+"MO",
+45,
+null
+],
+[
+"29159",
+"Pettis County",
+"MO",
+45,
+null
+],
+[
+"29161",
+"Phelps County",
+"MO",
+45,
+null
+],
+[
+"29163",
+"Pike County",
+"MO",
+54,
+null
+],
+[
+"29165",
+"Platte County",
+"MO",
+29,
+"MO:Kansas City"
+],
+[
+"29167",
+"Polk County",
+"MO",
+45,
+null
+],
+[
+"29169",
+"Pulaski County",
+"MO",
+45,
+null
+],
+[
+"29171",
+"Putnam County",
+"MO",
+45,
+null
+],
+[
+"29173",
+"Ralls County",
+"MO",
+45,
+null
+],
+[
+"29175",
+"Randolph County",
+"MO",
+45,
+null
+],
+[
+"29177",
+"Ray County",
+"MO",
+29,
+null
+],
+[
+"29179",
+"Reynolds County",
+"MO",
+45,
+null
+],
+[
+"29181",
+"Ripley County",
+"MO",
+45,
+null
+],
+[
+"29183",
+"St. Charles County",
+"MO",
+54,
+"MO:St. Louis"
+],
+[
+"29185",
+"St. Clair County",
+"MO",
+45,
+null
+],
+[
+"29186",
+"Ste. Genevieve County",
+"MO",
+54,
+null
+],
+[
+"29187",
+"St. Francois County",
+"MO",
+54,
+null
+],
+[
+"29189",
+"St. Louis County",
+"MO",
+54,
+"MO:St. Louis"
+],
+[
+"29195",
+"Saline County",
+"MO",
+45,
+null
+],
+[
+"29197",
+"Schuyler County",
+"MO",
+45,
+null
+],
+[
+"29199",
+"Scotland County",
+"MO",
+45,
+null
+],
+[
+"29201",
+"Scott County",
+"MO",
+45,
+null
+],
+[
+"29203",
+"Shannon County",
+"MO",
+45,
+null
+],
+[
+"29205",
+"Shelby County",
+"MO",
+45,
+null
+],
+[
+"29207",
+"Stoddard County",
+"MO",
+45,
+null
+],
+[
+"29209",
+"Stone County",
+"MO",
+45,
+null
+],
+[
+"29211",
+"Sullivan County",
+"MO",
+45,
+null
+],
+[
+"29213",
+"Taney County",
+"MO",
+45,
+null
+],
+[
+"29215",
+"Texas County",
+"MO",
+45,
+null
+],
+[
+"29217",
+"Vernon County",
+"MO",
+45,
+null
+],
+[
+"29219",
+"Warren County",
+"MO",
+54,
+null
+],
+[
+"29221",
+"Washington County",
+"MO",
+54,
+null
+],
+[
+"29223",
+"Wayne County",
+"MO",
+45,
+null
+],
+[
+"29225",
+"Webster County",
+"MO",
+45,
+null
+],
+[
+"29227",
+"Worth County",
+"MO",
+45,
+null
+],
+[
+"29229",
+"Wright County",
+"MO",
+45,
+null
+],
+[
+"29510",
+"St. Louis city",
+"MO",
+54,
+"MO:St. Louis"
+],
+[
+"30001",
+"Beaverhead County",
+"MT",
+45,
+null
+],
+[
+"30003",
+"Big Horn County",
+"MT",
+45,
+null
+],
+[
+"30005",
+"Blaine County",
+"MT",
+45,
+null
+],
+[
+"30007",
+"Broadwater County",
+"MT",
+45,
+null
+],
+[
+"30009",
+"Carbon County",
+"MT",
+45,
+null
+],
+[
+"30011",
+"Carter County",
+"MT",
+45,
+null
+],
+[
+"30013",
+"Cascade County",
+"MT",
+45,
+null
+],
+[
+"30015",
+"Chouteau County",
+"MT",
+45,
+null
+],
+[
+"30017",
+"Custer County",
+"MT",
+45,
+null
+],
+[
+"30019",
+"Daniels County",
+"MT",
+45,
+null
+],
+[
+"30021",
+"Dawson County",
+"MT",
+45,
+null
+],
+[
+"30023",
+"Deer Lodge County",
+"MT",
+45,
+null
+],
+[
+"30025",
+"Fallon County",
+"MT",
+45,
+null
+],
+[
+"30027",
+"Fergus County",
+"MT",
+45,
+null
+],
+[
+"30029",
+"Flathead County",
+"MT",
+45,
+"MT:Kalispell/Whitefish"
+],
+[
+"30031",
+"Gallatin County",
+"MT",
+45,
+"MT:Big Sky / West Yellowstone/Gardiner"
+],
+[
+"30033",
+"Garfield County",
+"MT",
+45,
+null
+],
+[
+"30035",
+"Glacier County",
+"MT",
+45,
+null
+],
+[
+"30037",
+"Golden Valley County",
+"MT",
+45,
+null
+],
+[
+"30039",
+"Granite County",
+"MT",
+45,
+null
+],
+[
+"30041",
+"Hill County",
+"MT",
+45,
+null
+],
+[
+"30043",
+"Jefferson County",
+"MT",
+45,
+null
+],
+[
+"30045",
+"Judith Basin County",
+"MT",
+45,
+null
+],
+[
+"30047",
+"Lake County",
+"MT",
+45,
+null
+],
+[
+"30049",
+"Lewis and Clark County",
+"MT",
+45,
+"MT:Helena"
+],
+[
+"30051",
+"Liberty County",
+"MT",
+45,
+null
+],
+[
+"30053",
+"Lincoln County",
+"MT",
+45,
+null
+],
+[
+"30055",
+"McCone County",
+"MT",
+45,
+null
+],
+[
+"30057",
+"Madison County",
+"MT",
+45,
+null
+],
+[
+"30059",
+"Meagher County",
+"MT",
+45,
+null
+],
+[
+"30061",
+"Mineral County",
+"MT",
+45,
+null
+],
+[
+"30063",
+"Missoula County",
+"MT",
+45,
+"MT:Missoula"
+],
+[
+"30065",
+"Musselshell County",
+"MT",
+45,
+null
+],
+[
+"30067",
+"Park County",
+"MT",
+45,
+"MT:Big Sky / West Yellowstone/Gardiner"
+],
+[
+"30069",
+"Petroleum County",
+"MT",
+45,
+null
+],
+[
+"30071",
+"Phillips County",
+"MT",
+45,
+null
+],
+[
+"30073",
+"Pondera County",
+"MT",
+45,
+null
+],
+[
+"30075",
+"Powder River County",
+"MT",
+45,
+null
+],
+[
+"30077",
+"Powell County",
+"MT",
+45,
+null
+],
+[
+"30079",
+"Prairie County",
+"MT",
+45,
+null
+],
+[
+"30081",
+"Ravalli County",
+"MT",
+45,
+null
+],
+[
+"30083",
+"Richland County",
+"MT",
+45,
+null
+],
+[
+"30085",
+"Roosevelt County",
+"MT",
+45,
+null
+],
+[
+"30087",
+"Rosebud County",
+"MT",
+45,
+null
+],
+[
+"30089",
+"Sanders County",
+"MT",
+45,
+null
+],
+[
+"30091",
+"Sheridan County",
+"MT",
+45,
+null
+],
+[
+"30093",
+"Silver Bow County",
+"MT",
+45,
+null
+],
+[
+"30095",
+"Stillwater County",
+"MT",
+45,
+null
+],
+[
+"30097",
+"Sweet Grass County",
+"MT",
+45,
+null
+],
+[
+"30099",
+"Teton County",
+"MT",
+45,
+null
+],
+[
+"30101",
+"Toole County",
+"MT",
+45,
+null
+],
+[
+"30103",
+"Treasure County",
+"MT",
+45,
+null
+],
+[
+"30105",
+"Valley County",
+"MT",
+45,
+null
+],
+[
+"30107",
+"Wheatland County",
+"MT",
+45,
+null
+],
+[
+"30109",
+"Wibaux County",
+"MT",
+45,
+null
+],
+[
+"30111",
+"Yellowstone County",
+"MT",
+45,
+null
+],
+[
+"31001",
+"Adams County",
+"NE",
+45,
+null
+],
+[
+"31003",
+"Antelope County",
+"NE",
+45,
+null
+],
+[
+"31005",
+"Arthur County",
+"NE",
+45,
+null
+],
+[
+"31007",
+"Banner County",
+"NE",
+45,
+null
+],
+[
+"31009",
+"Blaine County",
+"NE",
+45,
+null
+],
+[
+"31011",
+"Boone County",
+"NE",
+45,
+null
+],
+[
+"31013",
+"Box Butte County",
+"NE",
+45,
+null
+],
+[
+"31015",
+"Boyd County",
+"NE",
+45,
+null
+],
+[
+"31017",
+"Brown County",
+"NE",
+45,
+null
+],
+[
+"31019",
+"Buffalo County",
+"NE",
+45,
+null
+],
+[
+"31021",
+"Burt County",
+"NE",
+37,
+null
+],
+[
+"31023",
+"Butler County",
+"NE",
+45,
+null
+],
+[
+"31025",
+"Cass County",
+"NE",
+37,
+null
+],
+[
+"31027",
+"Cedar County",
+"NE",
+45,
+null
+],
+[
+"31029",
+"Chase County",
+"NE",
+45,
+null
+],
+[
+"31031",
+"Cherry County",
+"NE",
+45,
+null
+],
+[
+"31033",
+"Cheyenne County",
+"NE",
+45,
+null
+],
+[
+"31035",
+"Clay County",
+"NE",
+45,
+null
+],
+[
+"31037",
+"Colfax County",
+"NE",
+45,
+null
+],
+[
+"31039",
+"Cuming County",
+"NE",
+45,
+null
+],
+[
+"31041",
+"Custer County",
+"NE",
+45,
+null
+],
+[
+"31043",
+"Dakota County",
+"NE",
+45,
+null
+],
+[
+"31045",
+"Dawes County",
+"NE",
+45,
+null
+],
+[
+"31047",
+"Dawson County",
+"NE",
+45,
+null
+],
+[
+"31049",
+"Deuel County",
+"NE",
+45,
+null
+],
+[
+"31051",
+"Dixon County",
+"NE",
+45,
+null
+],
+[
+"31053",
+"Dodge County",
+"NE",
+37,
+null
+],
+[
+"31055",
+"Douglas County",
+"NE",
+37,
+"NE:Omaha"
+],
+[
+"31057",
+"Dundy County",
+"NE",
+45,
+null
+],
+[
+"31059",
+"Fillmore County",
+"NE",
+45,
+null
+],
+[
+"31061",
+"Franklin County",
+"NE",
+45,
+null
+],
+[
+"31063",
+"Frontier County",
+"NE",
+45,
+null
+],
+[
+"31065",
+"Furnas County",
+"NE",
+45,
+null
+],
+[
+"31067",
+"Gage County",
+"NE",
+45,
+null
+],
+[
+"31069",
+"Garden County",
+"NE",
+45,
+null
+],
+[
+"31071",
+"Garfield County",
+"NE",
+45,
+null
+],
+[
+"31073",
+"Gosper County",
+"NE",
+45,
+null
+],
+[
+"31075",
+"Grant County",
+"NE",
+45,
+null
+],
+[
+"31077",
+"Greeley County",
+"NE",
+45,
+null
+],
+[
+"31079",
+"Hall County",
+"NE",
+45,
+null
+],
+[
+"31081",
+"Hamilton County",
+"NE",
+45,
+null
+],
+[
+"31083",
+"Harlan County",
+"NE",
+45,
+null
+],
+[
+"31085",
+"Hayes County",
+"NE",
+45,
+null
+],
+[
+"31087",
+"Hitchcock County",
+"NE",
+45,
+null
+],
+[
+"31089",
+"Holt County",
+"NE",
+45,
+null
+],
+[
+"31091",
+"Hooker County",
+"NE",
+45,
+null
+],
+[
+"31093",
+"Howard County",
+"NE",
+45,
+null
+],
+[
+"31095",
+"Jefferson County",
+"NE",
+45,
+null
+],
+[
+"31097",
+"Johnson County",
+"NE",
+45,
+null
+],
+[
+"31099",
+"Kearney County",
+"NE",
+45,
+null
+],
+[
+"31101",
+"Keith County",
+"NE",
+45,
+null
+],
+[
+"31103",
+"Keya Paha County",
+"NE",
+45,
+null
+],
+[
+"31105",
+"Kimball County",
+"NE",
+45,
+null
+],
+[
+"31107",
+"Knox County",
+"NE",
+45,
+null
+],
+[
+"31109",
+"Lancaster County",
+"NE",
+45,
+null
+],
+[
+"31111",
+"Lincoln County",
+"NE",
+45,
+null
+],
+[
+"31113",
+"Logan County",
+"NE",
+45,
+null
+],
+[
+"31115",
+"Loup County",
+"NE",
+45,
+null
+],
+[
+"31117",
+"McPherson County",
+"NE",
+45,
+null
+],
+[
+"31119",
+"Madison County",
+"NE",
+45,
+null
+],
+[
+"31121",
+"Merrick County",
+"NE",
+45,
+null
+],
+[
+"31123",
+"Morrill County",
+"NE",
+45,
+null
+],
+[
+"31125",
+"Nance County",
+"NE",
+45,
+null
+],
+[
+"31127",
+"Nemaha County",
+"NE",
+45,
+null
+],
+[
+"31129",
+"Nuckolls County",
+"NE",
+45,
+null
+],
+[
+"31131",
+"Otoe County",
+"NE",
+45,
+null
+],
+[
+"31133",
+"Pawnee County",
+"NE",
+45,
+null
+],
+[
+"31135",
+"Perkins County",
+"NE",
+45,
+null
+],
+[
+"31137",
+"Phelps County",
+"NE",
+45,
+null
+],
+[
+"31139",
+"Pierce County",
+"NE",
+45,
+null
+],
+[
+"31141",
+"Platte County",
+"NE",
+45,
+null
+],
+[
+"31143",
+"Polk County",
+"NE",
+45,
+null
+],
+[
+"31145",
+"Red Willow County",
+"NE",
+45,
+null
+],
+[
+"31147",
+"Richardson County",
+"NE",
+45,
+null
+],
+[
+"31149",
+"Rock County",
+"NE",
+45,
+null
+],
+[
+"31151",
+"Saline County",
+"NE",
+45,
+null
+],
+[
+"31153",
+"Sarpy County",
+"NE",
+37,
+null
+],
+[
+"31155",
+"Saunders County",
+"NE",
+37,
+null
+],
+[
+"31157",
+"Scotts Bluff County",
+"NE",
+45,
+null
+],
+[
+"31159",
+"Seward County",
+"NE",
+45,
+null
+],
+[
+"31161",
+"Sheridan County",
+"NE",
+45,
+null
+],
+[
+"31163",
+"Sherman County",
+"NE",
+45,
+null
+],
+[
+"31165",
+"Sioux County",
+"NE",
+45,
+null
+],
+[
+"31167",
+"Stanton County",
+"NE",
+45,
+null
+],
+[
+"31169",
+"Thayer County",
+"NE",
+45,
+null
+],
+[
+"31171",
+"Thomas County",
+"NE",
+45,
+null
+],
+[
+"31173",
+"Thurston County",
+"NE",
+45,
+null
+],
+[
+"31175",
+"Valley County",
+"NE",
+45,
+null
+],
+[
+"31177",
+"Washington County",
+"NE",
+37,
+null
+],
+[
+"31179",
+"Wayne County",
+"NE",
+45,
+null
+],
+[
+"31181",
+"Webster County",
+"NE",
+45,
+null
+],
+[
+"31183",
+"Wheeler County",
+"NE",
+45,
+null
+],
+[
+"31185",
+"York County",
+"NE",
+45,
+null
+],
+[
+"32001",
+"Churchill County",
+"NV",
+44,
+null
+],
+[
+"32003",
+"Clark County",
+"NV",
+31,
+"NV:Las Vegas"
+],
+[
+"32005",
+"Douglas County",
+"NV",
+48,
+null
+],
+[
+"32007",
+"Elko County",
+"NV",
+45,
+null
+],
+[
+"32009",
+"Esmeralda County",
+"NV",
+45,
+null
+],
+[
+"32011",
+"Eureka County",
+"NV",
+45,
+null
+],
+[
+"32013",
+"Humboldt County",
+"NV",
+45,
+null
+],
+[
+"32015",
+"Lander County",
+"NV",
+45,
+null
+],
+[
+"32017",
+"Lincoln County",
+"NV",
+45,
+null
+],
+[
+"32019",
+"Lyon County",
+"NV",
+44,
+null
+],
+[
+"32021",
+"Mineral County",
+"NV",
+45,
+null
+],
+[
+"32023",
+"Nye County",
+"NV",
+31,
+null
+],
+[
+"32027",
+"Pershing County",
+"NV",
+45,
+null
+],
+[
+"32029",
+"Storey County",
+"NV",
+44,
+null
+],
+[
+"32031",
+"Washoe County",
+"NV",
+44,
+"NV:Incline Village / Reno / Sparks"
+],
+[
+"32033",
+"White Pine County",
+"NV",
+45,
+null
+],
+[
+"32510",
+"Carson City",
+"NV",
+44,
+null
+],
+[
+"33001",
+"Belknap County",
+"NH",
+6,
+"NH:Laconia"
+],
+[
+"33003",
+"Carroll County",
+"NH",
+6,
+"NH:Conway"
+],
+[
+"33005",
+"Cheshire County",
+"NH",
+6,
+null
+],
+[
+"33007",
+"Coos County",
+"NH",
+45,
+null
+],
+[
+"33009",
+"Grafton County",
+"NH",
+6,
+"NH:Lebanon / Lincoln / West Lebanon"
+],
+[
+"33011",
+"Hillsborough County",
+"NH",
+6,
+"NH:Manchester"
+],
+[
+"33013",
+"Merrimack County",
+"NH",
+6,
+"NH:Concord"
+],
+[
+"33015",
+"Rockingham County",
+"NH",
+6,
+"NH:Portsmouth"
+],
+[
+"33017",
+"Strafford County",
+"NH",
+6,
+"NH:Durham"
+],
+[
+"33019",
+"Sullivan County",
+"NH",
+6,
+null
+],
+[
+"34001",
+"Atlantic County",
+"NJ",
+39,
+null
+],
+[
+"34003",
+"Bergen County",
+"NJ",
+36,
+"NJ:Newark"
+],
+[
+"34005",
+"Burlington County",
+"NJ",
+39,
+"NJ:Cherry Hill / Moorestown"
+],
+[
+"34007",
+"Camden County",
+"NJ",
+39,
+"NJ:Cherry Hill / Moorestown"
+],
+[
+"34009",
+"Cape May County",
+"NJ",
+39,
+null
+],
+[
+"34011",
+"Cumberland County",
+"NJ",
+39,
+null
+],
+[
+"34013",
+"Essex County",
+"NJ",
+36,
+"NJ:Newark"
+],
+[
+"34015",
+"Gloucester County",
+"NJ",
+39,
+null
+],
+[
+"34017",
+"Hudson County",
+"NJ",
+36,
+"NJ:Newark"
+],
+[
+"34019",
+"Hunterdon County",
+"NJ",
+36,
+"NJ:Flemington"
+],
+[
+"34021",
+"Mercer County",
+"NJ",
+36,
+"NJ:Princeton / Trenton"
+],
+[
+"34023",
+"Middlesex County",
+"NJ",
+36,
+"NJ:Edison / Piscataway"
+],
+[
+"34025",
+"Monmouth County",
+"NJ",
+36,
+"NJ:Eatontown / Freehold"
+],
+[
+"34027",
+"Morris County",
+"NJ",
+36,
+"NJ:Parsippany"
+],
+[
+"34029",
+"Ocean County",
+"NJ",
+36,
+"NJ:Toms River"
+],
+[
+"34031",
+"Passaic County",
+"NJ",
+36,
+"NJ:Newark"
+],
+[
+"34033",
+"Salem County",
+"NJ",
+39,
+null
+],
+[
+"34035",
+"Somerset County",
+"NJ",
+36,
+"NJ:Somerset"
+],
+[
+"34037",
+"Sussex County",
+"NJ",
+36,
+null
+],
+[
+"34039",
+"Union County",
+"NJ",
+36,
+"NJ:Springfield / Cranford / New Providence"
+],
+[
+"34041",
+"Warren County",
+"NJ",
+36,
+null
+],
+[
+"35001",
+"Bernalillo County",
+"NM",
+2,
+"NM:Albuquerque"
+],
+[
+"35003",
+"Catron County",
+"NM",
+45,
+null
+],
+[
+"35005",
+"Chaves County",
+"NM",
+45,
+null
+],
+[
+"35006",
+"Cibola County",
+"NM",
+2,
+null
+],
+[
+"35007",
+"Colfax County",
+"NM",
+45,
+null
+],
+[
+"35009",
+"Curry County",
+"NM",
+45,
+null
+],
+[
+"35011",
+"De Baca County",
+"NM",
+45,
+null
+],
+[
+"35013",
+"Do\u00f1a Ana County",
+"NM",
+45,
+null
+],
+[
+"35015",
+"Eddy County",
+"NM",
+45,
+"NM:Carlsbad"
+],
+[
+"35017",
+"Grant County",
+"NM",
+45,
+null
+],
+[
+"35019",
+"Guadalupe County",
+"NM",
+45,
+null
+],
+[
+"35021",
+"Harding County",
+"NM",
+45,
+null
+],
+[
+"35023",
+"Hidalgo County",
+"NM",
+45,
+null
+],
+[
+"35025",
+"Lea County",
+"NM",
+45,
+null
+],
+[
+"35027",
+"Lincoln County",
+"NM",
+45,
+null
+],
+[
+"35028",
+"Los Alamos County",
+"NM",
+2,
+null
+],
+[
+"35029",
+"Luna County",
+"NM",
+45,
+null
+],
+[
+"35031",
+"McKinley County",
+"NM",
+2,
+null
+],
+[
+"35033",
+"Mora County",
+"NM",
+2,
+null
+],
+[
+"35035",
+"Otero County",
+"NM",
+45,
+null
+],
+[
+"35037",
+"Quay County",
+"NM",
+45,
+null
+],
+[
+"35039",
+"Rio Arriba County",
+"NM",
+2,
+null
+],
+[
+"35041",
+"Roosevelt County",
+"NM",
+45,
+null
+],
+[
+"35043",
+"Sandoval County",
+"NM",
+2,
+null
+],
+[
+"35045",
+"San Juan County",
+"NM",
+45,
+null
+],
+[
+"35047",
+"San Miguel County",
+"NM",
+2,
+null
+],
+[
+"35049",
+"Santa Fe County",
+"NM",
+2,
+"NM:Santa Fe"
+],
+[
+"35051",
+"Sierra County",
+"NM",
+45,
+null
+],
+[
+"35053",
+"Socorro County",
+"NM",
+45,
+null
+],
+[
+"35055",
+"Taos County",
+"NM",
+45,
+"NM:Taos"
+],
+[
+"35057",
+"Torrance County",
+"NM",
+2,
+null
+],
+[
+"35059",
+"Union County",
+"NM",
+45,
+null
+],
+[
+"35061",
+"Valencia County",
+"NM",
+2,
+null
+],
+[
+"36001",
+"Albany County",
+"NY",
+1,
+"NY:Albany"
+],
+[
+"36003",
+"Allegany County",
+"NY",
+7,
+null
+],
+[
+"36005",
+"Bronx County",
+"NY",
+36,
+"NY:New York City"
+],
+[
+"36007",
+"Broome County",
+"NY",
+45,
+"NY:Binghamton"
+],
+[
+"36009",
+"Cattaraugus County",
+"NY",
+7,
+null
+],
+[
+"36011",
+"Cayuga County",
+"NY",
+45,
+null
+],
+[
+"36013",
+"Chautauqua County",
+"NY",
+45,
+null
+],
+[
+"36015",
+"Chemung County",
+"NY",
+45,
+null
+],
+[
+"36017",
+"Chenango County",
+"NY",
+45,
+null
+],
+[
+"36019",
+"Clinton County",
+"NY",
+45,
+null
+],
+[
+"36021",
+"Columbia County",
+"NY",
+1,
+null
+],
+[
+"36023",
+"Cortland County",
+"NY",
+45,
+null
+],
+[
+"36025",
+"Delaware County",
+"NY",
+45,
+null
+],
+[
+"36027",
+"Dutchess County",
+"NY",
+36,
+"NY:Poughkeepsie"
+],
+[
+"36029",
+"Erie County",
+"NY",
+7,
+"NY:Buffalo"
+],
+[
+"36031",
+"Essex County",
+"NY",
+45,
+"NY:Lake Placid"
+],
+[
+"36033",
+"Franklin County",
+"NY",
+45,
+null
+],
+[
+"36035",
+"Fulton County",
+"NY",
+1,
+null
+],
+[
+"36037",
+"Genesee County",
+"NY",
+47,
+null
+],
+[
+"36039",
+"Greene County",
+"NY",
+1,
+null
+],
+[
+"36041",
+"Hamilton County",
+"NY",
+1,
+null
+],
+[
+"36043",
+"Herkimer County",
+"NY",
+45,
+null
+],
+[
+"36045",
+"Jefferson County",
+"NY",
+45,
+null
+],
+[
+"36047",
+"Kings County",
+"NY",
+36,
+"NY:New York City"
+],
+[
+"36049",
+"Lewis County",
+"NY",
+45,
+null
+],
+[
+"36051",
+"Livingston County",
+"NY",
+47,
+null
+],
+[
+"36053",
+"Madison County",
+"NY",
+45,
+null
+],
+[
+"36055",
+"Monroe County",
+"NY",
+47,
+"NY:Rochester"
+],
+[
+"36057",
+"Montgomery County",
+"NY",
+1,
+null
+],
+[
+"36059",
+"Nassau County",
+"NY",
+36,
+"NY:Floral Park / Garden City / Great Neck"
+],
+[
+"36061",
+"New York County",
+"NY",
+36,
+"NY:New York City"
+],
+[
+"36063",
+"Niagara County",
+"NY",
+7,
+"NY:Niagara Falls"
+],
+[
+"36065",
+"Oneida County",
+"NY",
+45,
+null
+],
+[
+"36067",
+"Onondaga County",
+"NY",
+45,
+"NY:Syracuse / Oswego"
+],
+[
+"36069",
+"Ontario County",
+"NY",
+47,
+null
+],
+[
+"36071",
+"Orange County",
+"NY",
+36,
+"NY:West Point"
+],
+[
+"36073",
+"Orleans County",
+"NY",
+47,
+null
+],
+[
+"36075",
+"Oswego County",
+"NY",
+45,
+"NY:Syracuse / Oswego"
+],
+[
+"36077",
+"Otsego County",
+"NY",
+45,
+null
+],
+[
+"36079",
+"Putnam County",
+"NY",
+36,
+null
+],
+[
+"36081",
+"Queens County",
+"NY",
+36,
+"NY:New York City"
+],
+[
+"36083",
+"Rensselaer County",
+"NY",
+1,
+"NY:Troy"
+],
+[
+"36085",
+"Richmond County",
+"NY",
+36,
+"NY:New York City"
+],
+[
+"36087",
+"Rockland County",
+"NY",
+36,
+"NY:Nyack / Palisades"
+],
+[
+"36089",
+"St. Lawrence County",
+"NY",
+45,
+null
+],
+[
+"36091",
+"Saratoga County",
+"NY",
+1,
+"NY:Saratoga Springs / Schenectady"
+],
+[
+"36093",
+"Schenectady County",
+"NY",
+1,
+"NY:Saratoga Springs / Schenectady"
+],
+[
+"36095",
+"Schoharie County",
+"NY",
+1,
+null
+],
+[
+"36097",
+"Schuyler County",
+"NY",
+45,
+null
+],
+[
+"36099",
+"Seneca County",
+"NY",
+47,
+null
+],
+[
+"36101",
+"Steuben County",
+"NY",
+45,
+null
+],
+[
+"36103",
+"Suffolk County",
+"NY",
+36,
+"NY:Riverhead / Ronkonkoma / Melville"
+],
+[
+"36105",
+"Sullivan County",
+"NY",
+36,
+null
+],
+[
+"36107",
+"Tioga County",
+"NY",
+45,
+null
+],
+[
+"36109",
+"Tompkins County",
+"NY",
+45,
+"NY:Ithaca"
+],
+[
+"36111",
+"Ulster County",
+"NY",
+36,
+"NY:Kingston"
+],
+[
+"36113",
+"Warren County",
+"NY",
+1,
+"NY:Glens Falls"
+],
+[
+"36115",
+"Washington County",
+"NY",
+1,
+null
+],
+[
+"36117",
+"Wayne County",
+"NY",
+47,
+null
+],
+[
+"36119",
+"Westchester County",
+"NY",
+36,
+"NY:Tarrytown / White Plains / New Rochelle"
+],
+[
+"36121",
+"Wyoming County",
+"NY",
+7,
+null
+],
+[
+"36123",
+"Yates County",
+"NY",
+47,
+null
+],
+[
+"37001",
+"Alamance County",
+"NC",
+45,
+null
+],
+[
+"37003",
+"Alexander County",
+"NC",
+9,
+null
+],
+[
+"37005",
+"Alleghany County",
+"NC",
+45,
+null
+],
+[
+"37007",
+"Anson County",
+"NC",
+9,
+null
+],
+[
+"37009",
+"Ashe County",
+"NC",
+45,
+null
+],
+[
+"37011",
+"Avery County",
+"NC",
+45,
+null
+],
+[
+"37013",
+"Beaufort County",
+"NC",
+45,
+null
+],
+[
+"37015",
+"Bertie County",
+"NC",
+45,
+null
+],
+[
+"37017",
+"Bladen County",
+"NC",
+45,
+null
+],
+[
+"37019",
+"Brunswick County",
+"NC",
+45,
+null
+],
+[
+"37021",
+"Buncombe County",
+"NC",
+45,
+"NC:Asheville"
+],
+[
+"37023",
+"Burke County",
+"NC",
+9,
+null
+],
+[
+"37025",
+"Cabarrus County",
+"NC",
+9,
+null
+],
+[
+"37027",
+"Caldwell County",
+"NC",
+9,
+null
+],
+[
+"37029",
+"Camden County",
+"NC",
+56,
+null
+],
+[
+"37031",
+"Carteret County",
+"NC",
+45,
+"NC:Atlantic Beach / Morehead City"
+],
+[
+"37033",
+"Caswell County",
+"NC",
+43,
+null
+],
+[
+"37035",
+"Catawba County",
+"NC",
+9,
+null
+],
+[
+"37037",
+"Chatham County",
+"NC",
+43,
+null
+],
+[
+"37039",
+"Cherokee County",
+"NC",
+45,
+null
+],
+[
+"37041",
+"Chowan County",
+"NC",
+56,
+null
+],
+[
+"37043",
+"Clay County",
+"NC",
+45,
+null
+],
+[
+"37045",
+"Cleveland County",
+"NC",
+9,
+null
+],
+[
+"37047",
+"Columbus County",
+"NC",
+45,
+null
+],
+[
+"37049",
+"Craven County",
+"NC",
+45,
+null
+],
+[
+"37051",
+"Cumberland County",
+"NC",
+43,
+"NC:Fayetteville"
+],
+[
+"37053",
+"Currituck County",
+"NC",
+56,
+null
+],
+[
+"37055",
+"Dare County",
+"NC",
+56,
+"NC:Kill Devil Hills"
+],
+[
+"37057",
+"Davidson County",
+"NC",
+45,
+null
+],
+[
+"37059",
+"Davie County",
+"NC",
+45,
+null
+],
+[
+"37061",
+"Duplin County",
+"NC",
+45,
+null
+],
+[
+"37063",
+"Durham County",
+"NC",
+43,
+"NC:Durham"
+],
+[
+"37065",
+"Edgecombe County",
+"NC",
+43,
+null
+],
+[
+"37067",
+"Forsyth County",
+"NC",
+45,
+null
+],
+[
+"37069",
+"Franklin County",
+"NC",
+43,
+null
+],
+[
+"37071",
+"Gaston County",
+"NC",
+9,
+null
+],
+[
+"37073",
+"Gates County",
+"NC",
+56,
+null
+],
+[
+"37075",
+"Graham County",
+"NC",
+45,
+null
+],
+[
+"37077",
+"Granville County",
+"NC",
+43,
+null
+],
+[
+"37079",
+"Greene County",
+"NC",
+45,
+null
+],
+[
+"37081",
+"Guilford County",
+"NC",
+45,
+"NC:Greensboro"
+],
+[
+"37083",
+"Halifax County",
+"NC",
+43,
+null
+],
+[
+"37085",
+"Harnett County",
+"NC",
+43,
+null
+],
+[
+"37087",
+"Haywood County",
+"NC",
+45,
+null
+],
+[
+"37089",
+"Henderson County",
+"NC",
+45,
+null
+],
+[
+"37091",
+"Hertford County",
+"NC",
+56,
+null
+],
+[
+"37093",
+"Hoke County",
+"NC",
+43,
+null
+],
+[
+"37095",
+"Hyde County",
+"NC",
+45,
+null
+],
+[
+"37097",
+"Iredell County",
+"NC",
+9,
+null
+],
+[
+"37099",
+"Jackson County",
+"NC",
+45,
+null
+],
+[
+"37101",
+"Johnston County",
+"NC",
+43,
+null
+],
+[
+"37103",
+"Jones County",
+"NC",
+45,
+null
+],
+[
+"37105",
+"Lee County",
+"NC",
+43,
+null
+],
+[
+"37107",
+"Lenoir County",
+"NC",
+45,
+null
+],
+[
+"37109",
+"Lincoln County",
+"NC",
+9,
+null
+],
+[
+"37111",
+"McDowell County",
+"NC",
+45,
+null
+],
+[
+"37113",
+"Macon County",
+"NC",
+45,
+null
+],
+[
+"37115",
+"Madison County",
+"NC",
+45,
+null
+],
+[
+"37117",
+"Martin County",
+"NC",
+45,
+null
+],
+[
+"37119",
+"Mecklenburg County",
+"NC",
+9,
+"NC:Charlotte"
+],
+[
+"37121",
+"Mitchell County",
+"NC",
+45,
+null
+],
+[
+"37123",
+"Montgomery County",
+"NC",
+45,
+null
+],
+[
+"37125",
+"Moore County",
+"NC",
+43,
+null
+],
+[
+"37127",
+"Nash County",
+"NC",
+43,
+null
+],
+[
+"37129",
+"New Hanover County",
+"NC",
+45,
+"NC:Wilmington"
+],
+[
+"37131",
+"Northampton County",
+"NC",
+43,
+null
+],
+[
+"37133",
+"Onslow County",
+"NC",
+45,
+null
+],
+[
+"37135",
+"Orange County",
+"NC",
+43,
+"NC:Chapel Hill"
+],
+[
+"37137",
+"Pamlico County",
+"NC",
+45,
+null
+],
+[
+"37139",
+"Pasquotank County",
+"NC",
+56,
+null
+],
+[
+"37141",
+"Pender County",
+"NC",
+45,
+null
+],
+[
+"37143",
+"Perquimans County",
+"NC",
+56,
+null
+],
+[
+"37145",
+"Person County",
+"NC",
+43,
+null
+],
+[
+"37147",
+"Pitt County",
+"NC",
+45,
+null
+],
+[
+"37149",
+"Polk County",
+"NC",
+45,
+null
+],
+[
+"37151",
+"Randolph County",
+"NC",
+45,
+null
+],
+[
+"37153",
+"Richmond County",
+"NC",
+45,
+null
+],
+[
+"37155",
+"Robeson County",
+"NC",
+43,
+null
+],
+[
+"37157",
+"Rockingham County",
+"NC",
+45,
+null
+],
+[
+"37159",
+"Rowan County",
+"NC",
+9,
+null
+],
+[
+"37161",
+"Rutherford County",
+"NC",
+45,
+null
+],
+[
+"37163",
+"Sampson County",
+"NC",
+45,
+null
+],
+[
+"37165",
+"Scotland County",
+"NC",
+43,
+null
+],
+[
+"37167",
+"Stanly County",
+"NC",
+9,
+null
+],
+[
+"37169",
+"Stokes County",
+"NC",
+45,
+null
+],
+[
+"37171",
+"Surry County",
+"NC",
+45,
+null
+],
+[
+"37173",
+"Swain County",
+"NC",
+45,
+null
+],
+[
+"37175",
+"Transylvania County",
+"NC",
+45,
+null
+],
+[
+"37177",
+"Tyrrell County",
+"NC",
+56,
+null
+],
+[
+"37179",
+"Union County",
+"NC",
+9,
+null
+],
+[
+"37181",
+"Vance County",
+"NC",
+43,
+null
+],
+[
+"37183",
+"Wake County",
+"NC",
+43,
+"NC:Raleigh"
+],
+[
+"37185",
+"Warren County",
+"NC",
+43,
+null
+],
+[
+"37187",
+"Washington County",
+"NC",
+45,
+null
+],
+[
+"37189",
+"Watauga County",
+"NC",
+45,
+null
+],
+[
+"37191",
+"Wayne County",
+"NC",
+43,
+null
+],
+[
+"37193",
+"Wilkes County",
+"NC",
+45,
+null
+],
+[
+"37195",
+"Wilson County",
+"NC",
+43,
+null
+],
+[
+"37197",
+"Yadkin County",
+"NC",
+45,
+null
+],
+[
+"37199",
+"Yancey County",
+"NC",
+45,
+null
+],
+[
+"38001",
+"Adams County",
+"ND",
+45,
+null
+],
+[
+"38003",
+"Barnes County",
+"ND",
+45,
+null
+],
+[
+"38005",
+"Benson County",
+"ND",
+45,
+null
+],
+[
+"38007",
+"Billings County",
+"ND",
+45,
+null
+],
+[
+"38009",
+"Bottineau County",
+"ND",
+45,
+null
+],
+[
+"38011",
+"Bowman County",
+"ND",
+45,
+null
+],
+[
+"38013",
+"Burke County",
+"ND",
+45,
+null
+],
+[
+"38015",
+"Burleigh County",
+"ND",
+45,
+null
+],
+[
+"38017",
+"Cass County",
+"ND",
+45,
+null
+],
+[
+"38019",
+"Cavalier County",
+"ND",
+45,
+null
+],
+[
+"38021",
+"Dickey County",
+"ND",
+45,
+null
+],
+[
+"38023",
+"Divide County",
+"ND",
+45,
+null
+],
+[
+"38025",
+"Dunn County",
+"ND",
+45,
+null
+],
+[
+"38027",
+"Eddy County",
+"ND",
+45,
+null
+],
+[
+"38029",
+"Emmons County",
+"ND",
+45,
+null
+],
+[
+"38031",
+"Foster County",
+"ND",
+45,
+null
+],
+[
+"38033",
+"Golden Valley County",
+"ND",
+45,
+null
+],
+[
+"38035",
+"Grand Forks County",
+"ND",
+45,
+null
+],
+[
+"38037",
+"Grant County",
+"ND",
+45,
+null
+],
+[
+"38039",
+"Griggs County",
+"ND",
+45,
+null
+],
+[
+"38041",
+"Hettinger County",
+"ND",
+45,
+null
+],
+[
+"38043",
+"Kidder County",
+"ND",
+45,
+null
+],
+[
+"38045",
+"LaMoure County",
+"ND",
+45,
+null
+],
+[
+"38047",
+"Logan County",
+"ND",
+45,
+null
+],
+[
+"38049",
+"McHenry County",
+"ND",
+45,
+null
+],
+[
+"38051",
+"McIntosh County",
+"ND",
+45,
+null
+],
+[
+"38053",
+"McKenzie County",
+"ND",
+45,
+null
+],
+[
+"38055",
+"McLean County",
+"ND",
+45,
+null
+],
+[
+"38057",
+"Mercer County",
+"ND",
+45,
+null
+],
+[
+"38059",
+"Morton County",
+"ND",
+45,
+null
+],
+[
+"38061",
+"Mountrail County",
+"ND",
+45,
+null
+],
+[
+"38063",
+"Nelson County",
+"ND",
+45,
+null
+],
+[
+"38065",
+"Oliver County",
+"ND",
+45,
+null
+],
+[
+"38067",
+"Pembina County",
+"ND",
+45,
+null
+],
+[
+"38069",
+"Pierce County",
+"ND",
+45,
+null
+],
+[
+"38071",
+"Ramsey County",
+"ND",
+45,
+null
+],
+[
+"38073",
+"Ransom County",
+"ND",
+45,
+null
+],
+[
+"38075",
+"Renville County",
+"ND",
+45,
+null
+],
+[
+"38077",
+"Richland County",
+"ND",
+45,
+null
+],
+[
+"38079",
+"Rolette County",
+"ND",
+45,
+null
+],
+[
+"38081",
+"Sargent County",
+"ND",
+45,
+null
+],
+[
+"38083",
+"Sheridan County",
+"ND",
+45,
+null
+],
+[
+"38085",
+"Sioux County",
+"ND",
+45,
+null
+],
+[
+"38087",
+"Slope County",
+"ND",
+45,
+null
+],
+[
+"38089",
+"Stark County",
+"ND",
+45,
+null
+],
+[
+"38091",
+"Steele County",
+"ND",
+45,
+null
+],
+[
+"38093",
+"Stutsman County",
+"ND",
+45,
+null
+],
+[
+"38095",
+"Towner County",
+"ND",
+45,
+null
+],
+[
+"38097",
+"Traill County",
+"ND",
+45,
+null
+],
+[
+"38099",
+"Walsh County",
+"ND",
+45,
+null
+],
+[
+"38101",
+"Ward County",
+"ND",
+45,
+null
+],
+[
+"38103",
+"Wells County",
+"ND",
+45,
+null
+],
+[
+"38105",
+"Williams County",
+"ND",
+45,
+null
+],
+[
+"39001",
+"Adams County",
+"OH",
+11,
+null
+],
+[
+"39003",
+"Allen County",
+"OH",
+18,
+null
+],
+[
+"39005",
+"Ashland County",
+"OH",
+12,
+null
+],
+[
+"39007",
+"Ashtabula County",
+"OH",
+12,
+null
+],
+[
+"39009",
+"Athens County",
+"OH",
+45,
+null
+],
+[
+"39011",
+"Auglaize County",
+"OH",
+18,
+null
+],
+[
+"39013",
+"Belmont County",
+"OH",
+41,
+null
+],
+[
+"39015",
+"Brown County",
+"OH",
+11,
+null
+],
+[
+"39017",
+"Butler County",
+"OH",
+11,
+"OH:Hamilton"
+],
+[
+"39019",
+"Carroll County",
+"OH",
+12,
+null
+],
+[
+"39021",
+"Champaign County",
+"OH",
+18,
+null
+],
+[
+"39023",
+"Clark County",
+"OH",
+18,
+null
+],
+[
+"39025",
+"Clermont County",
+"OH",
+11,
+"OH:Cincinnati"
+],
+[
+"39027",
+"Clinton County",
+"OH",
+11,
+null
+],
+[
+"39029",
+"Columbiana County",
+"OH",
+12,
+null
+],
+[
+"39031",
+"Coshocton County",
+"OH",
+14,
+null
+],
+[
+"39033",
+"Crawford County",
+"OH",
+12,
+null
+],
+[
+"39035",
+"Cuyahoga County",
+"OH",
+12,
+"OH:Cleveland"
+],
+[
+"39037",
+"Darke County",
+"OH",
+18,
+null
+],
+[
+"39039",
+"Defiance County",
+"OH",
+45,
+null
+],
+[
+"39041",
+"Delaware County",
+"OH",
+14,
+null
+],
+[
+"39043",
+"Erie County",
+"OH",
+12,
+"OH:Sandusky"
+],
+[
+"39045",
+"Fairfield County",
+"OH",
+14,
+null
+],
+[
+"39047",
+"Fayette County",
+"OH",
+14,
+null
+],
+[
+"39049",
+"Franklin County",
+"OH",
+14,
+"OH:Columbus"
+],
+[
+"39051",
+"Fulton County",
+"OH",
+45,
+null
+],
+[
+"39053",
+"Gallia County",
+"OH",
+45,
+null
+],
+[
+"39055",
+"Geauga County",
+"OH",
+12,
+null
+],
+[
+"39057",
+"Greene County",
+"OH",
+18,
+"OH:Dayton / Fairborn"
+],
+[
+"39059",
+"Guernsey County",
+"OH",
+14,
+null
+],
+[
+"39061",
+"Hamilton County",
+"OH",
+11,
+"OH:Cincinnati"
+],
+[
+"39063",
+"Hancock County",
+"OH",
+45,
+null
+],
+[
+"39065",
+"Hardin County",
+"OH",
+14,
+null
+],
+[
+"39067",
+"Harrison County",
+"OH",
+12,
+null
+],
+[
+"39069",
+"Henry County",
+"OH",
+45,
+null
+],
+[
+"39071",
+"Highland County",
+"OH",
+11,
+null
+],
+[
+"39073",
+"Hocking County",
+"OH",
+14,
+null
+],
+[
+"39075",
+"Holmes County",
+"OH",
+12,
+null
+],
+[
+"39077",
+"Huron County",
+"OH",
+12,
+null
+],
+[
+"39079",
+"Jackson County",
+"OH",
+45,
+null
+],
+[
+"39081",
+"Jefferson County",
+"OH",
+41,
+null
+],
+[
+"39083",
+"Knox County",
+"OH",
+14,
+null
+],
+[
+"39085",
+"Lake County",
+"OH",
+12,
+null
+],
+[
+"39087",
+"Lawrence County",
+"OH",
+45,
+null
+],
+[
+"39089",
+"Licking County",
+"OH",
+14,
+null
+],
+[
+"39091",
+"Logan County",
+"OH",
+14,
+null
+],
+[
+"39093",
+"Lorain County",
+"OH",
+12,
+null
+],
+[
+"39095",
+"Lucas County",
+"OH",
+45,
+null
+],
+[
+"39097",
+"Madison County",
+"OH",
+14,
+null
+],
+[
+"39099",
+"Mahoning County",
+"OH",
+12,
+null
+],
+[
+"39101",
+"Marion County",
+"OH",
+14,
+null
+],
+[
+"39103",
+"Medina County",
+"OH",
+12,
+null
+],
+[
+"39105",
+"Meigs County",
+"OH",
+45,
+null
+],
+[
+"39107",
+"Mercer County",
+"OH",
+18,
+null
+],
+[
+"39109",
+"Miami County",
+"OH",
+18,
+null
+],
+[
+"39111",
+"Monroe County",
+"OH",
+45,
+null
+],
+[
+"39113",
+"Montgomery County",
+"OH",
+18,
+"OH:Dayton / Fairborn"
+],
+[
+"39115",
+"Morgan County",
+"OH",
+14,
+null
+],
+[
+"39117",
+"Morrow County",
+"OH",
+14,
+null
+],
+[
+"39119",
+"Muskingum County",
+"OH",
+14,
+null
+],
+[
+"39121",
+"Noble County",
+"OH",
+14,
+null
+],
+[
+"39123",
+"Ottawa County",
+"OH",
+45,
+null
+],
+[
+"39125",
+"Paulding County",
+"OH",
+45,
+null
+],
+[
+"39127",
+"Perry County",
+"OH",
+14,
+null
+],
+[
+"39129",
+"Pickaway County",
+"OH",
+14,
+null
+],
+[
+"39131",
+"Pike County",
+"OH",
+14,
+null
+],
+[
+"39133",
+"Portage County",
+"OH",
+12,
+null
+],
+[
+"39135",
+"Preble County",
+"OH",
+18,
+null
+],
+[
+"39137",
+"Putnam County",
+"OH",
+45,
+null
+],
+[
+"39139",
+"Richland County",
+"OH",
+12,
+null
+],
+[
+"39141",
+"Ross County",
+"OH",
+14,
+null
+],
+[
+"39143",
+"Sandusky County",
+"OH",
+45,
+null
+],
+[
+"39145",
+"Scioto County",
+"OH",
+45,
+null
+],
+[
+"39147",
+"Seneca County",
+"OH",
+45,
+null
+],
+[
+"39149",
+"Shelby County",
+"OH",
+18,
+null
+],
+[
+"39151",
+"Stark County",
+"OH",
+12,
+null
+],
+[
+"39153",
+"Summit County",
+"OH",
+12,
+null
+],
+[
+"39155",
+"Trumbull County",
+"OH",
+12,
+null
+],
+[
+"39157",
+"Tuscarawas County",
+"OH",
+12,
+null
+],
+[
+"39159",
+"Union County",
+"OH",
+14,
+null
+],
+[
+"39161",
+"Van Wert County",
+"OH",
+18,
+null
+],
+[
+"39163",
+"Vinton County",
+"OH",
+14,
+null
+],
+[
+"39165",
+"Warren County",
+"OH",
+11,
+"OH:Hamilton"
+],
+[
+"39167",
+"Washington County",
+"OH",
+45,
+null
+],
+[
+"39169",
+"Wayne County",
+"OH",
+12,
+null
+],
+[
+"39171",
+"Williams County",
+"OH",
+45,
+null
+],
+[
+"39173",
+"Wood County",
+"OH",
+45,
+null
+],
+[
+"39175",
+"Wyandot County",
+"OH",
+45,
+null
+],
+[
+"40001",
+"Adair County",
+"OK",
+45,
+null
+],
+[
+"40003",
+"Alfalfa County",
+"OK",
+45,
+null
+],
+[
+"40005",
+"Atoka County",
+"OK",
+45,
+null
+],
+[
+"40007",
+"Beaver County",
+"OK",
+45,
+null
+],
+[
+"40009",
+"Beckham County",
+"OK",
+45,
+null
+],
+[
+"40011",
+"Blaine County",
+"OK",
+45,
+null
+],
+[
+"40013",
+"Bryan County",
+"OK",
+16,
+null
+],
+[
+"40015",
+"Caddo County",
+"OK",
+45,
+null
+],
+[
+"40017",
+"Canadian County",
+"OK",
+45,
+null
+],
+[
+"40019",
+"Carter County",
+"OK",
+16,
+null
+],
+[
+"40021",
+"Cherokee County",
+"OK",
+45,
+null
+],
+[
+"40023",
+"Choctaw County",
+"OK",
+45,
+null
+],
+[
+"40025",
+"Cimarron County",
+"OK",
+45,
+null
+],
+[
+"40027",
+"Cleveland County",
+"OK",
+45,
+null
+],
+[
+"40029",
+"Coal County",
+"OK",
+45,
+null
+],
+[
+"40031",
+"Comanche County",
+"OK",
+45,
+null
+],
+[
+"40033",
+"Cotton County",
+"OK",
+45,
+null
+],
+[
+"40035",
+"Craig County",
+"OK",
+45,
+null
+],
+[
+"40037",
+"Creek County",
+"OK",
+45,
+null
+],
+[
+"40039",
+"Custer County",
+"OK",
+45,
+null
+],
+[
+"40041",
+"Delaware County",
+"OK",
+45,
+null
+],
+[
+"40043",
+"Dewey County",
+"OK",
+45,
+null
+],
+[
+"40045",
+"Ellis County",
+"OK",
+45,
+null
+],
+[
+"40047",
+"Garfield County",
+"OK",
+45,
+null
+],
+[
+"40049",
+"Garvin County",
+"OK",
+45,
+null
+],
+[
+"40051",
+"Grady County",
+"OK",
+45,
+null
+],
+[
+"40053",
+"Grant County",
+"OK",
+45,
+null
+],
+[
+"40055",
+"Greer County",
+"OK",
+45,
+null
+],
+[
+"40057",
+"Harmon County",
+"OK",
+45,
+null
+],
+[
+"40059",
+"Harper County",
+"OK",
+45,
+null
+],
+[
+"40061",
+"Haskell County",
+"OK",
+45,
+null
+],
+[
+"40063",
+"Hughes County",
+"OK",
+45,
+null
+],
+[
+"40065",
+"Jackson County",
+"OK",
+45,
+null
+],
+[
+"40067",
+"Jefferson County",
+"OK",
+45,
+null
+],
+[
+"40069",
+"Johnston County",
+"OK",
+45,
+null
+],
+[
+"40071",
+"Kay County",
+"OK",
+45,
+null
+],
+[
+"40073",
+"Kingfisher County",
+"OK",
+45,
+null
+],
+[
+"40075",
+"Kiowa County",
+"OK",
+45,
+null
+],
+[
+"40077",
+"Latimer County",
+"OK",
+45,
+null
+],
+[
+"40079",
+"Le Flore County",
+"OK",
+45,
+null
+],
+[
+"40081",
+"Lincoln County",
+"OK",
+45,
+null
+],
+[
+"40083",
+"Logan County",
+"OK",
+45,
+null
+],
+[
+"40085",
+"Love County",
+"OK",
+16,
+null
+],
+[
+"40087",
+"McClain County",
+"OK",
+45,
+null
+],
+[
+"40089",
+"McCurtain County",
+"OK",
+45,
+null
+],
+[
+"40091",
+"McIntosh County",
+"OK",
+45,
+null
+],
+[
+"40093",
+"Major County",
+"OK",
+45,
+null
+],
+[
+"40095",
+"Marshall County",
+"OK",
+45,
+null
+],
+[
+"40097",
+"Mayes County",
+"OK",
+45,
+null
+],
+[
+"40099",
+"Murray County",
+"OK",
+45,
+null
+],
+[
+"40101",
+"Muskogee County",
+"OK",
+45,
+null
+],
+[
+"40103",
+"Noble County",
+"OK",
+45,
+null
+],
+[
+"40105",
+"Nowata County",
+"OK",
+45,
+null
+],
+[
+"40107",
+"Okfuskee County",
+"OK",
+45,
+null
+],
+[
+"40109",
+"Oklahoma County",
+"OK",
+45,
+"OK:Oklahoma City"
+],
+[
+"40111",
+"Okmulgee County",
+"OK",
+45,
+null
+],
+[
+"40113",
+"Osage County",
+"OK",
+45,
+null
+],
+[
+"40115",
+"Ottawa County",
+"OK",
+45,
+null
+],
+[
+"40117",
+"Pawnee County",
+"OK",
+45,
+null
+],
+[
+"40119",
+"Payne County",
+"OK",
+45,
+null
+],
+[
+"40121",
+"Pittsburg County",
+"OK",
+45,
+null
+],
+[
+"40123",
+"Pontotoc County",
+"OK",
+45,
+null
+],
+[
+"40125",
+"Pottawatomie County",
+"OK",
+45,
+null
+],
+[
+"40127",
+"Pushmataha County",
+"OK",
+45,
+null
+],
+[
+"40129",
+"Roger Mills County",
+"OK",
+45,
+null
+],
+[
+"40131",
+"Rogers County",
+"OK",
+45,
+null
+],
+[
+"40133",
+"Seminole County",
+"OK",
+45,
+null
+],
+[
+"40135",
+"Sequoyah County",
+"OK",
+45,
+null
+],
+[
+"40137",
+"Stephens County",
+"OK",
+45,
+null
+],
+[
+"40139",
+"Texas County",
+"OK",
+45,
+null
+],
+[
+"40141",
+"Tillman County",
+"OK",
+45,
+null
+],
+[
+"40143",
+"Tulsa County",
+"OK",
+45,
+null
+],
+[
+"40145",
+"Wagoner County",
+"OK",
+45,
+null
+],
+[
+"40147",
+"Washington County",
+"OK",
+45,
+null
+],
+[
+"40149",
+"Washita County",
+"OK",
+45,
+null
+],
+[
+"40151",
+"Woods County",
+"OK",
+45,
+null
+],
+[
+"40153",
+"Woodward County",
+"OK",
+45,
+null
+],
+[
+"41001",
+"Baker County",
+"OR",
+45,
+null
+],
+[
+"41003",
+"Benton County",
+"OR",
+42,
+null
+],
+[
+"41005",
+"Clackamas County",
+"OR",
+42,
+"OR:Clackamas"
+],
+[
+"41007",
+"Clatsop County",
+"OR",
+45,
+"OR:Seaside"
+],
+[
+"41009",
+"Columbia County",
+"OR",
+42,
+null
+],
+[
+"41011",
+"Coos County",
+"OR",
+45,
+null
+],
+[
+"41013",
+"Crook County",
+"OR",
+45,
+null
+],
+[
+"41015",
+"Curry County",
+"OR",
+45,
+null
+],
+[
+"41017",
+"Deschutes County",
+"OR",
+45,
+"OR:Bend"
+],
+[
+"41019",
+"Douglas County",
+"OR",
+45,
+null
+],
+[
+"41021",
+"Gilliam County",
+"OR",
+45,
+null
+],
+[
+"41023",
+"Grant County",
+"OR",
+45,
+null
+],
+[
+"41025",
+"Harney County",
+"OR",
+45,
+null
+],
+[
+"41027",
+"Hood River County",
+"OR",
+45,
+null
+],
+[
+"41029",
+"Jackson County",
+"OR",
+45,
+null
+],
+[
+"41031",
+"Jefferson County",
+"OR",
+45,
+null
+],
+[
+"41033",
+"Josephine County",
+"OR",
+45,
+null
+],
+[
+"41035",
+"Klamath County",
+"OR",
+45,
+null
+],
+[
+"41037",
+"Lake County",
+"OR",
+45,
+null
+],
+[
+"41039",
+"Lane County",
+"OR",
+45,
+"OR:Eugene / Florence"
+],
+[
+"41041",
+"Lincoln County",
+"OR",
+45,
+"OR:Lincoln City"
+],
+[
+"41043",
+"Linn County",
+"OR",
+42,
+null
+],
+[
+"41045",
+"Malheur County",
+"OR",
+45,
+null
+],
+[
+"41047",
+"Marion County",
+"OR",
+42,
+null
+],
+[
+"41049",
+"Morrow County",
+"OR",
+45,
+null
+],
+[
+"41051",
+"Multnomah County",
+"OR",
+42,
+"OR:Portland"
+],
+[
+"41053",
+"Polk County",
+"OR",
+42,
+null
+],
+[
+"41055",
+"Sherman County",
+"OR",
+45,
+null
+],
+[
+"41057",
+"Tillamook County",
+"OR",
+45,
+null
+],
+[
+"41059",
+"Umatilla County",
+"OR",
+45,
+null
+],
+[
+"41061",
+"Union County",
+"OR",
+45,
+null
+],
+[
+"41063",
+"Wallowa County",
+"OR",
+45,
+null
+],
+[
+"41065",
+"Wasco County",
+"OR",
+45,
+null
+],
+[
+"41067",
+"Washington County",
+"OR",
+42,
+"OR:Beaverton"
+],
+[
+"41069",
+"Wheeler County",
+"OR",
+45,
+null
+],
+[
+"41071",
+"Yamhill County",
+"OR",
+42,
+null
+],
+[
+"42001",
+"Adams County",
+"PA",
+57,
+"PA:Gettysburg"
+],
+[
+"42003",
+"Allegheny County",
+"PA",
+41,
+"PA:Pittsburgh"
+],
+[
+"42005",
+"Armstrong County",
+"PA",
+41,
+null
+],
+[
+"42007",
+"Beaver County",
+"PA",
+41,
+null
+],
+[
+"42009",
+"Bedford County",
+"PA",
+45,
+null
+],
+[
+"42011",
+"Berks County",
+"PA",
+39,
+"PA:Reading"
+],
+[
+"42013",
+"Blair County",
+"PA",
+45,
+null
+],
+[
+"42015",
+"Bradford County",
+"PA",
+45,
+null
+],
+[
+"42017",
+"Bucks County",
+"PA",
+39,
+"PA:Bucks"
+],
+[
+"42019",
+"Butler County",
+"PA",
+41,
+null
+],
+[
+"42021",
+"Cambria County",
+"PA",
+41,
+null
+],
+[
+"42023",
+"Cameron County",
+"PA",
+45,
+null
+],
+[
+"42025",
+"Carbon County",
+"PA",
+36,
+null
+],
+[
+"42027",
+"Centre County",
+"PA",
+45,
+"PA:State College"
+],
+[
+"42029",
+"Chester County",
+"PA",
+39,
+"PA:Malvern / Frazer / Berwyn"
+],
+[
+"42031",
+"Clarion County",
+"PA",
+45,
+null
+],
+[
+"42033",
+"Clearfield County",
+"PA",
+45,
+null
+],
+[
+"42035",
+"Clinton County",
+"PA",
+45,
+null
+],
+[
+"42037",
+"Columbia County",
+"PA",
+45,
+null
+],
+[
+"42039",
+"Crawford County",
+"PA",
+45,
+null
+],
+[
+"42041",
+"Cumberland County",
+"PA",
+23,
+null
+],
+[
+"42043",
+"Dauphin County",
+"PA",
+23,
+"PA:Harrisburg"
+],
+[
+"42045",
+"Delaware County",
+"PA",
+39,
+"PA:Chester / Radnor / Essington"
+],
+[
+"42047",
+"Elk County",
+"PA",
+45,
+null
+],
+[
+"42049",
+"Erie County",
+"PA",
+45,
+null
+],
+[
+"42051",
+"Fayette County",
+"PA",
+41,
+null
+],
+[
+"42053",
+"Forest County",
+"PA",
+45,
+null
+],
+[
+"42055",
+"Franklin County",
+"PA",
+57,
+null
+],
+[
+"42057",
+"Fulton County",
+"PA",
+57,
+null
+],
+[
+"42059",
+"Greene County",
+"PA",
+41,
+null
+],
+[
+"42061",
+"Huntingdon County",
+"PA",
+45,
+null
+],
+[
+"42063",
+"Indiana County",
+"PA",
+41,
+null
+],
+[
+"42065",
+"Jefferson County",
+"PA",
+45,
+null
+],
+[
+"42067",
+"Juniata County",
+"PA",
+23,
+null
+],
+[
+"42069",
+"Lackawanna County",
+"PA",
+45,
+null
+],
+[
+"42071",
+"Lancaster County",
+"PA",
+23,
+"PA:Lancaster"
+],
+[
+"42073",
+"Lawrence County",
+"PA",
+41,
+null
+],
+[
+"42075",
+"Lebanon County",
+"PA",
+23,
+null
+],
+[
+"42077",
+"Lehigh County",
+"PA",
+36,
+"PA:Allentown / Easton / Bethlehem"
+],
+[
+"42079",
+"Luzerne County",
+"PA",
+45,
+null
+],
+[
+"42081",
+"Lycoming County",
+"PA",
+45,
+null
+],
+[
+"42083",
+"McKean County",
+"PA",
+45,
+null
+],
+[
+"42085",
+"Mercer County",
+"PA",
+12,
+null
+],
+[
+"42087",
+"Mifflin County",
+"PA",
+45,
+null
+],
+[
+"42089",
+"Monroe County",
+"PA",
+36,
+null
+],
+[
+"42091",
+"Montgomery County",
+"PA",
+39,
+"PA:Montgomery"
+],
+[
+"42093",
+"Montour County",
+"PA",
+45,
+null
+],
+[
+"42095",
+"Northampton County",
+"PA",
+36,
+"PA:Allentown / Easton / Bethlehem"
+],
+[
+"42097",
+"Northumberland County",
+"PA",
+45,
+null
+],
+[
+"42099",
+"Perry County",
+"PA",
+23,
+null
+],
+[
+"42101",
+"Philadelphia County",
+"PA",
+39,
+"PA:Philadelphia"
+],
+[
+"42103",
+"Pike County",
+"PA",
+36,
+null
+],
+[
+"42105",
+"Potter County",
+"PA",
+45,
+null
+],
+[
+"42107",
+"Schuylkill County",
+"PA",
+39,
+null
+],
+[
+"42109",
+"Snyder County",
+"PA",
+45,
+null
+],
+[
+"42111",
+"Somerset County",
+"PA",
+41,
+null
+],
+[
+"42113",
+"Sullivan County",
+"PA",
+45,
+null
+],
+[
+"42115",
+"Susquehanna County",
+"PA",
+45,
+null
+],
+[
+"42117",
+"Tioga County",
+"PA",
+45,
+null
+],
+[
+"42119",
+"Union County",
+"PA",
+45,
+null
+],
+[
+"42121",
+"Venango County",
+"PA",
+45,
+null
+],
+[
+"42123",
+"Warren County",
+"PA",
+45,
+null
+],
+[
+"42125",
+"Washington County",
+"PA",
+41,
+null
+],
+[
+"42127",
+"Wayne County",
+"PA",
+36,
+null
+],
+[
+"42129",
+"Westmoreland County",
+"PA",
+41,
+null
+],
+[
+"42131",
+"Wyoming County",
+"PA",
+45,
+null
+],
+[
+"42133",
+"York County",
+"PA",
+57,
+null
+],
+[
+"44001",
+"Bristol County",
+"RI",
+6,
+"RI:Providence / Bristol"
+],
+[
+"44003",
+"Kent County",
+"RI",
+6,
+null
+],
+[
+"44005",
+"Newport County",
+"RI",
+6,
+"RI:Jamestown / Middletown / Newport"
+],
+[
+"44007",
+"Providence County",
+"RI",
+6,
+"RI:Providence / Bristol"
+],
+[
+"44009",
+"Washington County",
+"RI",
+6,
+null
+],
+[
+"45001",
+"Abbeville County",
+"SC",
+45,
+null
+],
+[
+"45003",
+"Aiken County",
+"SC",
+45,
+null
+],
+[
+"45005",
+"Allendale County",
+"SC",
+45,
+null
+],
+[
+"45007",
+"Anderson County",
+"SC",
+45,
+null
+],
+[
+"45009",
+"Bamberg County",
+"SC",
+45,
+null
+],
+[
+"45011",
+"Barnwell County",
+"SC",
+45,
+null
+],
+[
+"45013",
+"Beaufort County",
+"SC",
+45,
+"SC:Hilton Head"
+],
+[
+"45015",
+"Berkeley County",
+"SC",
+45,
+"SC:Charleston"
+],
+[
+"45017",
+"Calhoun County",
+"SC",
+45,
+null
+],
+[
+"45019",
+"Charleston County",
+"SC",
+45,
+"SC:Charleston"
+],
+[
+"45021",
+"Cherokee County",
+"SC",
+45,
+null
+],
+[
+"45023",
+"Chester County",
+"SC",
+9,
+null
+],
+[
+"45025",
+"Chesterfield County",
+"SC",
+9,
+null
+],
+[
+"45027",
+"Clarendon County",
+"SC",
+45,
+null
+],
+[
+"45029",
+"Colleton County",
+"SC",
+45,
+null
+],
+[
+"45031",
+"Darlington County",
+"SC",
+45,
+null
+],
+[
+"45033",
+"Dillon County",
+"SC",
+45,
+null
+],
+[
+"45035",
+"Dorchester County",
+"SC",
+45,
+"SC:Charleston"
+],
+[
+"45037",
+"Edgefield County",
+"SC",
+45,
+null
+],
+[
+"45039",
+"Fairfield County",
+"SC",
+45,
+null
+],
+[
+"45041",
+"Florence County",
+"SC",
+45,
+null
+],
+[
+"45043",
+"Georgetown County",
+"SC",
+45,
+null
+],
+[
+"45045",
+"Greenville County",
+"SC",
+45,
+null
+],
+[
+"45047",
+"Greenwood County",
+"SC",
+45,
+null
+],
+[
+"45049",
+"Hampton County",
+"SC",
+45,
+null
+],
+[
+"45051",
+"Horry County",
+"SC",
+45,
+"SC:Myrtle Beach"
+],
+[
+"45053",
+"Jasper County",
+"SC",
+45,
+null
+],
+[
+"45055",
+"Kershaw County",
+"SC",
+45,
+null
+],
+[
+"45057",
+"Lancaster County",
+"SC",
+9,
+null
+],
+[
+"45059",
+"Laurens County",
+"SC",
+45,
+null
+],
+[
+"45061",
+"Lee County",
+"SC",
+45,
+null
+],
+[
+"45063",
+"Lexington County",
+"SC",
+45,
+"SC:Columbia"
+],
+[
+"45065",
+"McCormick County",
+"SC",
+45,
+null
+],
+[
+"45067",
+"Marion County",
+"SC",
+45,
+null
+],
+[
+"45069",
+"Marlboro County",
+"SC",
+45,
+null
+],
+[
+"45071",
+"Newberry County",
+"SC",
+45,
+null
+],
+[
+"45073",
+"Oconee County",
+"SC",
+45,
+null
+],
+[
+"45075",
+"Orangeburg County",
+"SC",
+45,
+null
+],
+[
+"45077",
+"Pickens County",
+"SC",
+45,
+null
+],
+[
+"45079",
+"Richland County",
+"SC",
+45,
+"SC:Columbia"
+],
+[
+"45081",
+"Saluda County",
+"SC",
+45,
+null
+],
+[
+"45083",
+"Spartanburg County",
+"SC",
+45,
+null
+],
+[
+"45085",
+"Sumter County",
+"SC",
+45,
+null
+],
+[
+"45087",
+"Union County",
+"SC",
+45,
+null
+],
+[
+"45089",
+"Williamsburg County",
+"SC",
+45,
+null
+],
+[
+"45091",
+"York County",
+"SC",
+9,
+null
+],
+[
+"46003",
+"Aurora County",
+"SD",
+45,
+null
+],
+[
+"46005",
+"Beadle County",
+"SD",
+45,
+null
+],
+[
+"46007",
+"Bennett County",
+"SD",
+45,
+null
+],
+[
+"46009",
+"Bon Homme County",
+"SD",
+45,
+null
+],
+[
+"46011",
+"Brookings County",
+"SD",
+45,
+null
+],
+[
+"46013",
+"Brown County",
+"SD",
+45,
+null
+],
+[
+"46015",
+"Brule County",
+"SD",
+45,
+null
+],
+[
+"46017",
+"Buffalo County",
+"SD",
+45,
+null
+],
+[
+"46019",
+"Butte County",
+"SD",
+45,
+null
+],
+[
+"46021",
+"Campbell County",
+"SD",
+45,
+null
+],
+[
+"46023",
+"Charles Mix County",
+"SD",
+45,
+null
+],
+[
+"46025",
+"Clark County",
+"SD",
+45,
+null
+],
+[
+"46027",
+"Clay County",
+"SD",
+45,
+null
+],
+[
+"46029",
+"Codington County",
+"SD",
+45,
+null
+],
+[
+"46031",
+"Corson County",
+"SD",
+45,
+null
+],
+[
+"46033",
+"Custer County",
+"SD",
+45,
+"SD:Hot Springs"
+],
+[
+"46035",
+"Davison County",
+"SD",
+45,
+null
+],
+[
+"46037",
+"Day County",
+"SD",
+45,
+null
+],
+[
+"46039",
+"Deuel County",
+"SD",
+45,
+null
+],
+[
+"46041",
+"Dewey County",
+"SD",
+45,
+null
+],
+[
+"46043",
+"Douglas County",
+"SD",
+45,
+null
+],
+[
+"46045",
+"Edmunds County",
+"SD",
+45,
+null
+],
+[
+"46047",
+"Fall River County",
+"SD",
+45,
+"SD:Hot Springs"
+],
+[
+"46049",
+"Faulk County",
+"SD",
+45,
+null
+],
+[
+"46051",
+"Grant County",
+"SD",
+45,
+null
+],
+[
+"46053",
+"Gregory County",
+"SD",
+45,
+null
+],
+[
+"46055",
+"Haakon County",
+"SD",
+45,
+null
+],
+[
+"46057",
+"Hamlin County",
+"SD",
+45,
+null
+],
+[
+"46059",
+"Hand County",
+"SD",
+45,
+null
+],
+[
+"46061",
+"Hanson County",
+"SD",
+45,
+null
+],
+[
+"46063",
+"Harding County",
+"SD",
+45,
+null
+],
+[
+"46065",
+"Hughes County",
+"SD",
+45,
+null
+],
+[
+"46067",
+"Hutchinson County",
+"SD",
+45,
+null
+],
+[
+"46069",
+"Hyde County",
+"SD",
+45,
+null
+],
+[
+"46071",
+"Jackson County",
+"SD",
+45,
+null
+],
+[
+"46073",
+"Jerauld County",
+"SD",
+45,
+null
+],
+[
+"46075",
+"Jones County",
+"SD",
+45,
+null
+],
+[
+"46077",
+"Kingsbury County",
+"SD",
+45,
+null
+],
+[
+"46079",
+"Lake County",
+"SD",
+45,
+null
+],
+[
+"46081",
+"Lawrence County",
+"SD",
+45,
+"SD:Deadwood / Spearfish"
+],
+[
+"46083",
+"Lincoln County",
+"SD",
+45,
+null
+],
+[
+"46085",
+"Lyman County",
+"SD",
+45,
+null
+],
+[
+"46087",
+"McCook County",
+"SD",
+45,
+null
+],
+[
+"46089",
+"McPherson County",
+"SD",
+45,
+null
+],
+[
+"46091",
+"Marshall County",
+"SD",
+45,
+null
+],
+[
+"46093",
+"Meade County",
+"SD",
+45,
+null
+],
+[
+"46095",
+"Mellette County",
+"SD",
+45,
+null
+],
+[
+"46097",
+"Miner County",
+"SD",
+45,
+null
+],
+[
+"46099",
+"Minnehaha County",
+"SD",
+45,
+null
+],
+[
+"46101",
+"Moody County",
+"SD",
+45,
+null
+],
+[
+"46102",
+"Oglala Lakota County",
+"SD",
+45,
+null
+],
+[
+"46103",
+"Pennington County",
+"SD",
+45,
+"SD:Rapid City"
+],
+[
+"46105",
+"Perkins County",
+"SD",
+45,
+null
+],
+[
+"46107",
+"Potter County",
+"SD",
+45,
+null
+],
+[
+"46109",
+"Roberts County",
+"SD",
+45,
+null
+],
+[
+"46111",
+"Sanborn County",
+"SD",
+45,
+null
+],
+[
+"46115",
+"Spink County",
+"SD",
+45,
+null
+],
+[
+"46117",
+"Stanley County",
+"SD",
+45,
+null
+],
+[
+"46119",
+"Sully County",
+"SD",
+45,
+null
+],
+[
+"46121",
+"Todd County",
+"SD",
+45,
+null
+],
+[
+"46123",
+"Tripp County",
+"SD",
+45,
+null
+],
+[
+"46125",
+"Turner County",
+"SD",
+45,
+null
+],
+[
+"46127",
+"Union County",
+"SD",
+45,
+null
+],
+[
+"46129",
+"Walworth County",
+"SD",
+45,
+null
+],
+[
+"46135",
+"Yankton County",
+"SD",
+45,
+null
+],
+[
+"46137",
+"Ziebach County",
+"SD",
+45,
+null
+],
+[
+"47001",
+"Anderson County",
+"TN",
+45,
+null
+],
+[
+"47003",
+"Bedford County",
+"TN",
+45,
+null
+],
+[
+"47005",
+"Benton County",
+"TN",
+45,
+null
+],
+[
+"47007",
+"Bledsoe County",
+"TN",
+45,
+null
+],
+[
+"47009",
+"Blount County",
+"TN",
+45,
+null
+],
+[
+"47011",
+"Bradley County",
+"TN",
+45,
+null
+],
+[
+"47013",
+"Campbell County",
+"TN",
+45,
+null
+],
+[
+"47015",
+"Cannon County",
+"TN",
+45,
+null
+],
+[
+"47017",
+"Carroll County",
+"TN",
+45,
+null
+],
+[
+"47019",
+"Carter County",
+"TN",
+45,
+null
+],
+[
+"47021",
+"Cheatham County",
+"TN",
+45,
+null
+],
+[
+"47023",
+"Chester County",
+"TN",
+45,
+null
+],
+[
+"47025",
+"Claiborne County",
+"TN",
+45,
+null
+],
+[
+"47027",
+"Clay County",
+"TN",
+45,
+null
+],
+[
+"47029",
+"Cocke County",
+"TN",
+45,
+null
+],
+[
+"47031",
+"Coffee County",
+"TN",
+45,
+null
+],
+[
+"47033",
+"Crockett County",
+"TN",
+45,
+null
+],
+[
+"47035",
+"Cumberland County",
+"TN",
+45,
+null
+],
+[
+"47037",
+"Davidson County",
+"TN",
+45,
+"TN:Nashville"
+],
+[
+"47039",
+"Decatur County",
+"TN",
+45,
+null
+],
+[
+"47041",
+"DeKalb County",
+"TN",
+45,
+null
+],
+[
+"47043",
+"Dickson County",
+"TN",
+45,
+null
+],
+[
+"47045",
+"Dyer County",
+"TN",
+45,
+null
+],
+[
+"47047",
+"Fayette County",
+"TN",
+45,
+null
+],
+[
+"47049",
+"Fentress County",
+"TN",
+45,
+null
+],
+[
+"47051",
+"Franklin County",
+"TN",
+45,
+null
+],
+[
+"47053",
+"Gibson County",
+"TN",
+45,
+null
+],
+[
+"47055",
+"Giles County",
+"TN",
+45,
+null
+],
+[
+"47057",
+"Grainger County",
+"TN",
+45,
+null
+],
+[
+"47059",
+"Greene County",
+"TN",
+45,
+null
+],
+[
+"47061",
+"Grundy County",
+"TN",
+45,
+null
+],
+[
+"47063",
+"Hamblen County",
+"TN",
+45,
+null
+],
+[
+"47065",
+"Hamilton County",
+"TN",
+45,
+"TN:Chattanooga"
+],
+[
+"47067",
+"Hancock County",
+"TN",
+45,
+null
+],
+[
+"47069",
+"Hardeman County",
+"TN",
+45,
+null
+],
+[
+"47071",
+"Hardin County",
+"TN",
+45,
+null
+],
+[
+"47073",
+"Hawkins County",
+"TN",
+45,
+null
+],
+[
+"47075",
+"Haywood County",
+"TN",
+45,
+null
+],
+[
+"47077",
+"Henderson County",
+"TN",
+45,
+null
+],
+[
+"47079",
+"Henry County",
+"TN",
+45,
+null
+],
+[
+"47081",
+"Hickman County",
+"TN",
+45,
+null
+],
+[
+"47083",
+"Houston County",
+"TN",
+45,
+null
+],
+[
+"47085",
+"Humphreys County",
+"TN",
+45,
+null
+],
+[
+"47087",
+"Jackson County",
+"TN",
+45,
+null
+],
+[
+"47089",
+"Jefferson County",
+"TN",
+45,
+null
+],
+[
+"47091",
+"Johnson County",
+"TN",
+45,
+null
+],
+[
+"47093",
+"Knox County",
+"TN",
+45,
+"TN:Knoxville"
+],
+[
+"47095",
+"Lake County",
+"TN",
+45,
+null
+],
+[
+"47097",
+"Lauderdale County",
+"TN",
+45,
+null
+],
+[
+"47099",
+"Lawrence County",
+"TN",
+45,
+null
+],
+[
+"47101",
+"Lewis County",
+"TN",
+45,
+null
+],
+[
+"47103",
+"Lincoln County",
+"TN",
+27,
+null
+],
+[
+"47105",
+"Loudon County",
+"TN",
+45,
+null
+],
+[
+"47107",
+"McMinn County",
+"TN",
+45,
+null
+],
+[
+"47109",
+"McNairy County",
+"TN",
+45,
+null
+],
+[
+"47111",
+"Macon County",
+"TN",
+45,
+null
+],
+[
+"47113",
+"Madison County",
+"TN",
+45,
+null
+],
+[
+"47115",
+"Marion County",
+"TN",
+45,
+null
+],
+[
+"47117",
+"Marshall County",
+"TN",
+45,
+null
+],
+[
+"47119",
+"Maury County",
+"TN",
+45,
+null
+],
+[
+"47121",
+"Meigs County",
+"TN",
+45,
+null
+],
+[
+"47123",
+"Monroe County",
+"TN",
+45,
+null
+],
+[
+"47125",
+"Montgomery County",
+"TN",
+45,
+null
+],
+[
+"47127",
+"Moore County",
+"TN",
+45,
+null
+],
+[
+"47129",
+"Morgan County",
+"TN",
+45,
+null
+],
+[
+"47131",
+"Obion County",
+"TN",
+45,
+null
+],
+[
+"47133",
+"Overton County",
+"TN",
+45,
+null
+],
+[
+"47135",
+"Perry County",
+"TN",
+45,
+null
+],
+[
+"47137",
+"Pickett County",
+"TN",
+45,
+null
+],
+[
+"47139",
+"Polk County",
+"TN",
+45,
+null
+],
+[
+"47141",
+"Putnam County",
+"TN",
+45,
+null
+],
+[
+"47143",
+"Rhea County",
+"TN",
+45,
+null
+],
+[
+"47145",
+"Roane County",
+"TN",
+45,
+null
+],
+[
+"47147",
+"Robertson County",
+"TN",
+45,
+null
+],
+[
+"47149",
+"Rutherford County",
+"TN",
+45,
+null
+],
+[
+"47151",
+"Scott County",
+"TN",
+45,
+null
+],
+[
+"47153",
+"Sequatchie County",
+"TN",
+45,
+null
+],
+[
+"47155",
+"Sevier County",
+"TN",
+45,
+null
+],
+[
+"47157",
+"Shelby County",
+"TN",
+45,
+"TN:Memphis"
+],
+[
+"47159",
+"Smith County",
+"TN",
+45,
+null
+],
+[
+"47161",
+"Stewart County",
+"TN",
+45,
+null
+],
+[
+"47163",
+"Sullivan County",
+"TN",
+45,
+null
+],
+[
+"47165",
+"Sumner County",
+"TN",
+45,
+null
+],
+[
+"47167",
+"Tipton County",
+"TN",
+45,
+null
+],
+[
+"47169",
+"Trousdale County",
+"TN",
+45,
+null
+],
+[
+"47171",
+"Unicoi County",
+"TN",
+45,
+null
+],
+[
+"47173",
+"Union County",
+"TN",
+45,
+null
+],
+[
+"47175",
+"Van Buren County",
+"TN",
+45,
+null
+],
+[
+"47177",
+"Warren County",
+"TN",
+45,
+null
+],
+[
+"47179",
+"Washington County",
+"TN",
+45,
+null
+],
+[
+"47181",
+"Wayne County",
+"TN",
+45,
+null
+],
+[
+"47183",
+"Weakley County",
+"TN",
+45,
+null
+],
+[
+"47185",
+"White County",
+"TN",
+45,
+null
+],
+[
+"47187",
+"Williamson County",
+"TN",
+45,
+"TN:Brentwood / Franklin"
+],
+[
+"47189",
+"Wilson County",
+"TN",
+45,
+null
+],
+[
+"48001",
+"Anderson County",
+"TX",
+45,
+null
+],
+[
+"48003",
+"Andrews County",
+"TX",
+45,
+"TX:Midland / Odessa"
+],
+[
+"48005",
+"Angelina County",
+"TX",
+45,
+null
+],
+[
+"48007",
+"Aransas County",
+"TX",
+15,
+null
+],
+[
+"48009",
+"Archer County",
+"TX",
+45,
+null
+],
+[
+"48011",
+"Armstrong County",
+"TX",
+45,
+null
+],
+[
+"48013",
+"Atascosa County",
+"TX",
+49,
+null
+],
+[
+"48015",
+"Austin County",
+"TX",
+26,
+null
+],
+[
+"48017",
+"Bailey County",
+"TX",
+45,
+null
+],
+[
+"48019",
+"Bandera County",
+"TX",
+49,
+null
+],
+[
+"48021",
+"Bastrop County",
+"TX",
+4,
+null
+],
+[
+"48023",
+"Baylor County",
+"TX",
+45,
+null
+],
+[
+"48025",
+"Bee County",
+"TX",
+45,
+null
+],
+[
+"48027",
+"Bell County",
+"TX",
+45,
+null
+],
+[
+"48029",
+"Bexar County",
+"TX",
+49,
+"TX:San Antonio"
+],
+[
+"48031",
+"Blanco County",
+"TX",
+4,
+null
+],
+[
+"48033",
+"Borden County",
+"TX",
+45,
+null
+],
+[
+"48035",
+"Bosque County",
+"TX",
+45,
+null
+],
+[
+"48037",
+"Bowie County",
+"TX",
+45,
+null
+],
+[
+"48039",
+"Brazoria County",
+"TX",
+26,
+null
+],
+[
+"48041",
+"Brazos County",
+"TX",
+45,
+null
+],
+[
+"48043",
+"Brewster County",
+"TX",
+45,
+null
+],
+[
+"48045",
+"Briscoe County",
+"TX",
+45,
+null
+],
+[
+"48047",
+"Brooks County",
+"TX",
+15,
+null
+],
+[
+"48049",
+"Brown County",
+"TX",
+45,
+null
+],
+[
+"48051",
+"Burleson County",
+"TX",
+45,
+null
+],
+[
+"48053",
+"Burnet County",
+"TX",
+4,
+null
+],
+[
+"48055",
+"Caldwell County",
+"TX",
+4,
+null
+],
+[
+"48057",
+"Calhoun County",
+"TX",
+45,
+null
+],
+[
+"48059",
+"Callahan County",
+"TX",
+45,
+null
+],
+[
+"48061",
+"Cameron County",
+"TX",
+45,
+"TX:South Padre Island"
+],
+[
+"48063",
+"Camp County",
+"TX",
+45,
+null
+],
+[
+"48065",
+"Carson County",
+"TX",
+45,
+null
+],
+[
+"48067",
+"Cass County",
+"TX",
+45,
+null
+],
+[
+"48069",
+"Castro County",
+"TX",
+45,
+null
+],
+[
+"48071",
+"Chambers County",
+"TX",
+26,
+null
+],
+[
+"48073",
+"Cherokee County",
+"TX",
+45,
+null
+],
+[
+"48075",
+"Childress County",
+"TX",
+45,
+null
+],
+[
+"48077",
+"Clay County",
+"TX",
+45,
+null
+],
+[
+"48079",
+"Cochran County",
+"TX",
+45,
+null
+],
+[
+"48081",
+"Coke County",
+"TX",
+45,
+null
+],
+[
+"48083",
+"Coleman County",
+"TX",
+45,
+null
+],
+[
+"48085",
+"Collin County",
+"TX",
+16,
+"TX:Plano"
+],
+[
+"48087",
+"Collingsworth County",
+"TX",
+45,
+null
+],
+[
+"48089",
+"Colorado County",
+"TX",
+26,
+null
+],
+[
+"48091",
+"Comal County",
+"TX",
+49,
+null
+],
+[
+"48093",
+"Comanche County",
+"TX",
+45,
+null
+],
+[
+"48095",
+"Concho County",
+"TX",
+45,
+null
+],
+[
+"48097",
+"Cooke County",
+"TX",
+16,
+null
+],
+[
+"48099",
+"Coryell County",
+"TX",
+45,
+null
+],
+[
+"48101",
+"Cottle County",
+"TX",
+45,
+null
+],
+[
+"48103",
+"Crane County",
+"TX",
+45,
+null
+],
+[
+"48105",
+"Crockett County",
+"TX",
+45,
+null
+],
+[
+"48107",
+"Crosby County",
+"TX",
+45,
+null
+],
+[
+"48109",
+"Culberson County",
+"TX",
+45,
+null
+],
+[
+"48111",
+"Dallam County",
+"TX",
+45,
+null
+],
+[
+"48113",
+"Dallas County",
+"TX",
+16,
+"TX:Dallas"
+],
+[
+"48115",
+"Dawson County",
+"TX",
+45,
+null
+],
+[
+"48117",
+"Deaf Smith County",
+"TX",
+45,
+null
+],
+[
+"48119",
+"Delta County",
+"TX",
+16,
+null
+],
+[
+"48121",
+"Denton County",
+"TX",
+16,
+null
+],
+[
+"48123",
+"DeWitt County",
+"TX",
+45,
+null
+],
+[
+"48125",
+"Dickens County",
+"TX",
+45,
+null
+],
+[
+"48127",
+"Dimmit County",
+"TX",
+45,
+null
+],
+[
+"48129",
+"Donley County",
+"TX",
+45,
+null
+],
+[
+"48131",
+"Duval County",
+"TX",
+15,
+null
+],
+[
+"48133",
+"Eastland County",
+"TX",
+45,
+null
+],
+[
+"48135",
+"Ector County",
+"TX",
+45,
+"TX:Midland / Odessa"
+],
+[
+"48137",
+"Edwards County",
+"TX",
+45,
+null
+],
+[
+"48139",
+"Ellis County",
+"TX",
+16,
+null
+],
+[
+"48141",
+"El Paso County",
+"TX",
+45,
+null
+],
+[
+"48143",
+"Erath County",
+"TX",
+45,
+null
+],
+[
+"48145",
+"Falls County",
+"TX",
+45,
+null
+],
+[
+"48147",
+"Fannin County",
+"TX",
+16,
+null
+],
+[
+"48149",
+"Fayette County",
+"TX",
+45,
+null
+],
+[
+"48151",
+"Fisher County",
+"TX",
+45,
+null
+],
+[
+"48153",
+"Floyd County",
+"TX",
+45,
+null
+],
+[
+"48155",
+"Foard County",
+"TX",
+45,
+null
+],
+[
+"48157",
+"Fort Bend County",
+"TX",
+26,
+"TX:Houston"
+],
+[
+"48159",
+"Franklin County",
+"TX",
+45,
+null
+],
+[
+"48161",
+"Freestone County",
+"TX",
+45,
+null
+],
+[
+"48163",
+"Frio County",
+"TX",
+49,
+null
+],
+[
+"48165",
+"Gaines County",
+"TX",
+45,
+null
+],
+[
+"48167",
+"Galveston County",
+"TX",
+26,
+"TX:Galveston"
+],
+[
+"48169",
+"Garza County",
+"TX",
+45,
+null
+],
+[
+"48171",
+"Gillespie County",
+"TX",
+49,
+null
+],
+[
+"48173",
+"Glasscock County",
+"TX",
+45,
+null
+],
+[
+"48175",
+"Goliad County",
+"TX",
+45,
+null
+],
+[
+"48177",
+"Gonzales County",
+"TX",
+49,
+null
+],
+[
+"48179",
+"Gray County",
+"TX",
+45,
+null
+],
+[
+"48181",
+"Grayson County",
+"TX",
+16,
+null
+],
+[
+"48183",
+"Gregg County",
+"TX",
+45,
+null
+],
+[
+"48185",
+"Grimes County",
+"TX",
+26,
+null
+],
+[
+"48187",
+"Guadalupe County",
+"TX",
+49,
+null
+],
+[
+"48189",
+"Hale County",
+"TX",
+45,
+null
+],
+[
+"48191",
+"Hall County",
+"TX",
+45,
+null
+],
+[
+"48193",
+"Hamilton County",
+"TX",
+45,
+null
+],
+[
+"48195",
+"Hansford County",
+"TX",
+45,
+null
+],
+[
+"48197",
+"Hardeman County",
+"TX",
+45,
+null
+],
+[
+"48199",
+"Hardin County",
+"TX",
+45,
+null
+],
+[
+"48201",
+"Harris County",
+"TX",
+26,
+"TX:Houston"
+],
+[
+"48203",
+"Harrison County",
+"TX",
+45,
+null
+],
+[
+"48205",
+"Hartley County",
+"TX",
+45,
+null
+],
+[
+"48207",
+"Haskell County",
+"TX",
+45,
+null
+],
+[
+"48209",
+"Hays County",
+"TX",
+4,
+null
+],
+[
+"48211",
+"Hemphill County",
+"TX",
+45,
+null
+],
+[
+"48213",
+"Henderson County",
+"TX",
+16,
+null
+],
+[
+"48215",
+"Hidalgo County",
+"TX",
+45,
+null
+],
+[
+"48217",
+"Hill County",
+"TX",
+16,
+null
+],
+[
+"48219",
+"Hockley County",
+"TX",
+45,
+null
+],
+[
+"48221",
+"Hood County",
+"TX",
+16,
+null
+],
+[
+"48223",
+"Hopkins County",
+"TX",
+16,
+null
+],
+[
+"48225",
+"Houston County",
+"TX",
+45,
+null
+],
+[
+"48227",
+"Howard County",
+"TX",
+45,
+"TX:Big Spring"
+],
+[
+"48229",
+"Hudspeth County",
+"TX",
+45,
+null
+],
+[
+"48231",
+"Hunt County",
+"TX",
+16,
+null
+],
+[
+"48233",
+"Hutchinson County",
+"TX",
+45,
+null
+],
+[
+"48235",
+"Irion County",
+"TX",
+45,
+null
+],
+[
+"48237",
+"Jack County",
+"TX",
+16,
+null
+],
+[
+"48239",
+"Jackson County",
+"TX",
+26,
+null
+],
+[
+"48241",
+"Jasper County",
+"TX",
+45,
+null
+],
+[
+"48243",
+"Jeff Davis County",
+"TX",
+45,
+null
+],
+[
+"48245",
+"Jefferson County",
+"TX",
+45,
+null
+],
+[
+"48247",
+"Jim Hogg County",
+"TX",
+30,
+null
+],
+[
+"48249",
+"Jim Wells County",
+"TX",
+15,
+null
+],
+[
+"48251",
+"Johnson County",
+"TX",
+16,
+null
+],
+[
+"48253",
+"Jones County",
+"TX",
+45,
+null
+],
+[
+"48255",
+"Karnes County",
+"TX",
+49,
+null
+],
+[
+"48257",
+"Kaufman County",
+"TX",
+16,
+null
+],
+[
+"48259",
+"Kendall County",
+"TX",
+49,
+null
+],
+[
+"48261",
+"Kenedy County",
+"TX",
+15,
+null
+],
+[
+"48263",
+"Kent County",
+"TX",
+45,
+null
+],
+[
+"48265",
+"Kerr County",
+"TX",
+49,
+null
+],
+[
+"48267",
+"Kimble County",
+"TX",
+45,
+null
+],
+[
+"48269",
+"King County",
+"TX",
+45,
+null
+],
+[
+"48271",
+"Kinney County",
+"TX",
+45,
+null
+],
+[
+"48273",
+"Kleberg County",
+"TX",
+15,
+null
+],
+[
+"48275",
+"Knox County",
+"TX",
+45,
+null
+],
+[
+"48277",
+"Lamar County",
+"TX",
+45,
+null
+],
+[
+"48279",
+"Lamb County",
+"TX",
+45,
+null
+],
+[
+"48281",
+"Lampasas County",
+"TX",
+45,
+null
+],
+[
+"48283",
+"La Salle County",
+"TX",
+30,
+null
+],
+[
+"48285",
+"Lavaca County",
+"TX",
+45,
+null
+],
+[
+"48287",
+"Lee County",
+"TX",
+4,
+null
+],
+[
+"48289",
+"Leon County",
+"TX",
+45,
+null
+],
+[
+"48291",
+"Liberty County",
+"TX",
+26,
+null
+],
+[
+"48293",
+"Limestone County",
+"TX",
+45,
+null
+],
+[
+"48295",
+"Lipscomb County",
+"TX",
+45,
+null
+],
+[
+"48297",
+"Live Oak County",
+"TX",
+15,
+null
+],
+[
+"48299",
+"Llano County",
+"TX",
+45,
+null
+],
+[
+"48301",
+"Loving County",
+"TX",
+45,
+null
+],
+[
+"48303",
+"Lubbock County",
+"TX",
+45,
+null
+],
+[
+"48305",
+"Lynn County",
+"TX",
+45,
+null
+],
+[
+"48307",
+"McCulloch County",
+"TX",
+45,
+null
+],
+[
+"48309",
+"McLennan County",
+"TX",
+45,
+null
+],
+[
+"48311",
+"McMullen County",
+"TX",
+49,
+null
+],
+[
+"48313",
+"Madison County",
+"TX",
+26,
+null
+],
+[
+"48315",
+"Marion County",
+"TX",
+45,
+null
+],
+[
+"48317",
+"Martin County",
+"TX",
+45,
+"TX:Midland / Odessa"
+],
+[
+"48319",
+"Mason County",
+"TX",
+45,
+null
+],
+[
+"48321",
+"Matagorda County",
+"TX",
+26,
+null
+],
+[
+"48323",
+"Maverick County",
+"TX",
+45,
+null
+],
+[
+"48325",
+"Medina County",
+"TX",
+49,
+null
+],
+[
+"48327",
+"Menard County",
+"TX",
+45,
+null
+],
+[
+"48329",
+"Midland County",
+"TX",
+45,
+"TX:Midland / Odessa"
+],
+[
+"48331",
+"Milam County",
+"TX",
+4,
+null
+],
+[
+"48333",
+"Mills County",
+"TX",
+45,
+null
+],
+[
+"48335",
+"Mitchell County",
+"TX",
+45,
+null
+],
+[
+"48337",
+"Montague County",
+"TX",
+16,
+null
+],
+[
+"48339",
+"Montgomery County",
+"TX",
+26,
+"TX:Houston"
+],
+[
+"48341",
+"Moore County",
+"TX",
+45,
+null
+],
+[
+"48343",
+"Morris County",
+"TX",
+45,
+null
+],
+[
+"48345",
+"Motley County",
+"TX",
+45,
+null
+],
+[
+"48347",
+"Nacogdoches County",
+"TX",
+45,
+null
+],
+[
+"48349",
+"Navarro County",
+"TX",
+16,
+null
+],
+[
+"48351",
+"Newton County",
+"TX",
+45,
+null
+],
+[
+"48353",
+"Nolan County",
+"TX",
+45,
+null
+],
+[
+"48355",
+"Nueces County",
+"TX",
+15,
+null
+],
+[
+"48357",
+"Ochiltree County",
+"TX",
+45,
+null
+],
+[
+"48359",
+"Oldham County",
+"TX",
+45,
+null
+],
+[
+"48361",
+"Orange County",
+"TX",
+45,
+null
+],
+[
+"48363",
+"Palo Pinto County",
+"TX",
+16,
+null
+],
+[
+"48365",
+"Panola County",
+"TX",
+45,
+null
+],
+[
+"48367",
+"Parker County",
+"TX",
+16,
+null
+],
+[
+"48369",
+"Parmer County",
+"TX",
+45,
+null
+],
+[
+"48371",
+"Pecos County",
+"TX",
+45,
+null
+],
+[
+"48373",
+"Polk County",
+"TX",
+45,
+null
+],
+[
+"48375",
+"Potter County",
+"TX",
+45,
+null
+],
+[
+"48377",
+"Presidio County",
+"TX",
+45,
+null
+],
+[
+"48379",
+"Rains County",
+"TX",
+16,
+null
+],
+[
+"48381",
+"Randall County",
+"TX",
+45,
+null
+],
+[
+"48383",
+"Reagan County",
+"TX",
+45,
+null
+],
+[
+"48385",
+"Real County",
+"TX",
+45,
+null
+],
+[
+"48387",
+"Red River County",
+"TX",
+45,
+null
+],
+[
+"48389",
+"Reeves County",
+"TX",
+45,
+"TX:Pecos"
+],
+[
+"48391",
+"Refugio County",
+"TX",
+15,
+null
+],
+[
+"48393",
+"Roberts County",
+"TX",
+45,
+null
+],
+[
+"48395",
+"Robertson County",
+"TX",
+45,
+null
+],
+[
+"48397",
+"Rockwall County",
+"TX",
+16,
+null
+],
+[
+"48399",
+"Runnels County",
+"TX",
+45,
+null
+],
+[
+"48401",
+"Rusk County",
+"TX",
+45,
+null
+],
+[
+"48403",
+"Sabine County",
+"TX",
+45,
+null
+],
+[
+"48405",
+"San Augustine County",
+"TX",
+45,
+null
+],
+[
+"48407",
+"San Jacinto County",
+"TX",
+26,
+null
+],
+[
+"48409",
+"San Patricio County",
+"TX",
+15,
+null
+],
+[
+"48411",
+"San Saba County",
+"TX",
+45,
+null
+],
+[
+"48413",
+"Schleicher County",
+"TX",
+45,
+null
+],
+[
+"48415",
+"Scurry County",
+"TX",
+45,
+null
+],
+[
+"48417",
+"Shackelford County",
+"TX",
+45,
+null
+],
+[
+"48419",
+"Shelby County",
+"TX",
+45,
+null
+],
+[
+"48421",
+"Sherman County",
+"TX",
+45,
+null
+],
+[
+"48423",
+"Smith County",
+"TX",
+45,
+null
+],
+[
+"48425",
+"Somervell County",
+"TX",
+16,
+null
+],
+[
+"48427",
+"Starr County",
+"TX",
+45,
+null
+],
+[
+"48429",
+"Stephens County",
+"TX",
+45,
+null
+],
+[
+"48431",
+"Sterling County",
+"TX",
+45,
+null
+],
+[
+"48433",
+"Stonewall County",
+"TX",
+45,
+null
+],
+[
+"48435",
+"Sutton County",
+"TX",
+45,
+null
+],
+[
+"48437",
+"Swisher County",
+"TX",
+45,
+null
+],
+[
+"48439",
+"Tarrant County",
+"TX",
+16,
+"TX:Arlington / Fort Worth / Grapevine"
+],
+[
+"48441",
+"Taylor County",
+"TX",
+45,
+null
+],
+[
+"48443",
+"Terrell County",
+"TX",
+45,
+null
+],
+[
+"48445",
+"Terry County",
+"TX",
+45,
+null
+],
+[
+"48447",
+"Throckmorton County",
+"TX",
+45,
+null
+],
+[
+"48449",
+"Titus County",
+"TX",
+45,
+null
+],
+[
+"48451",
+"Tom Green County",
+"TX",
+45,
+null
+],
+[
+"48453",
+"Travis County",
+"TX",
+4,
+"TX:Austin"
+],
+[
+"48455",
+"Trinity County",
+"TX",
+26,
+null
+],
+[
+"48457",
+"Tyler County",
+"TX",
+45,
+null
+],
+[
+"48459",
+"Upshur County",
+"TX",
+45,
+null
+],
+[
+"48461",
+"Upton County",
+"TX",
+45,
+null
+],
+[
+"48463",
+"Uvalde County",
+"TX",
+45,
+null
+],
+[
+"48465",
+"Val Verde County",
+"TX",
+45,
+null
+],
+[
+"48467",
+"Van Zandt County",
+"TX",
+16,
+null
+],
+[
+"48469",
+"Victoria County",
+"TX",
+45,
+null
+],
+[
+"48471",
+"Walker County",
+"TX",
+26,
+null
+],
+[
+"48473",
+"Waller County",
+"TX",
+26,
+null
+],
+[
+"48475",
+"Ward County",
+"TX",
+45,
+null
+],
+[
+"48477",
+"Washington County",
+"TX",
+26,
+null
+],
+[
+"48479",
+"Webb County",
+"TX",
+30,
+null
+],
+[
+"48481",
+"Wharton County",
+"TX",
+26,
+null
+],
+[
+"48483",
+"Wheeler County",
+"TX",
+45,
+null
+],
+[
+"48485",
+"Wichita County",
+"TX",
+45,
+null
+],
+[
+"48487",
+"Wilbarger County",
+"TX",
+45,
+null
+],
+[
+"48489",
+"Willacy County",
+"TX",
+45,
+null
+],
+[
+"48491",
+"Williamson County",
+"TX",
+4,
+null
+],
+[
+"48493",
+"Wilson County",
+"TX",
+49,
+null
+],
+[
+"48495",
+"Winkler County",
+"TX",
+45,
+null
+],
+[
+"48497",
+"Wise County",
+"TX",
+16,
+null
+],
+[
+"48499",
+"Wood County",
+"TX",
+45,
+null
+],
+[
+"48501",
+"Yoakum County",
+"TX",
+45,
+null
+],
+[
+"48503",
+"Young County",
+"TX",
+45,
+null
+],
+[
+"48505",
+"Zapata County",
+"TX",
+45,
+null
+],
+[
+"48507",
+"Zavala County",
+"TX",
+45,
+null
+],
+[
+"49001",
+"Beaver County",
+"UT",
+45,
+null
+],
+[
+"49003",
+"Box Elder County",
+"UT",
+45,
+null
+],
+[
+"49005",
+"Cache County",
+"UT",
+45,
+null
+],
+[
+"49007",
+"Carbon County",
+"UT",
+45,
+null
+],
+[
+"49009",
+"Daggett County",
+"UT",
+45,
+null
+],
+[
+"49011",
+"Davis County",
+"UT",
+45,
+null
+],
+[
+"49013",
+"Duchesne County",
+"UT",
+45,
+null
+],
+[
+"49015",
+"Emery County",
+"UT",
+45,
+null
+],
+[
+"49017",
+"Garfield County",
+"UT",
+45,
+null
+],
+[
+"49019",
+"Grand County",
+"UT",
+45,
+"UT:Moab"
+],
+[
+"49021",
+"Iron County",
+"UT",
+45,
+null
+],
+[
+"49023",
+"Juab County",
+"UT",
+45,
+null
+],
+[
+"49025",
+"Kane County",
+"UT",
+45,
+null
+],
+[
+"49027",
+"Millard County",
+"UT",
+45,
+null
+],
+[
+"49029",
+"Morgan County",
+"UT",
+45,
+null
+],
+[
+"49031",
+"Piute County",
+"UT",
+45,
+null
+],
+[
+"49033",
+"Rich County",
+"UT",
+45,
+null
+],
+[
+"49035",
+"Salt Lake County",
+"UT",
+45,
+"UT:Salt Lake City"
+],
+[
+"49037",
+"San Juan County",
+"UT",
+45,
+null
+],
+[
+"49039",
+"Sanpete County",
+"UT",
+45,
+null
+],
+[
+"49041",
+"Sevier County",
+"UT",
+45,
+null
+],
+[
+"49043",
+"Summit County",
+"UT",
+45,
+"UT:Park City"
+],
+[
+"49045",
+"Tooele County",
+"UT",
+45,
+"UT:Salt Lake City"
+],
+[
+"49047",
+"Uintah County",
+"UT",
+45,
+null
+],
+[
+"49049",
+"Utah County",
+"UT",
+45,
+"UT:Provo"
+],
+[
+"49051",
+"Wasatch County",
+"UT",
+45,
+null
+],
+[
+"49053",
+"Washington County",
+"UT",
+45,
+null
+],
+[
+"49055",
+"Wayne County",
+"UT",
+45,
+null
+],
+[
+"49057",
+"Weber County",
+"UT",
+45,
+null
+],
+[
+"50001",
+"Addison County",
+"VT",
+8,
+null
+],
+[
+"50003",
+"Bennington County",
+"VT",
+45,
+"VT:Manchester"
+],
+[
+"50005",
+"Caledonia County",
+"VT",
+45,
+null
+],
+[
+"50007",
+"Chittenden County",
+"VT",
+8,
+"VT:Burlington"
+],
+[
+"50009",
+"Essex County",
+"VT",
+45,
+null
+],
+[
+"50011",
+"Franklin County",
+"VT",
+8,
+null
+],
+[
+"50013",
+"Grand Isle County",
+"VT",
+8,
+null
+],
+[
+"50015",
+"Lamoille County",
+"VT",
+8,
+"VT:Stowe"
+],
+[
+"50017",
+"Orange County",
+"VT",
+6,
+null
+],
+[
+"50019",
+"Orleans County",
+"VT",
+45,
+null
+],
+[
+"50021",
+"Rutland County",
+"VT",
+45,
+null
+],
+[
+"50023",
+"Washington County",
+"VT",
+8,
+"VT:Montpelier"
+],
+[
+"50025",
+"Windham County",
+"VT",
+45,
+null
+],
+[
+"50027",
+"Windsor County",
+"VT",
+6,
+"VT:White River Junction"
+],
+[
+"51001",
+"Accomack County",
+"VA",
+45,
+"VA:Wallops Island"
+],
+[
+"51003",
+"Albemarle County",
+"VA",
+45,
+"VA:Charlottesville"
+],
+[
+"51005",
+"Alleghany County",
+"VA",
+45,
+null
+],
+[
+"51007",
+"Amelia County",
+"VA",
+46,
+null
+],
+[
+"51009",
+"Amherst County",
+"VA",
+45,
+null
+],
+[
+"51011",
+"Appomattox County",
+"VA",
+45,
+null
+],
+[
+"51013",
+"Arlington County",
+"VA",
+57,
+"DC:District of Columbia"
+],
+[
+"51015",
+"Augusta County",
+"VA",
+45,
+null
+],
+[
+"51017",
+"Bath County",
+"VA",
+45,
+null
+],
+[
+"51019",
+"Bedford County",
+"VA",
+45,
+null
+],
+[
+"51021",
+"Bland County",
+"VA",
+45,
+null
+],
+[
+"51023",
+"Botetourt County",
+"VA",
+45,
+null
+],
+[
+"51025",
+"Brunswick County",
+"VA",
+46,
+null
+],
+[
+"51027",
+"Buchanan County",
+"VA",
+45,
+null
+],
+[
+"51029",
+"Buckingham County",
+"VA",
+45,
+null
+],
+[
+"51031",
+"Campbell County",
+"VA",
+45,
+"VA:Lynchburg"
+],
+[
+"51033",
+"Caroline County",
+"VA",
+57,
+null
+],
+[
+"51035",
+"Carroll County",
+"VA",
+45,
+null
+],
+[
+"51036",
+"Charles City County",
+"VA",
+46,
+null
+],
+[
+"51037",
+"Charlotte County",
+"VA",
+45,
+null
+],
+[
+"51041",
+"Chesterfield County",
+"VA",
+46,
+null
+],
+[
+"51043",
+"Clarke County",
+"VA",
+57,
+null
+],
+[
+"51045",
+"Craig County",
+"VA",
+45,
+null
+],
+[
+"51047",
+"Culpeper County",
+"VA",
+57,
+null
+],
+[
+"51049",
+"Cumberland County",
+"VA",
+46,
+null
+],
+[
+"51051",
+"Dickenson County",
+"VA",
+45,
+null
+],
+[
+"51053",
+"Dinwiddie County",
+"VA",
+46,
+null
+],
+[
+"51057",
+"Essex County",
+"VA",
+46,
+null
+],
+[
+"51059",
+"Fairfax County",
+"VA",
+57,
+"DC:District of Columbia"
+],
+[
+"51061",
+"Fauquier County",
+"VA",
+57,
+null
+],
+[
+"51063",
+"Floyd County",
+"VA",
+45,
+null
+],
+[
+"51065",
+"Fluvanna County",
+"VA",
+45,
+null
+],
+[
+"51067",
+"Franklin County",
+"VA",
+45,
+null
+],
+[
+"51069",
+"Frederick County",
+"VA",
+57,
+null
+],
+[
+"51071",
+"Giles County",
+"VA",
+45,
+null
+],
+[
+"51073",
+"Gloucester County",
+"VA",
+56,
+null
+],
+[
+"51075",
+"Goochland County",
+"VA",
+46,
+null
+],
+[
+"51077",
+"Grayson County",
+"VA",
+45,
+null
+],
+[
+"51079",
+"Greene County",
+"VA",
+45,
+null
+],
+[
+"51081",
+"Greensville County",
+"VA",
+46,
+null
+],
+[
+"51083",
+"Halifax County",
+"VA",
+45,
+null
+],
+[
+"51085",
+"Hanover County",
+"VA",
+46,
+null
+],
+[
+"51087",
+"Henrico County",
+"VA",
+46,
+null
+],
+[
+"51089",
+"Henry County",
+"VA",
+45,
+null
+],
+[
+"51091",
+"Highland County",
+"VA",
+45,
+null
+],
+[
+"51093",
+"Isle of Wight County",
+"VA",
+56,
+null
+],
+[
+"51095",
+"James City County",
+"VA",
+56,
+"VA:Williamsburg / York"
+],
+[
+"51097",
+"King and Queen County",
+"VA",
+46,
+null
+],
+[
+"51099",
+"King George County",
+"VA",
+57,
+null
+],
+[
+"51101",
+"King William County",
+"VA",
+46,
+null
+],
+[
+"51103",
+"Lancaster County",
+"VA",
+45,
+null
+],
+[
+"51105",
+"Lee County",
+"VA",
+45,
+null
+],
+[
+"51107",
+"Loudoun County",
+"VA",
+57,
+"VA:Loudoun"
+],
+[
+"51109",
+"Louisa County",
+"VA",
+46,
+null
+],
+[
+"51111",
+"Lunenburg County",
+"VA",
+45,
+null
+],
+[
+"51113",
+"Madison County",
+"VA",
+57,
+null
+],
+[
+"51115",
+"Mathews County",
+"VA",
+56,
+null
+],
+[
+"51117",
+"Mecklenburg County",
+"VA",
+45,
+null
+],
+[
+"51119",
+"Middlesex County",
+"VA",
+56,
+null
+],
+[
+"51121",
+"Montgomery County",
+"VA",
+45,
+"VA:Blacksburg"
+],
+[
+"51125",
+"Nelson County",
+"VA",
+45,
+null
+],
+[
+"51127",
+"New Kent County",
+"VA",
+46,
+null
+],
+[
+"51131",
+"Northampton County",
+"VA",
+45,
+null
+],
+[
+"51133",
+"Northumberland County",
+"VA",
+45,
+null
+],
+[
+"51135",
+"Nottoway County",
+"VA",
+46,
+null
+],
+[
+"51137",
+"Orange County",
+"VA",
+57,
+null
+],
+[
+"51139",
+"Page County",
+"VA",
+45,
+null
+],
+[
+"51141",
+"Patrick County",
+"VA",
+45,
+null
+],
+[
+"51143",
+"Pittsylvania County",
+"VA",
+45,
+null
+],
+[
+"51145",
+"Powhatan County",
+"VA",
+46,
+null
+],
+[
+"51147",
+"Prince Edward County",
+"VA",
+45,
+null
+],
+[
+"51149",
+"Prince George County",
+"VA",
+46,
+null
+],
+[
+"51153",
+"Prince William County",
+"VA",
+57,
+null
+],
+[
+"51155",
+"Pulaski County",
+"VA",
+45,
+null
+],
+[
+"51157",
+"Rappahannock County",
+"VA",
+57,
+null
+],
+[
+"51159",
+"Richmond County",
+"VA",
+45,
+null
+],
+[
+"51161",
+"Roanoke County",
+"VA",
+45,
+null
+],
+[
+"51163",
+"Rockbridge County",
+"VA",
+45,
+null
+],
+[
+"51165",
+"Rockingham County",
+"VA",
+45,
+null
+],
+[
+"51167",
+"Russell County",
+"VA",
+45,
+null
+],
+[
+"51169",
+"Scott County",
+"VA",
+45,
+null
+],
+[
+"51171",
+"Shenandoah County",
+"VA",
+57,
+null
+],
+[
+"51173",
+"Smyth County",
+"VA",
+45,
+null
+],
+[
+"51175",
+"Southampton County",
+"VA",
+56,
+null
+],
+[
+"51177",
+"Spotsylvania County",
+"VA",
+57,
+null
+],
+[
+"51179",
+"Stafford County",
+"VA",
+57,
+null
+],
+[
+"51181",
+"Surry County",
+"VA",
+56,
+null
+],
+[
+"51183",
+"Sussex County",
+"VA",
+46,
+null
+],
+[
+"51185",
+"Tazewell County",
+"VA",
+45,
+null
+],
+[
+"51187",
+"Warren County",
+"VA",
+57,
+null
+],
+[
+"51191",
+"Washington County",
+"VA",
+45,
+null
+],
+[
+"51193",
+"Westmoreland County",
+"VA",
+57,
+null
+],
+[
+"51195",
+"Wise County",
+"VA",
+45,
+null
+],
+[
+"51197",
+"Wythe County",
+"VA",
+45,
+null
+],
+[
+"51199",
+"York County",
+"VA",
+56,
+"VA:Williamsburg / York"
+],
+[
+"51510",
+"Alexandria city",
+"VA",
+57,
+"DC:District of Columbia"
+],
+[
+"51520",
+"Bristol city",
+"VA",
+45,
+null
+],
+[
+"51530",
+"Buena Vista city",
+"VA",
+45,
+null
+],
+[
+"51540",
+"Charlottesville city",
+"VA",
+45,
+"VA:Charlottesville"
+],
+[
+"51550",
+"Chesapeake city",
+"VA",
+56,
+null
+],
+[
+"51570",
+"Colonial Heights city",
+"VA",
+46,
+null
+],
+[
+"51580",
+"Covington city",
+"VA",
+45,
+null
+],
+[
+"51590",
+"Danville city",
+"VA",
+45,
+null
+],
+[
+"51595",
+"Emporia city",
+"VA",
+46,
+null
+],
+[
+"51600",
+"Fairfax city",
+"VA",
+57,
+"DC:District of Columbia"
+],
+[
+"51610",
+"Falls Church city",
+"VA",
+57,
+"DC:District of Columbia"
+],
+[
+"51620",
+"Franklin city",
+"VA",
+56,
+null
+],
+[
+"51630",
+"Fredericksburg city",
+"VA",
+57,
+null
+],
+[
+"51640",
+"Galax city",
+"VA",
+45,
+null
+],
+[
+"51650",
+"Hampton city",
+"VA",
+56,
+null
+],
+[
+"51660",
+"Harrisonburg city",
+"VA",
+45,
+null
+],
+[
+"51670",
+"Hopewell city",
+"VA",
+46,
+null
+],
+[
+"51678",
+"Lexington city",
+"VA",
+45,
+null
+],
+[
+"51680",
+"Lynchburg city",
+"VA",
+45,
+"VA:Lynchburg"
+],
+[
+"51683",
+"Manassas city",
+"VA",
+57,
+null
+],
+[
+"51685",
+"Manassas Park city",
+"VA",
+57,
+null
+],
+[
+"51690",
+"Martinsville city",
+"VA",
+45,
+null
+],
+[
+"51700",
+"Newport News city",
+"VA",
+56,
+null
+],
+[
+"51710",
+"Norfolk city",
+"VA",
+56,
+null
+],
+[
+"51720",
+"Norton city",
+"VA",
+45,
+null
+],
+[
+"51730",
+"Petersburg city",
+"VA",
+46,
+null
+],
+[
+"51735",
+"Poquoson city",
+"VA",
+56,
+null
+],
+[
+"51740",
+"Portsmouth city",
+"VA",
+56,
+null
+],
+[
+"51750",
+"Radford city",
+"VA",
+45,
+null
+],
+[
+"51760",
+"Richmond city",
+"VA",
+46,
+"VA:Richmond"
+],
+[
+"51770",
+"Roanoke city",
+"VA",
+45,
+"VA:Roanoke"
+],
+[
+"51775",
+"Salem city",
+"VA",
+45,
+null
+],
+[
+"51790",
+"Staunton city",
+"VA",
+45,
+null
+],
+[
+"51800",
+"Suffolk city",
+"VA",
+56,
+null
+],
+[
+"51810",
+"Virginia Beach city",
+"VA",
+56,
+"VA:Virginia Beach"
+],
+[
+"51820",
+"Waynesboro city",
+"VA",
+45,
+null
+],
+[
+"51830",
+"Williamsburg city",
+"VA",
+56,
+"VA:Williamsburg / York"
+],
+[
+"51840",
+"Winchester city",
+"VA",
+57,
+null
+],
+[
+"53001",
+"Adams County",
+"WA",
+45,
+null
+],
+[
+"53003",
+"Asotin County",
+"WA",
+45,
+null
+],
+[
+"53005",
+"Benton County",
+"WA",
+45,
+"WA:Richland / Pasco"
+],
+[
+"53007",
+"Chelan County",
+"WA",
+45,
+null
+],
+[
+"53009",
+"Clallam County",
+"WA",
+52,
+"WA:Port Angeles / Port Townsend"
+],
+[
+"53011",
+"Clark County",
+"WA",
+42,
+"WA:Vancouver"
+],
+[
+"53013",
+"Columbia County",
+"WA",
+45,
+null
+],
+[
+"53015",
+"Cowlitz County",
+"WA",
+42,
+"WA:Vancouver"
+],
+[
+"53017",
+"Douglas County",
+"WA",
+45,
+null
+],
+[
+"53019",
+"Ferry County",
+"WA",
+53,
+null
+],
+[
+"53021",
+"Franklin County",
+"WA",
+45,
+"WA:Richland / Pasco"
+],
+[
+"53023",
+"Garfield County",
+"WA",
+45,
+null
+],
+[
+"53025",
+"Grant County",
+"WA",
+45,
+null
+],
+[
+"53027",
+"Grays Harbor County",
+"WA",
+52,
+"WA:Ocean Shores"
+],
+[
+"53029",
+"Island County",
+"WA",
+52,
+null
+],
+[
+"53031",
+"Jefferson County",
+"WA",
+52,
+"WA:Port Angeles / Port Townsend"
+],
+[
+"53033",
+"King County",
+"WA",
+52,
+"WA:Seattle"
+],
+[
+"53035",
+"Kitsap County",
+"WA",
+52,
+null
+],
+[
+"53037",
+"Kittitas County",
+"WA",
+45,
+null
+],
+[
+"53039",
+"Klickitat County",
+"WA",
+45,
+null
+],
+[
+"53041",
+"Lewis County",
+"WA",
+52,
+null
+],
+[
+"53043",
+"Lincoln County",
+"WA",
+53,
+null
+],
+[
+"53045",
+"Mason County",
+"WA",
+52,
+null
+],
+[
+"53047",
+"Okanogan County",
+"WA",
+45,
+null
+],
+[
+"53049",
+"Pacific County",
+"WA",
+52,
+null
+],
+[
+"53051",
+"Pend Oreille County",
+"WA",
+53,
+null
+],
+[
+"53053",
+"Pierce County",
+"WA",
+52,
+"WA:Tacoma"
+],
+[
+"53055",
+"San Juan County",
+"WA",
+52,
+null
+],
+[
+"53057",
+"Skagit County",
+"WA",
+52,
+null
+],
+[
+"53059",
+"Skamania County",
+"WA",
+42,
+"WA:Vancouver"
+],
+[
+"53061",
+"Snohomish County",
+"WA",
+52,
+"WA:Everett / Lynnwood"
+],
+[
+"53063",
+"Spokane County",
+"WA",
+53,
+"WA:Spokane"
+],
+[
+"53065",
+"Stevens County",
+"WA",
+53,
+null
+],
+[
+"53067",
+"Thurston County",
+"WA",
+52,
+"WA:Olympia / Tumwater"
+],
+[
+"53069",
+"Wahkiakum County",
+"WA",
+42,
+null
+],
+[
+"53071",
+"Walla Walla County",
+"WA",
+45,
+null
+],
+[
+"53073",
+"Whatcom County",
+"WA",
+52,
+null
+],
+[
+"53075",
+"Whitman County",
+"WA",
+45,
+null
+],
+[
+"53077",
+"Yakima County",
+"WA",
+45,
+null
+],
+[
+"54001",
+"Barbour County",
+"WV",
+45,
+null
+],
+[
+"54003",
+"Berkeley County",
+"WV",
+57,
+null
+],
+[
+"54005",
+"Boone County",
+"WV",
+45,
+null
+],
+[
+"54007",
+"Braxton County",
+"WV",
+45,
+null
+],
+[
+"54009",
+"Brooke County",
+"WV",
+41,
+null
+],
+[
+"54011",
+"Cabell County",
+"WV",
+45,
+null
+],
+[
+"54013",
+"Calhoun County",
+"WV",
+45,
+null
+],
+[
+"54015",
+"Clay County",
+"WV",
+45,
+null
+],
+[
+"54017",
+"Doddridge County",
+"WV",
+45,
+null
+],
+[
+"54019",
+"Fayette County",
+"WV",
+45,
+null
+],
+[
+"54021",
+"Gilmer County",
+"WV",
+45,
+null
+],
+[
+"54023",
+"Grant County",
+"WV",
+45,
+null
+],
+[
+"54025",
+"Greenbrier County",
+"WV",
+45,
+null
+],
+[
+"54027",
+"Hampshire County",
+"WV",
+57,
+null
+],
+[
+"54029",
+"Hancock County",
+"WV",
+41,
+null
+],
+[
+"54031",
+"Hardy County",
+"WV",
+57,
+null
+],
+[
+"54033",
+"Harrison County",
+"WV",
+45,
+null
+],
+[
+"54035",
+"Jackson County",
+"WV",
+45,
+null
+],
+[
+"54037",
+"Jefferson County",
+"WV",
+57,
+"WV:Charles Town"
+],
+[
+"54039",
+"Kanawha County",
+"WV",
+45,
+"WV:Charleston"
+],
+[
+"54041",
+"Lewis County",
+"WV",
+45,
+null
+],
+[
+"54043",
+"Lincoln County",
+"WV",
+45,
+null
+],
+[
+"54045",
+"Logan County",
+"WV",
+45,
+null
+],
+[
+"54047",
+"McDowell County",
+"WV",
+45,
+null
+],
+[
+"54049",
+"Marion County",
+"WV",
+45,
+null
+],
+[
+"54051",
+"Marshall County",
+"WV",
+41,
+null
+],
+[
+"54053",
+"Mason County",
+"WV",
+45,
+null
+],
+[
+"54055",
+"Mercer County",
+"WV",
+45,
+null
+],
+[
+"54057",
+"Mineral County",
+"WV",
+57,
+null
+],
+[
+"54059",
+"Mingo County",
+"WV",
+45,
+null
+],
+[
+"54061",
+"Monongalia County",
+"WV",
+45,
+null
+],
+[
+"54063",
+"Monroe County",
+"WV",
+45,
+null
+],
+[
+"54065",
+"Morgan County",
+"WV",
+57,
+null
+],
+[
+"54067",
+"Nicholas County",
+"WV",
+45,
+null
+],
+[
+"54069",
+"Ohio County",
+"WV",
+41,
+null
+],
+[
+"54071",
+"Pendleton County",
+"WV",
+45,
+null
+],
+[
+"54073",
+"Pleasants County",
+"WV",
+45,
+null
+],
+[
+"54075",
+"Pocahontas County",
+"WV",
+45,
+null
+],
+[
+"54077",
+"Preston County",
+"WV",
+45,
+null
+],
+[
+"54079",
+"Putnam County",
+"WV",
+45,
+null
+],
+[
+"54081",
+"Raleigh County",
+"WV",
+45,
+null
+],
+[
+"54083",
+"Randolph County",
+"WV",
+45,
+null
+],
+[
+"54085",
+"Ritchie County",
+"WV",
+45,
+null
+],
+[
+"54087",
+"Roane County",
+"WV",
+45,
+null
+],
+[
+"54089",
+"Summers County",
+"WV",
+45,
+null
+],
+[
+"54091",
+"Taylor County",
+"WV",
+45,
+null
+],
+[
+"54093",
+"Tucker County",
+"WV",
+45,
+null
+],
+[
+"54095",
+"Tyler County",
+"WV",
+45,
+null
+],
+[
+"54097",
+"Upshur County",
+"WV",
+45,
+null
+],
+[
+"54099",
+"Wayne County",
+"WV",
+45,
+null
+],
+[
+"54101",
+"Webster County",
+"WV",
+45,
+null
+],
+[
+"54103",
+"Wetzel County",
+"WV",
+45,
+null
+],
+[
+"54105",
+"Wirt County",
+"WV",
+45,
+null
+],
+[
+"54107",
+"Wood County",
+"WV",
+45,
+null
+],
+[
+"54109",
+"Wyoming County",
+"WV",
+45,
+null
+],
+[
+"55001",
+"Adams County",
+"WI",
+45,
+null
+],
+[
+"55003",
+"Ashland County",
+"WI",
+45,
+null
+],
+[
+"55005",
+"Barron County",
+"WI",
+45,
+null
+],
+[
+"55007",
+"Bayfield County",
+"WI",
+45,
+null
+],
+[
+"55009",
+"Brown County",
+"WI",
+45,
+null
+],
+[
+"55011",
+"Buffalo County",
+"WI",
+45,
+null
+],
+[
+"55013",
+"Burnett County",
+"WI",
+45,
+null
+],
+[
+"55015",
+"Calumet County",
+"WI",
+45,
+null
+],
+[
+"55017",
+"Chippewa County",
+"WI",
+45,
+null
+],
+[
+"55019",
+"Clark County",
+"WI",
+45,
+null
+],
+[
+"55021",
+"Columbia County",
+"WI",
+45,
+null
+],
+[
+"55023",
+"Crawford County",
+"WI",
+45,
+null
+],
+[
+"55025",
+"Dane County",
+"WI",
+45,
+"WI:Madison"
+],
+[
+"55027",
+"Dodge County",
+"WI",
+34,
+null
+],
+[
+"55029",
+"Door County",
+"WI",
+45,
+"WI:Sturgeon Bay"
+],
+[
+"55031",
+"Douglas County",
+"WI",
+45,
+null
+],
+[
+"55033",
+"Dunn County",
+"WI",
+45,
+null
+],
+[
+"55035",
+"Eau Claire County",
+"WI",
+45,
+null
+],
+[
+"55037",
+"Florence County",
+"WI",
+45,
+null
+],
+[
+"55039",
+"Fond du Lac County",
+"WI",
+34,
+null
+],
+[
+"55041",
+"Forest County",
+"WI",
+45,
+null
+],
+[
+"55043",
+"Grant County",
+"WI",
+45,
+null
+],
+[
+"55045",
+"Green County",
+"WI",
+45,
+null
+],
+[
+"55047",
+"Green Lake County",
+"WI",
+45,
+null
+],
+[
+"55049",
+"Iowa County",
+"WI",
+45,
+null
+],
+[
+"55051",
+"Iron County",
+"WI",
+45,
+null
+],
+[
+"55053",
+"Jackson County",
+"WI",
+45,
+null
+],
+[
+"55055",
+"Jefferson County",
+"WI",
+34,
+null
+],
+[
+"55057",
+"Juneau County",
+"WI",
+45,
+null
+],
+[
+"55059",
+"Kenosha County",
+"WI",
+10,
+null
+],
+[
+"55061",
+"Kewaunee County",
+"WI",
+45,
+null
+],
+[
+"55063",
+"La Crosse County",
+"WI",
+45,
+null
+],
+[
+"55065",
+"Lafayette County",
+"WI",
+45,
+null
+],
+[
+"55067",
+"Langlade County",
+"WI",
+45,
+null
+],
+[
+"55069",
+"Lincoln County",
+"WI",
+45,
+null
+],
+[
+"55071",
+"Manitowoc County",
+"WI",
+45,
+null
+],
+[
+"55073",
+"Marathon County",
+"WI",
+45,
+null
+],
+[
+"55075",
+"Marinette County",
+"WI",
+45,
+null
+],
+[
+"55077",
+"Marquette County",
+"WI",
+45,
+null
+],
+[
+"55078",
+"Menominee County",
+"WI",
+45,
+null
+],
+[
+"55079",
+"Milwaukee County",
+"WI",
+34,
+"WI:Milwaukee"
+],
+[
+"55081",
+"Monroe County",
+"WI",
+45,
+null
+],
+[
+"55083",
+"Oconto County",
+"WI",
+45,
+null
+],
+[
+"55085",
+"Oneida County",
+"WI",
+45,
+null
+],
+[
+"55087",
+"Outagamie County",
+"WI",
+45,
+null
+],
+[
+"55089",
+"Ozaukee County",
+"WI",
+34,
+null
+],
+[
+"55091",
+"Pepin County",
+"WI",
+45,
+null
+],
+[
+"55093",
+"Pierce County",
+"WI",
+35,
+null
+],
+[
+"55095",
+"Polk County",
+"WI",
+35,
+null
+],
+[
+"55097",
+"Portage County",
+"WI",
+45,
+null
+],
+[
+"55099",
+"Price County",
+"WI",
+45,
+null
+],
+[
+"55101",
+"Racine County",
+"WI",
+34,
+null
+],
+[
+"55103",
+"Richland County",
+"WI",
+45,
+null
+],
+[
+"55105",
+"Rock County",
+"WI",
+45,
+null
+],
+[
+"55107",
+"Rusk County",
+"WI",
+45,
+null
+],
+[
+"55109",
+"St. Croix County",
+"WI",
+35,
+null
+],
+[
+"55111",
+"Sauk County",
+"WI",
+45,
+null
+],
+[
+"55113",
+"Sawyer County",
+"WI",
+45,
+null
+],
+[
+"55115",
+"Shawano County",
+"WI",
+45,
+null
+],
+[
+"55117",
+"Sheboygan County",
+"WI",
+34,
+null
+],
+[
+"55119",
+"Taylor County",
+"WI",
+45,
+null
+],
+[
+"55121",
+"Trempealeau County",
+"WI",
+45,
+null
+],
+[
+"55123",
+"Vernon County",
+"WI",
+45,
+null
+],
+[
+"55125",
+"Vilas County",
+"WI",
+45,
+null
+],
+[
+"55127",
+"Walworth County",
+"WI",
+34,
+null
+],
+[
+"55129",
+"Washburn County",
+"WI",
+45,
+null
+],
+[
+"55131",
+"Washington County",
+"WI",
+34,
+null
+],
+[
+"55133",
+"Waukesha County",
+"WI",
+34,
+null
+],
+[
+"55135",
+"Waupaca County",
+"WI",
+45,
+null
+],
+[
+"55137",
+"Waushara County",
+"WI",
+45,
+null
+],
+[
+"55139",
+"Winnebago County",
+"WI",
+45,
+null
+],
+[
+"55141",
+"Wood County",
+"WI",
+45,
+null
+],
+[
+"56001",
+"Albany County",
+"WY",
+45,
+null
+],
+[
+"56003",
+"Big Horn County",
+"WY",
+45,
+null
+],
+[
+"56005",
+"Campbell County",
+"WY",
+45,
+null
+],
+[
+"56007",
+"Carbon County",
+"WY",
+45,
+null
+],
+[
+"56009",
+"Converse County",
+"WY",
+45,
+null
+],
+[
+"56011",
+"Crook County",
+"WY",
+45,
+null
+],
+[
+"56013",
+"Fremont County",
+"WY",
+45,
+null
+],
+[
+"56015",
+"Goshen County",
+"WY",
+45,
+null
+],
+[
+"56017",
+"Hot Springs County",
+"WY",
+45,
+null
+],
+[
+"56019",
+"Johnson County",
+"WY",
+45,
+null
+],
+[
+"56021",
+"Laramie County",
+"WY",
+45,
+null
+],
+[
+"56023",
+"Lincoln County",
+"WY",
+45,
+null
+],
+[
+"56025",
+"Natrona County",
+"WY",
+45,
+null
+],
+[
+"56027",
+"Niobrara County",
+"WY",
+45,
+null
+],
+[
+"56029",
+"Park County",
+"WY",
+45,
+"WY:Cody"
+],
+[
+"56031",
+"Platte County",
+"WY",
+45,
+null
+],
+[
+"56033",
+"Sheridan County",
+"WY",
+45,
+null
+],
+[
+"56035",
+"Sublette County",
+"WY",
+45,
+"WY:Jackson / Pinedale"
+],
+[
+"56037",
+"Sweetwater County",
+"WY",
+45,
+null
+],
+[
+"56039",
+"Teton County",
+"WY",
+45,
+"WY:Jackson / Pinedale"
+],
+[
+"56041",
+"Uinta County",
+"WY",
+45,
+null
+],
+[
+"56043",
+"Washakie County",
+"WY",
+45,
+null
+],
+[
+"56045",
+"Weston County",
+"WY",
+45,
+null
+]
+]
+}

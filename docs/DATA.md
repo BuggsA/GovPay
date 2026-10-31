@@ -26,7 +26,8 @@ GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO
 | BAH | E-5 with-dependents anchor per MHA × grade ratios | 19 MHAs in UT, MD, DC, PA, VA | approx |
 | **Per diem** | **FY2025, FY2026, FY2027, from the GSA Per Diem API** (`scripts/fetch-perdiem.mjs`) | **All CONUS areas (~300) plus the standard rate** ($110/$68 in FY2025–26, $113/$68 in FY2027) | **verified (real)** |
 | **Take-home taxes** | **Tax year 2026**: IRS Rev. Proc. 2025-32 (brackets, standard deduction), SSA wage base $184,500, state rules for DC, MD, PA, UT, VA (Tax Foundation 2026 table), Maryland county rates and exemption phase-out (Maryland Comptroller, DLS), Utah taxpayer credit (Utah Tax Commission) | Five focus states; other states use "no income tax" or a rate you enter | **verified (official)**; the result is an estimate by design |
-| Everything else | Generated with a seed per state | 45 other states | **simulated** |
+| **Places (every county)** | **5 CFR 531.603(b)** (eCFR, Oct 29 2026) locality definitions + OMB/Census metro delineation (March 2020) + Census 2020 county list; GSA per diem county text (`scripts/build-places.py`) | **All 3,142 counties and county equivalents**: 954 in a named locality area, 365 with a special per diem rate. Explicitly listed counties win over metro membership (3 moved: Adams and York PA → DC area, Douglas NV → Sacramento). Alaska and Hawaii per diem not covered (OCONUS). | **verified (official)**; edge counties worth checking against OPM's published definitions |
+| BAH outside the 19 researched housing areas | Placeholder per state | All other counties | **simulated** until the DTMO file is added |
 
 ## Production sources
 | Data | Source | Format | Cadence |

@@ -55,32 +55,62 @@
   const norm = (s) => " " + String(s || "").toLowerCase().replace(/[–—]/g, "-").replace(/[^a-z0-9/.\- ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
   const word = (txt, w) => new RegExp("(^|[^a-z0-9])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "($|[^a-z0-9])").test(txt);
 
-  function findPlace(t) {
+  // Returns place ids that match the text, best first. A typed state ("md", "Maryland")
+  // counts heavily; researched bases win ties; genuinely ambiguous names (Harris County,
+  // GA and TX) all come back so the UI can offer each one.
+  function findPlaces(t) {
     const G = global.GovPay;
-    const locs = G.locations();
-    let best = null;
-    // 1. explicit aliases and full names (longest match wins)
-    locs.forEach((l) => {
-      const names = (ALIASES[l.id] || []).concat([l.name.toLowerCase().replace(/\s*\(.*\)$/, "")]);
-      names.forEach((n) => { if (n.length > 2 && word(t, n) && (!best || n.length > best.len)) best = { id: l.id, len: n.length }; });
+    const stateNames = {};
+    Object.entries(G.ALL_STATES || {}).forEach(([code, name]) => (stateNames[name.toLowerCase()] = code));
+    const typedStates = new Set();
+    Object.keys(stateNames).forEach((n) => { if (word(t, n)) typedStates.add(stateNames[n]); });
+    const tail = t.match(/(?:,\s*|\s)([a-z]{2})\s*$/);
+    if (tail && G.ALL_STATES && G.ALL_STATES[tail[1].toUpperCase()]) typedStates.add(tail[1].toUpperCase());
+    const best = new Map();
+    G.locations().forEach((l) => {
+      let names = (ALIASES[l.id] || []).concat([l.name.toLowerCase().replace(/\s*\(.*\)$/, "")]);
+      if (l.kind === "county") {
+        const short = l.short.toLowerCase(), bare = short.replace(/ (county|parish|borough|city and borough|census area|municipality)$/, "");
+        names = names.concat([short, bare + " " + l.state.toLowerCase(), bare + ", " + l.state.toLowerCase()]);
+        if (bare !== short && !stateNames[bare]) names.push(bare);   // "san diego" finds San Diego County; "texas" doesn't find Texas County
+      }
+      names.forEach((n) => {
+        if (n.length < 3 || !word(t, n)) return;
+        const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + (l.kind !== "county" ? 5 : 0);
+        if (!best.has(l.id) || best.get(l.id) < score) best.set(l.id, score);
+      });
     });
-    if (best) return best.id;
-    // 2. a state name or two-letter code at the end ("..., VA") picks that state's first place
-    for (const l of locs) {
-      const st = l.state.toLowerCase();
-      if (word(t, l.stateName.toLowerCase()) || new RegExp("[ ,]" + st + " $").test(t)) return locs.find((x) => x.state === l.state).id;
+    if (!best.size) {
+      // A state alone picks that state's researched place, if it has one.
+      const l = G.locations().find((x) => x.kind !== "county" && typedStates.has(x.state));
+      return l ? [l.id] : [];
     }
-    return null;
+    const ranked = [...best.entries()].sort((x, y) => y[1] - x[1]);
+    const top = ranked[0][1];
+    return ranked.filter(([, sc]) => sc === top).slice(0, 3).map(([id]) => id);
   }
+  function findPlace(t) { return findPlaces(t)[0] || null; }
 
   function num(re, t) { const m = t.match(re); return m ? parseInt(m[1], 10) : null; }
 
   function parse(text) {
+    const out = parseOne(text);
+    // Same text, several equally likely places: offer each one.
+    if (out.alternates && out.alternates.length && out.length) {
+      const first = out[0];
+      out.alternates.forEach((id) => out.push(Object.assign({}, first, { locId: id, score: first.score - 1 })));
+    }
+    delete out.alternates;
+    return out;
+  }
+  function parseOne(text) {
     const G = global.GovPay;
     const t = norm(text);
     if (t.trim().length < 2) return [];
     const out = [];
-    const locId = findPlace(t);
+    const places = findPlaces(t);
+    const locId = places[0] || null;
+    out.alternates = places.slice(1);
     const deps = /\b(with dependents|w\/ ?dep|with dep|married|kids|family)\b/.test(t) ? true : /\b(single|no dependents|without dependents|no dep)\b/.test(t) ? false : null;
 
     // --- job posting: GS-0343-09/11/12, GS-1811-07/09/11/12/13, WG-5803-10
