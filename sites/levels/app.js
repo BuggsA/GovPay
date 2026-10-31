@@ -79,14 +79,8 @@
   function renderBar() {
     $("#season").innerHTML = G.YEARS.map((y) => `<button type="button" role="radio" aria-checked="${y.year === state.year}" data-y="${y.year}" title="${y.note}">${y.year}${y.year > G.CURRENT_YEAR ? "*" : ""}</button>`).join("");
     $("#season").querySelectorAll("button").forEach((b) => (b.onclick = () => { state.year = +b.dataset.y; render(); }));
-    const sel = $("#loc");
-    if (!sel.options.length) {
-      const focus = G.focusLocations(), sim = G.locations().filter((l) => l.simulated);
-      sel.innerHTML = Object.entries(G.FOCUS_STATES).map(([st, nm]) => `<optgroup label="${nm}">${focus.filter((l) => l.state === st).map((l) => `<option value="${l.id}">${l.name}</option>`).join("")}</optgroup>`).join("")
-        + `<optgroup label="Other states (simulated)">${sim.map((l) => `<option value="${l.id}">${l.stateName}</option>`).join("")}</optgroup>`;
-      sel.onchange = () => { state.loc = sel.value; render(); };
-    }
-    sel.value = state.loc;
+    if (!state.picker) state.picker = GovPayUI.locationPicker($("#loc"), { value: state.loc, onChange: (id) => { state.loc = id; render(); } });
+    else state.picker.set(state.loc);
   }
 
   // ---------- paths ----------
@@ -126,8 +120,6 @@
       if (e.target.dataset.pin != null) { togglePin(+e.target.dataset.pin); return; }
       state.level = +b.dataset.i; state.yosOverride = null; renderDeck(); renderSheet();
     }));
-    const active = $("#deck").querySelector('[aria-pressed="true"].lvl');
-    if (active) { const d = $("#deck"); d.scrollLeft = active.offsetLeft - d.offsetLeft - (d.clientWidth - active.offsetWidth) / 2; }
   }
   function togglePin(i) {
     const P = pathObj(), l = P.levels[i];
@@ -155,7 +147,7 @@
     $("#sheet").innerHTML = `
       <div>
         <p class="eyebrow">${P.name} · ${G.location(state.loc).name} · ${state.year}</p>
-        <h2>${r.title}</h2>
+        <div class="lvl-nav"><button type="button" class="nav-btn" data-nav="-1" aria-label="Previous level" ${state.level <= 0 ? "disabled" : ""}>−</button><h2>${r.title}</h2><button type="button" class="nav-btn" data-nav="1" aria-label="Next level" ${state.level >= P.levels.length - 1 ? "disabled" : ""}>+</button></div>
         <div class="big">${r.annual ? f.usd(r.annual) : "Locked"}</div>
         <div class="per">${r.annual ? `${f.usd(r.annual / 12)} / month${r.hourly ? ` · ${f.usd2(r.hourly)} / hour` : ""}` : ""} <span class="tag ${r.status}">${G.STATUS_INFO[r.status].label}</span></div>
         ${r.rows.map((row) => `<div class="stat"><div class="row"><span>${row.label}${row.taxFree ? " 🛡 tax-free" : ""}</span><b>${f.usd(row.annual)}</b></div><div class="track"><span style="width:${(row.annual / total) * 100}%;background:${STAT_COLORS[row.key]}"></span></div></div>`).join("")}
@@ -164,6 +156,7 @@
       </div>
       <div class="chart-card" id="chartCard"></div>`;
     const sh = $("#sheet");
+    sh.querySelectorAll("[data-nav]").forEach((b) => (b.onclick = () => { state.level = Math.max(0, Math.min(P.levels.length - 1, state.level + +b.dataset.nav)); state.yosOverride = null; renderDeck(); renderSheet(); }));
     const st = $("[data-step]", sh); if (st) st.oninput = () => { state.step = +st.value; renderPaths(); renderDeck(); renderSheet(); };
     const lp = $("[data-leap]", sh); if (lp) lp.onchange = () => { state.leap = lp.checked; render(); };
     const yo = $("[data-yos]", sh); if (yo) yo.oninput = () => { state.yosOverride = +yo.value; renderDeck(); renderSheet(); };

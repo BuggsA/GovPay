@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GovPay Ledger</title>
-  <meta name="description" content="Federal civilian and military pay, allowances and per diem — calculator-first prototype.">
+  <title>Paybook</title>
+  <meta name="description" content="Your federal or military pay, clearly: what you make now and what your next step, grade or rank pays.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -13,50 +13,52 @@
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="#">
+      <a class="brand" href="#" id="homeLink">
         <span class="brand-mark" aria-hidden="true">$</span>
-        <span>GovPay <strong>Ledger</strong></span>
+        <span>Paybook</span>
       </a>
-      <div class="global-controls">
-        <label class="ctl">
-          <span>Pay year</span>
-          <div class="seg" id="yearSeg" role="radiogroup" aria-label="Pay year"></div>
-        </label>
-        <label class="ctl">
-          <span>Duty location</span>
-          <select id="locSelect"></select>
-        </label>
-      </div>
+      <label class="ctl ctl-inline">
+        <span>Pay year</span>
+        <div class="seg" id="yearSeg" role="radiogroup" aria-label="Pay year"></div>
+      </label>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="hero">
-      <h1>What does your federal paycheck look like?</h1>
-      <p>Pick a pay system and grade. We'll show base pay, locality and allowances for your location and year. This works for civilians, wage-grade trades, executives and service members.</p>
-    </section>
+    <!-- First visit: three quick questions -->
+    <section class="setup" id="setup" hidden></section>
 
-    <section class="calc" aria-label="Pay calculator">
-      <div class="panel profile" id="profileA"></div>
-      <div class="panel result" id="resultA" aria-live="polite"></div>
-    </section>
+    <!-- After setup: my pay -->
+    <section id="dash" hidden>
+      <div class="preview-banner" id="previewBanner" hidden></div>
+      <section class="panel me" id="me" aria-live="polite"></section>
 
-    <nav class="tabs" role="tablist" aria-label="More tools">
-      <button role="tab" data-tab="tables" aria-selected="true">Pay tables</button>
-      <button role="tab" data-tab="allowances">BAH &amp; BAS</button>
-      <button role="tab" data-tab="travel">Per diem &amp; trips</button>
-      <button role="tab" data-tab="compare">Compare</button>
-      <button role="tab" data-tab="guide">New to federal pay?</button>
-    </nav>
-    <section class="panel tabpanel" id="tabPanel"></section>
+      <section class="next">
+        <div class="section-head">
+          <h2>Your next level</h2>
+          <p class="muted">What your next raise, promotion or role change would pay. Tap a card to preview it.</p>
+        </div>
+        <div class="next-grid" id="nextGrid"></div>
+      </section>
+
+      <nav class="tabs" role="tablist" aria-label="Explore more">
+        <button role="tab" data-tab="tables" aria-selected="true">Pay tables</button>
+        <button role="tab" data-tab="allowances">BAH &amp; BAS</button>
+        <button role="tab" data-tab="travel">Per diem &amp; trips</button>
+        <button role="tab" data-tab="compare">Compare</button>
+        <button role="tab" data-tab="guide">New to federal pay?</button>
+      </nav>
+      <section class="panel tabpanel" id="tabPanel"></section>
+    </section>
   </main>
 
   <footer class="wrap foot">
-    <p><strong>Prototype data.</strong> Each figure has a tag. <span class="badge verified">Verified</span> figures match published numbers. <span class="badge approx">Approximate</span> figures are close to the official tables but have not been checked cell by cell. <span class="badge simulated">Simulated</span> figures are placeholders, used for states outside UT, MD, DC, PA and VA and for wage-grade schedules. <span class="badge projected">Projected</span> figures are for 2027, which hasn't been published yet. For official numbers, use OPM, DFAS, DTMO and GSA.</p>
-    <p class="muted">Overseas (OCONUS) pay is documented but not modeled yet. See docs/OCONUS.md in the repo.</p>
+    <p><strong>Prototype data.</strong> Each figure has a tag. <span class="badge verified">Verified</span> figures match published numbers. <span class="badge approx">Approximate</span> figures are close to the official tables but haven't been checked cell by cell. <span class="badge simulated">Simulated</span> figures are placeholders, used for states outside UT, MD, DC, PA and VA and for wage-grade schedules. <span class="badge projected">Projected</span> figures are for 2027. For official numbers, use OPM, DFAS, DTMO and GSA. Your selections are saved only in this browser.</p>
+    <p class="muted">Overseas (OCONUS) pay is documented but not modeled yet.</p>
   </footer>
 
   <script src="shared/govpay.js"></script>
+  <script src="shared/locpicker.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

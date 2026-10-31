@@ -566,6 +566,75 @@
   }
 
   // ---------------------------------------------------------------------------
+  // progression(profile, year, locId) — "what's my next level?"
+  // Returns [{ kind, title, sub, when, profile, annual, delta }], best first.
+  // ---------------------------------------------------------------------------
+  const GS_STEP_WAIT_YRS = [1, 1, 1, 2, 2, 2, 3, 3, 3];         // step n -> n+1 (52/104/156 weeks)
+  const FWS_STEP_WAIT = ["6 months", "18 months", "2 years", "2 years"];
+  const yrs = (n) => (n === 1 ? "1 year" : n + " years");
+  // GS two-step promotion rule (simplified, base pay): lowest step of the new
+  // grade that is at least current rate + two step-increments of the old grade.
+  function promoteGS(baseFn, year, grade, step, toGrade) {
+    let g = grade, s = step;
+    while (g < toGrade) {
+      const cur = baseFn(year, g, s);
+      const inc = (baseFn(year, g, 10) - baseFn(year, g, 1)) / 9; // average step increment
+      const target = cur + 2 * inc;
+      let ns = 10;
+      for (let k = 1; k <= 10; k++) if (baseFn(year, g + 1, k) >= target) { ns = k; break; }
+      g += 1; s = ns;
+    }
+    return s;
+  }
+  function progression(p, year, locId) {
+    p = Object.assign({}, DEFAULT_PROFILE, p);
+    const now = compute(p, year, locId);
+    const out = [];
+    const add = (kind, title, sub, when, np) => {
+      const r = compute(np, year, locId);
+      if (r.annual == null || now.annual == null) return;
+      out.push({ kind, title, sub, when, profile: np, annual: r.annual, delta: r.annual - now.annual, result: r });
+    };
+    if (p.system === "GS" || p.system === "LEO") {
+      const baseFn = p.system === "GS" ? gsBase : leoBase;
+      const pre = p.system === "LEO" ? "LEO " : "";
+      if (p.step < 10) add("step", `Step ${p.step + 1}`, "Next within-grade increase", `after ${yrs(GS_STEP_WAIT_YRS[p.step - 1])} at step ${p.step}`, Object.assign({}, p, { step: p.step + 1 }));
+      if (p.grade < 15) {
+        const ladder = [5, 7, 9].indexOf(p.grade) >= 0 && p.grade + 2 <= 15;
+        const to = ladder ? p.grade + 2 : p.grade + 1;
+        const ns = promoteGS(baseFn, year, p.grade, p.step, to);
+        add("grade", `${pre}GS-${to} Step ${ns}`, ladder ? "Next grade on a two-grade career ladder" : "Promotion to the next grade", "when you're promoted (two-step rule, simplified)", Object.assign({}, p, { grade: to, step: ns }));
+      }
+      if (p.grade === 15) add("role", "Senior Executive Service", "Move into the SES (no locality pay, so it can pay less in high-cost areas)", "if selected for an SES position", { system: "SES", sesPoint: 0 });
+      if (p.step < 9) {
+        const wait = GS_STEP_WAIT_YRS.slice(p.step - 1).reduce((a, b) => a + b, 0);
+        add("top", `Step 10 (top of GS-${p.grade})`, "Maximum pay in this grade", `about ${yrs(wait)} from now`, Object.assign({}, p, { step: 10 }));
+      }
+    } else if (p.system === "FWS") {
+      const max = FWS_SCHEDULES[p.schedule].grades, st = Math.min(p.step, 5);
+      if (st < 5) add("step", `Step ${st + 1}`, "Next within-grade increase", `after ${FWS_STEP_WAIT[st - 1]} at step ${st}`, Object.assign({}, p, { step: st + 1 }));
+      if (p.grade < max) add("grade", `${p.schedule}-${p.grade + 1} Step ${st}`, "Promotion to the next grade", "when you're promoted", Object.assign({}, p, { grade: p.grade + 1, step: st }));
+      if (p.schedule === "WG") add("role", `WL-${p.grade} Step ${st}`, "Become a wage leader", "if you move into a leader role", Object.assign({}, p, { schedule: "WL", step: st }));
+      else if (p.schedule === "WL") add("role", `WS-${Math.max(1, p.grade - 2)} Step ${st}`, "Become a supervisor", "if you move into a supervisor role", Object.assign({}, p, { schedule: "WS", grade: Math.max(1, p.grade - 2), step: st }));
+    } else if (p.system === "SES") {
+      if ((p.sesPoint || 0) < 1) add("top", "Top of the SES band", "The highest SES pay (certified appraisal system)", "at your agency's discretion", Object.assign({}, p, { sesPoint: 1 }));
+    } else {
+      // military: next pay-table column, next rank
+      const cur = milBasic(year, p.mgrade, p.yos);
+      const nextCol = MIL_YOS.find((c) => c > p.yos && milBasic(year, p.mgrade, c) > (cur || 0));
+      if (nextCol != null) add("yos", `${p.mgrade} · ${nextCol} yrs`, "Next longevity raise in the pay table", `in ${yrs(nextCol - p.yos)} (at ${nextCol} years of service)`, Object.assign({}, p, { yos: nextCol }));
+      const list = MIL_GRADES[milGradeType(p.mgrade)];
+      const i = list.indexOf(p.mgrade);
+      if (i >= 0 && i < list.length - 1) {
+        const ng = list[i + 1];
+        const yos = Math.max(p.yos, MIL_ANCHORS[ng].min);
+        add("promo", `${ng} · ${yos} yrs`, "Promotion to the next rank", yos > p.yos ? `earliest at ${yos} years of service` : "when you're promoted", Object.assign({}, p, { mgrade: ng, yos }));
+      }
+    }
+    return out;
+  }
+
+  // ---------------------------------------------------------------------------
   // Formatting helpers (shared so all three sites look the same numerically)
   // ---------------------------------------------------------------------------
   const fmt = {
@@ -588,7 +657,7 @@
     focusLocations: () => LOCATIONS.filter((l) => !l.simulated),
     location, gs, gsBase, gsTable, leo, leoBase, fws, ses, executiveSchedule,
     milBasic, milTable, bas, bah, military, milGradeType, perDiem, trip, fmt,
-    compute, DEFAULT_PROFILE, FWS_HOURS_PER_YEAR,
+    compute, progression, DEFAULT_PROFILE, FWS_HOURS_PER_YEAR,
     sources: {
       gs: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/",
       leo: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/ (LEO tables)",

@@ -5,6 +5,6 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 for site in "$root"/sites/*/; do
   mkdir -p "$site/shared"
-  cp "$root/shared/govpay.js" "$site/shared/govpay.js"
-  echo "synced -> ${site#$root/}shared/govpay.js"
+  cp "$root"/shared/*.js "$site/shared/"
+  echo "synced -> ${site#$root/}shared/"
 done

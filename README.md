@@ -6,10 +6,11 @@ This repo currently holds **three design prototypes**, which share one data engi
 
 | Folder | Direction |
 |---|---|
-| `sites/ledger/` | **A · Ledger:** calculator-first, official but friendly |
-| `sites/levels/` | **B · Levels:** playful career paths, cards and VS mode |
-| `sites/atlas/` | **C · Atlas:** editorial, place-first, map and rankings |
+| `sites/ledger/` | **A · Paybook:** "my pay" first: set up once, see your number and your next level |
+| `sites/levels/` | **B · Payup:** playful career paths, cards and VS mode |
+| `sites/atlas/` | **C · Paymap:** editorial, place-first, map and rankings |
 | `shared/govpay.js` | Data plus calculation engine (the source copy) |
+| `shared/locpicker.js` | Searchable location picker shared by the sites |
 | `docs/` | Design rationale, data sources and plan, OCONUS notes |
 
 ## Run locally
@@ -20,7 +21,7 @@ python3 -m http.server 8000
 Then visit http://localhost:8000.
 
 ## Shared engine
-Edit **`shared/govpay.js`** only, then copy it into each site:
+Edit the files in **`shared/`** only, then copy them into each site:
 ```bash
 ./scripts/sync-shared.sh
 ```
@@ -29,11 +30,11 @@ Each site keeps its own copy in `sites/<name>/shared/` so every folder can deplo
 ## Deploying (Cloudflare Pages)
 Create one Pages project per site, connected to this GitHub repo:
 
-| Project | URL | Build output directory |
-|---|---|---|
-| `paybook` | https://paybook.pages.dev | `sites/ledger` |
-| `payup` | https://payup.pages.dev | `sites/levels` |
-| `paymap` | https://paymap.pages.dev | `sites/atlas` |
+| Project | Dev | Prod (planned) | Build output directory |
+|---|---|---|---|
+| `paybook` | https://paybook.hhouse.dev | paybook.loopi.sh | `sites/ledger` |
+| `payup` | https://payup.hhouse.dev | payup.loopi.sh | `sites/levels` |
+| `paymap` | https://paymap.hhouse.dev | paymap.loopi.sh | `sites/atlas` |
 
 - **Production branch:** `main`
 - **Build command:** none
