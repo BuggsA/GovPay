@@ -75,3 +75,12 @@
 .guide li { padding-left: 40px; position: relative; }
 .guide li::before { counter-increment: g; content: counter(g, decimal-leading-zero); position: absolute; left: 0; top: 2px; font: 600 12px var(--font-mono); color: var(--ink-2); }
 .guide b { display: block; font: 700 18px var(--font-display); margin-bottom: 2px; }
+
+/* take-home */
+.th { margin-top: var(--s4); }
+.th b { font-size: 22px; }
+.th-assume { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s2); margin-top: 4px; font-size: 14px; }
+.th-assume span { color: var(--ink-2); }
+.th-break { margin-top: var(--s3); }
+.th-break .pb-ledger li { font-size: 15px; }
+.pb-th-panel .pb-seg { flex-wrap: wrap; }

@@ -64,7 +64,8 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Done when:** for 20 sample places (bases, cities and ZIPs), all three keys are correct, and the UI notes when they differ (for example, Quantico).
 - **Needs:** 1.1 and 1.3, plus checking that census.gov is reachable.
 
-### 1.5 State tax data · S · ☐
+### 1.5 State tax data · S · ◐
+> **Progress (Oct 31, 2026):** 2026 federal (IRS Rev. Proc. 2025-32), FICA, and state rules for DC, MD (+ every county, from the Comptroller), PA, UT (Tax Commission credit), VA are in `shared/tax.js` with sources. Still open: the other 45 states and PA local taxes.
 - **Goal:** inputs for take-home pay.
 - **Includes:** 2026 brackets, standard deductions and military-pay exemptions for every state, starting from Tax Foundation's table and checked against state sources for the focus states.
 - **Done when:** `data/tax/2026.json` exists, with a source link for each state.
@@ -142,7 +143,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** tables render from real data with source links and "as of" dates.
 - **Needs:** 3.1.
 
-### 3.5 Take-home v1 · M · ☐
+### 3.5 Take-home v1 · M · ◐
+> **Progress (Oct 31, 2026):** live on Paybook for the five focus states: filing status, state (legal residence for military, with PA's out-of-state exemption), Maryland county, FERS (regular and LEO rates), TSP traditional or Roth, health premium, own-rate override, and a "where your pay goes" breakdown. Checked against a hand calculation (GS-12/5 DC: $6,204 a month).
 - **Goal:** an honest estimate of take-home pay.
 - **Includes:**
   - Federal tax, Social Security/Medicare, FERS (0.8% / 3.1% / 4.4%), TSP % and state tax

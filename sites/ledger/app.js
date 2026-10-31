@@ -20,17 +20,22 @@
     year: G.CURRENT_YEAR, loc: "dc", me: null, preview: null, draft: null, editing: false, assumed: [],
     period: "year", tab: "tables", tableKind: null, tripStart: G.CURRENT_YEAR + "-04-14", tripNights: 3,
     b: Object.assign({}, G.DEFAULT_PROFILE, { system: "MIL", mgrade: "O-3", yos: 8, deps: true }),
+    tax: { filing: "single", state: null, county: null, fers: "4.4", tspPct: 5, tspType: "trad", health: "", ownRate: "", otherRate: "", chosen: false },
+    thOpen: false,
   };
   load();
 
   // ------------------------------------------------------------ persistence
   function load() {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { /* storage off */ }
+    if (d && d.tax) Object.assign(state.tax, d.tax);          // tax settings are personal: always from this browser
     const q = new URLSearchParams(location.hash.slice(1));
-    if (q.has("s")) { fromHash(q); return; }
-    try { const d = JSON.parse(localStorage.getItem(STORE) || "null"); if (d && d.me) { state.me = d.me; state.loc = d.loc || state.loc; } } catch (e) { /* storage off */ }
+    if (q.has("s")) { fromHash(q); return; }                   // a shared link sets the job and place
+    if (d && d.me) { state.me = d.me; state.loc = d.loc || state.loc; }
   }
   function save() {
-    try { localStorage.setItem(STORE, JSON.stringify({ me: state.me, loc: state.loc })); } catch (e) { /* storage off */ }
+    try { localStorage.setItem(STORE, JSON.stringify({ me: state.me, loc: state.loc, tax: state.tax })); } catch (e) { /* storage off */ }
     writeHash();
   }
   function writeHash() {
@@ -180,12 +185,83 @@
       <ul class="pb-ledger">${r.rows.map((row) => `<li><span>${esc(row.label)}${row.taxFree ? '<span class="pb-taxfree">tax-free</span>' : ""}</span><span>${rowAmt(row.annual)}</span></li>`).join("")}
         <li class="pb-ledger__total"><span>Total</span><span>${rowAmt(r.annual)}</span></li></ul>
       ${yoy != null ? `<p style="margin:var(--s3) 0 0;font-size:15px"><span class="pb-delta ${yoy >= 0 ? "pb-delta--up" : "pb-delta--down"}">${yoy >= 0 ? "+" : "−"}${f.usd(Math.abs(yoy))}</span> a year compared with ${state.year - 1} <span style="color:var(--ink-2)">(${(yoy / prev.annual * 100).toFixed(1)}%)</span></p>` : ""}
-      <div class="pb-stub__foot"><span>paybook · ${sourceLine(state.year)}${mil ? " · BAH est." : ""}</span><span>Not affiliated with the U.S. government</span></div>`;
+      <div id="th"></div>
+      <div class="pb-stub__foot"><span>paybook · ${sourceLine(state.year)}${mil ? " · BAH est." : ""} · take-home est.</span><span>Not affiliated with the U.S. government</span></div>`;
+    renderTakeHome(r, p);
     el.querySelectorAll("[data-per]").forEach((b) => (b.onclick = () => { state.period = b.dataset.per; state.periodTouched = true; renderStub(); }));
     $("#notes").innerHTML = `${state.assumed.length ? `<p class="sub" style="margin:var(--s2) 0"><b style="color:var(--ink)">Assumed:</b> ${esc(state.assumed.join(", "))}. Change it above.</p>` : ""}
       <details class="pb-details"><summary>How this is calculated</summary><div>${r.notes.map((n) => `<p style="margin:0 0 6px">${esc(n)}</p>`).join("")}</div></details>
       <p class="sub" style="margin-top:var(--s3)"><a href="#" class="pb-link pb-link--ink" data-edit>Start over with the three questions</a></p>`;
   }
+  // ------------------------------------------------------------ take-home
+  const T = window.GovPayTax;
+  function taxOpts() {
+    const t = state.tax, loc = G.location(state.loc);
+    if (!t.chosen) { t.state = T.defaultState(loc.state); t.county = T.PLACE_COUNTY[loc.id] || (loc.state === "MD" ? "Montgomery" : t.county); }
+    if (t.state === "MD" && !t.county) t.county = "Montgomery";
+    return Object.assign({}, t, { dutyState: loc.state });
+  }
+  const round10 = (n) => f.usd(Math.round(n / 10) * 10);
+  function renderTakeHome(r, p) {
+    const el = $("#th"); if (!el) return;
+    const mil = p.system === "MIL", o = taxOpts(), e = T.estimate(T.payFrom(r, p), o);
+    const stName = o.state === "NONE" ? "no state income tax" : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/City$/.test(o.county) ? "" : " County"}` : "");
+    const parts = [o.filing === "mfj" ? "Married, one income" : "Single", "standard deduction", stName];
+    if (!mil) parts.push(`FERS ${(+o.fers + (p.system === "LEO" ? 0.5 : 0)).toFixed(1)}%`);
+    parts.push(`TSP ${o.tspPct}% ${o.tspType === "roth" ? "Roth" : "traditional"}`);
+    if (o.health) parts.push(`health $${o.health}/paycheck`);
+    const assumptions = e.override ? `Using your own income tax rate of ${o.ownRate}%. ${parts.slice(-2).join(", ")}.` : parts.join(", ") + ".";
+    el.innerHTML = `
+      <div class="pb-takehome th">
+        <div>Take-home is about <b>${round10(e.monthly)}</b> a month <span>(${round10(e.perCheck)} per paycheck)</span>.</div>
+        <div class="th-assume"><span>${esc(assumptions)}${e.stateNote ? " " + esc(e.stateNote) : ""}</span>
+          <button type="button" class="pb-btn pb-btn--quiet pb-btn--small" id="thEdit" aria-expanded="${state.thOpen}" aria-controls="thPanel">${state.thOpen ? "Close" : "Edit"}</button></div>
+      </div>
+      ${state.thOpen ? thPanel(o, mil, p) : ""}
+      <details class="pb-details th-break"><summary>Where your pay goes</summary><div>
+        <ul class="pb-ledger" style="margin-top:0">
+          <li><span>Gross pay${mil ? " (incl. tax-free BAH and BAS)" : ""}</span><span>${f.usd(e.gross / 12)}</span></li>
+          ${e.lines.map((l) => `<li><span>− ${esc(l.label)}</span><span>${f.usd(l.annual / 12)}</span></li>`).join("")}
+          <li class="pb-ledger__total"><span>Take-home a month</span><span>${f.usd(e.monthly)}</span></li>
+        </ul>
+        <p style="margin:var(--s3) 0 0">Income tax is about ${(e.effectiveIncomeTax * 100).toFixed(1)}% of your gross pay. This is an estimate using ${e.taxYear} rules for every pay year: no tax credits, no itemizing and no spouse income. ${o.state === "PA" ? "Pennsylvania local earned-income tax isn't included yet. " : ""}${mil && o.state !== "PA" && o.state !== "NONE" ? "Some states give service members partial deductions that aren't included; use your own rate if yours does. " : ""}Sources: <a class="pb-link" href="${T.SOURCES.federal}">IRS Rev. Proc. 2025-32</a>, <a class="pb-link" href="${T.SOURCES.states}">2026 state rates</a>${o.state === "MD" ? `, <a class="pb-link" href="${T.SOURCES.mdCounty}">Maryland Comptroller</a>` : ""}${o.state === "UT" ? `, <a class="pb-link" href="${T.SOURCES.utah}">Utah Tax Commission</a>` : ""}.</p>
+      </div></details>`;
+    $("#thEdit").onclick = () => { state.thOpen = !state.thOpen; renderTakeHome(r, p); };
+    if (state.thOpen) wireThPanel(r, p);
+  }
+  function thPanel(o, mil, p) {
+    const counties = Object.keys(T.MD_COUNTIES);
+    return `<form class="pb-th-panel" id="thPanel">
+      <div class="pb-th-grid">
+        <div class="pb-field"><span class="pb-field__label">Filing status</span><div class="pb-seg" role="radiogroup" aria-label="Filing status"><button type="button" role="radio" data-filing="single" aria-checked="${o.filing !== "mfj"}">Single</button><button type="button" role="radio" data-filing="mfj" aria-checked="${o.filing === "mfj"}">Married, one income</button></div></div>
+        <div class="pb-field"><label class="pb-field__label" for="thState">${mil ? "State of legal residence" : "State you pay income tax to"}</label><select class="pb-input pb-select" id="thState">${T.STATE_CHOICES.map(([k, n]) => `<option value="${k}" ${k === o.state ? "selected" : ""}>${n}</option>`).join("")}</select>${mil ? '<span class="pb-field__hint">Usually your home of record, not where you\'re stationed.</span>' : ""}</div>
+        ${o.state === "MD" ? `<div class="pb-field"><label class="pb-field__label" for="thCounty">Maryland county you live in</label><select class="pb-input pb-select" id="thCounty">${counties.map((c) => `<option ${c === o.county ? "selected" : ""}>${c}</option>`).join("")}</select></div>` : ""}
+        ${o.state === "OTHER" ? `<div class="pb-field"><label class="pb-field__label" for="thOther">That state's rate (%)</label><input class="pb-input" id="thOther" inputmode="decimal" placeholder="e.g. 5" value="${esc(o.otherRate)}"></div>` : ""}
+        ${mil ? "" : `<div class="pb-field"><label class="pb-field__label" for="thFers">FERS contribution</label><select class="pb-input pb-select" id="thFers">${["4.4", "3.1", "0.8"].map((k) => `<option value="${k}" ${k === o.fers ? "selected" : ""}>${p.system === "LEO" ? (+k + 0.5).toFixed(1) : k}% · ${T.FERS_LABEL[k]}</option>`).join("")}</select></div>`}
+        <div class="pb-field"><label class="pb-field__label" for="thTsp">TSP contribution (%)</label><input class="pb-input" id="thTsp" inputmode="decimal" value="${esc(o.tspPct)}"><div class="pb-seg" role="radiogroup" aria-label="TSP type" style="margin-top:6px"><button type="button" role="radio" data-tsp="trad" aria-checked="${o.tspType !== "roth"}">Traditional</button><button type="button" role="radio" data-tsp="roth" aria-checked="${o.tspType === "roth"}">Roth</button></div></div>
+        <div class="pb-field"><label class="pb-field__label" for="thHealth">Health premium per paycheck</label><input class="pb-input" id="thHealth" inputmode="decimal" placeholder="optional, e.g. 120" value="${esc(o.health)}"></div>
+        <div class="pb-field"><label class="pb-field__label" for="thOwn">Or use your own income tax rate (%)</label><input class="pb-input" id="thOwn" inputmode="decimal" placeholder="e.g. 22" value="${esc(o.ownRate)}"><span class="pb-field__hint">For complicated situations. Replaces federal, state and local income tax.</span></div>
+      </div>
+      <div class="pb-th-actions"><button class="pb-btn" type="submit">Update</button><button class="pb-btn pb-btn--line" type="button" id="thReset">Reset to defaults</button></div>
+    </form>`;
+  }
+  function wireThPanel(r, p) {
+    const t = state.tax, form = $("#thPanel");
+    const num = (id, max) => { const v = $(id).value.trim(); if (v === "") return ""; const n = parseFloat(v); return isNaN(n) ? "" : Math.max(0, Math.min(max, n)); };
+    const read = () => {
+      t.state = $("#thState").value; t.chosen = true;
+      if ($("#thCounty")) t.county = $("#thCounty").value;
+      if ($("#thOther")) t.otherRate = num("#thOther", 20);
+      if ($("#thFers")) t.fers = $("#thFers").value;
+      t.tspPct = num("#thTsp", 100) || 0; t.health = num("#thHealth", 5000); t.ownRate = num("#thOwn", 60);
+    };
+    form.querySelectorAll("[data-filing]").forEach((b) => (b.onclick = () => { read(); t.filing = b.dataset.filing; save(); renderTakeHome(r, p); }));
+    form.querySelectorAll("[data-tsp]").forEach((b) => (b.onclick = () => { read(); t.tspType = b.dataset.tsp; save(); renderTakeHome(r, p); }));
+    $("#thState").onchange = () => { read(); save(); renderTakeHome(r, p); };
+    form.onsubmit = (ev) => { ev.preventDefault(); read(); state.thOpen = false; save(); renderTakeHome(r, p); };
+    $("#thReset").onclick = () => { Object.assign(t, { filing: "single", state: null, county: null, fers: "4.4", tspPct: 5, tspType: "trad", health: "", ownRate: "", otherRate: "", chosen: false }); save(); renderTakeHome(r, p); };
+  }
+
   function renderPreviewBar() {
     const el = $("#preview");
     if (!state.preview) { el.hidden = true; return; }
@@ -347,7 +423,7 @@
     if (sheetPicker) sheetPicker.set(state.loc);
     if (!state.preview) writeHash();
   }
-  function setLoc(id) { state.loc = id; if (!state.preview) save(); renderDash(); }
+  function setLoc(id) { state.loc = id; if (!state.tax.chosen) { state.tax.state = null; state.tax.county = null; } if (!state.preview) save(); renderDash(); }
   function mountDash() {
     if (!ask) ask = PB.searchBox($("#ask"), { getLoc: () => state.loc, getYear: () => state.year, onPick: pickFromSearch });
     if (!yearSw) yearSw = PB.yearSwitch($("#year"), { value: state.year, onChange: (y) => { state.year = y; if (!state.preview) save(); railPicker.refresh(); sheetPicker.refresh(); renderDash(); } });

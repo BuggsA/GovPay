@@ -25,6 +25,7 @@ GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO
 | BAS | 2026 $476.95 enlisted / $328.48 officer | — | approx (verify with DFAS) |
 | BAH | E-5 with-dependents anchor per MHA × grade ratios | 19 MHAs in UT, MD, DC, PA, VA | approx |
 | **Per diem** | **FY2025, FY2026, FY2027, from the GSA Per Diem API** (`scripts/fetch-perdiem.mjs`) | **All CONUS areas (~300) plus the standard rate** ($110/$68 in FY2025–26, $113/$68 in FY2027) | **verified (real)** |
+| **Take-home taxes** | **Tax year 2026**: IRS Rev. Proc. 2025-32 (brackets, standard deduction), SSA wage base $184,500, state rules for DC, MD, PA, UT, VA (Tax Foundation 2026 table), Maryland county rates and exemption phase-out (Maryland Comptroller, DLS), Utah taxpayer credit (Utah Tax Commission) | Five focus states; other states use "no income tax" or a rate you enter | **verified (official)**; the result is an estimate by design |
 | Everything else | Generated with a seed per state | 45 other states | **simulated** |
 
 ## Production sources
