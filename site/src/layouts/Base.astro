@@ -1,10 +1,12 @@
 ---
 // Shared page frame: head, header, footer. Uses the same design files as the calculator.
 import { breadcrumbLd } from "../lib/engine.mjs";
+import { ogPath } from "../lib/cards.mjs";
 interface Props { title: string; description: string; path: string; crumbs?: [string, string][]; }
 const { title, description, path, crumbs } = Astro.props;
 const ld = crumbs && crumbs.length ? JSON.stringify(breadcrumbLd(Astro.site, [["Paybook", "/"], ...crumbs])) : null;
 const canonical = new URL(path, Astro.site).toString();
+const image = new URL(ogPath(path), Astro.site).toString();   // drawn by scripts/og-images.mjs after the build
 const nav = [
   ["/", "My pay"],
   ["/civilian/gs", "GS pay"],
@@ -24,6 +26,13 @@ const nav = [
   <meta property="og:description" content={description}>
   <meta property="og:url" content={canonical}>
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Paybook">
+  <meta property="og:image" content={image}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content={title}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={image}>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z' fill='%231b1a17'/%3E%3Crect x='7' y='11.5' width='14' height='5' fill='%23ffd84d'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -170,7 +170,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** the build produces every page under a size budget (≤ 50 KB HTML + JS per page), and Lighthouse SEO scores ≥ 95.
 - **Needs:** Phase 1, plus 3.1–3.4.
 
-### 4.2 Share card + link previews · S · ☐
+### 4.2 Share card + link previews · S · ◐
+> **Progress (Oct 31, 2026):** every page has its own 1200×630 link-preview image showing its number (e.g. "GS-12 pay in San Diego, CA: $102,246 to $132,923"), drawn at build time in the stub design (`src/lib/cards.mjs` → `scripts/og-images.mjs`, satori + resvg, 4 threads, cached by content so a rebuild only redraws changed cards). `og:image` and `twitter:card` tags on every page; `npm run check` fails if an image is missing. **Still open:** check previews in Slack, iMessage and X once deployed; a share button and screenshot card on the calculator.
 - **Goal:** results people actually share.
 - **Includes:**
   - The stub as a screenshot-ready card
@@ -180,6 +181,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Needs:** 4.1.
 
 ### 4.3 Job-posting decoder · S · ☐
+> **Blocked (Oct 31, 2026):** the occupational series list (USAJOBS code list API, OPM handbook) refuses automated downloads (Access Denied). Needs a one-time manual download into `data/raw/opm/`.
 - **Goal:** turn "GS-0343-09/11/12" into a career ladder with pay at each grade.
 - **Includes:** the OPM occupational series list, paste-in parsing, the ladder with pay for the chosen location, and `/jobs/<series>` pages.
 - **Done when:** 10 real USAJobs strings decode correctly.

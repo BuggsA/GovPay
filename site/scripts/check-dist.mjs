@@ -1,5 +1,5 @@
-// After `npm run build`: every page is under the size budget, has a title, description and
-// canonical tag, and every internal link points at a page or file that exists.
+// After `npm run build`: every page is under the size budget, has a title, description,
+// canonical tag and a drawn preview image, and every internal link points at a page or file that exists.
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,6 +20,9 @@ for (const f of files.filter((x) => x.endsWith(".html"))) {
   if (size > BUDGET) problems.push(`${page}: ${(size / 1024).toFixed(1)} KB is over the ${BUDGET / 1024} KB budget`);
   for (const tag of ["<title>", 'name="description"', 'rel="canonical"']) if (!html.includes(tag)) problems.push(`${page}: missing ${tag}`);
   for (const [, href] of html.matchAll(/href="(\/[^"#?]*)/g)) if (!exists(decodeURI(href))) problems.push(`${page}: broken link ${href}`);
+  const og = html.match(/property="og:image" content="https?:\/\/[^/]+(\/[^"]+)"/);
+  if (!og) problems.push(`${page}: missing og:image`);
+  else if (!exists(og[1])) problems.push(`${page}: preview image ${og[1]} wasn't drawn`);
 }
 console.log(`${pages} pages checked; largest ${biggest[0]} at ${(biggest[1] / 1024).toFixed(1)} KB`);
 if (problems.length) { console.error([...new Set(problems)].slice(0, 40).join("\n")); console.error(`${problems.length} problems`); process.exit(1); }
