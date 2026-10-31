@@ -1,0 +1,91 @@
+/*
+ * Paybook design tokens · direction A "Stub"
+ * The single source of truth for color, type, spacing, layout, lines and motion.
+ * Sibling sites copy this file and change only --accent (and its dark value).
+ *
+ * Fonts (Google Fonts):
+ *   Familjen Grotesk 600/700  display + wordmark
+ *   Hanken Grotesk 400–700    body, UI, all numbers (tabular)
+ *   Spline Sans Mono 500/600  box labels, stamps, tiny meta only
+ */
+:root {
+  /* ---- color: light ---- */
+  --paper: #f4f1ea;          /* page */
+  --paper-2: #ebe6db;        /* wells, table heads, rails */
+  --card: #fffdf7;           /* stub and panels */
+  --ink: #1b1a17;            /* text, primary buttons, strong rules */
+  --ink-2: #5d5a52;          /* secondary text */
+  --ink-3: #8a857a;          /* hints and placeholders (large/bold text only) */
+  --rule: #d6cfc0;           /* hairlines */
+  --hi: #ffd84d;             /* highlighter = "you". Text on it is always --hi-ink */
+  --hi-ink: #1b1a17;
+  --accent: #1e7a55;         /* receipt green: links, positive deltas. Sibling sites change this */
+  --pen: #b23a22;            /* red pen: decreases, warnings */
+  --focus: #1b1a17;
+
+  /* ---- type ---- */
+  --font-display: "Familjen Grotesk", "Hanken Grotesk", system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, "SFMono-Regular", monospace;
+  /* fluid scale, 390px → 1280px */
+  --t-number: clamp(3rem, 2.2rem + 3.6vw, 4.5rem);    /* 48 → 72  the big number */
+  --t-h1: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);       /* 32 → 44 */
+  --t-h2: clamp(1.5rem, 1.3rem + .9vw, 1.875rem);     /* 24 → 30 */
+  --t-h3: 1.25rem;                                    /* 20 */
+  --t-body: 1.0625rem;                                /* 17 */
+  --t-small: .875rem;                                 /* 14 */
+  --t-label: .75rem;                                  /* 12, mono, uppercase */
+  --lh-tight: 1.08;
+  --lh-body: 1.55;
+  --track-display: -.025em;
+  --track-number: -.03em;
+  --track-label: .1em;
+
+  /* ---- space: 4px base ---- */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+
+  /* ---- layout ---- */
+  --gutter: 16px;            /* side padding at phone width */
+  --content: 720px;          /* reading / calculator column */
+  --rail: 300px;             /* optional right rail (picker, links, future ad slot) */
+  --page-max: 1080px;
+
+  /* ---- lines & shape ---- */
+  --hair: 1px solid var(--rule);
+  --strong: 2px solid var(--ink);
+  --radius: 3px;             /* never above 4px */
+  --perf: 10px;              /* perforation pitch on the stub */
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --fast: 120ms;             /* hover, press */
+  --base: 200ms;             /* number changes, panels */
+
+  color-scheme: light;
+}
+
+/* ---- color: dark ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) {
+    --paper: #161513; --paper-2: #1e1d1a; --card: #1c1b18; --ink: #ede9df; --ink-2: #b0ab9f; --ink-3: #8c877c;
+    --rule: #34312b; --hi: #ecc845; --accent: #4cc493; --pen: #f08a72; --focus: #ecc845; color-scheme: dark;
+  }
+}
+:root[data-theme=dark] {
+  --paper: #161513; --paper-2: #1e1d1a; --card: #1c1b18; --ink: #ede9df; --ink-2: #b0ab9f; --ink-3: #8c877c;
+  --rule: #34312b; --hi: #ecc845; --accent: #4cc493; --pen: #f08a72; --focus: #ecc845; color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --fast: 0ms; --base: 0ms; }
+}
+
+/* ---- base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--paper); color: var(--ink); font: 400 var(--t-body)/var(--lh-body) var(--font-body); -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.num { font-variant-numeric: tabular-nums; }
+.label { font: 600 var(--t-label)/1.2 var(--font-mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-2); }
+.hl { background: linear-gradient(transparent 14%, var(--hi) 14%, var(--hi) 86%, transparent 86%); color: var(--hi-ink); padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }

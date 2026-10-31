@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paybook Identity</title>
+  <meta name="description" content="Three identity directions for Paybook: Stub, Ledger and Stamp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Familjen+Grotesk:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page: #efede8; --page-ink: #1a1a18; --page-muted: #5c5a55; --page-rule: #d4d0c7; --hi: #ffd84d;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme=light]) { --page: #121212; --page-ink: #ecebe6; --page-muted: #a3a09a; --page-rule: #2c2c2a; --hi: #e9c443; color-scheme: dark; }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { background: var(--page); color: var(--page-ink); font: 16px/1.55 "Hanken Grotesk", system-ui, sans-serif; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+    header.page { padding: 28px 0 8px; border-bottom: 1px solid var(--page-rule); }
+    .eyebrow { font: 600 12px "Spline Sans Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--page-muted); }
+    h1 { font: 700 clamp(28px, 4vw, 40px)/1.1 "Hanken Grotesk", sans-serif; margin: 6px 0 8px; letter-spacing: -.02em; }
+    .intro { max-width: 760px; color: var(--page-muted); margin: 0 0 18px; }
+    .nav { display: flex; gap: 14px; font-size: 14px; margin: 10px 0 18px; flex-wrap: wrap; }
+    .nav a { color: var(--page-ink); }
+
+    .dirs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 24px 0 40px; }
+    @media (max-width: 1060px) { .dirs { grid-template-columns: minmax(0, 1fr); } }
+    .dir { border-radius: 6px; overflow: hidden; border: 1px solid var(--page-rule); display: flex; flex-direction: column; }
+    .dir-label { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font: 600 12px "Spline Sans Mono", monospace; letter-spacing: .08em; text-transform: uppercase; background: var(--page); color: var(--page-muted); border-bottom: 1px solid var(--page-rule); }
+    .dir-label b { color: var(--page-ink); }
+    .rec { background: var(--hi); color: #1a1a18; padding: 2px 6px; border-radius: 2px; }
+
+    /* Each direction is a self-contained mini site with its own tokens. */
+    .site { background: var(--bg); color: var(--ink); padding: 0 0 18px; flex: 1; font-family: var(--body); }
+    .site .hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px; border-bottom: var(--hd-rule); }
+    .site .nv { display: flex; gap: 12px; font-size: 13px; color: var(--muted); }
+    .site .body { padding: 18px; }
+    .site .k { font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .site h2 { font-family: var(--display); font-weight: var(--display-weight); font-size: 30px; line-height: 1.08; margin: 6px 0 10px; letter-spacing: var(--display-track); }
+    .site p { margin: 0 0 12px; font-size: 15px; color: var(--muted); }
+    .mark-hi { background: linear-gradient(transparent 14%, var(--hi) 14%, var(--hi) 86%, transparent 86%); color: #1a1a18; padding: 0 .12em; }
+    .site .num { font-variant-numeric: tabular-nums; }
+    .site .big { font-family: var(--num); font-weight: 700; font-size: 48px; letter-spacing: -.03em; line-height: 1; margin: 6px 0 4px; }
+    .site .row { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; padding: 6px 0; border-bottom: 1px dotted var(--rule); }
+    .site .row b { font-variant-numeric: tabular-nums; }
+    .site .btn { display: inline-block; margin-top: 14px; font: 600 14px var(--body); padding: 9px 14px; border-radius: var(--radius); background: var(--ink); color: var(--bg); }
+    .sizes { display: flex; align-items: end; gap: 14px; padding: 14px 18px; border-top: 1px solid var(--rule); background: var(--bg-2); }
+    .sizes figure { margin: 0; text-align: center; font: 500 10px var(--mono); color: var(--muted); }
+    .sizes figure > div { display: grid; place-items: center; margin-bottom: 4px; }
+    .why { padding: 14px 18px 0; font-size: 14px; }
+    .why li { margin: 0 0 4px; }
+    .why ul { padding-left: 18px; margin: 6px 0 0; }
+
+    /* ---------- A · STUB ---------- */
+    .A { --bg: #f4f1ea; --bg-2: #ebe6db; --ink: #1b1a17; --muted: #5d5a52; --rule: #d6cfc0; --accent: #1e7a55; --hi: #ffd84d;
+         --display: "Familjen Grotesk", sans-serif; --display-weight: 700; --display-track: -.025em; --body: "Hanken Grotesk", sans-serif;
+         --mono: "Spline Sans Mono", monospace; --num: "Hanken Grotesk", sans-serif; --radius: 3px; --hd-rule: 2px solid #1b1a17; }
+    .A .card { background: #fffdf7; border: 1px solid var(--rule); padding: 14px; position: relative; margin-top: 10px; }
+    .A .card::after { content: ""; position: absolute; left: -1px; right: -1px; bottom: -8px; height: 9px; background: radial-gradient(circle at 5px 0, transparent 4.5px, #fffdf7 5px) 0 0/10px 9px repeat-x; }
+    .A .wm { font: 700 22px/1 "Familjen Grotesk", sans-serif; letter-spacing: -.03em; display: flex; align-items: center; gap: 8px; color: var(--ink); }
+
+    /* ---------- B · LEDGER ---------- */
+    .B { --bg: #f7f2e4; --bg-2: #efe7d2; --ink: #1d2a24; --muted: #57615a; --rule: #dccfb3; --accent: #8c2f1b; --hi: #f6d55c;
+         --display: "Newsreader", Georgia, serif; --display-weight: 600; --display-track: -.015em; --body: "Hanken Grotesk", sans-serif;
+         --mono: "Spline Sans Mono", monospace; --num: "Newsreader", serif; --radius: 2px; --hd-rule: 1px solid #1d2a24; }
+    .B .hd { border-bottom: 3px double #1d2a24; }
+    .B .card { margin-top: 10px; padding: 12px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+      background: repeating-linear-gradient(transparent 0 27px, rgba(140, 47, 27, .12) 27px 28px); }
+    .B .big { font-weight: 600; letter-spacing: -.02em; }
+    .B .wm { font: 600 25px/1 "Newsreader", serif; display: flex; align-items: center; gap: 8px; color: var(--ink); }
+    .B .wm i { font-style: italic; color: var(--accent); }
+
+    /* ---------- C · STAMP ---------- */
+    .C { --bg: #f1f1ec; --bg-2: #e6e6df; --ink: #141414; --muted: #55554f; --rule: #cfcfc6; --accent: #d9480f; --hi: #ffe14a;
+         --display: "Bricolage Grotesque", sans-serif; --display-weight: 800; --display-track: -.035em; --body: "Hanken Grotesk", sans-serif;
+         --mono: "Spline Sans Mono", monospace; --num: "Bricolage Grotesque", sans-serif; --radius: 999px; --hd-rule: 1px solid #cfcfc6; }
+    .C .card { margin-top: 10px; padding: 14px; background: #fff; border: 2px solid #141414; border-radius: 10px; box-shadow: 4px 4px 0 #141414; }
+    .C .big { font-weight: 800; }
+    .C .wm { display: inline-flex; align-items: center; gap: 8px; }
+    .C .stampword { font: 700 13px/1 "Spline Sans Mono", monospace; letter-spacing: .14em; color: var(--accent); border: 2px solid var(--accent); padding: 5px 8px; border-radius: 4px; transform: rotate(-3deg); display: inline-block; }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme=light]) .A { --bg: #161513; --bg-2: #1e1d1a; --ink: #ede9df; --muted: #a8a397; --rule: #33302a; --hd-rule: 2px solid #ede9df; }
+      :root:not([data-theme=light]) .A .card { background: #1c1b18; }
+      :root:not([data-theme=light]) .A .card::after { background: radial-gradient(circle at 5px 0, transparent 4.5px, #1c1b18 5px) 0 0/10px 9px repeat-x; }
+      :root:not([data-theme=light]) .B { --bg: #141a17; --bg-2: #1b231f; --ink: #ece4cf; --muted: #a9ae9f; --rule: #2f3a33; --accent: #e08a6d; }
+      :root:not([data-theme=light]) .B .hd { border-bottom-color: #ece4cf; }
+      :root:not([data-theme=light]) .B .card { border-color: #ece4cf; background: repeating-linear-gradient(transparent 0 27px, rgba(224, 138, 109, .12) 27px 28px); }
+      :root:not([data-theme=light]) .C { --bg: #121212; --bg-2: #1b1b1b; --ink: #f0f0ea; --muted: #a5a59d; --rule: #303030; --accent: #ff7a3d; }
+      :root:not([data-theme=light]) .C .card { background: #1a1a1a; border-color: #f0f0ea; box-shadow: 4px 4px 0 #f0f0ea; }
+    }
+    .site .btn { color: var(--bg); }
+    .foot { border-top: 1px solid var(--page-rule); padding: 18px 0 40px; color: var(--page-muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header class="page">
+    <div class="wrap">
+      <div class="eyebrow">L1 · Identity · choose one</div>
+      <h1>Three ways Paybook could look</h1>
+      <p class="intro">Each direction keeps the same house habits: <span class="mark-hi">yellow means "you"</span>, numbers come first, thin rules, no gradients, no emoji, nothing that looks like a .gov site. What changes is the personality: the logo, the headline type, the accent color and how a result card feels.</p>
+      <nav class="nav"><a href="./">Design hub</a><a href="foundations.html">L2 Foundations</a><a href="../style.html">Earlier style tile</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap dirs">
+    <!-- A · STUB -->
+    <section class="dir">
+      <div class="dir-label"><span><b>A · Stub</b> · the pay stub</span><span class="rec">Recommended</span></div>
+      <div class="site A">
+        <div class="hd">
+          <span class="wm">
+            <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="11.5" width="14" height="5" fill="#ffd84d"/><path d="M8 14h9" stroke="#1b1a17" stroke-width="2"/></svg>
+            paybook
+          </span>
+          <span class="nv"><span>My pay</span><span>Tables</span><span>Compare</span></span>
+        </div>
+        <div class="body">
+          <div class="k">01 · Your pay · 2026</div>
+          <h2>Your pay, <span class="mark-hi">read like a stub</span>.</h2>
+          <p>Plain grotesk type, monospace labels like form boxes, and a result card with a torn, perforated edge.</p>
+          <div class="card">
+            <div class="k">GS-12 · Step 5 · Washington DC</div>
+            <div class="big num"><span class="mark-hi">$116,071</span></div>
+            <div class="row"><span>Base pay</span><b>$86,659</b></div>
+            <div class="row"><span>Locality 33.94%</span><b>$29,412</b></div>
+          </div>
+          <span class="btn">Show my pay</span>
+        </div>
+        <div class="sizes">
+          <figure><div><svg width="16" height="16" viewBox="0 0 28 28"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="#1b1a17"/><rect x="7" y="11.5" width="14" height="5" fill="#ffd84d"/></svg></div>16</figure>
+          <figure><div><svg width="32" height="32" viewBox="0 0 28 28"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="#1b1a17"/><rect x="7" y="11.5" width="14" height="5" fill="#ffd84d"/></svg></div>32</figure>
+          <figure><div><svg width="56" height="56" viewBox="0 0 28 28"><rect width="28" height="28" rx="6" fill="#ffd84d"/><path d="M5 6h18v6a2.4 2.4 0 0 0 0 4.8V22H5v-5.2A2.4 2.4 0 0 0 5 12z" fill="#1b1a17"/><rect x="8.5" y="12.6" width="11" height="3.6" fill="#ffd84d"/></svg></div>app icon</figure>
+        </div>
+        <div class="why"><b>Why it works</b><ul><li>The site's name and its result card tell the same story: a pay stub.</li><li>The perforated card reads well in a screenshot, so it doubles as the share image.</li><li>It's the easiest to carry over to sibling sites: same stub, different accent.</li></ul></div>
+      </div>
+    </section>
+
+    <!-- B · LEDGER -->
+    <section class="dir">
+      <div class="dir-label"><span><b>B · Ledger</b> · the account book</span><span>Editorial</span></div>
+      <div class="site B">
+        <div class="hd">
+          <span class="wm">
+            <svg width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><path d="M15 5C11 2.5 6 2.5 2 4v18c4-1.5 9-1.5 13 1 4-2.5 9-2.5 13-1V4c-4-1.5-9-1.5-13 1z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5v18" stroke="currentColor" stroke-width="1.4"/><path d="M18 10h7M18 14h7" stroke="currentColor" stroke-width="1" opacity=".5"/><rect x="17" y="16.5" width="9" height="3.2" fill="#f6d55c"/></svg>
+            Pay<i>book</i>
+          </span>
+          <span class="nv"><span>My pay</span><span>Tables</span><span>Learn</span></span>
+        </div>
+        <div class="body">
+          <div class="k">Entry 01 · 2026</div>
+          <h2>What the job pays, <span class="mark-hi">written down</span>.</h2>
+          <p>A serif headline voice like a well-made annual report, ruled ledger lines and an oxblood accent. Calm and trustworthy, with a bookish character.</p>
+          <div class="card">
+            <div class="k">GS-12 · Step 5 · Washington DC</div>
+            <div class="big num"><span class="mark-hi">$116,071</span></div>
+            <div class="row"><span>Base pay</span><b>$86,659</b></div>
+            <div class="row"><span>Locality 33.94%</span><b>$29,412</b></div>
+          </div>
+          <span class="btn">Show my pay</span>
+        </div>
+        <div class="sizes">
+          <figure><div><svg width="16" height="16" viewBox="0 0 30 26"><path d="M15 5C11 2.5 6 2.5 2 4v18c4-1.5 9-1.5 13 1 4-2.5 9-2.5 13-1V4c-4-1.5-9-1.5-13 1z" fill="#1d2a24"/><rect x="17" y="13" width="9" height="4" fill="#f6d55c"/></svg></div>16</figure>
+          <figure><div><svg width="32" height="32" viewBox="0 0 30 26"><path d="M15 5C11 2.5 6 2.5 2 4v18c4-1.5 9-1.5 13 1 4-2.5 9-2.5 13-1V4c-4-1.5-9-1.5-13 1z" fill="#1d2a24"/><rect x="17" y="13" width="9" height="4" fill="#f6d55c"/></svg></div>32</figure>
+          <figure><div><svg width="56" height="56" viewBox="0 0 28 28"><rect width="28" height="28" rx="6" fill="#1d2a24"/><path d="M14 8c-3-1.8-6.5-1.8-9.5-.7v12.4c3-1.1 6.5-1.1 9.5.7 3-1.8 6.5-1.8 9.5-.7V7.3C20.5 6.2 17 6.2 14 8z" fill="#f7f2e4"/><rect x="15.5" y="13.5" width="6.5" height="3" fill="#f6d55c"/></svg></div>app icon</figure>
+        </div>
+        <div class="why"><b>Why it works</b><ul><li>The most "trustworthy money" feel of the three, and it suits the /learn articles.</li><li>The serif numbers give it character, though they're a little less crisp in dense tables.</li><li>Risk: it can read as old-fashioned to younger service members.</li></ul></div>
+      </div>
+    </section>
+
+    <!-- C · STAMP -->
+    <section class="dir">
+      <div class="dir-label"><span><b>C · Stamp</b> · bold and graphic</span><span>Loudest</span></div>
+      <div class="site C">
+        <div class="hd">
+          <span class="wm"><span class="stampword">PAYBOOK</span></span>
+          <span class="nv"><span>My pay</span><span>Tables</span><span>Compare</span></span>
+        </div>
+        <div class="body">
+          <div class="k">Approved · 2026</div>
+          <h2>Know your number. <span class="mark-hi">Stamp it.</span></h2>
+          <p>A chunky display face, hard offset shadows like printed cards, and a rubber-stamp logo in signal orange. Confident and memorable.</p>
+          <div class="card">
+            <div class="k">GS-12 · Step 5 · Washington DC</div>
+            <div class="big num"><span class="mark-hi">$116,071</span></div>
+            <div class="row"><span>Base pay</span><b>$86,659</b></div>
+            <div class="row"><span>Locality 33.94%</span><b>$29,412</b></div>
+          </div>
+          <span class="btn">Show my pay</span>
+        </div>
+        <div class="sizes">
+          <figure><div><svg width="16" height="16" viewBox="0 0 28 28"><rect x="2" y="2" width="24" height="24" rx="4" fill="#d9480f"/><text x="14" y="19" text-anchor="middle" font-family="Spline Sans Mono, monospace" font-weight="700" font-size="13" fill="#fff">P</text></svg></div>16</figure>
+          <figure><div><svg width="32" height="32" viewBox="0 0 28 28"><rect x="2" y="2" width="24" height="24" rx="4" fill="#d9480f"/><text x="14" y="19" text-anchor="middle" font-family="Spline Sans Mono, monospace" font-weight="700" font-size="13" fill="#fff">PB</text></svg></div>32</figure>
+          <figure><div><svg width="56" height="56" viewBox="0 0 28 28"><rect width="28" height="28" rx="6" fill="#ffe14a"/><g transform="rotate(-6 14 14)"><rect x="4" y="9" width="20" height="10" rx="2" fill="none" stroke="#d9480f" stroke-width="1.6"/><text x="14" y="16.6" text-anchor="middle" font-family="Spline Sans Mono, monospace" font-weight="700" font-size="6" fill="#d9480f">PAY</text></g></svg></div>app icon</figure>
+        </div>
+        <div class="why"><b>Why it works</b><ul><li>The most recognizable at a glance, and it'll stand out in a feed.</li><li>The offset-shadow cards are playful without being childish.</li><li>Risk: it's the furthest from "calm and trustworthy", and the orange can feel loud next to money.</li></ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">All three keep: yellow = you · numbers first · rules, not shadows (C bends this one on purpose) · no emoji, gradients or .gov styling · Hanken Grotesk for body text. The sample figures are real 2026 pay (EO 14368).</footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paybook Design</title>
+  <meta name="description" content="Paybook design work in progress: identity, foundations and components.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@700&family=Hanken+Grotesk:wght@400;600&family=Spline+Sans+Mono:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    main { max-width: var(--content); margin: 0 auto; padding: var(--s7) var(--gutter); }
+    h1 { font: 700 var(--t-h1)/var(--lh-tight) var(--font-display); letter-spacing: var(--track-display); margin: var(--s2) 0 var(--s4); }
+    ol { list-style: none; padding: 0; margin: var(--s5) 0 0; border-top: var(--strong); }
+    li { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: var(--s3); padding: var(--s4) 0; border-bottom: var(--hair); align-items: baseline; }
+    li .label { color: var(--ink); }
+    li a { font-weight: 600; font-size: 18px; color: var(--ink); }
+    li p { margin: 2px 0 0; color: var(--ink-2); font-size: var(--t-small); }
+    .st { font: 600 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+    .st.now { background: var(--hi); color: var(--hi-ink); padding: 2px 6px; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="label">Paybook · design in progress</div>
+    <h1>The look, one piece at a time.</h1>
+    <p style="color:var(--ink-2)">Each piece gets reviewed before the next one starts. The plan is in docs/ROADMAP.md.</p>
+    <ol>
+      <li><span class="label">L1</span><div><a href="identity.html">Identity</a><p>Three directions: Stub, Ledger, Stamp. Pick one.</p></div><span class="st now">Review</span></li>
+      <li><span class="label">L2</span><div><a href="foundations.html">Foundations</a><p>Color, type, space, layout, lines and motion for direction A, in tokens.css.</p></div><span class="st now">Review</span></li>
+      <li><span class="label">L4</span><div>Components<p>Stub, ladder, table, inputs, steppers, stamps.</p></div><span class="st">Next</span></li>
+      <li><span class="label">—</span><div><a href="../style.html">Earlier style tile</a><p>The first "paper, ink and highlighter" sketch.</p></div><span class="st">Reference</span></li>
+    </ol>
+  </main>
+</body>
+</html>

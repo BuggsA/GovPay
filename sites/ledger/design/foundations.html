@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paybook Foundations</title>
+  <meta name="description" content="Paybook design foundations: color, type, spacing, layout, lines and motion.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    .wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--gutter); }
+    .top { border-bottom: var(--strong); }
+    .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); padding-top: var(--s3); padding-bottom: var(--s3); flex-wrap: wrap; }
+    .wm { font: 700 22px/1 var(--font-display); letter-spacing: -.03em; display: flex; align-items: center; gap: var(--s2); color: var(--ink); text-decoration: none; }
+    .tools { display: flex; gap: var(--s3); align-items: center; font-size: var(--t-small); }
+    .tools a { color: var(--ink); }
+    .theme { font: 600 var(--t-label) var(--font-mono); letter-spacing: .08em; text-transform: uppercase; background: none; color: var(--ink); border: var(--hair); border-radius: var(--radius); padding: 6px 10px; cursor: pointer; }
+    h1 { font: 700 var(--t-h1)/var(--lh-tight) var(--font-display); letter-spacing: var(--track-display); margin: var(--s6) 0 var(--s3); }
+    h2 { font: 700 var(--t-h2)/var(--lh-tight) var(--font-display); letter-spacing: var(--track-display); margin: 0 0 var(--s3); }
+    .lede { color: var(--ink-2); max-width: 680px; margin: 0 0 var(--s5); }
+    section { padding: var(--s6) 0; border-top: var(--hair); }
+    .head { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s4); }
+    .head::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+    .note { color: var(--ink-2); font-size: var(--t-small); max-width: 680px; }
+
+    /* color */
+    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: var(--s3); }
+    .sw { background: var(--card); border: var(--hair); border-radius: var(--radius); overflow: hidden; }
+    .sw .chip { height: 64px; display: flex; align-items: flex-end; padding: var(--s2); font: 600 13px var(--font-body); border-bottom: var(--hair); }
+    .sw .meta { padding: var(--s2) var(--s3); font: 500 12px/1.5 var(--font-mono); color: var(--ink-2); }
+    .sw .meta b { display: block; font: 600 14px var(--font-body); color: var(--ink); }
+    .pass { color: var(--accent); } .fail { color: var(--pen); }
+
+    /* type */
+    .spec { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: var(--s4); padding: var(--s3) 0; border-bottom: var(--hair); align-items: baseline; }
+    .spec > span { font: 500 12px/1.4 var(--font-mono); color: var(--ink-2); }
+    @media (max-width: 600px) { .spec { grid-template-columns: minmax(0, 1fr); gap: var(--s1); } }
+
+    /* space */
+    .space { display: grid; gap: var(--s2); }
+    .space div { display: flex; align-items: center; gap: var(--s3); font: 500 12px var(--font-mono); color: var(--ink-2); }
+    .space i { display: block; height: 14px; background: var(--ink); border-radius: 1px; }
+
+    /* layout demo */
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail); gap: var(--s5); }
+    @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+    .box { border: 1px dashed var(--ink-3); border-radius: var(--radius); padding: var(--s4); min-height: 140px; font: 500 12px var(--font-mono); color: var(--ink-2); }
+    .box b { display: block; font: 600 14px var(--font-body); color: var(--ink); margin-bottom: var(--s1); }
+
+    /* lines */
+    .lines { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s4); }
+    .line-demo { background: var(--card); border: var(--hair); border-radius: var(--radius); padding: var(--s4); font-size: var(--t-small); }
+    .line-demo .eg { height: 40px; margin-bottom: var(--s2); display: flex; align-items: center; }
+    .stub-edge { width: 100%; height: 30px; background: var(--paper-2); position: relative; }
+    .stub-edge::after { content: ""; position: absolute; left: 0; right: 0; bottom: -9px; height: 10px; background: radial-gradient(circle at 5px 0, transparent 4.5px, var(--paper-2) 5px) 0 0/var(--perf) 10px repeat-x; }
+    .leader { display: flex; width: 100%; gap: 6px; font-size: 14px; }
+    .leader::after { content: ""; order: 1; flex: 1; border-bottom: 2px dotted var(--rule); transform: translateY(-4px); }
+    .leader b { order: 2; }
+
+    /* motion */
+    .motion-demo { display: flex; gap: var(--s4); align-items: center; flex-wrap: wrap; }
+    .press { font: 600 15px var(--font-body); background: var(--ink); color: var(--paper); border: 0; border-radius: var(--radius); padding: 10px 16px; cursor: pointer; transition: transform var(--fast) var(--ease); }
+    .press:active { transform: translateY(1px); }
+    .ticker { font: 700 36px/1 var(--font-body); letter-spacing: var(--track-number); }
+    .foot { border-top: var(--strong); padding: var(--s5) 0 var(--s7); color: var(--ink-2); font-size: var(--t-small); }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="wm" href="./">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="11.5" width="14" height="5" fill="var(--hi)"/><path d="M8 14h9" stroke="#1b1a17" stroke-width="2"/></svg>
+        paybook
+      </a>
+      <div class="tools"><a href="identity.html">L1 Identity</a><a href="tokens.css">tokens.css</a><button class="theme" id="theme" type="button">Dark</button></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="label" style="margin-top:var(--s6)">L2 · Foundations · direction A "Stub"</div>
+    <h1>The rules everything is built from.</h1>
+    <p class="lede">Every value here lives in <a href="tokens.css">tokens.css</a>, the one file the real site and any sibling site will import. Contrast ratios below are computed live from the current theme, so switching to dark mode re-checks them.</p>
+
+    <section>
+      <div class="head"><span class="label">01 · Color</span></div>
+      <div class="swatches" id="swatches"></div>
+      <p class="note">Yellow is reserved for "you": your number, your table cell, your state on the map. Green means up and red means down, and both always come with a + or − sign, so color is never the only signal.</p>
+    </section>
+
+    <section>
+      <div class="head"><span class="label">02 · Type</span></div>
+      <div class="spec"><span>Number · Hanken 700 · 48→72</span><div class="num" style="font:700 var(--t-number)/1 var(--font-body);letter-spacing:var(--track-number)">$116,071</div></div>
+      <div class="spec"><span>H1 · Familjen 700 · 32→44</span><div style="font:700 var(--t-h1)/var(--lh-tight) var(--font-display);letter-spacing:var(--track-display)">What GS-12 pays in Norfolk</div></div>
+      <div class="spec"><span>H2 · Familjen 700 · 24→30</span><div style="font:700 var(--t-h2)/var(--lh-tight) var(--font-display);letter-spacing:var(--track-display)">Your next level</div></div>
+      <div class="spec"><span>H3 · Hanken 600 · 20</span><div style="font:600 var(--t-h3)/1.3 var(--font-body)">Step 6, after 2 years</div></div>
+      <div class="spec"><span>Body · Hanken 400 · 17 / 1.55</span><div>Base pay is the same everywhere. Locality pay is added for where you work, from 17% to more than 46% in 2026.</div></div>
+      <div class="spec"><span>Small · Hanken 400 · 14</span><div style="font-size:var(--t-small);color:var(--ink-2)">Source: EO 14368 · as of Jan 11, 2026</div></div>
+      <div class="spec"><span>Label · Spline Mono 600 · 12</span><div class="label">02 · Next level</div></div>
+      <div class="spec"><span>Table figures · tabular</span><div class="num" style="font-size:15px">$102,415 · $105,829 · $109,244 · $112,658 · <span class="hl">$116,071</span></div></div>
+      <p class="note">Why these fonts: <b>Familjen Grotesk</b> gives the headlines a slightly quirky, printed feel. <b>Hanken Grotesk</b> is very readable and has proper tabular figures, so columns of numbers line up. <b>Spline Sans Mono</b> is used only for the small labels, like boxes on a form. Each one avoids the faces that make sites look generic (Inter, Space Grotesk, Fraunces, Geist) and the government's own Public Sans.</p>
+    </section>
+
+    <section>
+      <div class="head"><span class="label">03 · Space</span></div>
+      <div class="space" id="space"></div>
+      <p class="note">A 4px base. Inside components use 4–16px, between components 24–32px, between sections 48–64px.</p>
+    </section>
+
+    <section>
+      <div class="head"><span class="label">04 · Layout</span></div>
+      <div class="layout">
+        <div class="box"><b>Content · 720px max</b>The calculator, the stub, tables and articles. On phones it fills the width with 16px gutters.</div>
+        <div class="box"><b>Rail · 300px (desktop only)</b>The location picker, related links, and later a 300×250 ad slot if ads are added. Space is held so adding ads won't shift the layout.</div>
+      </div>
+      <p class="note">One column under 900px. Checked at 390px wide, with no sideways scrolling; wide tables scroll inside their own box with the Grade column pinned.</p>
+    </section>
+
+    <section>
+      <div class="head"><span class="label">05 · Lines &amp; shape</span></div>
+      <div class="lines">
+        <div class="line-demo"><div class="eg"><div style="width:100%;border-top:var(--hair)"></div></div><b>Hairline</b> · 1px rule. Dividers, borders, table rows.</div>
+        <div class="line-demo"><div class="eg"><div style="width:100%;border-top:var(--strong)"></div></div><b>Strong</b> · 2px ink. Under the header and above totals.</div>
+        <div class="line-demo"><div class="eg"><div class="stub-edge"></div></div><b>Perforation</b> · the stub's torn edge. Results and share cards only.</div>
+        <div class="line-demo"><div class="eg"><div class="leader"><span>Base pay</span><b class="num">$86,659</b></div></div><b>Dotted leader</b> · breakdown rows.</div>
+        <div class="line-demo"><div class="eg"><div style="width:60px;height:36px;border:var(--hair);border-radius:var(--radius);background:var(--card)"></div></div><b>Radius 3px</b> · never more than 4px. No pills, no soft cards.</div>
+        <div class="line-demo"><div class="eg"><span style="font:600 11px var(--font-mono);letter-spacing:.12em;color:var(--pen);border:1.5px solid var(--pen);border-radius:3px;padding:3px 7px;transform:rotate(-2deg);display:inline-block">PROPOSED</span></div><b>Stamp</b> · only for exceptions.</div>
+      </div>
+      <p class="note">No drop shadows or gradients. Depth comes from paper versus card color and from rules.</p>
+    </section>
+
+    <section>
+      <div class="head"><span class="label">06 · Motion</span></div>
+      <div class="motion-demo">
+        <button class="press" id="bump" type="button">Next step →</button>
+        <span class="ticker num" id="ticker">$116,071</span>
+      </div>
+      <p class="note">Motion is for feedback only: a 120ms press, and a 200ms count when a number changes. Nothing bounces, floats or loops. With "reduce motion" switched on, numbers change instantly.</p>
+    </section>
+  </main>
+
+  <footer class="wrap foot">Paybook · design foundations · Not affiliated with the U.S. government · Sample figures are real 2026 pay (EO 14368).</footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var TOKENS = [
+        ["--paper", "Paper", "page"], ["--card", "Card", "stub, panels"], ["--paper-2", "Paper 2", "wells, table heads"],
+        ["--ink", "Ink", "text, buttons"], ["--ink-2", "Ink 2", "secondary text"], ["--rule", "Rule", "hairlines"],
+        ["--hi", "Highlighter", "= you"], ["--accent", "Receipt green", "links, + deltas"], ["--pen", "Red pen", "− deltas, warnings"]
+      ];
+      function rgb(hex) { hex = hex.trim().replace("#", ""); return [0, 2, 4].map(function (i) { return parseInt(hex.substr(i, 2), 16) / 255; }); }
+      function lum(c) { var a = c.map(function (v) { return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]; }
+      function ratio(a, b) { var x = lum(rgb(a)), y = lum(rgb(b)); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+      function v(name) { return getComputedStyle(root).getPropertyValue(name).trim(); }
+      function draw() {
+        var paper = v("--paper"), ink = v("--ink"), hiInk = v("--hi-ink");
+        document.getElementById("swatches").innerHTML = TOKENS.map(function (t) {
+          var c = v(t[0]);
+          var onText = t[0] === "--hi" ? hiInk : (["--ink", "--accent", "--pen"].indexOf(t[0]) >= 0 ? paper : ink);
+          var check = ["--ink", "--ink-2", "--accent", "--pen"].indexOf(t[0]) >= 0
+            ? "on paper " + ratio(c, paper).toFixed(1) + ":1" : t[0] === "--hi" ? "ink on it " + ratio(hiInk, c).toFixed(1) + ":1" : "";
+          var r = check ? parseFloat(check.split(" ").slice(-1)[0]) : 0;
+          return '<div class="sw"><div class="chip" style="background:' + c + ';color:' + onText + '">Aa 123</div><div class="meta"><b>' + t[1] + '</b>' + t[0] + " · " + c + "<br>" + t[2] +
+            (check ? '<br><span class="' + (r >= 4.5 ? "pass" : "fail") + '">' + check + (r >= 4.5 ? " ✓ AA" : " ✗ large text only") + "</span>" : "") + "</div></div>";
+        }).join("");
+      }
+      document.getElementById("space").innerHTML = [["--s1", 4], ["--s2", 8], ["--s3", 12], ["--s4", 16], ["--s5", 24], ["--s6", 32], ["--s7", 48], ["--s8", 64]]
+        .map(function (s) { return '<div><span style="width:56px">' + s[0] + "</span><i style=\"width:" + s[1] * 3 + 'px"></i>' + s[1] + "px</div>"; }).join("");
+      var t = document.getElementById("theme");
+      t.onclick = function () {
+        var dark = root.dataset.theme ? root.dataset.theme !== "dark" : !matchMedia("(prefers-color-scheme: dark)").matches;
+        root.dataset.theme = dark ? "dark" : "light"; t.textContent = dark ? "Light" : "Dark"; draw();
+      };
+      if (matchMedia("(prefers-color-scheme: dark)").matches) t.textContent = "Light";
+      draw();
+      // count-up demo
+      var val = 116071, el = document.getElementById("ticker");
+      document.getElementById("bump").onclick = function () {
+        var from = val, to = val + 3415, start = performance.now();
+        var dur = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 200;
+        (function step(now) {
+          var p = dur ? Math.min(1, (now - start) / dur) : 1;
+          el.textContent = "$" + Math.round(from + (to - from) * p).toLocaleString("en-US");
+          if (p < 1) requestAnimationFrame(step); else val = to;
+        })(start);
+      };
+    })();
+  </script>
+</body>
+</html>

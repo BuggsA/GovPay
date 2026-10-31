@@ -72,6 +72,21 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 
 ---
 
+## Phase 1.5: The look (design first, as plain HTML pages to review)
+Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is reviewed before the next starts.
+
+| Chunk | What | Status |
+|---|---|---|
+| L1 Identity | Three directions (A Stub, B Ledger, C Stamp): wordmark, mark, favicon/app icon, sample card | ◐ review |
+| L2 Foundations | `design/tokens.css`: color (WCAG-checked, light and dark), type, space, layout, lines, motion, for direction A | ◐ review |
+| L3 Voice & numbers | Number formats, labels, status words, disclaimer, empty and error text | ☐ |
+| L4 Components | Stub, ledger rows, ladder, stamps, buttons, inputs, steppers, toggles, chips, tables | ☐ next |
+| L5 Composite | Search box with suggestions, location picker with tile map, year switcher, take-home line | ☐ |
+| L6 Page mockups | Home (first visit), My pay, GS table page, military rank page, Learn article, Compare sketch | ☐ |
+| L7 Share | Share card, screenshots, link preview images | ☐ |
+| L8 Polish | States, dark-mode pass, focus, reduced motion, print style | ☐ |
+| L9 Family kit | Shared CSS and accent swap for sibling sites | ☐ |
+
 ## Phase 2: Foundation
 ### 2.1 Astro skeleton + engine as a module · M · ☐
 - **Goal:** the single-site base that can grow to thousands of pages.
