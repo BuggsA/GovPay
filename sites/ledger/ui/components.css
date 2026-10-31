@@ -200,8 +200,6 @@
 .pb-tiles { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 3px; margin: var(--s2) 0 var(--s3); }
 .pb-tiles button { aspect-ratio: 1; min-width: 0; font: 600 10px/1 var(--font-mono); border: 1px solid var(--rule); background: var(--paper); color: var(--ink-2); border-radius: 2px; padding: 0; cursor: pointer; position: relative; }
 .pb-tiles button:hover { border-color: var(--ink); color: var(--ink); }
-.pb-tiles button.has-data { color: var(--ink); border-color: color-mix(in srgb, var(--ink) 45%, var(--rule)); }
-.pb-tiles button.has-data { box-shadow: inset 0 -3px 0 var(--ink); }
 .pb-tiles button[aria-pressed=true] { background: var(--hi); color: var(--hi-ink); border-color: var(--ink); }
 .pb-tiles__legend { font-size: 12px; color: var(--ink-2); margin-top: calc(-1 * var(--s2)); margin-bottom: var(--s3); }
 .pb-places { list-style: none; margin: 0; padding: 0; max-height: 300px; overflow-y: auto; border-top: var(--hair); }

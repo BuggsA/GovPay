@@ -140,10 +140,10 @@
           <input class="pb-input" id="${id}-q" type="search" placeholder="City, base or state" value="${esc(query)}" autocomplete="off"></div>
         ${recent.length ? `<div class="pb-picker__row"><span class="cap">Recent</span>${recent.map((r) => `<button type="button" class="pb-chip" data-recent="${r}">${esc(G.location(r).name)}</button>`).join("")}</div>` : ""}
         <div class="pb-tiles" role="group" aria-label="Filter places by state">${Object.keys(TILES).map((st) => {
-          const c = TILES[st], has = !!G.FOCUS_STATES[st];
-          return `<button type="button" style="grid-column:${c[0] + 1};grid-row:${c[1] + 1}" class="${has ? "has-data" : ""}" aria-pressed="${filter === st}" data-st="${st}" aria-label="${esc(STATE_NAMES[st] || st)}${has ? ", has researched bases" : ""}">${st}</button>`;
+          const c = TILES[st];
+          return `<button type="button" style="grid-column:${c[0] + 1};grid-row:${c[1] + 1}" aria-pressed="${filter === st}" data-st="${st}" aria-label="${esc(STATE_NAMES[st] || st)}">${st}</button>`;
         }).join("")}</div>
-        <div class="pb-tiles__legend">Tap a state to see its counties. States with a bar have researched bases with housing (BAH) estimates.</div>
+        <div class="pb-tiles__legend">Tap a state to see its counties.</div>
         ${filter && !q ? `<div class="pb-picker__row"><button type="button" class="pb-chip pb-chip--on" data-clear>${esc(STATE_NAMES[filter])} <span class="pb-chip__x" aria-hidden="true">×</span><span class="sr">clear filter</span></button></div>` : ""}
         ${!q && !filter ? '<div class="pb-picker__row"><span class="cap">Researched bases and cities · or search any county</span></div>' : ""}
         <ul class="pb-places" aria-label="Places">${list.length ? list.map((l) => {
