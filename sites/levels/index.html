@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GovPay Levels</title>
+  <meta name="description" content="Explore federal and military pay as career paths — pick a path, level up, compare.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="wrap bar-inner">
+      <div class="logo"><span class="logo-chip">LV</span> GovPay <em>Levels</em></div>
+      <div class="bar-controls">
+        <div class="season" id="season" role="radiogroup" aria-label="Pay year"></div>
+        <label class="pin">
+          <span aria-hidden="true">📍</span>
+          <select id="loc" aria-label="Duty location"></select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <p class="eyebrow">Federal pay as a career path</p>
+      <h1>Choose your path.<br><span class="grad">See where it pays.</span></h1>
+      <p class="lede">Every federal job sits on a ladder. Pick one, tap a level, and watch your pay grow over a career. Pin two cards to compare them head to head.</p>
+    </section>
+
+    <section aria-label="Career paths">
+      <div class="paths" id="paths"></div>
+    </section>
+
+    <section class="deck-wrap" aria-label="Levels">
+      <div class="deck-head">
+        <h2 id="deckTitle">Levels</h2>
+        <p class="muted" id="deckSub"></p>
+      </div>
+      <div class="deck" id="deck"></div>
+    </section>
+
+    <section class="sheet" id="sheet" aria-live="polite"></section>
+
+    <section class="versus" id="versus"></section>
+
+    <section class="side-quests">
+      <h2>Extras</h2>
+      <div class="quests">
+        <article class="quest" id="tripQuest"></article>
+        <article class="quest" id="housingQuest"></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p><span class="tag approx">Approximate</span> figures are close to the official tables but haven't been checked cell by cell. <span class="tag simulated">Simulated</span> figures are placeholders, used for states outside UT, MD, DC, PA and VA and for FWS. <span class="tag projected">Projected</span> figures are 2027 estimates. Career paths are typical examples using this year's tables, not promises. Overseas (OCONUS) pay isn't modeled yet.</p>
+  </footer>
+
+  <script src="shared/govpay.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

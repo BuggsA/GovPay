@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GovPay Atlas</title>
+  <meta name="description" content="A place-first guide to federal civilian and military pay, housing and per diem.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="mast">
+    <div class="wrap mast-inner">
+      <div class="mast-top">
+        <span class="kicker">GovPay Atlas</span>
+        <div class="edition" role="radiogroup" aria-label="Pay year">
+          <span class="edlabel">Edition</span>
+          <span id="years"></span>
+        </div>
+      </div>
+      <h1 class="title">What the government pays in <span id="placeTitle">Washington, DC</span></h1>
+      <p class="dek">Pick a place to see civilian, trades and military pay side by side, along with housing allowance and travel per diem. It's written for people already on the payroll and for anyone thinking about joining.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="mapsec">
+      <div class="map-head">
+        <h2>Choose a place</h2>
+        <div class="metric" role="radiogroup" aria-label="Color the map by" id="metric"></div>
+      </div>
+      <div class="map-grid">
+        <div>
+          <svg id="tiles" class="tiles" viewBox="0 0 600 420" role="img" aria-label="United States tile map"></svg>
+          <div class="legend" id="legend"></div>
+        </div>
+        <aside class="state-panel" id="statePanel"></aside>
+      </div>
+    </section>
+
+    <section class="profile" id="profile" aria-live="polite"></section>
+
+    <section class="ranking" id="ranking"></section>
+
+    <section class="explainer" id="explainer">
+      <h2 class="sec-title">How federal pay works, in five minutes</h2>
+      <div class="cols" id="explainCols"></div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p><b>About the numbers.</b> UT, MD, DC, PA and VA use figures that are close to the official 2025–2026 tables, marked <i>approximate</i>, or that match published numbers, marked <i>verified</i>. All other states and all FWS wage schedules are <i>simulated</i> placeholders. 2027 is a <i>projection</i>. Overseas (OCONUS) pay is planned but not covered yet. Always confirm with OPM, DFAS, DTMO or GSA.</p>
+  </footer>
+
+  <script src="shared/govpay.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
