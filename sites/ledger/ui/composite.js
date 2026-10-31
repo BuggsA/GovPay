@@ -30,15 +30,25 @@
     let items = [], active = -1;
 
     function payFor(profile, locId) { return G.compute(profile, opts.getYear(), locId || opts.getLoc()); }
+    // Cities and job series load the first time someone uses the box; open suggestions refresh when they arrive.
+    const warm = () => G.need(["cities", "series"]).then(() => { if (input.value.trim()) render(); }, () => {});
+    input.addEventListener("focus", warm, { once: true });
+    input.addEventListener("input", warm, { once: true });
+    const zipSeen = {};
     function render() {
       const q = input.value;
       const res = P.parse(q);
+      // A ZIP code in the text: look up its exact BAH area once, then use it as the place.
+      const zm = q.match(/(?:^|\D)(\d{5})(?!\d)/), zip = zm && zm[1];
+      const zid = zip && G.location("z" + zip).id === "z" + zip ? "z" + zip : null;
+      if (zip && !zid && !zipSeen[zip]) { zipSeen[zip] = true; G.zipPlace(zip).then((found) => { if (found) render(); }); }
       items = [];
       res.forEach((r) => {
-        if (r.kind === "posting") items.push(r);
-        else if (r.kind === "place") items.push(r);
-        else items.push(r);
+        if (zid && r.kind !== "place" && !r.locId) r = Object.assign({}, r, { locId: zid });
+        if (zid && r.kind === "place") return;
+        items.push(r);
       });
+      if (zid && !items.some((r) => r.locId === zid)) items.push({ kind: "place", locId: zid, label: G.location(zid).name, assumed: [], score: 5 });
       if (!q.trim()) { close(); return; }
       list.hidden = false; input.setAttribute("aria-expanded", "true");
       if (!items.length) {
@@ -46,6 +56,11 @@
         active = -1; return;
       }
       if (active >= items.length || active < 0) active = 0;
+      // Military pay needs bah.js and trades pay needs fws.js: until they're in, show "…" rather than a placeholder.
+      const sysOf = (r) => (r.profile ? r.profile.system : r.system);
+      const want = [].concat(items.some((r) => sysOf(r) === "MIL") ? ["bah"] : [], items.some((r) => sysOf(r) === "FWS") ? ["fws"] : []).filter((n) => !G.has(n));
+      if (want.length) G.need(want).then(() => { if (!list.hidden) render(); }, () => {});
+      const waiting = (r) => (sysOf(r) === "MIL" && !G.has("bah")) || (sysOf(r) === "FWS" && !G.has("fws"));
       list.innerHTML = items.map((r, i) => {
         const loc = G.location(r.locId || opts.getLoc());
         const where = r.locId ? loc.name : `${loc.name} (your place)`;
@@ -56,7 +71,7 @@
         if (r.kind === "posting") {
           const ladder = r.grades.map((g, gi) => {
             const res = payFor(r.system === "FWS" ? { system: "FWS", schedule: r.schedule, grade: g, step: 2 } : { system: r.system, grade: g, step: 1, leap: r.system === "LEO" }, r.locId);
-            return `<span><b>${gi === r.grades.length - 1 ? "FULL LEVEL · " : ""}${r.schedule}-${String(g).padStart(2, "0")}</b>${res.annual ? f.usd(res.annual) : "—"}</span>`;
+            return `<span><b>${gi === r.grades.length - 1 ? "FULL LEVEL · " : ""}${r.schedule}-${String(g).padStart(2, "0")}</b>${waiting(r) ? "…" : res.annual ? f.usd(res.annual) : "—"}</span>`;
           }).join("");
           return `<li id="${sid}" role="option" aria-selected="${i === active}" data-i="${i}">
             <span class="pb-suggest__title">Job posting · ${esc(r.series)}${r.seriesName ? " " + esc(r.seriesName) : ""}</span>
@@ -66,7 +81,7 @@
         }
         const pay = payFor(r.profile, r.locId);
         const isMil = r.profile.system === "MIL";
-        const amt = pay.annual == null ? "—" : isMil ? f.usd(pay.annual / 12) + "<small>a month</small>" : f.usd(pay.annual) + "<small>a year</small>";
+        const amt = waiting(r) ? "…" : pay.annual == null ? "—" : isMil ? f.usd(pay.annual / 12) + "<small>a month</small>" : f.usd(pay.annual) + "<small>a year</small>";
         const assumed = r.assumed.length ? ` · assumed ${esc(r.assumed.join(", "))}` : "";
         return `<li id="${sid}" role="option" aria-selected="${i === active}" data-i="${i}">
           <span class="pb-suggest__title">${esc(r.label)}</span>
@@ -111,7 +126,9 @@
 
   // What areas a place uses, and whether they differ from each other.
   function placeKeys(locId, year) {
-    const g = G.gs(year, 1, 1, locId), b = G.bah(year, "E-5", true, locId), p = G.perDiem(year, locId, 1);
+    const g = G.gs(year, 1, 1, locId);
+    if (!G.has("bah") || !G.has("perDiem")) return { gs: `${g.localityName} · ${g.localityPct.toFixed(2)}%`, bah: "…", pd: "…", loading: true };
+    const b = G.bah(year, "E-5", true, locId), p = G.perDiem(year, locId, 1);
     const gw = words(g.localityName);
     const bahDiff = !words(b.mhaName).some((w) => gw.indexOf(w) >= 0);
     const pdDiff = p.standard ? g.localityName !== "Rest of U.S." : !words(p.areaName + " " + p.areaDetail).some((w) => gw.indexOf(w) >= 0);
@@ -131,7 +148,12 @@
       // researched bases and cities first, then Census cities and towns (biggest first), then counties
       const rank = (l) => (l.kind === "county" ? 2 : l.census ? 1 : 0);
       const order = (a, b) => rank(a) - rank(b) || (b.population || 0) - (a.population || 0);
-      if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0).sort(order).slice(0, 60);   // search covers every state
+      if (/^\d{5}$/.test(q)) {
+        // ZIP code: DTMO's housing area for exactly that ZIP
+        const z = G.location("z" + q);
+        if (z.id === "z" + q) list = [z];
+        else { list = []; G.zipPlace(q).then((found) => { if (found && query.trim() === q) render(true); }); }
+      } else if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0).sort(order).slice(0, 60);   // search covers every state
       else if (filter) list = all.filter((l) => l.state === filter).sort(order);
       else list = all.filter((l) => l.kind !== "county" && !l.census);
       const recent = getRecent().filter((r) => all.some((l) => l.id === r));
@@ -139,7 +161,7 @@
       const cur = G.location(value);
       el.innerHTML = `
         <div class="pb-field pb-picker__search"><label class="pb-field__label" for="${id}-q">Where you work</label>
-          <input class="pb-input" id="${id}-q" type="search" placeholder="City, base or state" value="${esc(query)}" autocomplete="off"></div>
+          <input class="pb-input" id="${id}-q" type="search" placeholder="City, base, state or ZIP code" value="${esc(query)}" autocomplete="off"></div>
         ${recent.length ? `<div class="pb-picker__row"><span class="cap">Recent</span>${recent.map((r) => `<button type="button" class="pb-chip" data-recent="${r}">${esc(G.location(r).name)}</button>`).join("")}</div>` : ""}
         <div class="pb-tiles" role="group" aria-label="Filter places by state">${Object.keys(TILES).map((st) => {
           const c = TILES[st];
@@ -150,16 +172,24 @@
         ${!q && !filter ? '<div class="pb-picker__row"><span class="cap">Researched bases and cities · or search any city, town or county</span></div>' : ""}
         <ul class="pb-places" aria-label="Places">${list.length ? list.map((l) => {
           const g = G.gs(year(), 1, 1, l.id);
-          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" || l.census ? l.short : l.name)}</b><span class="tag">${l.kind}</span><small>${esc(l.state)}${l.census ? " · " + esc(l.county) : ""} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
-        }).join("") : `<li class="pb-places__empty">No place matches "${esc(query)}". Try a state name.</li>`}</ul>
+          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" || l.census || l.kind === "zip" ? l.short : l.name)}</b><span class="tag">${l.kind === "zip" ? "ZIP" : l.kind}</span><small>${esc(l.state)}${l.census || l.kind === "zip" ? " · " + esc(l.county) : ""} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
+        }).join("") : `<li class="pb-places__empty">${/^\d{5}$/.test(query.trim()) ? `Looking up ZIP ${esc(query.trim())}…` : `No place matches "${esc(query)}". Try a state name or a ZIP code.`}</li>`}</ul>
         <div class="pb-uses" aria-live="polite"><b>${esc(cur.name)}</b> uses three different area lists:
           <dl><dt>GS pay</dt><dd>${esc(k.gs)}</dd>
           <dt>BAH</dt><dd class="${k.bahDiff ? "differs" : ""}">${esc(k.bah)}${k.bahDiff ? " · a different area" : ""}</dd>
           <dt>Per diem</dt><dd class="${k.pdDiff ? "differs" : ""}">${esc(k.pd)}${k.pdDiff ? " · a different area" : ""}</dd></dl>
+          ${cur.kind === "zip" ? `<div style="margin-top:6px">BAH uses DTMO's area for ZIP ${esc(cur.zip)}. GS pay and per diem use ${esc(cur.county)}${cur.countyInferred ? ", the county most nearby ZIPs are in (this ZIP has no Census area, like a PO box)" : ""}.</div>` : ""}
           ${cur.splitCounties ? `<div style="margin-top:6px">${esc(cur.short)} spans more than one county. This uses ${esc(cur.county)}, where most people live; if you work in another part, pick that county instead.</div>` : ""}
           ${k.bahEstimate ? '<div style="margin-top:6px">GS and per diem are official. BAH here is a rough placeholder.</div>' : ""}</div>`;
       const qi = $("input", el);
       qi.oninput = () => { query = qi.value; render(true); };
+      // Searching places needs cities.js; the area names need bah.js and perdiem.js. Load them when the
+      // picker is actually on screen (always on desktop, only once the sheet opens on a phone).
+      qi.onfocus = () => { if (!G.has("cities")) G.need(["cities"]).then(() => render(true), () => {}); };
+      if (k.loading && el.offsetParent !== null) {
+        const go = () => G.need(["bah", "perDiem"]).then(() => render(), () => {});
+        (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(go);
+      }
       if (keepFocus) { qi.focus(); qi.setSelectionRange(qi.value.length, qi.value.length); }
       el.querySelectorAll("[data-st]").forEach((b) => (b.onclick = () => { filter = filter === b.dataset.st ? null : b.dataset.st; query = ""; render(); }));
       const cl = $("[data-clear]", el); if (cl) cl.onclick = () => { filter = null; render(); };

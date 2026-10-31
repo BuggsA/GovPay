@@ -1,5 +1,5 @@
 // sitemap.xml listing every pre-built page.
-import { G, MIL_ORDER, milSlug, pdStates, bahAreas, jobSeries } from "../lib/engine.mjs";
+import { G, MIL_ORDER, milSlug, pdStates, bahAreas, jobSeries, fwsAreas } from "../lib/engine.mjs";
 
 export function GET({ site }) {
   const areas = G.localityAreas(G.CURRENT_YEAR);
@@ -12,6 +12,7 @@ export function GET({ site }) {
   paths.push("/travel/per-diem", "/about/data", "/privacy");
   pdStates().forEach((s) => { paths.push(`/travel/per-diem/${s.slug}`); s.areas.forEach((a) => paths.push(`/travel/per-diem/${s.slug}/${a.slug}`)); });
   paths.push("/jobs"); jobSeries().filter((s) => !s.trade).forEach((s) => paths.push(`/jobs/${s.slug}`));
+  paths.push("/civilian/trades"); fwsAreas().forEach((a) => paths.push(`/civilian/trades/${a.slug}`));
   paths.push("/military/bah"); bahAreas().forEach((a) => paths.push(`/military/bah/${a.slug}`));
   MIL_ORDER.forEach((g) => paths.push(`/military/pay/${milSlug(g)}`));
   const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

@@ -117,10 +117,10 @@ def main():
         if line.startswith("860Z200US"):
             g, e, _ = line.split("|")
             pop[g[9:]] = int(e)
-    weight = {}
+    weight, zip_best = {}, {}
     for line in fetch(CENSUS["rel"], cache).read_text(encoding="utf-8-sig").splitlines()[1:]:
         f = line.split("|")
-        zcta, county, land_z, land_part = f[1], f[9], f[4], f[16]
+        zcta, county, land_z, land_part = f[1], f[9], f[3], f[16]   # AREALAND_ZCTA5_20, AREALAND_PART
         if not zcta or not county:
             continue
         mha = latest["zips"].get(zcta)
@@ -130,6 +130,8 @@ def main():
         w = pop.get(zcta, 0) * share + share * 1e-3          # area breaks ties where nobody lives
         weight.setdefault(county, {}).setdefault(mha, 0)
         weight[county][mha] += w
+        if w > zip_best.get(zcta, (0, ""))[0]:
+            zip_best[zcta] = (w, county)                     # the ZIP's main county: where most of its people live
     counties = json.loads((ROOT / "data/places/counties.json").read_text())["counties"]
     county_mha, missing = [], []
     for c in counties:
@@ -158,6 +160,13 @@ def main():
 
     # ---- outputs
     (ROOT / "data/bah").mkdir(exist_ok=True)
+    # ZIP -> [housing area, main county FIPS] for the ZIP lookup (county "" for ZIPs with no Census ZIP area,
+    # such as PO-box-only ZIPs; the app then uses a county in the same housing area)
+    cidx = {c[0] for c in counties}
+    zip_out = {z: [m, zip_best[z][1] if z in zip_best and zip_best[z][1] in cidx else ""] for z, m in sorted(latest["zips"].items()) if m in latest["rates"]}
+    assert zip_out["92136"][0] == "CA038" and zip_out["92136"][1] == "06073", zip_out["92136"]     # Naval Base San Diego
+    (ROOT / f"data/bah/zips-{YEARS[-1]}.json").write_text(json.dumps({"year": YEARS[-1], "note": "ZIP: [DTMO housing area, main county FIPS]", "zips": zip_out}, separators=(",", ":")) + "\n")
+    print(f"ZIP lookup: {len(zip_out):,} ZIPs, {sum(1 for v in zip_out.values() if v[1]):,} with a county")
     for y in YEARS:
         d = data[y]
         (ROOT / f"data/bah/{y}.json").write_text(json.dumps({

@@ -46,7 +46,7 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Needs:** you upload the DFAS PDFs to `data/raw/dfas/`.
 
 ### 1.3 BAH from DTMO · M · ◐
-> **Progress (Oct 31, 2026):** DTMO's 2025 and 2026 BAH ASCII files (`data/raw/dtmo/`, as downloaded) are converted by `scripts/convert-bah.py`: all 338 housing areas, every grade, with and without dependents. 2026 uses DTMO's May 13, 2026 reissue (only Abilene/Dyess AFB changed). Every county gets the area covering most of its people (Census ZIP-to-county + ACS population); bases use a ZIP on the base. Spot checks match published figures (San Diego E-5: $3,987 → $3,975 / $3,147). The old hand-entered BAH was badly off (14 of 19 area codes didn't exist; DC E-5 was $3,560 vs $3,132) and is gone. 338 BAH pages. **Still open:** exact lookup by ZIP code in the app.
+> **Progress (Oct 31, 2026):** DTMO's 2025 and 2026 BAH ASCII files (`data/raw/dtmo/`, as downloaded) are converted by `scripts/convert-bah.py`: all 338 housing areas, every grade, with and without dependents. 2026 uses DTMO's May 13, 2026 reissue (only Abilene/Dyess AFB changed). Every county gets the area covering most of its people (Census ZIP-to-county + ACS population); bases use a ZIP on the base. Spot checks match published figures (San Diego E-5: $3,987 → $3,975 / $3,147). The old hand-entered BAH was badly off (14 of 19 area codes didn't exist; DC E-5 was $3,560 vs $3,132) and is gone. 338 BAH pages. Exact lookup by ZIP code is in: type a ZIP in the search box or place picker (911 small files by 3-digit prefix, loaded on demand); a converter bug that weighted ZIP areas by water instead of land was fixed (177 counties corrected, e.g. Monroe County FL -> Florida Keys). Each BAH area page also shows total monthly pay (basic + BAH + BAS) for 15 common ranks. **Still open:** a military installations list (base names to ZIPs).
 - **Goal:** real housing allowance everywhere.
 - **Includes:**
   - BAH rates by housing area, grade and dependents, for 2025 and 2026
@@ -219,7 +219,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 
 ## Phase 6: Launch
 ### 6.1 Quality pass · S · ◐
-> **Progress (Oct 31, 2026):** anonymous usage counts are in (Workers Analytics Engine via `site/worker.js`, `shared/analytics.js`, a `/privacy` notice with an opt-out, `npm run analytics` for segment reports). Still open: accessibility, Lighthouse, dark-mode review, home page data weight.
+> **Progress (Oct 31, 2026):** anonymous usage counts are in (Workers Analytics Engine via `site/worker.js`, `shared/analytics.js`, a `/privacy` notice with an opt-out, `npm run analytics` for segment reports). Home page data weight cut: big files (cities, BAH, per diem, job series, trades) load only when used, and fonts are self-hosted. Still open: accessibility, Lighthouse, dark-mode review.
 - **Goal:** solid before the public sees it.
 - **Includes:** accessibility (axe, keyboard, screen reader), performance budget, a dark-mode review, every number checked at 390 px, and privacy-friendly analytics (Cloudflare Web Analytics).
 - **Done when:** no axe violations, and Lighthouse ≥ 95 in every category on 5 key pages.
@@ -233,7 +233,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Later (not version 1)
-- ☑ FWS trades pay: done Oct 31, 2026 (DCPAS wage data, every county mapped; wage-area pages still to add)
+- ☑ FWS trades pay: done Oct 31, 2026 (DCPAS wage data, every county mapped, a page per wage schedule at /civilian/trades)
 - Full LEO special-rate tables and SES detail
 - Overseas pay: Alaska, Hawaii and the territories first, then OHA and OCONUS COLA (see [OCONUS.md](OCONUS.md))
 - Inflation view: "your pay vs. inflation since 2010"

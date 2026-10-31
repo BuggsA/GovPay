@@ -91,3 +91,6 @@
 .pb-posting__head button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
 .pb-posting .pb-ladder { margin: 0; }
 .pb-posting__note { font-size: 13px; color: var(--ink-2); margin: var(--s2) 0 0; }
+
+/* Shown while a data file loads */
+.pb-loading { color: var(--ink-2); padding: var(--s4) 0; margin: 0; }

@@ -94,7 +94,7 @@ export function bahAreas() {
   const zipsBy = {};
   Object.entries(BAH_FULL.zips).forEach(([z, m]) => (zipsBy[m] = zipsBy[m] || []).push(z));
   const countiesBy = {};
-  G.locations().filter((l) => l.kind === "county").forEach((l) => (countiesBy[l.bahMha] = countiesBy[l.bahMha] || []).push(l));
+  G.locations().filter((l) => l.kind === "county").forEach((l) => { const m = G.bahMhaOf(l); (countiesBy[m] = countiesBy[m] || []).push(l); });
   _areas = Object.entries(BAHD.names).map(([code, name]) => {
     const rural = code.startsWith("ZZ");
     const st = rural ? null : (name.match(/,\s*([A-Z]{2})$/) || [])[1] || code.slice(0, 2);
@@ -117,3 +117,26 @@ export function jobSeries() {
   }));
 }
 export const seriesFamilies = SER.families;
+
+// ---------------------------------------------------------------- trades (FWS) wage schedule pages
+const FWSD = globalThis.GOVPAY_DATA.fws;
+export const FWS_YEAR = Math.max(...Object.keys(FWSD.years).map(Number));
+export const FWS_SOURCE = { label: "DoD Wage and Salary Division (DCPAS)", url: "https://wageandsalary.dcpas.osd.mil/BWN/AFWageSchedules/" };
+// Every regular wage schedule in use: { code, name, slug, effective, counties[] }. A few wage areas have more
+// than one schedule (a county group on its own rates), so the code is part of the address.
+let _fws = null;
+export function fwsAreas() {
+  if (_fws) return _fws;
+  const byCode = {};
+  G.locations().filter((l) => l.kind === "county").forEach((l) => { const c = G.fwsCode(l); if (c) (byCode[c] = byCode[c] || []).push(l); });
+  _fws = Object.keys(FWSD.years[FWS_YEAR]).map((code) => {
+    const name = (FWSD.areas[code] || `Wage area ${code}`).replace(/\s+/g, " ").replace(/\s+,/g, ",").trim();
+    return { code, name, slug: slugify(`${name.replace(/,\s*[A-Za-z ]+$/, "")} ${code}`), effective: FWSD.years[FWS_YEAR][code][0], counties: (byCode[code] || []).sort((a, b) => a.name.localeCompare(b.name)) };
+  }).filter((a) => a.counties.length).sort((a, b) => a.name.localeCompare(b.name) || a.code.localeCompare(b.code));
+  return _fws;
+}
+// Hourly rates for a schedule at the place of one of its counties.
+export function fwsTable(area, schedule, year = FWS_YEAR) {
+  const loc = area.counties[0].id, n = G.FWS_SCHEDULES[schedule].grades;
+  return Array.from({ length: n }, (_, i) => [1, 2, 3, 4, 5].map((s) => G.fws(year, schedule, i + 1, s, loc)));
+}
