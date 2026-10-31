@@ -9,7 +9,7 @@ export function GET({ site }) {
     paths.push(`/civilian/gs/table/${a.slug}`);
     for (let g = 1; g <= 15; g++) paths.push(`/civilian/gs/${g}/${a.slug}`);
   });
-  paths.push("/travel/per-diem", "/about/data");
+  paths.push("/travel/per-diem", "/about/data", "/privacy");
   pdStates().forEach((s) => { paths.push(`/travel/per-diem/${s.slug}`); s.areas.forEach((a) => paths.push(`/travel/per-diem/${s.slug}/${a.slug}`)); });
   paths.push("/jobs"); jobSeries().filter((s) => !s.trade).forEach((s) => paths.push(`/jobs/${s.slug}`));
   paths.push("/military/bah"); bahAreas().forEach((a) => paths.push(`/military/bah/${a.slug}`));

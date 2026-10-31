@@ -33,3 +33,7 @@
 .bah-list a { color: var(--ink); font-weight: 600; }
 .links ul.cols { columns: 2 200px; }
 .zips { font: 500 13px/1.7 var(--font-mono); color: var(--ink-2); word-spacing: 4px; }
+.privacy-list { margin: 0 0 var(--s4); }
+.privacy-list dt { font-weight: 700; margin-top: var(--s3); }
+.privacy-list dd { margin: 2px 0 0; color: var(--ink-2); }
+.optout { display: flex; gap: var(--s3); align-items: center; flex-wrap: wrap; }

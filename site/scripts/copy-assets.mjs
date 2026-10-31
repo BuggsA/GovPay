@@ -8,7 +8,7 @@ const site = join(dirname(fileURLToPath(import.meta.url)), "..");
 const repo = join(site, "..");
 const pub = join(site, "public");
 const copies = [
-  ["shared/govpay.js", "shared/govpay.js"], ["shared/parse.js", "shared/parse.js"], ["shared/tax.js", "shared/tax.js"],
+  ["shared/govpay.js", "shared/govpay.js"], ["shared/parse.js", "shared/parse.js"], ["shared/tax.js", "shared/tax.js"], ["shared/analytics.js", "shared/analytics.js"],
   ["shared/data", "shared/data"], ["sites/ledger/ui", "ui"], ["sites/ledger/app.js", "app.js"], ["sites/ledger/styles.css", "styles.css"],
 ];
 await rm(join(pub, "shared"), { recursive: true, force: true });

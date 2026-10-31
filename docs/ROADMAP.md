@@ -218,7 +218,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Phase 6: Launch
-### 6.1 Quality pass · S · ☐
+### 6.1 Quality pass · S · ◐
+> **Progress (Oct 31, 2026):** anonymous usage counts are in (Workers Analytics Engine via `site/worker.js`, `shared/analytics.js`, a `/privacy` notice with an opt-out, `npm run analytics` for segment reports). Still open: accessibility, Lighthouse, dark-mode review, home page data weight.
 - **Goal:** solid before the public sees it.
 - **Includes:** accessibility (axe, keyboard, screen reader), performance budget, a dark-mode review, every number checked at 390 px, and privacy-friendly analytics (Cloudflare Web Analytics).
 - **Done when:** no axe violations, and Lighthouse ≥ 95 in every category on 5 key pages.
