@@ -15,6 +15,12 @@ const title = `${a.rural ? `Rural BAH group ${a.code.slice(2)}` : `${a.name} BAH
 const description = `${BAH_YEAR} BAH for ${place}: E-5 ${f.usd(at("E-5").with)} with dependents and ${f.usd(at("E-5").without)} without; O-3 ${f.usd(at("O-3").with)}. Every grade, official DTMO rates.`;
 const counties = a.counties.map((c) => c.name).sort();
 const loc = a.counties[0] || G.locations().find((l) => G.bahMhaOf(l) === a.code);
+// Total monthly pay here for common ranks at a typical point in a career (basic pay + BAH with dependents + BAS).
+const TYPICAL = [["E-1", 0], ["E-3", 2], ["E-4", 3], ["E-5", 6], ["E-6", 10], ["E-7", 14], ["E-8", 18], ["E-9", 22], ["W-2", 10], ["O-1", 0], ["O-2", 2], ["O-3", 6], ["O-4", 12], ["O-5", 18], ["O-6", 24]];
+const totals = TYPICAL.map(([g, yos]) => {
+  const basic = G.milBasic(BAH_YEAR, g, yos), housing = at(g).with, food = G.bas(BAH_YEAR, g);
+  return { g, yos, basic, housing, food, total: basic + housing + food };
+});
 const grades = ["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "W-1", "W-2", "W-3", "W-4", "W-5", "O-1E", "O-2E", "O-3E", "O-1", "O-2", "O-3", "O-4", "O-5", "O-6", "O-7"];
 ---
 <Base title={title} description={description} path={path} crumbs={[["Military pay", "/military/pay-chart"], ["BAH", "/military/bah"], [a.rural ? `Group ${a.code.slice(2)}` : a.name, path]]}>
@@ -36,7 +42,16 @@ const grades = ["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "
     </div>
     {loc && <p class="cta"><a class="pb-btn" href={calcLink({ system: "MIL", mgrade: "E-5", yos: 6 }, null, loc.id)}>See full pay here with basic pay and BAS</a></p>}
 
-    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Where this rate applies</div>
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Total monthly pay here</div>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Rank</th><th scope="col">Years</th><th scope="col">Basic pay</th><th scope="col">BAH</th><th scope="col">BAS</th><th scope="col">Total a month</th></tr></thead>
+        <tbody>{totals.map((t) => <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/military/pay/${t.g.toLowerCase()}`}>{t.g}</a></th><td>{t.yos === 0 ? "under 2" : `over ${t.yos}`}</td><td>{f.usd2(t.basic)}</td><td>{f.usd(t.housing)}</td><td>{f.usd2(t.food)}</td><td><b>{f.usd2(t.total)}</b></td></tr>)}</tbody>
+        <caption>{BAH_YEAR} rates, with dependents, at a typical point in a career. BAH and BAS are tax-free. Special pays (flight, sea, hazardous duty) aren't included. {loc && <>Change rank, years or dependents in <a class="pb-link" href={calcLink({ system: "MIL", mgrade: "E-5", yos: 6 }, null, loc.id)}>the calculator</a>.</>}</caption>
+      </table>
+    </div>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Where this rate applies</div>
     <div class="links">
       {counties.length > 0 && <div><h2>{a.rural ? `Counties in this group (${counties.length})` : "Counties"}</h2><ul class={counties.length > 12 ? "cols" : ""}>{counties.map((c) => <li>{c}</li>)}</ul></div>}
       {!a.rural && a.zips.length > 0 && <div><h2>ZIP codes ({a.zips.length})</h2><p class="zips">{a.zips.join(" ")}</p></div>}

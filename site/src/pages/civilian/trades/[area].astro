@@ -1,0 +1,46 @@
+---
+// One wage schedule: WG, WL and WS hourly rates and the counties it covers. /civilian/trades/washington-baltimore-arlington-027
+import Base from "../../../layouts/Base.astro";
+import { G, f, FWS_YEAR, FWS_SOURCE, fwsAreas, fwsTable, calcLink } from "../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return fwsAreas().map((a) => ({ params: { area: a.slug }, props: { a } }));
+}
+const { a } = Astro.props;
+const place = a.name.replace(/,\s*[A-Za-z .]+$/, "");
+const WG = fwsTable(a, "WG"), WL = fwsTable(a, "WL"), WS = fwsTable(a, "WS"), prev = fwsTable(a, "WG", FWS_YEAR - 1);
+const effective = new Date(a.effective + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+const siblings = fwsAreas().filter((x) => x.name === a.name && x.code !== a.code);
+const path = `/civilian/trades/${a.slug}`;
+const title = `${place} wage grade pay (FY${FWS_YEAR}): WG-10 ${f.usd2(WG[9][1].hourly)} an hour`;
+const description = `FY${FWS_YEAR} Federal Wage System rates for ${a.name} (schedule ${a.code}), effective ${effective}: WG-1 to WG-15, WL and WS, every step. WG-10 step 2 is ${f.usd2(WG[9][1].hourly)} an hour. Official DoD schedule.`;
+const table = (rows, sch) => rows.map((r, i) => ({ grade: `${sch}-${i + 1}`, cells: r.map((x) => x.hourly) }));
+---
+<Base title={title} description={description} path={path} crumbs={[["Trades pay", "/civilian/trades"], [`${place} (${a.code})`, path]]}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/civilian/trades">Trades pay</a> / {place}</nav>
+    <div class="pb-section-label"><b>FY{FWS_YEAR}</b> · Schedule {a.code} · Effective {effective}</div>
+    <h1>{place} wage grade pay, FY{FWS_YEAR}</h1>
+    <p class="lede">A WG-10 at step 2 here earns <b>{f.usd2(WG[9][1].hourly)}</b> an hour, about <b>{f.usd(WG[9][1].annual)}</b> a year at full time (2,087 hours). Steps 2 to 5 come after 6 months, 18 months, then 2 years each.</p>
+    <p class="cta"><a class="pb-btn" href={calcLink({ system: "FWS", grade: 10, step: 2 }, null, a.counties[0].id) + "&sch=WG"}>See take-home and next steps</a></p>
+    {[["WG", "Wage Grade (non-supervisory)", WG], ["WL", "Wage Leader", WL], ["WS", "Wage Supervisor", WS]].map(([sch, label, rows], k) => (
+      <>
+        <div class="pb-section-label" style="margin-top:var(--s6)"><b>0{k + 1}</b> · {sch} · {label}</div>
+        <div class="pb-table-wrap">
+          <table class="pb-table">
+            <thead><tr><th scope="col">Grade</th>{[1, 2, 3, 4, 5].map((s) => <th scope="col">Step {s}</th>)}{sch === "WG" && prev && <th scope="col">vs FY{FWS_YEAR - 1} (step 2)</th>}</tr></thead>
+            <tbody>{table(rows, sch).map((r, i) => <tr><th scope="row">{r.grade}</th>{r.cells.map((c) => <td>{f.usd2(c)}</td>)}{sch === "WG" && prev && <td>{(() => { const d = r.cells[1] - prev[i][1].hourly; return Math.abs(d) < 0.005 ? "same" : <span class={`pb-delta pb-delta--${d > 0 ? "up" : "down"}`}>{d > 0 ? "+" : "−"}{f.usd2(Math.abs(d))}</span>; })()}</td>}</tr>)}</tbody>
+            <caption>Hourly rates, FY{FWS_YEAR} schedule {a.code}, effective {effective}. Source: <a class="pb-link" href={FWS_SOURCE.url}>{FWS_SOURCE.label}</a>.</caption>
+          </table>
+        </div>
+      </>
+    ))}
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>04</b> · Where this schedule applies</div>
+    <div class="links">
+      <div><h2>Counties ({a.counties.length})</h2><ul class={a.counties.length > 12 ? "cols" : ""}>{a.counties.map((c) => <li>{c.name}</li>)}</ul></div>
+      {siblings.length > 0 && <div><h2>Other schedules in this wage area</h2><ul>{siblings.map((s) => <li><a href={`/civilian/trades/${s.slug}`}>Schedule {s.code}</a> <span class="muted">{s.counties.length} counties</span></li>)}</ul><p class="muted">Some counties in a wage area are paid on their own schedule.</p></div>}
+    </div>
+    {a.counties.some((c) => c.state === "AK") && <p class="sub">In Alaska the schedule depends on road distance (50 miles) from Anchorage, Fairbanks or Juneau, not the county.</p>}
+    <p class="sub"><a class="pb-link" href="/civilian/trades">All wage areas</a></p>
+  </main>
+</Base>

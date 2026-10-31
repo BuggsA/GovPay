@@ -1,0 +1,25 @@
+---
+// Trades (FWS) hub: every wage schedule by state. /civilian/trades
+import Base from "../../../layouts/Base.astro";
+import { f, FWS_YEAR, FWS_SOURCE, fwsAreas, fwsTable } from "../../../lib/engine.mjs";
+
+const areas = fwsAreas();
+const stateOf = (a) => (a.name.match(/,\s*([A-Za-z .]+)$/) || [])[1] || "Other";
+const states = [...new Set(areas.map(stateOf))].sort();
+const wg10 = (a) => fwsTable(a, "WG")[9][1].hourly;
+const all = areas.map(wg10);
+---
+<Base title={`Federal trades (wage grade) pay by area, FY${FWS_YEAR}`} description={`FY${FWS_YEAR} Federal Wage System hourly rates for all ${areas.length} wage schedules: WG-10 step 2 ranges from ${f.usd2(Math.min(...all))} to ${f.usd2(Math.max(...all))} an hour. Official DoD schedules.`} path="/civilian/trades" crumbs={[["Trades pay", "/civilian/trades"]]}>
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>FY{FWS_YEAR}</b> · Federal Wage System</div>
+    <h1>Trades pay (wage grade) by area</h1>
+    <p class="lede">Federal trades and craft jobs (mechanics, electricians, maintenance, warehouse) are paid by the hour on local wage schedules set by surveys of local private-sector pay. A WG-10 step 2 earns from <b>{f.usd2(Math.min(...all))}</b> to <b>{f.usd2(Math.max(...all))}</b> an hour, depending on the area. Leaders (WL) and supervisors (WS) have their own schedules.</p>
+    {states.map((st) => (
+      <section class="bah-state">
+        <h2>{st}</h2>
+        <ul class="bah-list">{areas.filter((a) => stateOf(a) === st).map((a) => <li><a href={`/civilian/trades/${a.slug}`}>{a.name.replace(/,\s*[A-Za-z .]+$/, "")}</a> <span class="muted">WG-10 {f.usd2(wg10(a))}/hr</span></li>)}</ul>
+      </section>
+    ))}
+    <p class="sub">FY{FWS_YEAR} schedules. Each wage area sets its own effective date. Source: <a class="pb-link" href={FWS_SOURCE.url}>{FWS_SOURCE.label}</a>.</p>
+  </main>
+</Base>

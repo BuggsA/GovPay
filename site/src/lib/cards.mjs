@@ -1,6 +1,6 @@
 // The link-preview card for every pre-built page: path -> { kicker, title, number, sub, stamp }.
 // Numbers come from the same engine calls the pages make (military pay keeps its cents, as on the pages). Used by scripts/og-images.mjs and Base.astro.
-import { G, f, YEAR, SOURCE, areaShort, PD_FY, pdStates, pdStandard, MIL_ORDER, milSlug, BAH_YEAR, bahAreas, bahRow, jobSeries } from "./engine.mjs";
+import { G, f, YEAR, SOURCE, areaShort, PD_FY, pdStates, pdStandard, MIL_ORDER, milSlug, BAH_YEAR, bahAreas, bahRow, jobSeries, FWS_YEAR, fwsAreas, fwsTable } from "./engine.mjs";
 
 export const ogPath = (path) => `/og${path === "/" ? "/index" : path}.png`;
 
@@ -47,6 +47,9 @@ export function allCards() {
   add("/jobs", { kicker: "Federal job series", title: `What ${jobs.length} GS occupations pay`, sub: "Paste a posting like GS-0343-09/11/12 to see the whole ladder" });
   const rus = areas.find((a) => a.slug === "rest-of-us");
   jobs.forEach((j) => add(`/jobs/${j.slug}`, { kicker: `GS-${j.code} · ${YEAR}`, title: j.name, number: `${f.usd(G.gsArea(YEAR, 5, 1, rus.name).annual)} to ${f.usd(G.gsArea(YEAR, 15, 10, byPct[0].name).annual)}`, sub: "GS-5 step 1 (Rest of U.S.) to GS-15 step 10 (highest locality)", stamp: "Official" }));
+  const fa = fwsAreas(), wg10 = (a) => fwsTable(a, "WG")[9][1].hourly, fwsAll = fa.map(wg10);
+  add("/civilian/trades", { kicker: `Federal Wage System · FY${FWS_YEAR}`, title: "Trades pay by wage area", number: `${f.usd2(Math.min(...fwsAll))} to ${f.usd2(Math.max(...fwsAll))}`, sub: "an hour for a WG-10 at step 2", stamp: "Official" });
+  fa.forEach((a) => add(`/civilian/trades/${a.slug}`, { kicker: `${a.name.replace(/,\s*[A-Za-z .]+$/, "")} · FY${FWS_YEAR} wage grade`, title: `Trades pay, schedule ${a.code}`, number: `${f.usd2(wg10(a))} an hour`, sub: "WG-10 step 2; every WG, WL and WS grade on the page", stamp: "Official" }));
   const std = pdStandard();
   add("/travel/per-diem", { kicker: `Per diem · FY${PD_FY}`, title: "Federal travel per diem by state", number: `${f.usd(std.lodging[0])} + ${f.usd(std.mie)}`, sub: "standard lodging a night + meals and incidentals a day", stamp: "GSA" });
   pdStates().forEach((s) => {

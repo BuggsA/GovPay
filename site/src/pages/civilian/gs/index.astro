@@ -21,7 +21,7 @@ const max = areas[0].pct, min = areas[areas.length - 1].pct;
             <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/civilian/gs/${sample}/${a.slug}`}>{areaShort(a.name)}</a><small class="area-full">{a.name}</small></th><td>{a.pct.toFixed(2)}%</td><td>{f.usd(G.gsArea(YEAR, sample, 1, a.name).annual)}</td><td><a class="pb-link" href={`/civilian/gs/table/${a.slug}`}>Table</a></td></tr>
           ))}
         </tbody>
-        <caption>Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 9. Places not in a named area get the Rest of U.S. rate.</caption>
+        <caption>Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 9. Places not in a named area get the Rest of U.S. rate. Trades jobs are paid differently: <a class="pb-link" href="/civilian/trades">trades pay by wage area</a>.</caption>
       </table>
     </div>
   </main>
