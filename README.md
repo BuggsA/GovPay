@@ -41,7 +41,7 @@ Create one Pages project per site, connected to this GitHub repo:
 
 | Project | Dev | Prod (planned) | Build output directory |
 |---|---|---|---|
-| `paybook` | https://paybook.hhouse.dev | paybook.loopi.sh | `sites/ledger` |
+| `paybook` | https://paybook.hhouse.dev | **https://paybook.loopi.sh (live)** | `site/` (Astro, Cloudflare Worker) |
 | `payup` | https://payup.hhouse.dev | payup.loopi.sh | `sites/levels` |
 | `paymap` | https://paymap.hhouse.dev | paymap.loopi.sh | `sites/atlas` |
 
