@@ -62,3 +62,25 @@ test("No-tax states add no state line; local taxes are flagged", () => {
   assert.match(T.estimate(pay, { state: "NY" }).localNote, /New York City/);
   assert.equal(T.estimate(pay, { state: "CA" }).localNote, "");
 });
+
+test("Military pay: state of legal residence rules (MyAirForceBenefits, VA Code 58.1-322.02)", () => {
+  const mil = (basic) => ({ gross: basic + 30000, taxable: basic, fica: basic, retireBase: 0, tspBase: basic, military: true, perYear: 24 });
+  const st = (code, duty, basic = 50000) => {
+    const e = T.estimate(mil(basic), { filing: "single", state: code, dutyState: duty, tspPct: 0 });
+    return [e.lines.find((l) => l.key === "state")?.annual ?? null, e.stateNote];
+  };
+  assert.equal(st("AZ", "AZ")[0], 0);                                // full exemption, even at home
+  assert.match(st("AZ", "AZ")[1], /doesn't tax active-duty pay/);
+  assert.ok(st("CA", "CA")[0] > 0);                                  // California taxes pay earned in California...
+  assert.equal(st("CA", "VA")[0], 0);                                // ...but not pay earned outside it
+  assert.equal(st("PA", "VA")[0], 0);
+  // Oregon, stationed in Oregon: $6,000 subtraction.
+  near(st("OR", "OR")[0], T.estimate({ ...mil(44000), military: false }, { filing: "single", state: "OR", tspPct: 0 }).lines.find((l) => l.key === "state").annual);
+  // Louisiana outside the state: up to $50,000 exempt.
+  near(st("LA", "TX", 60000)[0], T.estimate({ ...mil(10000), military: false }, { filing: "single", state: "LA", tspPct: 0 }).lines.find((l) => l.key === "state").annual);
+  // Virginia: $25,000 basic pay -> $5,000 subtraction; taxable 25,000 - 5,000 - 8,750 - 930 = 10,320.
+  near(st("VA", "VA", 25000)[0], 3000 * .02 + 2000 * .03 + (10320 - 5000) * .05);
+  near(st("VA", "NC", 25000)[0], 3000 * .02 + 2000 * .03 + (10320 - 5000) * .05);   // applies wherever stationed
+  near(st("VA", "VA", 40000)[0], T.estimate({ ...mil(40000), military: false }, { filing: "single", state: "VA", tspPct: 0 }).lines.find((l) => l.key === "state").annual);
+  assert.ok(st("GA", "VA")[0] > 0);                                  // Georgia taxes military pay
+});

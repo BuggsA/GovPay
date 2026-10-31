@@ -12,6 +12,7 @@ const rows = [
   { what: "Which locality and per diem area each county is in", src: [["5 CFR 531.603(b)", "https://www.ecfr.gov/current/title-5/chapter-I/subchapter-B/part-531/subpart-F/section-531.603"], ["OMB/Census metro delineation, March 2020"], ["Census county list"]], status: "Official", how: `All ${places.counties.length.toLocaleString("en-US")} counties. The regulation doesn't name an edition of the metro definitions; Paybook uses March 2020, the latest that lists Connecticut by county. A few edge counties are worth checking against OPM's published list.` },
   { what: "Federal income tax, Social Security and Medicare", src: [["IRS Rev. Proc. 2025-32", T.SOURCES.federal], ["SSA 2026 wage base"]], status: "Official", how: "Tax year 2026 brackets and standard deduction. No credits or itemizing." },
   { what: "State income tax", src: [["Tax Foundation, 2026 state rates and brackets", TF.url], ["Maryland Comptroller (county rates)", T.SOURCES.mdCounty], ["Utah Tax Commission", T.SOURCES.utah]], status: "Official", how: "All 50 states and DC: brackets, standard deductions, exemptions and the footnote rules that matter at federal pay levels. DC, MD, PA, UT and VA were also entered and checked by hand." },
+  { what: "State tax on military pay", src: [["MyAirForceBenefits state summary (tax year 2025)", T.MIL_SOURCE], ["Code of Virginia 58.1-322.02", "https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-322.02/"]], status: "Official", how: "By state of legal residence: 13 states exempt all active-duty pay, 10 exempt it while you're stationed elsewhere, and Virginia, Oregon and Louisiana give partial subtractions." },
   { what: "BAS (food allowance)", src: [["DFAS (not yet loaded)"]], status: "Estimate", how: "2026 rates entered by hand; to be replaced by the DFAS table." },
   { what: "BAH (housing allowance)", src: [["DTMO (not yet loaded)"]], status: "Estimate", how: "19 researched housing areas around DC, Maryland, Pennsylvania, Virginia and Utah; a rough placeholder elsewhere. Never labeled official." },
   { what: "LEO special rates, trades (FWS) pay", src: [["OPM and DoD wage schedules (not yet loaded)"]], status: "Estimate", how: "LEO uses the published premium percentages; FWS only shows the shape of the pay curve." },
@@ -19,7 +20,7 @@ const rows = [
 const limits = [
   "Take-home pay is an estimate: no tax credits, itemized deductions or spouse income.",
   "Local income taxes (New York City, Ohio cities, Pennsylvania local earned-income tax and others) aren't included; Paybook names them when they apply.",
-  "State military pay exemptions aren't included, except Pennsylvania's for service members stationed outside the state.",
+  "State military pay rules cover full exemptions, out-of-state exemptions and the Virginia, Oregon and Louisiana subtractions; combat-zone, overseas and Guard/Reserve-only exclusions aren't included.",
   "New York and Connecticut's high-income \"recapture\" and the Missouri and Oregon federal-tax deductions aren't included.",
   "Alaska, Hawaii and the territories use overseas (OCONUS) per diem and cost-of-living rules that Paybook doesn't have yet.",
   `Next year's pay (${YEAR + 1}) is a projection until the official tables come out in December.`,

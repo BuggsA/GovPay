@@ -5,8 +5,8 @@
  * for all 50 states and DC (Maryland with its county tax), FERS, TSP
  * (traditional or Roth), optional health premium, and an "use my own rate" override.
  * Not included: credits (child tax credit etc.), itemizing, spouse income,
- * local income taxes (NYC, Ohio and PA cities, Indiana counties...), state
- * military pay exemptions other than Pennsylvania's out-of-state exemption,
+ * local income taxes (NYC, Ohio and PA cities, Indiana counties...), partial
+ * military subtractions for pay earned overseas (MD) or in combat zones,
  * New York and Connecticut "recapture" above about $100k, and the federal-tax
  * deduction in Missouri and Oregon (Alabama's is included).
  *
@@ -19,6 +19,7 @@
  *   Maryland county rates, AA + Frederick  Maryland Comptroller 2026 Form PV instructions; DLS 2026 local rate table
  *   Maryland exemption phase-out           Maryland Comptroller 2026 Form PV instructions
  *   Utah taxpayer credit phase-out         Utah State Tax Commission (base $18,213 single / $36,426 joint; 1.3%)
+ *   State military pay exemptions          MyAirForceBenefits state summary (tax year 2025); VA Code 58.1-322.02
  *   FERS employee rates                    5 U.S.C. 8422 (0.8% / 3.1% / 4.4%; LEO 1.3% / 3.6% / 4.9%)
  */
 (function (global) {
@@ -110,6 +111,39 @@
     // (hh) Above $150,000 AGI, Vermont tax is at least 3% of AGI.
     VT: { minTax: (agi) => agi > 150000 ? 0.03 * agi : 0 },
   };
+  // Active-duty military pay, by state of legal residence. Source: MyAirForceBenefits, "Which states tax my
+  // Active Duty or Reserve military pay?" (tax year 2025), plus the Virginia and Oregon statutes it summarizes.
+  //   full:     all active-duty pay exempt
+  //   outside:  exempt while stationed outside the state (CT and NY also need no home and < 30 days in the state)
+  //   inState(pay): amount subtracted while stationed in the state
+  //   outsideCap: exemption capped at this amount when stationed outside (Louisiana, > 120 days)
+  const MIL_RULES = {
+    AZ: { full: true }, AR: { full: true }, IL: { full: true }, IN: { full: true }, IA: { full: true }, KY: { full: true },
+    MI: { full: true }, MN: { full: true }, MO: { full: true }, MT: { full: true }, NM: { full: true }, ND: { full: true }, OK: { full: true },
+    CA: { outside: true }, ID: { outside: true, note: "if away 120+ days in a row" }, ME: { outside: true }, OH: { outside: true },
+    PA: { outside: true }, VT: { outside: true }, CT: { outside: true, note: "if you keep no home there and spend under 30 days there" },
+    NY: { outside: true, note: "if you keep no home there and spend 30 days or less there" },
+    OR: { outside: true, inState: () => 6000 },
+    LA: { outsideCap: 50000, note: "if away 120+ days in a row" },
+    // Virginia: up to $15,000, reduced dollar for dollar above $15,000 of basic pay (none at $30,000+).
+    VA: { inState: (pay) => Math.max(0, 15000 - Math.max(0, pay - 15000)), anywhere: true },
+  };
+  const MIL_SOURCE = "https://myairforcebenefits.us.af.mil/Which-states-tax-my-Active-Duty-or-Reserve-military-pay";
+  // How much military pay the state leaves out, and a sentence saying so.
+  function milSubtraction(code, pay, dutyState) {
+    const r = MIL_RULES[code], name = STATE_NAMES[code];
+    if (!r) return { amount: 0, note: "" };
+    const away = dutyState && dutyState !== code;
+    if (r.full) return { amount: pay, note: `${name} doesn't tax active-duty pay.` };
+    if (r.outside && away) return { amount: pay, note: `${name} doesn't tax active-duty pay earned while stationed outside the state${r.note ? ", " + r.note : ""}.` };
+    if (r.outsideCap && away) return { amount: Math.min(pay, r.outsideCap), note: `${name} exempts up to ${"$" + r.outsideCap.toLocaleString("en-US")} of military pay earned outside the state, ${r.note}.` };
+    if (r.inState && (r.anywhere || !away)) {
+      const a = Math.min(pay, r.inState(pay));
+      return { amount: a, note: a ? `${name} subtracts ${"$" + Math.round(a).toLocaleString("en-US")} of military pay.` : "" };
+    }
+    return { amount: 0, note: "" };
+  }
+
   function genericState(code, agi, filing, federal) {
     const st = STATES[code], q = QUIRKS[code] || {};
     if (!st || st.none) return 0;
@@ -184,10 +218,12 @@
     let federal = brackets(Math.max(0, agi - FED.std[filing]), FED[filing]);
     let state = 0, local = 0, stateNote = "";
     const st = STATES[o.state];
+    // Military pay the state of legal residence leaves out (pay.taxable is basic pay for service members).
+    const mil = pay.military && st && !st.none ? milSubtraction(o.state, pay.taxable, o.dutyState) : { amount: 0, note: "" };
+    const sAgi = Math.max(0, agi - mil.amount);
+    stateNote = mil.note;
     if (o.state === "PA") {
-      const paExempt = pay.military && o.dutyState && o.dutyState !== "PA";
-      state = paExempt ? 0 : st.flat * Math.max(0, pay.taxable - health);   // PA doesn't deduct TSP
-      if (paExempt) stateNote = "Pennsylvania doesn't tax active-duty pay earned outside the state.";
+      state = st.flat * Math.max(0, pay.taxable - health - mil.amount);   // PA doesn't deduct TSP
     } else if (o.state === "UT") {
       const credit = Math.max(0, st.creditRate * FED.std[filing] - st.phaseRate * Math.max(0, agi - st.phaseBase[filing]));
       state = Math.max(0, st.flat * agi - credit);
@@ -197,11 +233,11 @@
       local = mdCountyTax(taxable, o.county || "Montgomery", filing);
     } else if (o.state === "DC" || o.state === "VA") {
       const ex = st.exemption ? st.exemption * (filing === "mfj" ? 2 : 1) : 0;
-      state = brackets(Math.max(0, agi - st.std[filing] - ex), st[filing]);
+      state = brackets(Math.max(0, sAgi - st.std[filing] - ex), st[filing]);
     } else if (o.state === "OTHER") {
       state = Math.max(0, +o.otherRate || 0) / 100 * agi;
     } else if (st && !st.none) {
-      state = genericState(o.state, agi, filing, federal);
+      state = sAgi > 0 ? genericState(o.state, sAgi, filing, federal) : 0;
     }
 
     let override = false;
@@ -246,5 +282,5 @@
     .concat([["NONE", "A state with no income tax"], ["OTHER", "Somewhere else (enter a rate)"]]);
   function defaultState(stateCode) { return STATES[stateCode] ? stateCode : "OTHER"; }
 
-  global.GovPayTax = { STATE_NAMES, QUIRKS, HAND, estimate, payFrom, STATES, MD_COUNTIES, PLACE_COUNTY, FERS_LABEL, STATE_CHOICES, SOURCES, TAX_YEAR, defaultState };
+  global.GovPayTax = { STATE_NAMES, QUIRKS, HAND, MIL_RULES, MIL_SOURCE, estimate, payFrom, STATES, MD_COUNTIES, PLACE_COUNTY, FERS_LABEL, STATE_CHOICES, SOURCES, TAX_YEAR, defaultState };
 })(typeof window !== "undefined" ? window : globalThis);
