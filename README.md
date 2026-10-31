@@ -28,8 +28,15 @@ Each site keeps its own copy in `sites/<name>/shared/` so every folder can deplo
 
 ## Deploying (Cloudflare Pages)
 Create one Pages project per site, connected to this GitHub repo:
+
+| Project | URL | Build output directory |
+|---|---|---|
+| `paybook` | https://paybook.pages.dev | `sites/ledger` |
+| `payup` | https://payup.pages.dev | `sites/levels` |
+| `paymap` | https://paymap.pages.dev | `sites/atlas` |
+
+- **Production branch:** `main`
 - **Build command:** none
-- **Build output directory:** `sites/ledger` (or `sites/levels`, or `sites/atlas`)
 
 ## Data status
 **Prototype data, not for official use.** UT, MD, DC, PA and VA use approximate or verified 2025–2026 figures. Other states and FWS are simulated, and 2027 is projected. Every figure in the UI is tagged. See [docs/DATA.md](docs/DATA.md).
