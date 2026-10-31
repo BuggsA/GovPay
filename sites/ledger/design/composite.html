@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paybook Composites</title>
+  <meta name="description" content="Paybook L5: search box with suggestions, location picker with tile map, year switcher, take-home line.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    .page { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--gutter); }
+    h1 { font: 700 var(--t-h1)/var(--lh-tight) var(--font-display); letter-spacing: var(--track-display); margin: var(--s2) 0 var(--s3); }
+    .lede { color: var(--ink-2); max-width: 680px; margin: 0 0 var(--s5); }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail); gap: var(--s6); align-items: start; }
+    .rail { position: sticky; top: var(--s4); }
+    .only-mobile { display: none; }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: minmax(0, 1fr); }
+      .rail { display: none; }
+      .only-mobile { display: block; }
+    }
+    .blk { padding: var(--s5) 0; }
+    .blk + .blk { border-top: var(--hair); }
+    .assumed { margin: var(--s2) 0 0; font-size: var(--t-small); color: var(--ink-2); }
+    .assumed b { color: var(--ink); }
+    .note { font-size: var(--t-small); color: var(--ink-2); max-width: 680px; }
+    .ladder-pick { display: flex; gap: var(--s2); flex-wrap: wrap; margin: var(--s3) 0; }
+  </style>
+</head>
+<body>
+  <header class="pb-header">
+    <div class="pb-header__in">
+      <a class="pb-wordmark" href="./">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="11.5" width="14" height="5" fill="var(--hi)"/><path d="M8 14h9" stroke="#1b1a17" stroke-width="2"/></svg>
+        paybook
+      </a>
+      <nav class="pb-nav" aria-label="Main"><a href="#" aria-current="page">My pay</a><a href="#">Pay tables</a><a href="#">Compare</a><a href="#">Learn</a></nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>L5</b> · Working components · try them</div>
+    <h1>Type what you are. Pick where you work.</h1>
+    <p class="lede">A working demo of the search box, location picker, year switcher and take-home line together. The stub uses real 2026 pay; BAH and the simulated states are still placeholders, and take-home is layout only.</p>
+
+    <div class="layout">
+      <div>
+        <section class="blk">
+          <div class="pb-section-label"><b>01</b> · Search</div>
+          <div id="search"></div>
+        </section>
+
+        <section class="blk only-mobile">
+          <div class="pb-section-label"><b>02</b> · Place</div>
+          <button class="pb-place-btn" id="placeBtn" type="button" aria-haspopup="dialog"></button>
+        </section>
+
+        <section class="blk" aria-live="polite">
+          <div class="pb-section-label"><b>03</b> · Your pay</div>
+          <div id="year" style="margin-bottom:var(--s4)"></div>
+          <div id="posting"></div>
+          <article class="pb-stub" id="stub"></article>
+          <div id="assumed"></div>
+          <div id="takehome"></div>
+        </section>
+      </div>
+      <aside class="rail" aria-label="Location picker">
+        <div class="pb-section-label"><b>02</b> · Place</div>
+        <div id="pickerRail"></div>
+        <p class="note">On desktop the picker stays open beside your pay, so tapping a state or place updates the numbers right away.</p>
+      </aside>
+    </div>
+  </main>
+
+  <div class="pb-sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+    <div class="pb-sheet__bar"><h2 id="sheetTitle">Where you work</h2><button class="pb-btn pb-btn--line pb-btn--small" id="sheetClose" type="button">Done</button></div>
+    <div id="pickerSheet"></div>
+  </div>
+
+  <footer class="pb-footer"><div class="pb-footer__in"><span><b>paybook</b> · an independent estimate tool. <b>Not affiliated with the U.S. government.</b></span><span>Pay: EO 14368 (official) · Per diem: GSA (official) · BAH: estimate</span></div></footer>
+
+  <script src="../shared/data/payorder.js"></script>
+  <script src="../shared/data/perdiem.js"></script>
+  <script src="../shared/govpay.js"></script>
+  <script src="../shared/parse.js"></script>
+  <script src="composite.js"></script>
+  <script>
+    (function () {
+      var G = GovPay, f = G.fmt;
+      var state = { year: G.CURRENT_YEAR, loc: "dc", profile: { system: "GS", grade: 12, step: 5 }, assumed: [], posting: null };
+      var $ = function (s) { return document.querySelector(s); };
+      function esc(t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+      function stub() {
+        var r = G.compute(state.profile, state.year, state.loc), loc = G.location(state.loc), mil = state.profile.system === "MIL";
+        var stamp = r.status === "verified" ? '<span class="pb-stamp pb-stamp--official">Official</span>' : r.status === "projected" ? '<span class="pb-stamp pb-stamp--proposed">Proposed</span>' : r.status === "simulated" ? '<span class="pb-stamp pb-stamp--estimate">Simulated</span>' : '<span class="pb-stamp pb-stamp--estimate">' + (mil ? "BAH estimate" : "Estimate") + "</span>";
+        if (r.annual == null) { $("#stub").innerHTML = '<div class="pb-stub__head"><span>Pay stub · ' + state.year + "</span></div><p>" + esc(r.notes[0]) + "</p>"; return; }
+        var big = mil ? r.annual / 12 : r.annual;
+        var per = mil ? "a month · " + f.usd(r.annual / 24) + " on the 1st and 15th · RMC about " + f.usd(r.mil.rmc) + " a year"
+          : "a year · " + f.usd(r.annual / 26) + " per paycheck" + (r.hourly ? " · " + f.usd2(r.hourly) + " an hour" : "");
+        var rows = r.rows.map(function (row) {
+          return "<li><span>" + esc(row.label) + (row.taxFree ? '<span class="pb-taxfree">tax-free</span>' : "") + "</span><span>" + (mil ? f.usd2(row.annual / 12) : f.usd(row.annual)) + "</span></li>";
+        }).join("");
+        $("#stub").innerHTML = '<div class="pb-stub__head"><span>Pay stub · ' + state.year + "</span>" + stamp + "</div>" +
+          '<div class="pb-stub__who">' + esc(r.title) + "<small>" + esc(loc.simulated ? loc.stateName + " (simulated)" : loc.name) + "</small></div>" +
+          '<div class="pb-stub__number"><span class="hl">' + f.usd(big) + "</span></div>" +
+          '<div class="pb-stub__per">' + per + "</div>" +
+          '<ul class="pb-ledger">' + rows + '<li class="pb-ledger__total"><span>' + (mil ? "Monthly total" : "Total") + "</span><span>" + (mil ? f.usd2(r.annual / 12) : f.usd(r.annual)) + "</span></li></ul>" +
+          '<div class="pb-stub__foot"><span>paybook · ' + (state.year <= 2026 ? "EO " + (state.year === 2025 ? "14132" : "14368") : "projected") + "</span><span>Not affiliated with the U.S. government</span></div>";
+        $("#assumed").innerHTML = state.assumed.length ? '<p class="assumed"><b>Assumed:</b> ' + esc(state.assumed.join(", ")) + ". Change it in the search box.</p>" : "";
+      }
+      function posting() {
+        var el = $("#posting"), p = state.posting;
+        if (!p) { el.innerHTML = ""; return; }
+        el.innerHTML = '<p class="note" style="margin:0"><b>' + esc(p.schedule + "-" + p.series) + "</b>" + (p.seriesName ? " · " + esc(p.seriesName) : "") + " · pick a grade on the ladder:</p>" +
+          '<div class="ladder-pick">' + p.grades.map(function (g, i) { return '<button type="button" class="pb-chip ' + (state.profile.grade === g ? "pb-chip--on" : "") + '" data-g="' + g + '">' + p.schedule + "-" + g + (i === p.grades.length - 1 ? " · full level" : "") + "</button>"; }).join("") + "</div>";
+        el.querySelectorAll("[data-g]").forEach(function (b) { b.onclick = function () { state.profile.grade = +b.dataset.g; render(); }; });
+      }
+      function placeBtn() {
+        var l = G.location(state.loc);
+        $("#placeBtn").innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-5.1 5-9A5 5 0 0 0 3 6c0 3.9 5 9 5 9z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="6" r="1.8" fill="currentColor"/></svg><span>' + esc(l.simulated ? l.stateName : l.name) + "</span>";
+      }
+      function render() { stub(); posting(); placeBtn(); }
+
+      function setLoc(id) { state.loc = id; railPicker.set(id); sheetPicker.set(id); render(); sb.refresh(); }
+      var sb = PB.searchBox($("#search"), {
+        getLoc: function () { return state.loc; }, getYear: function () { return state.year; },
+        onPick: function (r) {
+          if (r.locId) setLoc(r.locId);
+          if (r.kind === "profile") { state.profile = r.profile; state.assumed = r.assumed; state.posting = null; }
+          else if (r.kind === "posting") { state.posting = r; state.assumed = ["step 1"]; state.profile = { system: r.system, grade: r.grades[r.grades.length - 1], step: 1, leap: r.system === "LEO", schedule: r.schedule }; }
+          render();
+        }
+      });
+      var railPicker = PB.locationPicker($("#pickerRail"), { value: state.loc, getYear: function () { return state.year; }, onChange: setLoc });
+      var sheetPicker = PB.locationPicker($("#pickerSheet"), { value: state.loc, getYear: function () { return state.year; }, onChange: setLoc });
+      PB.yearSwitch($("#year"), { value: state.year, onChange: function (y) { state.year = y; railPicker.refresh(); sheetPicker.refresh(); render(); sb.refresh(); } });
+      PB.takeHome($("#takehome"));
+
+      var sheet = $("#sheet"), opener = $("#placeBtn");
+      opener.onclick = function () { sheet.hidden = false; document.body.style.overflow = "hidden"; var i = sheet.querySelector("input"); if (i) i.focus(); };
+      function closeSheet() { sheet.hidden = true; document.body.style.overflow = ""; opener.focus(); }
+      $("#sheetClose").onclick = closeSheet;
+      sheet.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+      render();
+    })();
+  </script>
+</body>
+</html>

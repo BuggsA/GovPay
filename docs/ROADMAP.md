@@ -80,8 +80,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 | L1 Identity | Three directions shown; **A "Stub" chosen** | ☑ |
 | L2 Foundations | `design/tokens.css`: color (WCAG-checked, light and dark), type, space, layout, lines, motion | ☑ |
 | L3 Voice & numbers | Number formats, labels, status words, disclaimer, empty and error text | ☐ |
-| L4 Components | `design/components.css` + sheet: stub (civilian and military), ledger rows, ladder, table, buttons, links, big search box, fields, steppers, toggles, chips, tabs, stamps, deltas, disclosure, header, footer | ◐ review |
-| L5 Composite | Search box with suggestions, location picker with tile map, year switcher, take-home line | ☐ |
+| L4 Components | `design/components.css` + sheet: stub (civilian and military), ledger rows, ladder, table, buttons, links, big search box, fields, steppers, toggles, chips, tabs, stamps, deltas, disclosure, header, footer | ☑ |
+| L5 Composite | `design/composite.html` + `composite.js` + `shared/parse.js`: search box with live suggestions (grades, ranks, rank names, job postings, places), location picker (search all states, recent, tile-map filter, three-area note, full-screen sheet on phones), year switcher with "Proposed", take-home line + edit panel (layout only) | ◐ review |
 | L6 Page mockups | Home (first visit), My pay, GS table page, military rank page, Learn article, Compare sketch | ☐ |
 | L7 Share | Share card, screenshots, link preview images | ☐ |
 | L8 Polish | States, dark-mode pass, focus, reduced motion, print style | ☐ |
