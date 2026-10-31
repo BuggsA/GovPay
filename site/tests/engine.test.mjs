@@ -91,3 +91,14 @@ test("Every county maps to its locality area (5 CFR 531.603) and per diem area",
   assert.equal(G.perDiem(2027, "c49045", 7).areaName, "Salt Lake City");   // Tooele County uses SLC per diem
   assert.equal(G.bah(2026, "E-5", true, "c51059").status, "approx");       // BAH is never shown as official yet
 });
+
+test("Per diem pages: one slug per area, DC copies folded in, months in fiscal order", async () => {
+  const { pdStates, pdAreas, FY_MONTHS, PD_FY } = await import("../src/lib/engine.mjs");
+  const states = pdStates();
+  assert.equal(states.length, 49);                                   // lower 48 + DC
+  for (const s of states) assert.equal(new Set(s.areas.map((a) => a.slug)).size, s.areas.length, s.name);
+  assert.ok(!states.find((s) => s.st === "VA").areas.some((a) => a.city === "District of Columbia"));
+  assert.deepEqual(FY_MONTHS.slice(0, 4).map((m) => m.name), ["Oct", "Nov", "Dec", "Jan"]);
+  const vb = pdAreas(PD_FY).find((a) => a.id === "VA:Virginia Beach");
+  assert.equal(vb.lodging[6], 212);                                  // July peak, FY2027 (GSA)
+});

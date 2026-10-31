@@ -23,5 +23,7 @@ jobs:
       - run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: "1"
+      - name: Page budget, tags and internal links
+        run: npm run check
       - name: Page count
         run: echo "Built $(find dist -name '*.html' | wc -l) pages"

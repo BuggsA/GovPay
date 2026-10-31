@@ -161,7 +161,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 
 ## Phase 4: Reach (search and sharing)
 ### 4.1 Page templates + sitemap · M · ◐
-> **Progress (Oct 31, 2026):** 973 pages: GS grade × area, a table per area, each GS grade across all 58 areas, a page per military pay grade (27), the pay chart, sitemap, canonical tags and breadcrumb structured data. **Still open:** BAH and per diem by area, rank + base pages, Lighthouse check.
+> **Progress (Oct 31, 2026):** 1,319 pages: GS grade × area, a table per area, each GS grade across all 58 areas, a page per military pay grade (27), the pay chart, per diem (hub, 49 state pages, 288 area pages by month), sitemap, canonical tags and breadcrumb structured data. `npm run check` (in CI) enforces the 50 KB HTML budget (largest page 21 KB), title/description/canonical tags and zero broken internal links. **Still open:** BAH by area (needs DTMO), rank + base pages, Lighthouse check.
 - **Goal:** pages that search engines can list.
 - **Includes:**
   - Pages for each GS grade × locality area, each GS table, each military rank (with and without a base), BAH by area, per diem by area, the military pay chart, and a GS grade across all areas
@@ -190,7 +190,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** the 5 articles are published, with sources and "as of" dates.
 - **Needs:** 2.2.
 
-### 4.5 About the data page · S · ☐
+### 4.5 About the data page · S · ◐
+> **Progress (Oct 31, 2026):** `/about/data` lists every source with its date, status, method and known limits, linked from every page's footer. **Still open:** per-number links into it.
 - **Goal:** trust.
 - **Includes:** each source, its "as of" date, the methods, the known limits, and "Not affiliated with the U.S. government".
 - **Done when:** every number on the site links back to this page.

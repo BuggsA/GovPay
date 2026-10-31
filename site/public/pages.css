@@ -17,3 +17,12 @@
 .pb-table th[scope=row] a { font-weight: 700; }
 .grades { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0 0 var(--s5); align-items: center; }
 .grades .pb-chip { text-decoration: none; }
+.pd-std { max-width: 560px; }
+.sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--s4) var(--s6); }
+.source { border-top: var(--hair); padding-top: var(--s3); }
+.source h2 { font: 700 var(--t-h3)/1.25 var(--font-display); margin: 0 0 var(--s2); }
+.source h2 .pb-stamp { vertical-align: middle; margin-left: 6px; }
+.source p { margin: 0 0 var(--s2); color: var(--ink-2); }
+.source .source__from { color: var(--ink); font-size: var(--t-small); }
+.limits { padding-left: 1.2em; max-width: 760px; }
+.limits li { margin: var(--s2) 0; }

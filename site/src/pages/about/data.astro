@@ -1,0 +1,47 @@
+---
+// Where every number comes from: /about/data
+import Base from "../../layouts/Base.astro";
+import { T, YEAR, SOURCE, PD_FY, PD_SOURCE, pdFetchedAt } from "../../lib/engine.mjs";
+
+const TF = globalThis.GOVPAY_DATA.stateTax;
+const places = globalThis.GOVPAY_DATA.places;
+const rows = [
+  { what: "GS base pay, all 58 locality areas, SES and Executive Schedule", src: [[`${SOURCE[2025].label} (2025)`, SOURCE[2025].url], [`${SOURCE[2026].label} (2026)`, SOURCE[2026].url], ["Schedules 1, 4, 5 and 9"]], status: "Official", how: "Read from the Federal Register PDFs and checked cell by cell: step increments, the EX-IV cap, and a 1.0% raise in every cell from 2025 to 2026." },
+  { what: "Military basic pay", src: [["Same orders, Schedule 8"]], status: "Official", how: "Every grade and years-of-service column, including O-1E to O-3E. 2025 is the January table (junior enlisted got a further raise in April 2025)." },
+  { what: "Travel per diem (lower 48 and DC)", src: [[PD_SOURCE.label, PD_SOURCE.url], [`FY2025 to FY${PD_FY}, as of ${pdFetchedAt(PD_FY)}`]], status: "Official", how: "Downloaded from GSA's API and refreshed monthly by a GitHub Action." },
+  { what: "Which locality and per diem area each county is in", src: [["5 CFR 531.603(b)", "https://www.ecfr.gov/current/title-5/chapter-I/subchapter-B/part-531/subpart-F/section-531.603"], ["OMB/Census metro delineation, March 2020"], ["Census county list"]], status: "Official", how: `All ${places.counties.length.toLocaleString("en-US")} counties. The regulation doesn't name an edition of the metro definitions; Paybook uses March 2020, the latest that lists Connecticut by county. A few edge counties are worth checking against OPM's published list.` },
+  { what: "Federal income tax, Social Security and Medicare", src: [["IRS Rev. Proc. 2025-32", T.SOURCES.federal], ["SSA 2026 wage base"]], status: "Official", how: "Tax year 2026 brackets and standard deduction. No credits or itemizing." },
+  { what: "State income tax", src: [["Tax Foundation, 2026 state rates and brackets", TF.url], ["Maryland Comptroller (county rates)", T.SOURCES.mdCounty], ["Utah Tax Commission", T.SOURCES.utah]], status: "Official", how: "All 50 states and DC: brackets, standard deductions, exemptions and the footnote rules that matter at federal pay levels. DC, MD, PA, UT and VA were also entered and checked by hand." },
+  { what: "BAS (food allowance)", src: [["DFAS (not yet loaded)"]], status: "Estimate", how: "2026 rates entered by hand; to be replaced by the DFAS table." },
+  { what: "BAH (housing allowance)", src: [["DTMO (not yet loaded)"]], status: "Estimate", how: "19 researched housing areas around DC, Maryland, Pennsylvania, Virginia and Utah; a rough placeholder elsewhere. Never labeled official." },
+  { what: "LEO special rates, trades (FWS) pay", src: [["OPM and DoD wage schedules (not yet loaded)"]], status: "Estimate", how: "LEO uses the published premium percentages; FWS only shows the shape of the pay curve." },
+];
+const limits = [
+  "Take-home pay is an estimate: no tax credits, itemized deductions or spouse income.",
+  "Local income taxes (New York City, Ohio cities, Pennsylvania local earned-income tax and others) aren't included; Paybook names them when they apply.",
+  "State military pay exemptions aren't included, except Pennsylvania's for service members stationed outside the state.",
+  "New York and Connecticut's high-income \"recapture\" and the Missouri and Oregon federal-tax deductions aren't included.",
+  "Alaska, Hawaii and the territories use overseas (OCONUS) per diem and cost-of-living rules that Paybook doesn't have yet.",
+  `Next year's pay (${YEAR + 1}) is a projection until the official tables come out in December.`,
+];
+---
+<Base title="About the data: where Paybook's numbers come from" description="Every source behind Paybook's federal and military pay, per diem and take-home numbers, with dates, methods and known limits. Not affiliated with the U.S. government." path="/about/data" crumbs={[["About the data", "/about/data"]]}>
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>About</b> · The data</div>
+    <h1>Where the numbers come from</h1>
+    <p class="lede">Paybook is an independent tool. It is <b>not affiliated with the U.S. government</b>. Pay tables come straight from the official orders and agencies below. Anything that isn't official yet is labeled as an estimate wherever it appears.</p>
+    <div class="sources">
+      {rows.map((r) => (
+        <section class="source">
+          <h2>{r.what} <span class={`pb-stamp ${r.status === "Official" ? "pb-stamp--official" : ""}`}>{r.status}</span></h2>
+          <p class="source__from">{r.src.map(([label, url], i) => <>{i > 0 && " · "}{url ? <a class="pb-link" href={url}>{label}</a> : label}</>)}</p>
+          <p>{r.how}</p>
+        </section>
+      ))}
+    </div>
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Known limits</div>
+    <ul class="limits">{limits.map((l) => <li>{l}</li>)}</ul>
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Updates</div>
+    <p>Pay tables change each January, when the President's pay order takes effect. Per diem changes each October 1, at the start of the federal fiscal year. Found a number that doesn't match an official source? That's a bug. Please report it.</p>
+  </main>
+</Base>

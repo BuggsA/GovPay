@@ -1,0 +1,39 @@
+---
+// Per diem areas in one state: /travel/per-diem/virginia
+import Base from "../../../../layouts/Base.astro";
+import { f, PD_FY, PD_SOURCE, pdStates, pdStandard, pdFetchedAt } from "../../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return pdStates().map((s) => ({ params: { state: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const std = pdStandard();
+const dcLink = s.st === "MD" || s.st === "VA";
+const path = `/travel/per-diem/${s.slug}`;
+const title = `${s.name} per diem rates, FY${PD_FY}`;
+const description = s.areas.length
+  ? `FY${PD_FY} federal per diem in ${s.name}: ${s.areas.length} areas with their own lodging and M&IE rates, and ${f.usd(std.lodging[0])} + ${f.usd(std.mie)} everywhere else. From GSA.`
+  : `Every place in ${s.name} uses the FY${PD_FY} standard per diem rate: ${f.usd(std.lodging[0])} lodging and ${f.usd(std.mie)} M&IE a day. From GSA.`;
+---
+<Base title={title} description={description} path={path} crumbs={[["Per diem", "/travel/per-diem"], [s.name, path]]}>
+  <main id="main" class="page article wide">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/travel/per-diem">Per diem</a> / {s.name}</nav>
+    <div class="pb-section-label"><b>FY{PD_FY}</b> · {s.name}</div>
+    <h1>{s.name} per diem rates, FY{PD_FY}</h1>
+    <p class="lede">{s.areas.length ? <>{s.areas.length} area{s.areas.length > 1 ? "s" : ""} in {s.name} {s.areas.length > 1 ? "have" : "has"} {s.areas.length > 1 ? "their" : "its"} own rate. Everywhere else uses the standard rate: <b>{f.usd(std.lodging[0])}</b> lodging + <b>{f.usd(std.mie)}</b> M&IE a day.</> : <>{s.name} has no special per diem areas, so every place uses the standard rate: <b>{f.usd(std.lodging[0])}</b> lodging + <b>{f.usd(std.mie)}</b> M&IE a day.</>}{dcLink && <> Arlington, Alexandria, Fairfax, Falls Church, Montgomery and Prince George's use the <a class="pb-link" href="/travel/per-diem/district-of-columbia/district-of-columbia">Washington, DC rate</a>.</>}</p>
+    {s.areas.length > 0 && (
+      <div class="pb-table-wrap">
+        <table class="pb-table">
+          <thead><tr><th scope="col">Area</th><th scope="col">Lodging a night</th><th scope="col">M&IE a day</th></tr></thead>
+          <tbody>
+            {s.areas.map((a) => (
+              <tr><th scope="row"><a class="pb-link pb-link--ink" href={`${path}/${a.slug}`}>{a.city}</a><small class="area-full">{a.counties}</small></th><td>{a.min === a.max ? f.usd(a.max) : `${f.usd(a.min)} to ${f.usd(a.max)}`}</td><td>{f.usd(a.mie)}</td></tr>
+            ))}
+          </tbody>
+          <caption>FY{PD_FY} rates (Oct {PD_FY - 1} to Sep {PD_FY}) as of {pdFetchedAt(PD_FY)}. Lodging that changes by season shows its range. Source: <a class="pb-link" href={PD_SOURCE.url}>{PD_SOURCE.label}</a>.</caption>
+        </table>
+      </div>
+    )}
+    <p class="sub"><a class="pb-link" href="/travel/per-diem">All states</a></p>
+  </main>
+</Base>

@@ -41,6 +41,8 @@ export const PD_SOURCE = { label: "GSA Per Diem API", url: "https://www.gsa.gov/
 export const pdFetchedAt = (fy) => PD[fy] && PD[fy].fetchedAt;
 export function slugify(s) { return s.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
 // Every special-rate per diem area for a fiscal year: { id, state, city, slug, counties, mie, lodging[12] }
+// GSA repeats the DC area under MD and VA; those copies get no page of their own.
+export const pdDupe = (a) => a.city === "District of Columbia" && a.state !== "DC";
 export function pdAreas(fy = PD_FY) {
   return Object.entries(PD[fy].areas).map(([id, [city, counties, mie, lodging]]) => ({
     id, state: id.slice(0, 2), city, slug: slugify(city), counties, mie, lodging,
@@ -53,7 +55,7 @@ export const mieTier = (fy, mie) => PD[fy].mieTiers.find((t) => t.total === mie)
 export function pdStates(fy = PD_FY) {
   const areas = pdAreas(fy);
   return Object.entries(G.ALL_STATES).filter(([st]) => st !== "AK" && st !== "HI")
-    .map(([st, name]) => ({ st, name, slug: slugify(name), areas: areas.filter((a) => a.state === st).sort((a, b) => a.city.localeCompare(b.city)) }))
+    .map(([st, name]) => ({ st, name, slug: slugify(name), areas: areas.filter((a) => a.state === st && !pdDupe(a)).sort((a, b) => a.city.localeCompare(b.city)) }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 // Counties (from the places file) that use a per diem area.
