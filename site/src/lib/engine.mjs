@@ -4,6 +4,7 @@ import "../../../shared/data/payorder.js";
 import "../../../shared/data/perdiem.js";
 import "../../../shared/data/places.js";
 import "../../../shared/govpay.js";
+import "../../../shared/data/statetax.js";
 import "../../../shared/tax.js";
 
 export const G = globalThis.GovPay;

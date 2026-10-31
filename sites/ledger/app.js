@@ -213,7 +213,7 @@
   function renderTakeHome(r, p) {
     const el = $("#th"); if (!el) return;
     const mil = p.system === "MIL", o = taxOpts(), e = T.estimate(T.payFrom(r, p), o);
-    const stName = o.state === "NONE" ? "no state income tax" : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/City$/.test(o.county) ? "" : " County"}` : "");
+    const stName = o.state === "NONE" ? "no state income tax" : T.STATES[o.state] && T.STATES[o.state].none ? `${T.STATES[o.state].name}: no state income tax` : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/City$/.test(o.county) ? "" : " County"}` : "");
     const parts = [o.filing === "mfj" ? "Married, one income" : "Single", "standard deduction", stName];
     if (!mil) parts.push(`FERS ${(+o.fers + (p.system === "LEO" ? 0.5 : 0)).toFixed(1)}%`);
     parts.push(`TSP ${o.tspPct}% ${o.tspType === "roth" ? "Roth" : "traditional"}`);
@@ -232,7 +232,7 @@
           ${e.lines.map((l) => `<li><span>− ${esc(l.label)}</span><span>${f.usd(l.annual / 12)}</span></li>`).join("")}
           <li class="pb-ledger__total"><span>Take-home a month</span><span>${f.usd(e.monthly)}</span></li>
         </ul>
-        <p style="margin:var(--s3) 0 0">Income tax is about ${(e.effectiveIncomeTax * 100).toFixed(1)}% of your gross pay. This is an estimate using ${e.taxYear} rules for every pay year: no tax credits, no itemizing and no spouse income. ${o.state === "PA" ? "Pennsylvania local earned-income tax isn't included yet. " : ""}${mil && o.state !== "PA" && o.state !== "NONE" ? "Some states give service members partial deductions that aren't included; use your own rate if yours does. " : ""}Sources: <a class="pb-link" href="${T.SOURCES.federal}">IRS Rev. Proc. 2025-32</a>, <a class="pb-link" href="${T.SOURCES.states}">2026 state rates</a>${o.state === "MD" ? `, <a class="pb-link" href="${T.SOURCES.mdCounty}">Maryland Comptroller</a>` : ""}${o.state === "UT" ? `, <a class="pb-link" href="${T.SOURCES.utah}">Utah Tax Commission</a>` : ""}.</p>
+        <p style="margin:var(--s3) 0 0">Income tax is about ${(e.effectiveIncomeTax * 100).toFixed(1)}% of your gross pay. This is an estimate using ${e.taxYear} rules for every pay year: no tax credits, no itemizing and no spouse income. ${e.localNote ? `${e.localNote} isn't included. ` : ""}${mil && o.state !== "PA" && !e.noStateTax ? "Some states give service members partial deductions that aren't included; use your own rate if yours does. " : ""}Sources: <a class="pb-link" href="${T.SOURCES.federal}">IRS Rev. Proc. 2025-32</a>, <a class="pb-link" href="${T.SOURCES.states}">2026 state rates</a>${o.state === "MD" ? `, <a class="pb-link" href="${T.SOURCES.mdCounty}">Maryland Comptroller</a>` : ""}${o.state === "UT" ? `, <a class="pb-link" href="${T.SOURCES.utah}">Utah Tax Commission</a>` : ""}.</p>
       </div></details>`;
     $("#thEdit").onclick = () => { state.thOpen = !state.thOpen; renderTakeHome(r, p); };
     if (state.thOpen) wireThPanel(r, p);

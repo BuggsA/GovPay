@@ -5,7 +5,7 @@
 |---|---|---|
 | Federal Register pay Executive Orders, via GovInfo (GPO) | Works | **The official legal source** for GS, locality, SES, EX and military basic pay. `scripts/convert-payorder.py` parses the PDF, cleans scanning errors and validates every table (step increments, caps, monotonic pay, a 1% GS raise and a 3.8% military raise across years). |
 | GSA Per Diem API | Works | Real data in use. A free api.data.gov key goes in the `GSA_API_KEY` repository secret for the monthly Action. |
-| Tax Foundation | Works | For state income tax tables (take-home, later). |
+| Tax Foundation | Works | State income tax tables, in use: `scripts/convert-statetax.py` converts the 2026 workbook (kept in `data/raw/taxfoundation/`). |
 | OPM (GS, locality, LEO, SES) | Blocked by OPM's own servers ("Access Denied") | Automated downloads are refused. Don't try to get around this. |
 | DFAS (military pay, BAS) | Blocked by DFAS's own servers (403) | Same. |
 | DTMO (BAH) | Blocked by DTMO's own servers (403) | Same. |
@@ -25,7 +25,7 @@ GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO
 | BAS | 2026 $476.95 enlisted / $328.48 officer | — | approx (verify with DFAS) |
 | BAH | E-5 with-dependents anchor per MHA × grade ratios | 19 MHAs in UT, MD, DC, PA, VA | approx |
 | **Per diem** | **FY2025, FY2026, FY2027, from the GSA Per Diem API** (`scripts/fetch-perdiem.mjs`) | **All CONUS areas (~300) plus the standard rate** ($110/$68 in FY2025–26, $113/$68 in FY2027) | **verified (real)** |
-| **Take-home taxes** | **Tax year 2026**: IRS Rev. Proc. 2025-32 (brackets, standard deduction), SSA wage base $184,500, state rules for DC, MD, PA, UT, VA (Tax Foundation 2026 table), Maryland county rates and exemption phase-out (Maryland Comptroller, DLS), Utah taxpayer credit (Utah Tax Commission) | Five focus states; other states use "no income tax" or a rate you enter | **verified (official)**; the result is an estimate by design |
+| **Take-home taxes** | **Tax year 2026**: IRS Rev. Proc. 2025-32 (brackets, standard deduction), SSA wage base $184,500; **every state and DC from the Tax Foundation 2026 table** (`data/tax/2026.json`), with DC, MD, PA, UT, VA hand-checked against it; Maryland county rates and exemption phase-out (Maryland Comptroller, DLS), Utah taxpayer credit (Utah Tax Commission) | All 50 states + DC. Not included: local income taxes (named in the app), state military pay exemptions other than PA, NY/CT recapture, MO/OR federal-tax deductions. Some states' 2026 inflation amounts weren't out when Tax Foundation published, so it used 2025 amounts (its notes j, n, ll) | **verified (official)**; the result is an estimate by design |
 | **Places (every county)** | **5 CFR 531.603(b)** (eCFR, Oct 29 2026) locality definitions + OMB/Census metro delineation (March 2020) + Census 2020 county list; GSA per diem county text (`scripts/build-places.py`) | **All 3,142 counties and county equivalents**: 954 in a named locality area, 365 with a special per diem rate. Explicitly listed counties win over metro membership (3 moved: Adams and York PA → DC area, Douglas NV → Sacramento). Alaska and Hawaii per diem not covered (OCONUS). | **verified (official)**; edge counties worth checking against OPM's published definitions |
 | BAH outside the 19 researched housing areas | Placeholder per state | All other counties | **simulated** until the DTMO file is added |
 

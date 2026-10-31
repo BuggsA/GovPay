@@ -65,8 +65,8 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Done when:** for 20 sample places (bases, cities and ZIPs), all three keys are correct, and the UI notes when they differ (for example, Quantico).
 - **Needs:** 1.1 and 1.3, plus checking that census.gov is reachable.
 
-### 1.5 State tax data · S · ◐
-> **Progress (Oct 31, 2026):** 2026 federal (IRS Rev. Proc. 2025-32), FICA, and state rules for DC, MD (+ every county, from the Comptroller), PA, UT (Tax Commission credit), VA are in `shared/tax.js` with sources. Still open: the other 45 states and PA local taxes.
+### 1.5 State tax data · S · ☑
+> **Progress (Oct 31, 2026):** every state and DC. `scripts/convert-statetax.py` turns Tax Foundation's 2026 workbook (`data/raw/taxfoundation/`) into `data/tax/2026.json` and `shared/data/statetax.js`, with self-checks. The engine applies brackets, standard deductions, exemptions and exemption credits, plus the footnote rules that matter at federal pay levels (AL federal-tax deduction and sliding deduction, AR low-income table, CT exemption and 2% band phase-outs, OH exemption tiers, WI deduction phase-out, IL exemption cap, VT 3% minimum). DC, MD, PA, UT and VA keep their hand-checked entries, and a test confirms the generated data matches them. **Still open:** state military pay exemptions (other than PA), local income taxes (NYC, Ohio cities...; the app names them as not included), NY/CT recapture above ~$100k, MO and OR federal-tax deductions.
 - **Goal:** inputs for take-home pay.
 - **Includes:** 2026 brackets, standard deductions and military-pay exemptions for every state, starting from Tax Foundation's table and checked against state sources for the focus states.
 - **Done when:** `data/tax/2026.json` exists, with a source link for each state.
@@ -146,7 +146,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Needs:** 3.1.
 
 ### 3.5 Take-home v1 · M · ◐
-> **Progress (Oct 31, 2026):** live on Paybook for the five focus states: filing status, state (legal residence for military, with PA's out-of-state exemption), Maryland county, FERS (regular and LEO rates), TSP traditional or Roth, health premium, own-rate override, and a "where your pay goes" breakdown. Checked against a hand calculation (GS-12/5 DC: $6,204 a month).
+> **Progress (Oct 31, 2026):** live on Paybook for every state (state tax from 1.5): filing status, state (legal residence for military, with PA's out-of-state exemption), Maryland county, FERS (regular and LEO rates), TSP traditional or Roth, health premium, own-rate override, and a "where your pay goes" breakdown. Checked against a hand calculation (GS-12/5 DC: $6,204 a month).
 - **Goal:** an honest estimate of take-home pay.
 - **Includes:**
   - Federal tax, Social Security/Medicare, FERS (0.8% / 3.1% / 4.4%), TSP % and state tax
@@ -160,7 +160,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Phase 4: Reach (search and sharing)
-### 4.1 Page templates + sitemap · M · ☐
+### 4.1 Page templates + sitemap · M · ◐
+> **Progress (Oct 31, 2026):** 973 pages: GS grade × area, a table per area, each GS grade across all 58 areas, a page per military pay grade (27), the pay chart, sitemap, canonical tags and breadcrumb structured data. **Still open:** BAH and per diem by area, rank + base pages, Lighthouse check.
 - **Goal:** pages that search engines can list.
 - **Includes:**
   - Pages for each GS grade × locality area, each GS table, each military rank (with and without a base), BAH by area, per diem by area, the military pay chart, and a GS grade across all areas

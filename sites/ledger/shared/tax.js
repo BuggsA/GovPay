@@ -2,16 +2,20 @@
  * GovPayTax — take-home pay ESTIMATE (deliberately limited; see docs/CONCEPT.md §7).
  *
  * Included: federal income tax, Social Security, Medicare, state income tax
- * (DC, MD + county, PA, UT, VA), FERS, TSP (traditional or Roth), optional
- * health premium, and an "use my own rate" override.
+ * for all 50 states and DC (Maryland with its county tax), FERS, TSP
+ * (traditional or Roth), optional health premium, and an "use my own rate" override.
  * Not included: credits (child tax credit etc.), itemizing, spouse income,
- * PA local earned-income tax, Philadelphia wage tax, partial state military
- * subtractions other than Pennsylvania's out-of-state exemption.
+ * local income taxes (NYC, Ohio and PA cities, Indiana counties...), state
+ * military pay exemptions other than Pennsylvania's out-of-state exemption,
+ * New York and Connecticut "recapture" above about $100k, and the federal-tax
+ * deduction in Missouri and Oregon (Alabama's is included).
  *
  * All tax figures are for tax year 2026, from official sources:
  *   Federal brackets + standard deduction  IRS Rev. Proc. 2025-32 (Tables 1 and 3, §.14)
  *   Social Security wage base $184,500     SSA, Oct 24 2025 (reported widely; ssa.gov not reachable from build)
- *   DC, VA, PA, UT, MD state brackets      Tax Foundation 2026 table (state statutes)
+ *   DC, VA, PA, UT, MD state brackets      Tax Foundation 2026 table (state statutes), hand-entered and checked
+ *   Every other state                      Tax Foundation 2026 table, via scripts/convert-statetax.py
+ *                                          (shared/data/statetax.js); quirks below from its footnotes
  *   Maryland county rates, AA + Frederick  Maryland Comptroller 2026 Form PV instructions; DLS 2026 local rate table
  *   Maryland exemption phase-out           Maryland Comptroller 2026 Form PV instructions
  *   Utah taxpayer credit phase-out         Utah State Tax Commission (base $18,213 single / $36,426 joint; 1.3%)
@@ -23,6 +27,7 @@
   const SOURCES = {
     federal: "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf",
     states: "https://taxfoundation.org/data/all/state/state-income-tax-rates-2026/",
+    statesXlsx: "https://taxfoundation.org/wp-content/uploads/2026/02/2026-State-Individual-Income-Tax-Rates-Brackets.xlsx",
     mdCounty: "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/worksheets/2025-PV-Worksheet.pdf",
     mdTable: "https://dls.maryland.gov/pubs/prod/NoPblTabPDF/2026CountyLocalTaxRates.pdf",
     utah: "https://incometax.utah.gov/credits/taxpayer-tax-credit",
@@ -49,6 +54,75 @@
     UT: { name: "Utah", flat: .045, creditRate: .06, phaseRate: .013, phaseBase: { single: 18213, mfj: 36426 } },
   };
   STATES.DC.mfj = STATES.DC.single; STATES.VA.mfj = STATES.VA.single;
+  const HAND = Object.keys(STATES);   // the five focus states keep their checked hand entries and special rules
+
+  const STATE_NAMES = {
+    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware",
+    DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa",
+    KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota",
+    MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey",
+    NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon",
+    PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah",
+    VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming",
+  };
+  // Every other state from the generated Tax Foundation data. Brackets there are [upTo|null, rate].
+  const TF = (global.GOVPAY_DATA && global.GOVPAY_DATA.stateTax) || null;
+  const inf = (t) => t.map(([u, r]) => [u == null ? Infinity : u, r]);
+  if (TF) Object.keys(TF.states).forEach((st) => {
+    if (STATES[st]) return;
+    const d = TF.states[st];
+    STATES[st] = d.none ? { name: STATE_NAMES[st], none: true } : {
+      name: STATE_NAMES[st], single: inf(d.single), mfj: inf(d.mfj), std: d.std || { single: 0, mfj: 0 },
+      exemptionBoth: d.exemption || null, credit: d.exemptionCredit || d.stdCredit || null, local: d.notes.indexOf("a") >= 0,
+    };
+  });
+  // Local income taxes exist in these states (Tax Foundation note a); Paybook doesn't include them.
+  const LOCAL_NOTE = { NY: "New York City and Yonkers income tax", OH: "Ohio city and school district income tax", IN: "Indiana county income tax",
+    KY: "Kentucky city and county occupational tax", MI: "Michigan city income tax", MO: "Kansas City and St. Louis earnings tax",
+    OR: "Portland-area income taxes", AL: "Alabama city occupational tax", IA: "Iowa school district surtax", DE: "Wilmington wage tax",
+    MD: "", 
+    PA: "Pennsylvania local earned-income tax" };
+
+  // Footnote rules from the Tax Foundation table that matter at federal pay levels.
+  const QUIRKS = {
+    // (c) Standard deduction steps down with AGI; (b) federal income tax paid is deductible.
+    AL: { std: (agi, f) => f === "mfj" ? Math.max(5000, 8500 - 175 * Math.ceil(Math.max(0, agi - 25999) / 500)) : Math.max(2500, 3000 - 25 * Math.ceil(Math.max(0, agi - 25499) / 500)),
+      deductFederal: true },
+    // (g) Taxable income of $92,300 or less uses Arkansas's low-income table (2025 amounts).
+    AR: { table: (ti) => ti <= 92300 ? [[5500, 0], [10900, .02], [15600, .03], [25700, .034], [Infinity, .039]] : null },
+    // (r) Personal exemption falls $1,000 per $1,000 of AGI over $30,000 ($48,000 joint).
+    // (p) The 2% band shrinks $1,000 ($2,000 joint) per $5,000 of AGI over $56,500 ($100,500), and AGI over
+    //     $105,000 ($210,000) adds $25 per $5,000 ($50 per $10,000), up to $250 ($500).
+    CT: { exemption: (agi, f) => Math.max(0, (f === "mfj" ? 24000 : 15000) - 1000 * Math.ceil(Math.max(0, agi - (f === "mfj" ? 48000 : 30000)) / 1000)),
+      table: (ti, agi, f) => {
+        const t = STATES.CT[f].map((b) => b.slice());
+        const cut = f === "mfj" ? 2000 * Math.ceil(Math.max(0, agi - 100500) / 5000) : 1000 * Math.ceil(Math.max(0, agi - 56500) / 5000);
+        t[0][0] = Math.max(0, t[0][0] - cut);
+        return t;
+      },
+      addTax: (agi, f) => f === "mfj" ? Math.min(500, 50 * Math.ceil(Math.max(0, agi - 210000) / 10000)) : Math.min(250, 25 * Math.ceil(Math.max(0, agi - 105000) / 5000)) },
+    // (dd) Ohio exemption by AGI.
+    OH: { exemption: (agi, f) => (f === "mfj" ? 2 : 1) * (agi <= 40000 ? 2400 : agi <= 80000 ? 2150 : agi < 500000 ? 1900 : 0) },
+    // (ii) Wisconsin's standard deduction phases out between $20,119 and $136,453 ($29,039 and $159,690 joint).
+    WI: { std: (agi, f) => { const [s, a, b] = f === "mfj" ? [25840, 29039, 159690] : [13960, 20119, 136453]; return agi <= a ? s : agi >= b ? 0 : s * (b - agi) / (b - a); } },
+    // (v) No personal exemption above $250,000 AGI ($500,000 joint).
+    IL: { exemption: (agi, f) => agi > (f === "mfj" ? 500000 : 250000) ? 0 : STATES.IL.exemptionBoth[f] },
+    // (hh) Above $150,000 AGI, Vermont tax is at least 3% of AGI.
+    VT: { minTax: (agi) => agi > 150000 ? 0.03 * agi : 0 },
+  };
+  function genericState(code, agi, filing, federal) {
+    const st = STATES[code], q = QUIRKS[code] || {};
+    if (!st || st.none) return 0;
+    const std = q.std ? q.std(agi, filing) : st.std[filing] || 0;
+    const ex = q.exemption ? q.exemption(agi, filing) : st.exemptionBoth ? st.exemptionBoth[filing] || 0 : 0;
+    const ti = Math.max(0, agi - std - ex - (q.deductFederal ? federal : 0));
+    let tax = brackets(ti, (q.table && q.table(ti, agi, filing)) || st[filing]);
+    if (st.credit) tax -= st.credit[filing] || 0;
+    if (q.addTax) tax += q.addTax(agi, filing);
+    tax = Math.max(0, tax);
+    if (q.minTax) tax = Math.max(tax, q.minTax(agi));
+    return tax;
+  }
 
   // Maryland county (and Baltimore City) rates, tax year 2026. Graduated counties use brackets.
   const MD_COUNTIES = {
@@ -126,6 +200,8 @@
       state = brackets(Math.max(0, agi - st.std[filing] - ex), st[filing]);
     } else if (o.state === "OTHER") {
       state = Math.max(0, +o.otherRate || 0) / 100 * agi;
+    } else if (st && !st.none) {
+      state = genericState(o.state, agi, filing, federal);
     }
 
     let override = false;
@@ -140,7 +216,7 @@
       { key: "ss", label: "Social Security", annual: ss },
       { key: "medicare", label: "Medicare", annual: medicare },
     ];
-    if (!override && o.state !== "NONE") lines.push({ key: "state", label: o.state === "OTHER" ? "State income tax (your rate)" : `${st ? st.name : "State"} income tax`, annual: state });
+    if (!override && o.state !== "NONE" && !(st && st.none)) lines.push({ key: "state", label: o.state === "OTHER" ? "State income tax (your rate)" : `${st ? st.name : "State"} income tax`, annual: state });
     if (!override && local) lines.push({ key: "local", label: `${o.county} County tax`.replace("City County", "City").replace("County County", "County"), annual: local });
     if (fers) lines.push({ key: "fers", label: `FERS retirement (${(FERS[pay.leo ? "leo" : "regular"][o.fers || "4.4"] * 100).toFixed(1)}%)`, annual: fers });
     if (tsp) lines.push({ key: "tsp", label: `TSP ${+o.tspPct}% (${o.tspType === "roth" ? "Roth" : "traditional"})`, annual: tsp });
@@ -151,6 +227,7 @@
     return {
       gross: pay.gross, takeHome, monthly: takeHome / 12, perCheck: takeHome / perYear, lines, deductions,
       effectiveIncomeTax: pay.gross ? incomeTax / pay.gross : 0, override, stateNote, taxYear: TAX_YEAR,
+      noStateTax: o.state === "NONE" || !!(st && st.none), localNote: !override && LOCAL_NOTE[o.state] && o.state !== "MD" ? LOCAL_NOTE[o.state] : "",
     };
   }
 
@@ -165,9 +242,9 @@
       military: false, leo: profile.system === "LEO", perYear: 26 };
   }
 
-  const STATE_CHOICES = [["DC", "District of Columbia"], ["MD", "Maryland"], ["PA", "Pennsylvania"], ["UT", "Utah"], ["VA", "Virginia"],
-    ["NONE", "A state with no income tax"], ["OTHER", "Another state (enter its rate)"]];
+  const STATE_CHOICES = Object.keys(STATES).sort((a, b) => STATES[a].name.localeCompare(STATES[b].name)).map((k) => [k, STATES[k].name + (STATES[k].none ? " (no income tax)" : "")])
+    .concat([["NONE", "A state with no income tax"], ["OTHER", "Somewhere else (enter a rate)"]]);
   function defaultState(stateCode) { return STATES[stateCode] ? stateCode : "OTHER"; }
 
-  global.GovPayTax = { estimate, payFrom, STATES, MD_COUNTIES, PLACE_COUNTY, FERS_LABEL, STATE_CHOICES, SOURCES, TAX_YEAR, defaultState };
+  global.GovPayTax = { STATE_NAMES, QUIRKS, HAND, estimate, payFrom, STATES, MD_COUNTIES, PLACE_COUNTY, FERS_LABEL, STATE_CHOICES, SOURCES, TAX_YEAR, defaultState };
 })(typeof window !== "undefined" ? window : globalThis);
