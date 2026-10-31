@@ -49,7 +49,7 @@
   function fromHash(q) {
     state.year = G.YEARS.some((y) => y.year === +q.get("y")) ? +q.get("y") : state.year;
     const l = q.get("l") || "";
-    if (/^p\d{7}$/.test(l) || G.locations().some((x) => x.id === l)) state.loc = l;   // a city loads with cities.js
+    if (/^p\d{7}$|^z\d{5}$/.test(l) || G.locations().some((x) => x.id === l)) state.loc = l;   // a city loads with cities.js, a ZIP with its lookup file
     const p = Object.assign({}, G.DEFAULT_PROFILE, { system: q.get("s") });
     if (p.system === "MIL") { p.mgrade = q.get("g") || p.mgrade; p.yos = +q.get("yos") || 0; p.deps = q.get("d") !== "0"; }
     else if (p.system === "SES") p.sesPoint = +q.get("pt") || 0;
@@ -470,6 +470,10 @@
   }
   // true = ready now; false = loading, and fn runs again when it's in (or failed: then it renders with what it has)
   function whenReady(fn) {
+    if (/^z\d{5}$/.test(state.loc) && G.location(state.loc).id !== state.loc) {   // a saved or shared ZIP place
+      G.zipPlace(state.loc.slice(1)).then((found) => { if (!found) state.loc = "dc"; fn(); }, () => { state.loc = "dc"; fn(); });
+      return false;
+    }
     const m = dataNeeded();
     if (!m.length) return true;
     G.need(m).then(fn, () => { m.forEach((x) => (failed[x] = true)); fn(); });

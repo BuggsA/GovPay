@@ -211,3 +211,12 @@ test("BAH county mapping weights ZIP areas by land, not water (fixed: 177 counti
   assert.equal(G.bah(2026, "E-5", true, "c06081").mhaName, "San Francisco, CA");   // San Mateo County
   assert.equal(G.bah(2026, "E-5", true, "c04021").mhaName, "Phoenix, AZ");         // Pinal County
 });
+
+test("ZIP code places: DTMO's area for the exact ZIP, the county's other areas", () => {
+  const id = G.addZip("33040", ["FL069", "12087"]);          // Key West: Florida Keys BAH, Monroe County
+  const z = G.location(id);
+  assert.equal(z.kind, "zip");
+  assert.equal(G.bah(2026, "E-5", true, id).mhaName, "Florida Keys, FL");
+  assert.equal(G.gs(2026, 12, 5, id).localityName, G.gs(2026, 12, 5, "c12087").localityName);
+  assert.equal(G.addZip("00000", ["CA038", "99999"]), null);    // unknown county: no place
+});

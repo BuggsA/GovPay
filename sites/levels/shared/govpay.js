@@ -217,6 +217,7 @@
   }
   // A place's DTMO housing area: a ZIP on the base for researched places, else its (main) county's area.
   function bahMhaOf(loc) {
+    if (loc.zipMha) return loc.zipMha;                 // a ZIP code place: DTMO's area for that exact ZIP
     const b = bahIndex();
     if (!b) return loc.bahMha;
     if (b.d.focus[loc.id]) return b.d.focus[loc.id];
@@ -297,6 +298,33 @@
     });
   }
   attachCities();
+  // ZIP code places (id "z92136"): DTMO's housing area for that exact ZIP; GS locality, per diem and wage
+  // schedule from its main county. Not in locations() lists, so they don't crowd search; location() finds them.
+  function addZip(zip, entry) {
+    if (!entry) return null;
+    const county = LOC_INDEX.get("c" + entry[1]);
+    if (!county) return null;
+    const id = "z" + zip;
+    if (!LOC_INDEX.has(id)) {
+      LOC_INDEX.set(id, Object.assign({}, county, {
+        id, kind: "zip", zip, name: `ZIP ${zip} (${county.short}, ${county.state})`, short: "ZIP " + zip,
+        county: county.short, countyId: county.id, zipMha: entry[0], countyInferred: !!entry[2],
+      }));
+    }
+    return id;
+  }
+  const zipChunks = {};
+  // GovPay.zipPlace("92136") -> Promise<place id or null>; fetches one ~1 KB file per 3-digit prefix
+  function zipPlace(zip) {
+    if (!/^\d{5}$/.test(zip)) return Promise.resolve(null);
+    if (LOC_INDEX.has("z" + zip)) return Promise.resolve("z" + zip);
+    const pfx = zip.slice(0, 3);
+    if (!zipChunks[pfx]) {
+      zipChunks[pfx] = !DATA_BASE || typeof global.fetch !== "function" ? Promise.resolve({})
+        : global.fetch(DATA_BASE + "zip/" + pfx + ".json").then((r) => (r.ok ? r.json() : {}), () => ({}));
+    }
+    return zipChunks[pfx].then((chunk) => addZip(zip, chunk[zip]));
+  }
   // Old links used "sim-xx" for a whole state; send them to that state's first county.
   function location(id) {
     const l = LOC_INDEX.get(id);
@@ -768,7 +796,7 @@
   }
 
   global.GovPay = {
-    need, has, bahMhaOf,
+    need, has, bahMhaOf, zipPlace, addZip,
     CURRENT_YEAR, YEARS, RAISES, STATUS_INFO, EQUIVALENTS, MIL_GRADES, MIL_YOS,
     FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES, ALL_STATES,
     locations: () => LOCATIONS.slice(),

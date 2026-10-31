@@ -1,6 +1,6 @@
 // Copy the single-source engine, data, design files and calculator into public/
 // so the built site serves exactly the code that the repo maintains once.
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, rm, writeFile, readdir, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -33,3 +33,25 @@ for (const [family, pkg, weights] of FONTS) {
 }
 await writeFile(join(pub, "fonts", "fonts.css"), css);
 console.log(`copied ${FONTS.reduce((n, f) => n + f[2].length, 0)} font files into public/fonts/`);
+
+// ZIP code lookup for BAH: small files by the first three digits (public/shared/data/zip/921.json), so a
+// lookup downloads ~1 KB. Each ZIP: [DTMO housing area, county FIPS, 1 if the county was inferred].
+// PO-box-only ZIPs have no Census ZIP area, so they borrow the most common county among ZIPs with the same
+// first three digits and housing area (or the same housing area).
+{
+  const files = (await readdir(join(repo, "data/bah"))).filter((f) => /^zips-\d{4}\.json$/.test(f)).sort();
+  const { zips } = JSON.parse(await readFile(join(repo, "data/bah", files[files.length - 1]), "utf8"));
+  const tally = (m, k, c) => { const t = (m[k] = m[k] || {}); t[c] = (t[c] || 0) + 1; };
+  const byPfx = {}, byMha = {};
+  for (const [z, [mha, c]] of Object.entries(zips)) if (c) { tally(byPfx, z.slice(0, 3) + mha, c); tally(byMha, mha, c); }
+  const top = (t) => (t ? Object.entries(t).sort((a, b) => b[1] - a[1])[0][0] : "");
+  const chunks = {};
+  for (const [z, [mha, c]] of Object.entries(zips)) {
+    const county = c || top(byPfx[z.slice(0, 3) + mha]) || top(byMha[mha]);
+    if (!county) continue;
+    (chunks[z.slice(0, 3)] = chunks[z.slice(0, 3)] || {})[z] = c ? [mha, county] : [mha, county, 1];
+  }
+  await mkdir(join(pub, "shared/data/zip"), { recursive: true });
+  for (const [pfx, obj] of Object.entries(chunks)) await writeFile(join(pub, "shared/data/zip", pfx + ".json"), JSON.stringify(obj));
+  console.log(`wrote ${Object.keys(chunks).length} ZIP lookup files`);
+}
