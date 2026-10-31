@@ -39,13 +39,14 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Needs:** you upload the OPM files to `data/raw/opm/<year>/`. OPM blocks automated downloads.
 
 ### 1.2 Military pay from DFAS · S · ◐
-> **Progress (Oct 31, 2026):** basic pay for 2025 and 2026 is **official**, from the pay orders, and checked cell by cell (+3.8% everywhere except the April 2025 junior enlisted raise). Still open: BAS (DFAS) and the April 2025 junior enlisted table.
+> **Progress (Oct 31, 2026):** basic pay for 2025 and 2026 is **official**, from the pay orders, and checked cell by cell (+3.8% everywhere except the April 2025 junior enlisted raise). BAS 2025 and 2026 is official (DoD FMR Vol. 7A, Ch. 25). Still open: the April 2025 junior enlisted table.
 - **Goal:** real basic pay and BAS.
 - **Includes:** 2025 and 2026 basic pay tables (all grades and YOS columns, plus O-1E to O-3E) and BAS. A converter writes `data/dfas/<year>.json`.
 - **Done when:** a test checks 10 published cells, and the anchor-point estimates are deleted.
 - **Needs:** you upload the DFAS PDFs to `data/raw/dfas/`.
 
-### 1.3 BAH from DTMO · M · ☐
+### 1.3 BAH from DTMO · M · ◐
+> **Progress (Oct 31, 2026):** DTMO's 2025 and 2026 BAH ASCII files (`data/raw/dtmo/`, as downloaded) are converted by `scripts/convert-bah.py`: all 338 housing areas, every grade, with and without dependents. 2026 uses DTMO's May 13, 2026 reissue (only Abilene/Dyess AFB changed). Every county gets the area covering most of its people (Census ZIP-to-county + ACS population); bases use a ZIP on the base. Spot checks match published figures (San Diego E-5: $3,987 → $3,975 / $3,147). The old hand-entered BAH was badly off (14 of 19 area codes didn't exist; DC E-5 was $3,560 vs $3,132) and is gone. 338 BAH pages. **Still open:** exact lookup by ZIP code in the app.
 - **Goal:** real housing allowance everywhere.
 - **Includes:**
   - BAH rates by housing area, grade and dependents, for 2025 and 2026

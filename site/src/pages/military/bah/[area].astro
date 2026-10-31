@@ -1,0 +1,46 @@
+---
+// One housing area: every grade, with and without dependents. /military/bah/norfolk-portsmouth-va
+import Base from "../../../layouts/Base.astro";
+import { G, f, BAH_YEAR, BAH_SOURCE, bahAreas, bahRow, calcLink } from "../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return bahAreas().map((a) => ({ params: { area: a.slug }, props: { a } }));
+}
+const { a } = Astro.props;
+const now = bahRow(a.code), prev = bahRow(a.code, BAH_YEAR - 1);
+const at = (g) => now.find((r) => r.grade === g);
+const place = a.rural ? `rural county group ${a.code.slice(2)}` : a.name;
+const path = `/military/bah/${a.slug}`;
+const title = `${a.rural ? `Rural BAH group ${a.code.slice(2)}` : `${a.name} BAH`} (${BAH_YEAR}): E-5 ${f.usd(at("E-5").with)} with dependents`;
+const description = `${BAH_YEAR} BAH for ${place}: E-5 ${f.usd(at("E-5").with)} with dependents and ${f.usd(at("E-5").without)} without; O-3 ${f.usd(at("O-3").with)}. Every grade, official DTMO rates.`;
+const counties = a.counties.map((c) => c.name).sort();
+const loc = a.counties[0] || G.locations().find((l) => l.bahMha === a.code);
+const grades = ["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "W-1", "W-2", "W-3", "W-4", "W-5", "O-1E", "O-2E", "O-3E", "O-1", "O-2", "O-3", "O-4", "O-5", "O-6", "O-7"];
+---
+<Base title={title} description={description} path={path} crumbs={[["Military pay", "/military/pay-chart"], ["BAH", "/military/bah"], [a.rural ? `Group ${a.code.slice(2)}` : a.name, path]]}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/military/pay-chart">Military pay</a> / <a href="/military/bah">BAH</a> / {a.rural ? `Group ${a.code.slice(2)}` : a.name}</nav>
+    <div class="pb-section-label"><b>{BAH_YEAR}</b> · {a.code} · Basic Allowance for Housing</div>
+    <h1>{a.rural ? `BAH for rural county group ${a.code.slice(2)}` : `${a.name} BAH`}, {BAH_YEAR}</h1>
+    <p class="lede">An E-5 stationed here gets <b>{f.usd(at("E-5").with)}</b> a month with dependents and <b>{f.usd(at("E-5").without)}</b> without. BAH is tax-free and paid on top of basic pay.{a.rural && " This rate covers rural places outside a named housing area with similar housing costs."}</p>
+
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Grade</th><th scope="col">With dependents</th><th scope="col">Without</th>{prev && <th scope="col">vs {BAH_YEAR - 1} (with)</th>}</tr></thead>
+        <tbody>
+          {grades.map((g) => { const r = at(g), p = prev && prev.find((x) => x.grade === g), d = p ? r.with - p.with : null;
+            return <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/military/pay/${g.toLowerCase()}`}>{g}</a></th><td>{f.usd(r.with)}</td><td>{f.usd(r.without)}</td>{prev && <td>{d === 0 ? "same" : <span class={`pb-delta pb-delta--${d > 0 ? "up" : "down"}`}>{d > 0 ? "+" : "−"}{f.usd(Math.abs(d))}</span>}</td>}</tr>; })}
+        </tbody>
+        <caption>Monthly rates effective January 1, {BAH_YEAR}. O-8 and above get the O-7 rate. Source: <a class="pb-link" href={BAH_SOURCE.url}>{BAH_SOURCE.label}</a> ({a.code}).</caption>
+      </table>
+    </div>
+    {loc && <p class="cta"><a class="pb-btn" href={calcLink({ system: "MIL", mgrade: "E-5", yos: 6 }, null, loc.id)}>See full pay here with basic pay and BAS</a></p>}
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Where this rate applies</div>
+    <div class="links">
+      {counties.length > 0 && <div><h2>{a.rural ? `Counties in this group (${counties.length})` : "Counties"}</h2><ul class={counties.length > 12 ? "cols" : ""}>{counties.map((c) => <li>{c}</li>)}</ul></div>}
+      {!a.rural && a.zips.length > 0 && <div><h2>ZIP codes ({a.zips.length})</h2><p class="zips">{a.zips.join(" ")}</p></div>}
+    </div>
+    <p class="sub">{a.rural ? "" : "BAH follows ZIP codes, so an area can cover part of a county. "}<a class="pb-link" href="/military/bah">All housing areas</a></p>
+  </main>
+</Base>

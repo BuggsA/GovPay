@@ -157,7 +157,7 @@
           <dt>BAH</dt><dd class="${k.bahDiff ? "differs" : ""}">${esc(k.bah)}${k.bahDiff ? " · a different area" : ""}</dd>
           <dt>Per diem</dt><dd class="${k.pdDiff ? "differs" : ""}">${esc(k.pd)}${k.pdDiff ? " · a different area" : ""}</dd></dl>
           ${cur.splitCounties ? `<div style="margin-top:6px">${esc(cur.short)} spans more than one county. This uses ${esc(cur.county)}, where most people live; if you work in another part, pick that county instead.</div>` : ""}
-          ${k.bahEstimate ? '<div style="margin-top:6px">GS and per diem are official. BAH here is a rough estimate until DTMO rates are added.</div>' : ""}</div>`;
+          ${k.bahEstimate ? '<div style="margin-top:6px">GS and per diem are official. BAH here is a rough placeholder.</div>' : ""}</div>`;
       const qi = $("input", el);
       qi.oninput = () => { query = qi.value; render(true); };
       if (keepFocus) { qi.focus(); qi.setSelectionRange(qi.value.length, qi.value.length); }

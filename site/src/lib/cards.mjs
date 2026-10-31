@@ -1,6 +1,6 @@
 // The link-preview card for every pre-built page: path -> { kicker, title, number, sub, stamp }.
 // Numbers come from the same engine calls the pages make (military pay keeps its cents, as on the pages). Used by scripts/og-images.mjs and Base.astro.
-import { G, f, YEAR, SOURCE, areaShort, PD_FY, pdStates, pdStandard, MIL_ORDER, milSlug } from "./engine.mjs";
+import { G, f, YEAR, SOURCE, areaShort, PD_FY, pdStates, pdStandard, MIL_ORDER, milSlug, BAH_YEAR, bahAreas, bahRow } from "./engine.mjs";
 
 export const ogPath = (path) => `/og${path === "/" ? "/index" : path}.png`;
 
@@ -34,6 +34,13 @@ export function allCards() {
     add(`/military/pay/${milSlug(g)}`, { kicker: `${g} · ${YEAR} basic pay`, title: `${g} pay by years of service`, number: `${f.usd2(v[0])} to ${f.usd2(v[v.length - 1])}`, sub: "a month in basic pay, before BAH and BAS", stamp: "Official" });
   });
 
+  const e5 = (a) => bahRow(a.code).find((r) => r.grade === "E-5");
+  const allE5 = bahAreas().map((a) => e5(a).with);
+  add("/military/bah", { kicker: `${BAH_YEAR} BAH · every duty station`, title: "Basic Allowance for Housing by area", number: `${f.usd(Math.min(...allE5))} to ${f.usd(Math.max(...allE5))}`, sub: "a month for an E-5 with dependents, tax-free", stamp: "DTMO" });
+  bahAreas().forEach((a) => {
+    const r = e5(a);
+    add(`/military/bah/${a.slug}`, { kicker: `${a.rural ? `Rural group ${a.code.slice(2)}` : a.name} · ${BAH_YEAR} BAH`, title: a.rural ? "BAH for a rural county group" : `BAH in ${a.name.replace(/,\s*[A-Z]{2}$/, "")}`, number: `${f.usd(r.with)} / ${f.usd(r.without)}`, sub: "E-5 a month, with / without dependents", stamp: "DTMO" });
+  });
   const std = pdStandard();
   add("/travel/per-diem", { kicker: `Per diem · FY${PD_FY}`, title: "Federal travel per diem by state", number: `${f.usd(std.lodging[0])} + ${f.usd(std.mie)}`, sub: "standard lodging a night + meals and incidentals a day", stamp: "GSA" });
   pdStates().forEach((s) => {

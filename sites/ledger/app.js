@@ -102,7 +102,7 @@
     if (status === "verified") return '<span class="pb-stamp pb-stamp--official">Official</span>';
     if (status === "projected") return '<span class="pb-stamp pb-stamp--proposed">Proposed</span>';
     if (status === "simulated") return '<span class="pb-stamp pb-stamp--estimate">Simulated</span>';
-    return `<span class="pb-stamp pb-stamp--estimate">${mil ? "BAH estimate" : "Estimate"}</span>`;
+    return '<span class="pb-stamp pb-stamp--estimate">Estimate</span>';
   }
   function placeName(id) { return G.location(id).name; }
   function sourceLine(year) { return year === 2025 ? "EO 14132" : year === 2026 ? "EO 14368" : "projected"; }
@@ -186,7 +186,7 @@
         <li class="pb-ledger__total"><span>Total</span><span>${rowAmt(r.annual)}</span></li></ul>
       ${yoy != null ? `<p style="margin:var(--s3) 0 0;font-size:15px"><span class="pb-delta ${yoy >= 0 ? "pb-delta--up" : "pb-delta--down"}">${yoy >= 0 ? "+" : "−"}${f.usd(Math.abs(yoy))}</span> a year compared with ${state.year - 1} <span style="color:var(--ink-2)">(${(yoy / prev.annual * 100).toFixed(1)}%)</span></p>` : ""}
       <div id="th"></div>
-      <div class="pb-stub__foot"><span>paybook · ${sourceLine(state.year)}${mil ? " · BAH est." : ""} · take-home est.</span><span>Not affiliated with the U.S. government</span></div>`;
+      <div class="pb-stub__foot"><span>paybook · ${sourceLine(state.year)}${mil ? (r.mil && r.mil.bahStatus === "verified" ? " · BAH: DTMO" : " · BAH est.") : ""} · take-home est.</span><span>Not affiliated with the U.S. government</span></div>`;
     renderTakeHome(r, p);
     el.querySelectorAll("[data-per]").forEach((b) => (b.onclick = () => { state.period = b.dataset.per; state.periodTouched = true; renderStub(); }));
     $("#notes").innerHTML = `${state.assumed.length ? `<p class="sub" style="margin:var(--s2) 0"><b style="color:var(--ink)">Assumed:</b> ${esc(state.assumed.join(", "))}. Change it above.</p>` : ""}
@@ -374,7 +374,8 @@
       const w = G.bah(state.year, g, true, state.loc).monthly, wo = G.bah(state.year, g, false, state.loc).monthly, yours = a.system === "MIL" && a.mgrade === g;
       html += `<tr class="${yours ? "is-yours" : ""}"><th scope="row">${g}</th><td class="${yours && a.deps ? "is-you" : ""}">${f.usd(w)}</td><td class="${yours && !a.deps ? "is-you" : ""}">${f.usd(wo)}</td><td>${f.usd(w * 12)}</td></tr>`;
     });
-    el.innerHTML = html + `</tbody><caption>${state.year} monthly BAH · <span class="pb-stamp pb-stamp--estimate">Estimate</span> Real DTMO rates are on the way.</caption></table></div>`;
+    const st = first.status === "verified" ? '<span class="pb-stamp pb-stamp--official">Official</span> DTMO rate files' : first.status === "projected" ? '<span class="pb-stamp pb-stamp--proposed">Projected</span> from the latest DTMO rates' : '<span class="pb-stamp pb-stamp--estimate">Estimate</span>';
+    el.innerHTML = html + `</tbody><caption>${state.year} monthly BAH for ${esc(first.mhaName)} · ${st}. BAS: DoD FMR Vol. 7A, Ch. 25. O-8 and above get the O-7 rate.</caption></table></div>`;
   }
 
   function tabTravel(el) {

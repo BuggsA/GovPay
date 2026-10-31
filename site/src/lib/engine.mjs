@@ -4,6 +4,7 @@ import "../../../shared/data/payorder.js";
 import "../../../shared/data/perdiem.js";
 import "../../../shared/data/places.js";
 import "../../../shared/data/cities.js";
+import "../../../shared/data/bah.js";
 import "../../../shared/govpay.js";
 import "../../../shared/data/statetax.js";
 import "../../../shared/tax.js";
@@ -23,8 +24,8 @@ export function areaShort(name) {
   return m ? `${m[1].trim()}, ${m[2]}` : name;
 }
 // Calculator link with the job (and a place in that area, when the app has one) filled in.
-export function calcLink(profile, areaName) {
-  const loc = areaName ? G.locationsInArea(areaName)[0] : null;
+export function calcLink(profile, areaName, locId) {
+  const loc = locId ? { id: locId } : areaName ? G.locationsInArea(areaName)[0] : null;
   const p = [`y=${YEAR}`, loc ? `l=${loc.id}` : "", `s=${profile.system}`];
   if (profile.system === "MIL") p.push(`g=${profile.mgrade}`, `yos=${profile.yos}`, "d=1");
   else p.push(`g=${profile.grade}`, `st=${profile.step || 1}`);
@@ -73,4 +74,33 @@ export function breadcrumbLd(site, items) {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
     itemListElement: items.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: new URL(path, site).toString() })),
   };
+}
+
+// ---------------------------------------------------------------- BAH pages
+import { readFileSync as _read } from "node:fs";
+import { join as _join } from "node:path";
+const BAHD = globalThis.GOVPAY_DATA.bah;
+export const BAH_YEAR = Math.max(...Object.keys(BAHD.years).map(Number));
+export const BAH_SOURCE = { label: "DTMO BAH rate files", url: "https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/" };
+// read from the repo's data folder; builds and tests run from site/ (bundling moves this file, so no import.meta.url)
+const BAH_FULL = JSON.parse(_read(_join(process.cwd(), "..", `data/bah/${BAH_YEAR}.json`), "utf8"));
+// Every housing area: { code, name, slug, state, rural, zips[], counties[] }
+let _areas = null;
+export function bahAreas() {
+  if (_areas) return _areas;
+  const zipsBy = {};
+  Object.entries(BAH_FULL.zips).forEach(([z, m]) => (zipsBy[m] = zipsBy[m] || []).push(z));
+  const countiesBy = {};
+  G.locations().filter((l) => l.kind === "county").forEach((l) => (countiesBy[l.bahMha] = countiesBy[l.bahMha] || []).push(l));
+  _areas = Object.entries(BAHD.names).map(([code, name]) => {
+    const rural = code.startsWith("ZZ");
+    const st = rural ? null : (name.match(/,\s*([A-Z]{2})$/) || [])[1] || code.slice(0, 2);
+    return { code, name, rural, state: st, slug: slugify(rural ? `rural-${code.slice(2)}` : name), zips: (zipsBy[code] || []).sort(), counties: countiesBy[code] || [] };
+  }).sort((a, b) => a.name.localeCompare(b.name));
+  return _areas;
+}
+export function bahRow(code, year = BAH_YEAR) {
+  const y = BAHD.years[year]; if (!y || !y.rates[code]) return null;
+  const r = y.rates[code], n = BAHD.grades.length;
+  return BAHD.grades.map((g, i) => ({ grade: g, with: r[i], without: r[n + i] }));
 }

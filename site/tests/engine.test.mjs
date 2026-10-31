@@ -89,7 +89,8 @@ test("Every county maps to its locality area (5 CFR 531.603) and per diem area",
   assert.equal(area("49011"), "Rest of U.S.");                       // Davis County, UT (Hill AFB)
   assert.equal(G.gs(2026, 12, 5, "c51059").annual, 116071);
   assert.equal(G.perDiem(2027, "c49045", 7).areaName, "Salt Lake City");   // Tooele County uses SLC per diem
-  assert.equal(G.bah(2026, "E-5", true, "c51059").status, "approx");       // BAH is never shown as official yet
+  const b = G.bah(2026, "E-5", true, "c51059");                            // Fairfax County: DTMO's DC metro area
+  assert.deepEqual([b.mha, b.monthly, b.status], ["DC053", 3132, "verified"]);
 });
 
 test("Per diem pages: one slug per area, DC copies folded in, months in fiscal order", async () => {
@@ -142,4 +143,19 @@ test("Search finds cities: bigger city first, same-named counties offered", () =
   assert.equal(names("gs 7 ventura")[0], "San Buenaventura (Ventura), CA");
   assert.equal(names("gs-12 louisville")[0], "Louisville/Jefferson County, KY");
   assert.deepEqual(P.parse("texas"), []);                                                     // a state alone isn't a city
+});
+
+test("BAH matches DTMO's 2025 and 2026 rate files; BAS matches DoD FMR 7A ch. 25", () => {
+  const id = (name) => G.locations().find((l) => l.name === name).id;
+  // San Diego E-5: $3,987 (2025) and $3,975 / $3,147 (2026), also published by third-party BAH sites
+  assert.equal(G.bah(2025, "E-5", true, id("San Diego, CA")).monthly, 3987);
+  assert.equal(G.bah(2026, "E-5", true, id("San Diego, CA")).monthly, 3975);
+  assert.equal(G.bah(2026, "E-5", false, id("San Diego, CA")).monthly, 3147);
+  assert.equal(G.bah(2026, "E-5", true, "quantico").mhaName, "Quantico/Woodbridge, VA");
+  assert.equal(G.bah(2026, "O-10", true, "dc").monthly, G.bah(2026, "O-7", true, "dc").monthly);   // O-8+ get O-7
+  assert.equal(G.bah(2027, "E-5", true, "dc").status, "projected");
+  assert.deepEqual([G.bas(2025, "E-4"), G.bas(2025, "O-1"), G.bas(2026, "E-4"), G.bas(2026, "W-2")], [465.77, 320.78, 476.95, 328.48]);
+  const m = G.military(2026, "E-5", 6, "norfolk", true);
+  assert.deepEqual([m.basic, m.bah, m.bas, m.status], [4110, 2430, 476.95, "verified"]);
+  assert.ok(G.locations().filter((l) => l.kind === "county").every((l) => !l.bahSimulated));
 });

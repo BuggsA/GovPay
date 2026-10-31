@@ -108,7 +108,9 @@
     priorEnlisted: ["O-1E", "O-2E", "O-3E"],
   };
 
-  const BAS_2026 = { enlisted: 476.95, officer: 328.48 }; // monthly
+  // BAS, monthly, from DoD FMR Vol. 7A, Chapter 25 (DFAS). Later years are projected with RAISES.bas.
+  const BAS = { 2025: { enlisted: 465.77, officer: 320.78 }, 2026: { enlisted: 476.95, officer: 328.48 } };
+  const BAS_YEARS = Object.keys(BAS).map(Number);
 
   // BAH ratio by grade relative to E-5 with dependents (approximates DoD's
   // housing-profile structure). Without-dependents ratio applied on top.
@@ -201,9 +203,13 @@
   }));
   // Every U.S. county (and county equivalent) from shared/data/places.js:
   // REAL GS locality area (5 CFR 531.603) and GSA per diem area for each one.
-  // BAH stays an estimate outside the researched bases until DTMO data is added.
+  // BAH: each county and base gets its DTMO housing area from shared/data/bah.js (scripts/convert-bah.py).
   const ALL_STATES = Object.assign({}, FOCUS_STATES, OTHER_STATES);
   const PLACES = (global.GOVPAY_DATA && global.GOVPAY_DATA.places) || null;
+  const BAH_DATA = (global.GOVPAY_DATA && global.GOVPAY_DATA.bah) || null;
+  const BAH_YEARS = BAH_DATA ? Object.keys(BAH_DATA.years).map(Number).sort() : [];
+  const BAH_COUNTY = BAH_DATA ? BAH_DATA.county.split(",") : null;
+  if (BAH_DATA) LOCATIONS.forEach((l) => { if (BAH_DATA.focus[l.id]) l.bahMha = BAH_DATA.focus[l.id]; });   // DTMO area of a ZIP on each base
   // County FIPS of the researched places, so a county shares its base's BAH and wage area.
   const FOCUS_FIPS = { dc: "11001", "fort-belvoir": "51059", quantico: "51153", dahlgren: "51099", norfolk: "51710", "langley-eustis": "51650",
     richmond: "51760", "fort-gregg-adams": "51149", "fort-meade": "24003", andrews: "24033", aberdeen: "24025", baltimore: "24510",
@@ -219,12 +225,13 @@
   });
   if (PLACES) {
     PLACES.areas.forEach((n) => { if (!GS_LOCALITIES[n]) GS_LOCALITIES[n] = { name: n, pct: 0, status: "verified" }; });
-    PLACES.counties.forEach(([fips, name, st, ai, pd]) => {
+    PLACES.counties.forEach(([fips, name, st, ai, pd], ci) => {
       const base = byFips[fips];
+      const mha = BAH_COUNTY && BAH_COUNTY[ci] ? BAH_COUNTY[ci] : base ? base.bahMha : "SIM" + st;
       LOCATIONS.push({
         id: "c" + fips, fips, name: `${name}, ${st}`, short: name, state: st, stateName: ALL_STATES[st] || st, kind: "county",
-        gsLocality: PLACES.areas[ai], fwsArea: base ? base.fwsArea : "SIMF_" + st, bahMha: base ? base.bahMha : "SIM" + st,
-        perDiem: pd, perDiemNA: st === "AK" || st === "HI", status: "approx", simulated: false, bahSimulated: !base,
+        gsLocality: PLACES.areas[ai], fwsArea: base ? base.fwsArea : "SIMF_" + st, bahMha: mha,
+        perDiem: pd, perDiemNA: st === "AK" || st === "HI", status: "approx", simulated: false, bahSimulated: !(BAH_COUNTY && BAH_COUNTY[ci]) && !base,
       });
     });
   }
@@ -245,6 +252,8 @@
   function round2(n) { return Math.round(n * 100) / 100; }
   function round100(n) { return Math.round(n / 100) * 100; }
   function mapObj(o, f) { const r = {}; Object.keys(o).forEach((k) => (r[k] = f(o[k]))); return r; }
+  const STATUS_ORDER = ["verified", "approx", "projected", "simulated"];
+  const weakest = (list) => list.reduce((a, b) => (STATUS_ORDER.indexOf(b) > STATUS_ORDER.indexOf(a) ? b : a), "verified");
   function yearStatus(year) { return hasOrder(year) ? "verified" : year > LATEST ? "projected" : "approx"; }
   function factor(series, year, anchor) {
     // cumulative raise multiplier from anchor-year table to `year`
@@ -439,17 +448,30 @@
   }
   function bas(year, grade) {
     const type = milGradeType(grade) === "enlisted" ? "enlisted" : "officer";
-    return round2(BAS_2026[type] * factor(RAISES.bas, year, 2026));
+    if (BAS[year]) return BAS[year][type];
+    const anchor = year > Math.max(...BAS_YEARS) ? Math.max(...BAS_YEARS) : Math.min(...BAS_YEARS);
+    return round2(BAS[anchor][type] * factor(RAISES.bas, year, anchor));
   }
+  const basStatus = (year) => (BAS[year] ? "verified" : year > Math.max(...BAS_YEARS) ? "projected" : "approx");
+  // BAH from DTMO's rate files (shared/data/bah.js): exact for the years published, projected
+  // with RAISES.bah after that. Without the data file (old prototypes) the rough placeholder is used.
+  const BAH_GRADE_INDEX = BAH_DATA ? Object.fromEntries(BAH_DATA.grades.map((g, i) => [g, i])) : null;
   function bah(year, grade, withDependents, locId) {
     const loc = location(locId);
-    const m = BAH_MHAS[loc.bahMha];
+    const g = BAH_GRADE_INDEX && (BAH_GRADE_INDEX[grade] != null ? grade : /^O-(8|9|10)$/.test(grade) ? "O-7" : null);  // O-8+ get the O-7 rate
+    if (BAH_DATA && g && BAH_DATA.names[loc.bahMha]) {
+      const ys = BAH_YEARS, y = BAH_DATA.years[year] ? year : year > ys[ys.length - 1] ? ys[ys.length - 1] : ys[0];
+      const row = BAH_DATA.years[y].rates[loc.bahMha];
+      const v = row[BAH_GRADE_INDEX[g] + (withDependents ? 0 : BAH_DATA.grades.length)] * factor(RAISES.bah, year, y);
+      return { monthly: Math.round(v), mhaName: BAH_DATA.names[loc.bahMha], mha: loc.bahMha,
+        status: year === y ? "verified" : year > y ? "projected" : "approx" };
+    }
+    const m = BAH_MHAS[loc.bahMha] || BAH_MHAS["SIM" + loc.state];
     const ratio = BAH_RATIO[grade] || 1;
     const junior = ["E-1", "E-2", "E-3", "E-4"].indexOf(grade) >= 0;
     let v = m.e5 * ratio * factor(RAISES.bah, year, 2026);
     if (!withDependents) v *= junior ? BAH_NODEP.junior : BAH_NODEP.other;
-    // BAH is hand-entered or simulated until the DTMO rate file is added, so never "verified".
-    return { monthly: Math.round(v), mhaName: m.name, mha: loc.bahMha, status: m.simulated ? "simulated" : year > LATEST ? "projected" : "approx" };
+    return { monthly: Math.round(v), mhaName: m.name, mha: loc.bahMha, status: "simulated" };
   }
   // Very rough federal tax advantage of tax-free allowances (BAH + BAS), for
   // illustration only: assumes 12% marginal federal + 4.5% state.
@@ -463,12 +485,12 @@
     const allowancesAnnual = (h.monthly + s) * 12;
     return {
       system: "MIL", grade, type: milGradeType(grade), yos, basic, bah: h.monthly, bas: s,
-      mhaName: h.mhaName, monthly, annual: Math.round(monthly * 12), basicAnnual: Math.round(basic * 12),
+      mhaName: h.mhaName, monthly, annual: round2(monthly * 12), basicAnnual: round2(basic * 12),
       taxAdvantage: taxAdvantage(allowancesAnnual),
       // "Regular Military Compensation"-style figure: cash + tax advantage
       rmc: Math.round(monthly * 12 + taxAdvantage(allowancesAnnual)),
-      basicStatus: yearStatus(year),
-      status: h.status === "simulated" ? "simulated" : year > LATEST ? "projected" : "approx",   // BAH/BAS still approximate
+      basicStatus: yearStatus(year), bahStatus: h.status, basStatus: basStatus(year),
+      status: weakest([yearStatus(year), h.status, basStatus(year)]),   // only "verified" when all three parts are
     };
   }
 
@@ -575,7 +597,7 @@
     return { title: `${p.mgrade} · ${p.yos} yrs`, annual: m.annual, status: m.status, mil: m,
       rows: [{ key: "base", label: "Basic pay", annual: m.basicAnnual },
         { key: "bah", label: `BAH (${p.deps ? "with" : "without"} dependents)`, annual: m.bah * 12, taxFree: true },
-        { key: "bas", label: "BAS", annual: Math.round(m.bas * 12), taxFree: true }],
+        { key: "bas", label: "BAS", annual: round2(m.bas * 12), taxFree: true }],   // keep cents so the monthly line shows the official rate
       notes: [].concat(year === 2025 && ["E-1", "E-2", "E-3", "E-4", "E-5"].indexOf(p.mgrade) >= 0 ? ["2025 basic pay shown is the January rate. Junior enlisted pay rose again on April 1, 2025."] : [], [`Housing area: ${m.mhaName}.`, `BAH and BAS are tax-free. That's worth about ${fmt.usd(m.taxAdvantage)} a year compared with taxable pay (rough estimate).`, "Special and incentive pays (flight, jump, sea, hazardous duty) are not included."]) };
   }
 

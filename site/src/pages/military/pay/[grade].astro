@@ -39,7 +39,7 @@ const sampleYos = cols.find((x) => x.c >= 6) ? cols.find((x) => x.c >= 6).c : co
       <div class="pb-stub__per">a month · {f.usd(lo * 12)} a year · {f.usd2(lo / 2)} per paycheck (twice a month)</div>
       <ul class="pb-ledger">
         <li><span>Basic pay (taxed)</span><span>{f.usd2(lo)}</span></li>
-        <li><span>BAS, food (not taxed, estimate)</span><span>{f.usd2(bas)}</span></li>
+        <li><span>BAS, food (not taxed)</span><span>{f.usd2(bas)}</span></li>
         <li><span>BAH, housing (not taxed)</span><span>Depends on base</span></li>
       </ul>
       <p class="cta"><a class="pb-btn" href={calcLink({ system: "MIL", mgrade: grade, yos: sampleYos }, null)}>Add BAH for your base</a></p>
@@ -55,7 +55,7 @@ const sampleYos = cols.find((x) => x.c >= 6) ? cols.find((x) => x.c >= 6).c : co
             <tr><th scope="row">{r.from === r.to ? yosLabel(r.from) : `${yosLabel(r.from)} to ${r.to}`}</th><td>{f.usd2(r.now)}</td><td>{f.usd(r.now * 12)}</td><td>{r.prev != null ? <span class="pb-delta pb-delta--up">+{f.usd2(r.now - r.prev)}</span> : "·"}</td></tr>
           ))}
         </tbody>
-        <caption>{YEAR} monthly basic pay. "Over 4" means more than 4 years of service. {YEAR - 1} figures are the January rates. Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 8. BAS is an estimate until the DFAS table is loaded.</caption>
+        <caption>{YEAR} monthly basic pay. "Over 4" means more than 4 years of service. {YEAR - 1} figures are the January rates. Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 8. BAS: DoD FMR Vol. 7A, Ch. 25. BAH depends on your duty station; <a class="pb-link" href="/military/bah">see BAH by area</a>.</caption>
       </table>
     </div>
 

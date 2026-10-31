@@ -14,13 +14,14 @@ const rows = [
   { what: "Federal income tax, Social Security and Medicare", src: [["IRS Rev. Proc. 2025-32", T.SOURCES.federal], ["SSA 2026 wage base"]], status: "Official", how: "Tax year 2026 brackets and standard deduction. No credits or itemizing." },
   { what: "State income tax", src: [["Tax Foundation, 2026 state rates and brackets", TF.url], ["Maryland Comptroller (county rates)", T.SOURCES.mdCounty], ["Utah Tax Commission", T.SOURCES.utah]], status: "Official", how: "All 50 states and DC: brackets, standard deductions, exemptions and the footnote rules that matter at federal pay levels. DC, MD, PA, UT and VA were also entered and checked by hand." },
   { what: "State tax on military pay", src: [["MyAirForceBenefits state summary (tax year 2025)", T.MIL_SOURCE], ["Code of Virginia 58.1-322.02", "https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-322.02/"]], status: "Official", how: "By state of legal residence: 13 states exempt all active-duty pay, 10 exempt it while you're stationed elsewhere, and Virginia, Oregon and Louisiana give partial subtractions." },
-  { what: "BAS (food allowance)", src: [["DFAS (not yet loaded)"]], status: "Estimate", how: "2026 rates entered by hand; to be replaced by the DFAS table." },
-  { what: "BAH (housing allowance)", src: [["DTMO (not yet loaded)"]], status: "Estimate", how: "19 researched housing areas around DC, Maryland, Pennsylvania, Virginia and Utah; a rough placeholder elsewhere. Never labeled official." },
+  { what: "BAS (food allowance)", src: [["DoD FMR Vol. 7A, Chapter 25 (DFAS)", "https://www.dfas.mil/MilitaryMembers/payentitlements/Pay-Tables/BAS/"]], status: "Official", how: "2025 and 2026 monthly rates: officers $320.78 and $328.48, enlisted $465.77 and $476.95." },
+  { what: "BAH (housing allowance)", src: [["DTMO BAH rate files (ASCII), 2025 and 2026", "https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/"], ["Census 2020 ZIP-to-county relationship"]], status: "Official", how: "All 338 housing areas, every grade, with and without dependents. 2026 uses DTMO's May 13, 2026 reissue (it raised Abilene/Dyess AFB). Each county uses the housing area covering most of its people; each base uses the area of a ZIP code on the base. Your exact ZIP can differ near area edges." },
   { what: "LEO special rates, trades (FWS) pay", src: [["OPM and DoD wage schedules (not yet loaded)"]], status: "Estimate", how: "LEO uses the published premium percentages; FWS only shows the shape of the pay curve." },
 ];
 const limits = [
   "Take-home pay is an estimate: no tax credits, itemized deductions or spouse income.",
   "Local income taxes (New York City, Ohio cities, Pennsylvania local earned-income tax and others) aren't included; Paybook names them when they apply.",
+  "BAH is set by ZIP code; Paybook uses one housing area per county, so near area edges your ZIP may differ.",
   "State military pay rules cover full exemptions, out-of-state exemptions and the Virginia, Oregon and Louisiana subtractions; combat-zone, overseas and Guard/Reserve-only exclusions aren't included.",
   "New York and Connecticut's high-income \"recapture\" and the Missouri and Oregon federal-tax deductions aren't included.",
   "Alaska, Hawaii and the territories use overseas (OCONUS) per diem and cost-of-living rules that Paybook doesn't have yet.",
