@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paybook Components</title>
+  <meta name="description" content="Paybook component sheet: every component in every state.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    .sheet { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--gutter); }
+    h1 { font: 700 var(--t-h1)/var(--lh-tight) var(--font-display); letter-spacing: var(--track-display); margin: var(--s2) 0 var(--s3); }
+    .lede { color: var(--ink-2); max-width: 680px; margin: 0 0 var(--s5); }
+    .blk { padding: var(--s6) 0; border-top: var(--hair); }
+    .blk > h2 { font: 700 var(--t-h3)/1.2 var(--font-display); letter-spacing: -.01em; margin: 0 0 var(--s1); }
+    .blk > p { margin: 0 0 var(--s4); color: var(--ink-2); font-size: var(--t-small); max-width: 680px; }
+    .row { display: flex; gap: var(--s4); flex-wrap: wrap; align-items: center; }
+    .states { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s4); }
+    .state { display: grid; gap: var(--s2); justify-items: start; }
+    .cap { font: 500 11px var(--font-mono); color: var(--ink-3); letter-spacing: .04em; }
+    .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s6); }
+    @media (max-width: 900px) { .two { grid-template-columns: minmax(0, 1fr); } }
+    .theme { font: 600 var(--t-label) var(--font-mono); letter-spacing: .08em; text-transform: uppercase; background: none; color: var(--ink); border: var(--hair); border-radius: var(--radius); padding: 6px 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="pb-header">
+    <div class="pb-header__in">
+      <a class="pb-wordmark" href="./">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="11.5" width="14" height="5" fill="var(--hi)"/><path d="M8 14h9" stroke="#1b1a17" stroke-width="2"/></svg>
+        paybook
+      </a>
+      <nav class="pb-nav" aria-label="Main"><a href="#" aria-current="page">My pay</a><a href="#">Pay tables</a><a href="#">Compare</a><a href="#">Learn</a></nav>
+      <div class="pb-header__end">
+        <div class="pb-seg" role="radiogroup" aria-label="Pay year"><button role="radio" aria-checked="false">2025</button><button role="radio" aria-checked="true">2026</button><button role="radio" aria-checked="false">2027</button></div>
+        <button class="theme" id="theme" type="button">Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sheet">
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>L4</b> · Components · direction A "Stub"</div>
+    <h1>Every part, in every state.</h1>
+    <p class="lede">Built only from <a class="pb-link" href="tokens.css">tokens.css</a>, with styles in <a class="pb-link" href="components.css">components.css</a>. The header above is a component too. Sample figures are real 2026 pay (EO 14368); BAH is still approximate.</p>
+
+    <!-- STUB -->
+    <section class="blk">
+      <div class="pb-section-label"><b>01</b> · The stub</div>
+      <h2>Result card</h2>
+      <p>The main result, and also the share and screenshot card. Civilian pay leads with the yearly amount. Military pay leads with the monthly amount, the way the LES shows it, and labels the yearly total RMC.</p>
+      <div class="two">
+        <article class="pb-stub" aria-label="Civilian result">
+          <div class="pb-stub__head"><span>Pay stub · 2026</span><span class="pb-stamp pb-stamp--official">Official</span></div>
+          <div class="pb-stub__who">GS-12, Step 5<small>Washington–Baltimore–Arlington locality · 33.94%</small></div>
+          <div class="pb-stub__number"><span class="hl">$116,071</span></div>
+          <div class="pb-stub__per">a year · $4,464 per paycheck · $55.62 an hour</div>
+          <div class="pb-seg" role="radiogroup" aria-label="Show amounts"><button role="radio" aria-checked="true">Year</button><button role="radio" aria-checked="false">Month</button><button role="radio" aria-checked="false">Paycheck</button><button role="radio" aria-checked="false">Hour</button></div>
+          <ul class="pb-ledger">
+            <li><span>Base pay</span><span>$86,659</span></li>
+            <li><span>Locality pay</span><span>$29,412</span></li>
+            <li class="pb-ledger__total"><span>Total</span><span>$116,071</span></li>
+          </ul>
+          <div class="pb-takehome">Take-home is about <b>$X,XXX</b> a month. <span>Single, standard deduction, Maryland, FERS 4.4%, TSP 5%.</span> <a class="pb-link" href="#">Edit</a> <span class="pb-stamp pb-stamp--estimate" style="margin-left:6px">Layout only</span></div>
+          <div class="pb-stub__foot"><span>paybook · EO 14368 · Jan 11, 2026</span><span>Not affiliated with the U.S. government</span></div>
+        </article>
+        <article class="pb-stub" aria-label="Military result">
+          <div class="pb-stub__head"><span>Pay stub · 2026</span><span class="pb-stamp pb-stamp--estimate">BAH estimate</span></div>
+          <div class="pb-stub__who">E-5 · 6 years · with dependents<small>Naval Station Norfolk · Norfolk / Portsmouth housing area</small></div>
+          <div class="pb-stub__number"><span class="hl">$6,847</span></div>
+          <div class="pb-stub__per">a month · $3,423 on the 1st and 15th · RMC about $87,582 a year</div>
+          <ul class="pb-ledger">
+            <li><span>Basic pay</span><span>$4,110.00</span></li>
+            <li><span>BAH<span class="pb-taxfree">tax-free</span></span><span>$2,260.00</span></li>
+            <li><span>BAS<span class="pb-taxfree">tax-free</span></span><span>$476.95</span></li>
+            <li class="pb-ledger__total"><span>Monthly total</span><span>$6,846.95</span></li>
+          </ul>
+          <div class="pb-stub__foot"><span>paybook · EO 14368 · BAH est.</span><span>Not affiliated with the U.S. government</span></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- LADDER -->
+    <section class="blk">
+      <div class="pb-section-label"><b>02</b> · Next level</div>
+      <h2>Ladder</h2>
+      <p>Your rung is highlighted. Each rung above it is a button: tapping one previews that pay in the stub. Shown here, top to bottom: you, hover, selected (being previewed), normal.</p>
+      <div style="max-width:520px">
+        <ol class="pb-ladder">
+          <li class="is-you"><div class="pb-rung"><span class="pb-ladder__name">GS-12, Step 5</span><span class="pb-ladder__when">Where you are now</span><span class="pb-delta">You</span></div></li>
+          <li><button type="button" class="is-hover"><span class="pb-ladder__name">Step 6</span><span class="pb-ladder__when">After 2 years at step 5</span><span class="pb-delta pb-delta--up">+$3,414<small>a year</small></span></button></li>
+          <li class="is-selected"><button type="button"><span class="pb-ladder__name">GS-13, Step 2</span><span class="pb-ladder__when">When promoted (two-step rule)</span><span class="pb-delta pb-delta--up">+$9,774<small>a year</small></span></button></li>
+          <li><button type="button"><span class="pb-ladder__name">Step 10</span><span class="pb-ladder__when">Top of GS-12, about 13 years away</span><span class="pb-delta pb-delta--up">+$17,071<small>a year</small></span></button></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TABLE -->
+    <section class="blk">
+      <div class="pb-section-label"><b>03</b> · Pay table</div>
+      <h2>Table</h2>
+      <p>The Grade column stays pinned when you scroll sideways. Your row is tinted and your cell is highlighted. Any other cell can be tapped to preview it; one is shown in its hover state.</p>
+      <div class="pb-table-wrap">
+        <table class="pb-table">
+          <thead><tr><th scope="col">Grade</th><th scope="col">Step 1</th><th scope="col">Step 2</th><th scope="col">Step 3</th><th scope="col">Step 4</th><th scope="col">Step 5</th><th scope="col">Step 6</th><th scope="col">Step 7</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">GS-11</th><td data-pick>$85,447</td><td data-pick>$88,296</td><td data-pick>$91,145</td><td data-pick>$93,994</td><td data-pick>$96,843</td><td data-pick>$99,692</td><td data-pick>$102,540</td></tr>
+            <tr class="is-yours"><th scope="row">GS-12</th><td data-pick>$102,415</td><td data-pick>$105,829</td><td data-pick>$109,243</td><td data-pick>$112,657</td><td class="is-you">$116,071</td><td data-pick>$119,485</td><td data-pick>$122,899</td></tr>
+            <tr><th scope="row">GS-13</th><td data-pick>$121,785</td><td data-pick class="is-hover">$125,845</td><td data-pick>$129,904</td><td data-pick>$133,964</td><td data-pick>$138,024</td><td data-pick>$142,084</td><td data-pick>$146,143</td></tr>
+          </tbody>
+          <caption>2026 · Washington–Baltimore–Arlington · Source: <a class="pb-link" href="https://www.govinfo.gov/content/pkg/FR-2025-12-23/pdf/2025-23844.pdf">EO 14368</a></caption>
+        </table>
+      </div>
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="blk">
+      <div class="pb-section-label"><b>04</b> · Buttons &amp; links</div>
+      <h2>Buttons</h2>
+      <p>Primary is ink. Line and quiet are for secondary actions. All are at least 44px tall for touch.</p>
+      <div class="states">
+        <div class="state"><button class="pb-btn">Show my pay</button><span class="cap">primary</span></div>
+        <div class="state"><button class="pb-btn is-hover">Show my pay</button><span class="cap">hover</span></div>
+        <div class="state"><button class="pb-btn is-focus">Show my pay</button><span class="cap">keyboard focus</span></div>
+        <div class="state"><button class="pb-btn" disabled>Show my pay</button><span class="cap">disabled</span></div>
+        <div class="state"><button class="pb-btn pb-btn--line">Compare</button><span class="cap">line</span></div>
+        <div class="state"><button class="pb-btn pb-btn--line is-hover">Compare</button><span class="cap">line · hover</span></div>
+        <div class="state"><button class="pb-btn pb-btn--quiet">← Back to my pay</button><span class="cap">quiet</span></div>
+        <div class="state"><button class="pb-btn pb-btn--small">Copy link</button><span class="cap">small</span></div>
+        <div class="state"><a class="pb-link" href="#">How this is calculated</a><span class="cap">link</span></div>
+        <div class="state"><a class="pb-link pb-link--ink" href="#">Source: OPM</a><span class="cap">ink link</span></div>
+      </div>
+    </section>
+
+    <!-- INPUTS -->
+    <section class="blk">
+      <div class="pb-section-label"><b>05</b> · Inputs</div>
+      <h2>The big box, fields and steppers</h2>
+      <p>The "grade, rank or job posting" box is the main way in. Steppers change a grade, step or years of service with one tap.</p>
+      <div class="pb-field" style="max-width:680px;margin-bottom:var(--s5)">
+        <label class="pb-field__label" for="ask">Your grade, rank or a job posting</label>
+        <div class="pb-ask"><input id="ask" value="GS-12 step 5, Washington DC"><button type="button">Show pay</button></div>
+        <span class="pb-field__hint">Try: E-5 Norfolk · GS-0343-09/11/12 · LEO GS-11 Quantico</span>
+      </div>
+      <div class="states" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+        <div class="pb-field"><label class="pb-field__label" for="f1">TSP contribution</label><input class="pb-input" id="f1" value="5%"><span class="pb-field__hint">Percent of base pay</span></div>
+        <div class="pb-field"><label class="pb-field__label" for="f2">Focused</label><input class="pb-input is-focus" id="f2" value="5%"></div>
+        <div class="pb-field"><label class="pb-field__label" for="f3">With error</label><input class="pb-input is-error" id="f3" value="150%" aria-invalid="true" aria-describedby="e3"><span class="pb-field__error" id="e3">Enter 0 to 100.</span></div>
+        <div class="pb-field"><label class="pb-field__label" for="f4">Filing status</label><select class="pb-input pb-select" id="f4"><option>Single</option><option>Married, one income</option></select></div>
+        <div class="pb-field"><span class="pb-field__label">Grade</span><div class="pb-stepper"><button type="button" aria-label="Lower grade">−</button><output>GS-12</output><button type="button" aria-label="Raise grade" class="is-hover">+</button></div><span class="cap">+ in hover state</span></div>
+        <div class="pb-field"><span class="pb-field__label">Step</span><div class="pb-stepper"><button type="button" aria-label="Lower step">−</button><output>Step 5</output><button type="button" aria-label="Raise step">+</button></div></div>
+        <div class="pb-field"><span class="pb-field__label">Years of service</span><div class="pb-stepper"><button type="button" aria-label="Fewer years" disabled>−</button><output>0 yrs</output><button type="button" aria-label="More years">+</button></div><span class="cap">at minimum: − disabled</span></div>
+      </div>
+    </section>
+
+    <!-- TOGGLES & CHIPS -->
+    <section class="blk">
+      <div class="pb-section-label"><b>06</b> · Toggles, chips &amp; tabs</div>
+      <div class="row" style="margin-bottom:var(--s4)">
+        <div class="pb-seg" role="radiogroup" aria-label="Show amounts"><button role="radio" aria-checked="true">Year</button><button role="radio" aria-checked="false">Month</button><button role="radio" aria-checked="false">Paycheck</button><button role="radio" aria-checked="false">Hour</button></div>
+        <div class="pb-seg" role="radiogroup" aria-label="Dependents"><button role="radio" aria-checked="false">No dependents</button><button role="radio" aria-checked="true">With dependents</button></div>
+      </div>
+      <div class="row" style="margin-bottom:var(--s5)">
+        <span class="cap">Recent</span>
+        <button class="pb-chip">Norfolk, VA</button>
+        <button class="pb-chip is-hover">Hill AFB</button>
+        <button class="pb-chip pb-chip--on">Virginia <span class="pb-chip__x" aria-label="Clear filter">×</span></button>
+      </div>
+      <div class="pb-tabs" role="tablist"><button role="tab" aria-selected="true">GS</button><button role="tab" aria-selected="false">Military</button><button role="tab" aria-selected="false">BAH</button><button role="tab" aria-selected="false">Per diem</button></div>
+    </section>
+
+    <!-- STATUS -->
+    <section class="blk">
+      <div class="pb-section-label"><b>07</b> · Status &amp; change</div>
+      <h2>Stamps and deltas</h2>
+      <p>Stamps appear only on exceptions. Official numbers usually carry no stamp at all; the green one is for places where it helps, like a table caption. Deltas always carry + or −, so color is never the only signal.</p>
+      <div class="row" style="margin-bottom:var(--s4)">
+        <span class="pb-stamp pb-stamp--proposed">Proposed</span>
+        <span class="pb-stamp pb-stamp--estimate">Estimate</span>
+        <span class="pb-stamp pb-stamp--official">Official</span>
+      </div>
+      <div class="row">
+        <span class="pb-delta pb-delta--up">+$3,414 <small>a year</small></span>
+        <span class="pb-delta pb-delta--down">−$2,260 <small>a month BAH</small></span>
+        <span class="pb-delta pb-delta--up">▲ $1,148 vs 2025 <small>(+1.0%)</small></span>
+      </div>
+    </section>
+
+    <!-- DETAILS -->
+    <section class="blk">
+      <div class="pb-section-label"><b>08</b> · Disclosure</div>
+      <div style="max-width:680px">
+        <details class="pb-details" open><summary>How this is calculated</summary><div>Base pay from the 2026 General Schedule (EO 14368, Schedule 1), plus 33.94% locality pay for Washington–Baltimore–Arlington (Schedule 9). GS pay with locality is capped at Executive Schedule level IV, $197,200.</div></details>
+        <details class="pb-details"><summary>Why yellow?</summary><div>Yellow always marks you: your number, your cell, your place.</div></details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pb-footer">
+    <div class="pb-footer__in"><span><b>paybook</b> · an independent estimate tool. <b>Not affiliated with the U.S. government.</b></span><span>Sources: OPM pay orders, DFAS, DTMO, GSA · each page shows its "as of" date</span></div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement, t = document.getElementById("theme");
+      if (matchMedia("(prefers-color-scheme: dark)").matches) t.textContent = "Light";
+      t.onclick = function () {
+        var dark = root.dataset.theme ? root.dataset.theme !== "dark" : !matchMedia("(prefers-color-scheme: dark)").matches;
+        root.dataset.theme = dark ? "dark" : "light"; t.textContent = dark ? "Light" : "Dark";
+      };
+      // Make the demo toggles behave.
+      document.querySelectorAll(".pb-seg").forEach(function (g) {
+        g.addEventListener("click", function (e) {
+          var b = e.target.closest("button"); if (!b) return;
+          g.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-checked", String(x === b)); });
+        });
+      });
+      document.querySelectorAll(".pb-tabs").forEach(function (g) {
+        g.addEventListener("click", function (e) {
+          var b = e.target.closest("button"); if (!b) return;
+          g.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-selected", String(x === b)); });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

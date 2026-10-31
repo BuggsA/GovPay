@@ -1,0 +1,173 @@
+/*
+ * Paybook components · direction A "Stub"
+ * Built only from tokens.css variables. Class names are plain and stable so
+ * they can move into Astro components unchanged.
+ *
+ * Contents: header · section label · buttons · links · inputs · stepper ·
+ * segmented toggle · chips · stamps · deltas · the stub · ledger rows ·
+ * take-home line · ladder · table · disclosure · tabs · footer
+ */
+
+/* ---------- header ---------- */
+.pb-header { border-bottom: var(--strong); background: var(--paper); }
+.pb-header__in { max-width: var(--page-max); margin: 0 auto; padding: var(--s3) var(--gutter); display: flex; align-items: center; gap: var(--s5); flex-wrap: wrap; }
+.pb-wordmark { display: inline-flex; align-items: center; gap: var(--s2); font: 700 22px/1 var(--font-display); letter-spacing: -.03em; color: var(--ink); text-decoration: none; }
+.pb-nav { display: flex; gap: var(--s4); font-size: 15px; flex-wrap: wrap; }
+.pb-nav a { color: var(--ink); text-decoration: none; padding: 2px 0; border-bottom: 2px solid transparent; }
+.pb-nav a:hover { border-bottom-color: var(--rule); }
+.pb-nav a[aria-current] { border-bottom-color: var(--ink); font-weight: 600; }
+.pb-header__end { margin-left: auto; display: flex; gap: var(--s3); align-items: center; }
+
+/* ---------- section label: "01 · Your pay" with a rule ---------- */
+.pb-section-label { display: flex; align-items: center; gap: var(--s3); margin: 0 0 var(--s4); font: 600 var(--t-label)/1 var(--font-mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-2); }
+.pb-section-label b { color: var(--ink); font-weight: 600; }
+.pb-section-label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+/* ---------- buttons ---------- */
+.pb-btn { display: inline-flex; align-items: center; gap: var(--s2); font: 600 15px/1 var(--font-body); padding: 12px 18px; min-height: 44px;
+  border-radius: var(--radius); border: 2px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; text-decoration: none;
+  transition: transform var(--fast) var(--ease), background var(--fast) var(--ease); }
+.pb-btn:hover, .pb-btn.is-hover { background: color-mix(in srgb, var(--ink) 86%, var(--paper)); }
+.pb-btn:active, .pb-btn.is-active { transform: translateY(1px); }
+.pb-btn--line { background: transparent; color: var(--ink); }
+.pb-btn--line:hover, .pb-btn--line.is-hover { background: var(--paper-2); }
+.pb-btn--quiet { background: transparent; color: var(--ink); border-color: transparent; padding-left: 8px; padding-right: 8px; }
+.pb-btn--quiet:hover, .pb-btn--quiet.is-hover { background: var(--paper-2); }
+.pb-btn--small { min-height: 34px; padding: 8px 12px; font-size: 14px; }
+.pb-btn:disabled, .pb-btn.is-disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.pb-btn.is-focus { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* ---------- links ---------- */
+.pb-link { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.pb-link--ink { color: var(--ink); }
+.pb-link:hover, .pb-link.is-hover { text-decoration-thickness: 2px; }
+
+/* ---------- inputs ---------- */
+.pb-field { display: grid; gap: 6px; }
+.pb-field__label { font: 600 var(--t-label)/1 var(--font-mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-2); }
+.pb-field__hint { font-size: var(--t-small); color: var(--ink-2); }
+.pb-field__error { font-size: var(--t-small); color: var(--pen); font-weight: 600; }
+.pb-input { font: 500 17px/1.2 var(--font-body); color: var(--ink); background: var(--card); border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 11px 12px; min-height: 44px; width: 100%; }
+.pb-input::placeholder { color: var(--ink-3); }
+.pb-input:focus, .pb-input.is-focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.pb-input.is-error { border-color: var(--pen); }
+.pb-input:disabled { background: var(--paper-2); border-color: var(--rule); color: var(--ink-3); }
+.pb-select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 32px; }
+/* The big "grade, rank or job posting" box */
+.pb-ask { display: flex; border: 2px solid var(--ink); border-radius: var(--radius); background: var(--card); }
+.pb-ask input { flex: 1; min-width: 0; font: 500 clamp(17px, 2.4vw, 21px)/1.2 var(--font-body); border: 0; background: transparent; color: var(--ink); padding: 14px 16px; }
+.pb-ask input:focus { outline: none; }
+.pb-ask:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pb-ask button { font: 600 16px var(--font-body); border: 0; background: var(--ink); color: var(--paper); padding: 0 20px; cursor: pointer; }
+
+/* ---------- stepper: [−][value][+] ---------- */
+.pb-stepper { display: inline-flex; align-items: stretch; border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--card); min-height: 44px; }
+.pb-stepper button { font: 500 22px/1 var(--font-body); width: 44px; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
+.pb-stepper button:hover, .pb-stepper button.is-hover { background: var(--hi); color: var(--hi-ink); }
+.pb-stepper button:disabled { color: var(--ink-3); cursor: default; background: transparent; }
+.pb-stepper output, .pb-stepper select { min-width: 92px; display: grid; place-items: center; font: 600 17px var(--font-body); font-variant-numeric: tabular-nums;
+  border: 0; border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); background: transparent; color: var(--ink); text-align: center; }
+
+/* ---------- segmented toggle (Year / Month / Paycheck / Hour) ---------- */
+.pb-seg { display: inline-flex; border: 1.5px solid var(--ink); border-radius: var(--radius); overflow: hidden; }
+.pb-seg button { font: 500 14px/1 var(--font-body); padding: 9px 14px; min-height: 38px; border: 0; border-right: 1px solid var(--rule); background: var(--card); color: var(--ink); cursor: pointer; }
+.pb-seg button:last-child { border-right: 0; }
+.pb-seg button:hover { background: var(--paper-2); }
+.pb-seg button[aria-pressed=true], .pb-seg button[aria-checked=true] { background: var(--ink); color: var(--paper); font-weight: 600; }
+
+/* ---------- chips ---------- */
+.pb-chip { display: inline-flex; align-items: center; gap: 6px; font: 500 14px/1 var(--font-body); padding: 7px 10px; min-height: 32px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--card); color: var(--ink); cursor: pointer; }
+.pb-chip:hover, .pb-chip.is-hover { border-color: var(--ink); }
+.pb-chip--on { background: var(--hi); color: var(--hi-ink); border-color: var(--hi); font-weight: 600; }
+.pb-chip__x { font-size: 16px; line-height: 1; opacity: .7; }
+
+/* ---------- stamps (exceptions only) ---------- */
+.pb-stamp { display: inline-block; font: 600 11px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; padding: 4px 7px; border: 1.5px solid currentColor; border-radius: var(--radius); }
+.pb-stamp--proposed { color: var(--pen); transform: rotate(-2deg); }
+.pb-stamp--estimate { color: var(--ink-2); }
+.pb-stamp--official { color: var(--accent); }
+
+/* ---------- deltas ---------- */
+.pb-delta { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pb-delta--up { color: var(--accent); }
+.pb-delta--down { color: var(--pen); }
+.pb-delta small { font-weight: 500; color: var(--ink-2); font-size: .8em; }
+
+/* ---------- the stub (result card + share card) ---------- */
+.pb-stub { position: relative; background: var(--card); border: var(--hair); border-radius: var(--radius) var(--radius) 0 0; padding: var(--s4) var(--s5) var(--s6); margin-bottom: 10px; }
+.pb-stub::after { content: ""; position: absolute; left: -1px; right: -1px; bottom: -9px; height: 10px;
+  background: radial-gradient(circle at 5px 0, transparent 4.5px, var(--card) 5px) 0 0 / var(--perf) 10px repeat-x; }
+.pb-stub__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); padding-bottom: var(--s3); border-bottom: 1px dashed var(--rule);
+  font: 600 var(--t-label)/1 var(--font-mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-2); }
+.pb-stub__who { margin-top: var(--s4); font-weight: 600; }
+.pb-stub__who small { display: block; font-weight: 400; color: var(--ink-2); font-size: var(--t-small); }
+.pb-stub__number { font: 700 var(--t-number)/1.02 var(--font-body); letter-spacing: var(--track-number); font-variant-numeric: tabular-nums; margin: var(--s2) 0 var(--s1); }
+.pb-stub__number .hl { padding: 0 .08em; }
+.pb-stub__per { color: var(--ink-2); font-size: 15px; font-variant-numeric: tabular-nums; margin-bottom: var(--s4); }
+.pb-stub__foot { display: flex; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; margin-top: var(--s5); font: 500 11px/1.4 var(--font-mono); color: var(--ink-2); letter-spacing: .02em; }
+
+/* ---------- ledger rows (dotted leaders) ---------- */
+.pb-ledger { list-style: none; padding: 0; margin: var(--s4) 0 0; }
+.pb-ledger li { display: flex; align-items: baseline; gap: var(--s2); padding: 6px 0; }
+.pb-ledger li::after { content: ""; order: 1; flex: 1; border-bottom: 2px dotted var(--rule); transform: translateY(-4px); min-width: 20px; }
+.pb-ledger li > :last-child { order: 2; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pb-ledger .pb-taxfree { font: 600 10px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-left: 6px; }
+.pb-ledger li.pb-ledger__total { border-top: var(--strong); margin-top: var(--s2); padding-top: var(--s3); font-weight: 700; font-size: 18px; }
+.pb-ledger li.pb-ledger__total::after { border: 0; }
+
+/* ---------- take-home line ---------- */
+.pb-takehome { margin-top: var(--s4); padding: var(--s3) var(--s4); background: var(--paper-2); border-radius: var(--radius); font-size: 15px; }
+.pb-takehome b { font-size: 19px; font-variant-numeric: tabular-nums; }
+.pb-takehome span { color: var(--ink-2); }
+
+/* ---------- ladder (next level) ---------- */
+.pb-ladder { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+.pb-ladder li { position: relative; }
+.pb-ladder button, .pb-ladder .pb-rung { width: 100%; text-align: left; font: inherit; color: inherit; background: none; border: 0; border-bottom: var(--hair); cursor: pointer;
+  padding: var(--s3) 0 var(--s3) var(--s5); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--s3); }
+.pb-ladder li::before { content: ""; position: absolute; left: -8px; top: 18px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); z-index: 1; }
+.pb-ladder li.is-you::before { background: var(--hi); }
+.pb-ladder button:hover .pb-ladder__name, .pb-ladder button.is-hover .pb-ladder__name { text-decoration: underline; text-underline-offset: 3px; }
+.pb-ladder button:hover, .pb-ladder button.is-hover { background: color-mix(in srgb, var(--paper-2) 60%, transparent); }
+.pb-ladder li.is-selected button { background: color-mix(in srgb, var(--hi) 22%, transparent); }
+.pb-ladder__name { font-weight: 700; }
+.pb-ladder__when { grid-column: 1; font-size: var(--t-small); color: var(--ink-2); }
+.pb-ladder .pb-delta { grid-row: 1 / span 2; grid-column: 2; align-self: center; text-align: right; }
+.pb-ladder .pb-delta small { display: block; }
+
+/* ---------- table ---------- */
+.pb-table-wrap { overflow-x: auto; border: var(--hair); border-radius: var(--radius); background: var(--card); }
+.pb-table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+.pb-table th, .pb-table td { padding: 9px 12px; text-align: right; border-bottom: var(--hair); white-space: nowrap; }
+.pb-table thead th { font: 600 11px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); background: var(--paper-2); position: sticky; top: 0; }
+.pb-table th:first-child, .pb-table td:first-child { position: sticky; left: 0; text-align: left; background: var(--card); font-weight: 600; border-right: var(--hair); z-index: 1; }
+.pb-table thead th:first-child { background: var(--paper-2); z-index: 2; }
+.pb-table td[data-pick] { cursor: pointer; }
+.pb-table td[data-pick]:hover, .pb-table td.is-hover { box-shadow: inset 0 0 0 2px var(--ink); }
+.pb-table tr.is-yours td { background: color-mix(in srgb, var(--hi) 22%, var(--card)); }
+.pb-table td.is-you { background: var(--hi) !important; color: var(--hi-ink); font-weight: 700; }
+.pb-table td.is-empty { color: var(--ink-3); }
+.pb-table caption { caption-side: bottom; text-align: left; padding: var(--s2) var(--s3); font-size: var(--t-small); color: var(--ink-2); }
+
+/* ---------- disclosure ("How this is calculated") ---------- */
+.pb-details { border-top: var(--hair); border-bottom: var(--hair); }
+.pb-details summary { list-style: none; cursor: pointer; padding: var(--s3) 0; font-weight: 600; display: flex; justify-content: space-between; }
+.pb-details summary::-webkit-details-marker { display: none; }
+.pb-details summary::after { content: "+"; font: 500 20px/1 var(--font-body); }
+.pb-details[open] summary::after { content: "−"; }
+.pb-details > div { padding: 0 0 var(--s3); color: var(--ink-2); font-size: var(--t-small); }
+
+/* ---------- tabs ---------- */
+.pb-tabs { display: flex; gap: var(--s5); border-bottom: var(--hair); overflow-x: auto; }
+.pb-tabs button { font: 600 15px var(--font-body); background: none; border: 0; border-bottom: 3px solid transparent; color: var(--ink-2); padding: var(--s3) 0; cursor: pointer; white-space: nowrap; }
+.pb-tabs button:hover { color: var(--ink); }
+.pb-tabs button[aria-selected=true] { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ---------- footer ---------- */
+.pb-footer { border-top: var(--strong); margin-top: var(--s8); }
+.pb-footer__in { max-width: var(--page-max); margin: 0 auto; padding: var(--s5) var(--gutter) var(--s7); display: flex; gap: var(--s5); justify-content: space-between; flex-wrap: wrap; font-size: var(--t-small); color: var(--ink-2); }
+.pb-footer b { color: var(--ink); }
+
+/* steppers, toggles and chips keep their natural width inside grid fields */
+.pb-field > .pb-stepper, .pb-field > .pb-seg { justify-self: start; }

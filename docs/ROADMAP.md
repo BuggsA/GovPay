@@ -77,10 +77,10 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 
 | Chunk | What | Status |
 |---|---|---|
-| L1 Identity | Three directions (A Stub, B Ledger, C Stamp): wordmark, mark, favicon/app icon, sample card | ◐ review |
-| L2 Foundations | `design/tokens.css`: color (WCAG-checked, light and dark), type, space, layout, lines, motion, for direction A | ◐ review |
+| L1 Identity | Three directions shown; **A "Stub" chosen** | ☑ |
+| L2 Foundations | `design/tokens.css`: color (WCAG-checked, light and dark), type, space, layout, lines, motion | ☑ |
 | L3 Voice & numbers | Number formats, labels, status words, disclaimer, empty and error text | ☐ |
-| L4 Components | Stub, ledger rows, ladder, stamps, buttons, inputs, steppers, toggles, chips, tables | ☐ next |
+| L4 Components | `design/components.css` + sheet: stub (civilian and military), ledger rows, ladder, table, buttons, links, big search box, fields, steppers, toggles, chips, tabs, stamps, deltas, disclosure, header, footer | ◐ review |
 | L5 Composite | Search box with suggestions, location picker with tile map, year switcher, take-home line | ☐ |
 | L6 Page mockups | Home (first visit), My pay, GS table page, military rank page, Learn article, Compare sketch | ☐ |
 | L7 Share | Share card, screenshots, link preview images | ☐ |
