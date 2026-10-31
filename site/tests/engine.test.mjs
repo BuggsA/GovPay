@@ -87,6 +87,7 @@ test("Every county maps to its locality area (5 CFR 531.603) and per diem area",
   assert.equal(area("51710"), "Virginia Beach-Norfolk, VA-NC");      // Norfolk city
   assert.equal(area("06073"), "San Diego-Chula Vista-Carlsbad, CA");
   assert.equal(area("49011"), "Rest of U.S.");                       // Davis County, UT (Hill AFB)
+  assert.equal(area("32510"), "Sacramento-Roseville, CA-NV");        // Carson City, NV: listed by name in 5 CFR 531.603 (DCPAS agrees)
   assert.equal(G.gs(2026, 12, 5, "c51059").annual, 116071);
   assert.equal(G.perDiem(2027, "c49045", 7).areaName, "Salt Lake City");   // Tooele County uses SLC per diem
   const b = G.bah(2026, "E-5", true, "c51059");                            // Fairfax County: DTMO's DC metro area
