@@ -571,14 +571,14 @@
   const GS_STEP_WAIT_YRS = [1, 1, 1, 2, 2, 2, 3, 3, 3];         // step n -> n+1 (52/104/156 weeks)
   const FWS_STEP_WAIT = ["6 months", "18 months", "2 years", "2 years"];
   const yrs = (n) => (n === 1 ? "1 year" : n + " years");
-  // GS two-step promotion rule (simplified, base pay): lowest step of the new
-  // grade that is at least current rate + two step-increments of the old grade.
+  // Two-step promotion rule, 5 CFR 531.214: current rate plus two within-grade increases of the
+  // current grade (above step 8, the step 9-to-10 increase counts as one), then the lowest step of the
+  // next grade at or above it. A multi-grade promotion applies the rule one grade at a time.
   function promoteGS(baseFn, year, grade, step, toGrade) {
     let g = grade, s = step;
     while (g < toGrade) {
-      const cur = baseFn(year, g, s);
-      const inc = (baseFn(year, g, 10) - baseFn(year, g, 1)) / 9; // average step increment
-      const target = cur + 2 * inc;
+      const top = baseFn(year, g, 10), wgi = top - baseFn(year, g, 9);
+      const target = s <= 8 ? baseFn(year, g, s + 2) : top + (s - 8) * wgi;
       let ns = 10;
       for (let k = 1; k <= 10; k++) if (baseFn(year, g + 1, k) >= target) { ns = k; break; }
       g += 1; s = ns;
@@ -602,7 +602,7 @@
         const ladder = [5, 7, 9].indexOf(p.grade) >= 0 && p.grade + 2 <= 15;
         const to = ladder ? p.grade + 2 : p.grade + 1;
         const ns = promoteGS(baseFn, year, p.grade, p.step, to);
-        add("grade", `${pre}GS-${to} Step ${ns}`, ladder ? "Next grade on a two-grade career ladder" : "Promotion to the next grade", "when you're promoted (two-step rule, simplified)", Object.assign({}, p, { grade: to, step: ns }));
+        add("grade", `${pre}GS-${to} Step ${ns}`, ladder ? "Next grade on a two-grade career ladder" : "Promotion to the next grade", "when you're promoted (two-step rule)", Object.assign({}, p, { grade: to, step: ns }));
       }
       if (p.grade === 15) add("role", "Senior Executive Service", "Move into the SES (no locality pay, so it can pay less in high-cost areas)", "if selected for an SES position", { system: "SES", sesPoint: 0 });
       if (p.step < 9) {
@@ -654,7 +654,7 @@
     FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES, ALL_STATES,
     locations: () => LOCATIONS.slice(),
     focusLocations: () => LOCATIONS.filter((l) => !l.simulated),
-    location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,
+    promoteGS, location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,
     milBasic, milTable, bas, bah, military, milGradeType, perDiem, perDiemArea, fiscalYear, trip, fmt,
     compute, progression, DEFAULT_PROFILE, FWS_HOURS_PER_YEAR,
     sources: {

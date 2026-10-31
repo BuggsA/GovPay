@@ -125,7 +125,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** "GS-12 step 5 DC", "E-5 Norfolk" and "LEO GS-11 Quantico" each go from typing to a result in one step, and a reload restores it.
 - **Needs:** 2.2, plus real data from 1.1 and 1.2.
 
-### 3.2 Next level + preview · S · ☐
+### 3.2 Next level + preview · S · ◐
+> **Progress (Oct 31, 2026):** the ladder (next step, promotion, top of grade, longevity raise, next rank, tap to preview) is live in Paybook. Promotions now use the exact two-step rule (5 CFR 531.214), one grade at a time; 5 hand-checked cases are tested (the old average-step shortcut was wrong for 4 GS-1 steps). **Still open:** porting it to the Astro home page design (3.1).
 - **Goal:** "What's my next raise?"
 - **Includes:** a ladder of the next step, the promotion (two-step rule), the top of grade, the longevity raise and the next rank. Tapping a rung previews it, and "Back to my pay" returns.
 - **Done when:** a test checks 5 GS promotion results against the OPM rule.

@@ -102,3 +102,12 @@ test("Per diem pages: one slug per area, DC copies folded in, months in fiscal o
   const vb = pdAreas(PD_FY).find((a) => a.id === "VA:Virginia Beach");
   assert.equal(vb.lodging[6], 212);                                  // July peak, FY2027 (GSA)
 });
+
+test("Two-step promotion rule (5 CFR 531.214) on the 2026 GS table", () => {
+  const up = (g, s, to) => G.promoteGS(G.gsBase, 2026, g, s, to);
+  assert.equal(up(12, 5, 13), 2);   // target = GS-12/7 $91,757 -> GS-13/2 $93,956 (step 1 is $90,925)
+  assert.equal(up(9, 1, 11), 1);    // one grade at a time: GS-9/3 $56,243 -> GS-10/1; GS-10/3 $61,934 -> GS-11/1 $63,795
+  assert.equal(up(7, 10, 9), 8);    // $56,039 + 2 x $1,437 = $58,913 -> GS-8/9; $62,057 + $1,591 = $63,648 -> GS-9/8 $65,033
+  assert.equal(up(1, 5, 2), 3);     // GS-1's uneven steps: target GS-1/7 $26,771 -> GS-2/3 $26,839
+  assert.equal(up(14, 9, 15), 6);   // $139,684 + $3,582 = $143,266, just over GS-15/5 $143,236
+});
