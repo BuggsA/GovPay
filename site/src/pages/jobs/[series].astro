@@ -1,0 +1,34 @@
+---
+// One occupational series: GS pay by grade. /jobs/0343
+import Base from "../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, areaShort, jobSeries, seriesFamilies } from "../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return jobSeries().filter((s) => !s.trade).map((s) => ({ params: { series: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const areas = G.localityAreas(YEAR);
+const rus = areas.find((a) => a.slug === "rest-of-us"), dc = areas.find((a) => a.slug === "washington-dc"), top = areas.slice().sort((a, b) => b.pct - a.pct)[0];
+const cols = [rus, dc, top].filter((a, i, arr) => arr.findIndex((x) => x.slug === a.slug) === i);
+const grades = Array.from({ length: 15 }, (_, i) => i + 1);
+const path = `/jobs/${s.code}`;
+const title = `GS-${s.code} ${s.name} pay (${YEAR})`;
+const description = `What a GS-${s.code} ${s.name} earns in ${YEAR}: every GS grade at step 1 and step 10, in the Rest of U.S., Washington DC and ${areaShort(top.name)}. Paste a posting to see its full ladder.`;
+---
+<Base title={title} description={description} path={path} crumbs={[["Job series", "/jobs"], [`GS-${s.code}`, path]]}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/jobs">Job series</a> / {s.code}</nav>
+    <div class="pb-section-label"><b>GS-{s.code}</b> · {seriesFamilies[s.family] || "Other"}</div>
+    <h1>{s.name} (GS-{s.code}) pay, {YEAR}</h1>
+    <p class="lede">Series {s.code} is paid on the General Schedule, so pay depends on the <b>grade</b> on the posting and the <b>locality area</b> where you work, not the series itself.{s.leo && " Law enforcement officer positions in this series are paid on the higher LEO special rates instead."} A posting like <b>GS-{s.code}-09/11/12</b> starts at GS-9 and can grow to GS-12 without competing again.</p>
+    <p class="cta"><a class="pb-btn" href={`/#s=${s.leo ? "LEO" : "GS"}&g=9&st=1&y=${YEAR}`}>See pay where you'd work</a></p>
+    <div class="pb-table-wrap" style="margin-top:var(--s5)">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Grade</th>{cols.map((a) => <th scope="col">{areaShort(a.name)}<br /><small>step 1 – step 10</small></th>)}</tr></thead>
+        <tbody>{grades.map((g) => <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/civilian/gs/${g}`}>GS-{g}</a></th>{cols.map((a) => <td>{f.usd(G.gsArea(YEAR, g, 1, a.name).annual)} – {f.usd(G.gsArea(YEAR, g, 10, a.name).annual)}</td>)}</tr>)}</tbody>
+        <caption>{YEAR} yearly General Schedule pay with locality{s.leo ? " (not LEO rates)" : ""}. Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>. Series name: USAJOBS.</caption>
+      </table>
+    </div>
+    <p class="sub"><a class="pb-link" href="/jobs">All job series</a> · <a class="pb-link" href="/civilian/gs">GS pay in every locality area</a></p>
+  </main>
+</Base>

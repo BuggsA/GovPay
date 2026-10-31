@@ -1,0 +1,28 @@
+---
+// Job series hub: every active occupational series by family. /jobs
+import Base from "../../layouts/Base.astro";
+import { jobSeries, seriesFamilies } from "../../lib/engine.mjs";
+
+const all = jobSeries();
+const gs = all.filter((s) => !s.trade), trades = all.filter((s) => s.trade);
+const fams = [...new Set(gs.map((s) => s.family))].sort();
+---
+<Base title={`Federal job series: what ${gs.length} GS occupations pay`} description={`Every active federal white-collar occupational series (${gs.length}), with GS pay by grade, plus ${trades.length} trades series. Paste a USAJOBS posting like GS-0343-09/11/12 to see the whole career ladder.`} path="/jobs" crumbs={[["Job series", "/jobs"]]}>
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>USAJOBS</b> · Occupational series</div>
+    <h1>Federal job series</h1>
+    <p class="lede">Every federal job has a four-digit series, like <b>0343</b> (Management and Program Analysis) or <b>2210</b> (IT Management). A posting such as <b>GS-0343-09/11/12</b> means series 0343, hiring at GS-9 with a ladder to GS-12. <a class="pb-link" href="/">Paste one into Paybook</a> to see the pay at each grade where you'd work.</p>
+    {fams.map((f) => (
+      <section class="bah-state">
+        <h2>{f} · {seriesFamilies[f] || "Other"}</h2>
+        <ul class="bah-list">{gs.filter((s) => s.family === f).map((s) => <li><a href={`/jobs/${s.slug}`}>{s.code}</a> <span class="muted">{s.name}</span></li>)}</ul>
+      </section>
+    ))}
+    <section class="bah-state">
+      <h2>Trades (Federal Wage System)</h2>
+      <p class="muted">These jobs are paid hourly on local wage schedules (WG, WL, WS), not the General Schedule.</p>
+      <p>{trades.length} trades series, from {trades[0].code} to {trades[trades.length - 1].code}: electrical, metal work, plumbing, vehicle and aircraft maintenance, warehousing, food service, vessel jobs and more. A posting like <b>WG-5803-10</b> works in <a class="pb-link" href="/">the calculator</a>, with the official wage schedule for where you'd work.</p>
+    </section>
+    <p class="sub">Series list: USAJOBS occupational series code list (October 31, 2026).</p>
+  </main>
+</Base>

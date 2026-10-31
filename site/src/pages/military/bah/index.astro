@@ -1,0 +1,33 @@
+---
+// BAH hub: every housing area by state. /military/bah
+import Base from "../../../layouts/Base.astro";
+import { G, f, BAH_YEAR, BAH_SOURCE, bahAreas, bahRow } from "../../../lib/engine.mjs";
+
+const areas = bahAreas();
+const named = areas.filter((a) => !a.rural), rural = areas.filter((a) => a.rural);
+const e5 = (a) => bahRow(a.code).find((r) => r.grade === "E-5");
+const states = [...new Set(named.map((a) => a.state))].sort((x, y) => (G.ALL_STATES[x] || x).localeCompare(G.ALL_STATES[y] || y));
+const all = areas.map((a) => e5(a).with);
+const title = `${BAH_YEAR} BAH rates by duty station: all ${areas.length} housing areas`;
+const description = `${BAH_YEAR} Basic Allowance for Housing for every military housing area, from ${f.usd(Math.min(...all))} to ${f.usd(Math.max(...all))} a month for an E-5 with dependents. Official DTMO rates.`;
+---
+<Base title={title} description={description} path="/military/bah" crumbs={[["Military pay", "/military/pay-chart"], ["BAH", "/military/bah"]]}>
+  <main id="main" class="page article wide">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/military/pay-chart">Military pay</a> / BAH</nav>
+    <div class="pb-section-label"><b>{BAH_YEAR}</b> · Basic Allowance for Housing</div>
+    <h1>BAH rates by duty station, {BAH_YEAR}</h1>
+    <p class="lede">BAH is a monthly, tax-free housing allowance set by where you're stationed, your grade, and whether you have dependents. The U.S. is split into {named.length} housing areas plus {rural.length} rural county groups. An E-5 with dependents gets from <b>{f.usd(Math.min(...all))}</b> to <b>{f.usd(Math.max(...all))}</b> a month.</p>
+    {states.map((st) => (
+      <section class="bah-state">
+        <h2>{G.ALL_STATES[st] || st}</h2>
+        <ul class="bah-list">{named.filter((a) => a.state === st).map((a) => <li><a href={`/military/bah/${a.slug}`}>{a.name.replace(/,\s*[A-Z]{2}$/, "")}</a> <span class="muted">E-5 {f.usd(e5(a).with)}</span></li>)}</ul>
+      </section>
+    ))}
+    <section class="bah-state">
+      <h2>Rural areas (county cost groups)</h2>
+      <p class="muted">Places outside a named housing area are grouped by local housing costs.</p>
+      <ul class="bah-list">{rural.map((a) => <li><a href={`/military/bah/${a.slug}`}>Group {a.code.slice(2)}</a> <span class="muted">E-5 {f.usd(e5(a).with)}</span></li>)}</ul>
+    </section>
+    <p class="sub">Rates effective January 1, {BAH_YEAR}. Source: <a class="pb-link" href={BAH_SOURCE.url}>{BAH_SOURCE.label}</a>.</p>
+  </main>
+</Base>

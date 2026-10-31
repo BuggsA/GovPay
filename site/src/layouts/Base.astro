@@ -1,12 +1,18 @@
 ---
 // Shared page frame: head, header, footer. Uses the same design files as the calculator.
-interface Props { title: string; description: string; path: string; }
-const { title, description, path } = Astro.props;
+import { breadcrumbLd } from "../lib/engine.mjs";
+import { ogPath } from "../lib/cards.mjs";
+interface Props { title: string; description: string; path: string; crumbs?: [string, string][]; }
+const { title, description, path, crumbs } = Astro.props;
+const ld = crumbs && crumbs.length ? JSON.stringify(breadcrumbLd(Astro.site, [["Paybook", "/"], ...crumbs])) : null;
 const canonical = new URL(path, Astro.site).toString();
+const image = new URL(ogPath(path), Astro.site).toString();   // drawn by scripts/og-images.mjs after the build
 const nav = [
   ["/", "My pay"],
   ["/civilian/gs", "GS pay"],
+  ["/jobs", "Jobs"],
   ["/military/pay-chart", "Military pay"],
+  ["/travel/per-diem", "Per diem"],
 ];
 ---
 <!doctype html>
@@ -21,6 +27,13 @@ const nav = [
   <meta property="og:description" content={description}>
   <meta property="og:url" content={canonical}>
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Paybook">
+  <meta property="og:image" content={image}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content={title}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={image}>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z' fill='%231b1a17'/%3E%3Crect x='7' y='11.5' width='14' height='5' fill='%23ffd84d'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +42,7 @@ const nav = [
   <link rel="stylesheet" href="/ui/components.css">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/pages.css">
+  {ld && <script type="application/ld+json" set:html={ld} />}
   <slot name="head" />
 </head>
 <body>
@@ -40,7 +54,7 @@ const nav = [
         paybook
       </a>
       <nav class="pb-nav" aria-label="Main">
-        {nav.map(([href, label]) => <a href={href} aria-current={(href === "/" ? path === "/" : path.startsWith(href)) ? "page" : undefined}>{label}</a>)}
+        {nav.map(([href, label]) => <a href={href} aria-current={(href === "/" ? path === "/" : (path === href || path.startsWith(href + "/") || (href === "/military/pay-chart" && path.startsWith("/military/")))) ? "page" : undefined}>{label}</a>)}
       </nav>
       <div class="pb-header__end"><button class="theme-btn" id="theme" type="button" aria-label="Switch light or dark">Dark</button></div>
     </div>
@@ -49,7 +63,7 @@ const nav = [
   <footer class="pb-footer">
     <div class="pb-footer__in">
       <span><b>paybook</b> is an independent estimate tool. <b>Not affiliated with the U.S. government.</b></span>
-      <span>GS, locality, SES and military basic pay: official pay orders (EO 14132, EO 14368) · Per diem: GSA · Take-home: 2026 IRS and state rules · BAH and BAS: estimates for now</span>
+      <span>GS, locality, SES and military basic pay: official pay orders (EO 14132, EO 14368) · Per diem: GSA · Take-home: 2026 IRS and state rules · BAH: DTMO · BAS: DoD FMR · Trades: DCPAS · <a href="/about/data">About the data</a></span>
     </div>
   </footer>
   <slot name="scripts" />

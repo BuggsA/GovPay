@@ -84,3 +84,10 @@
 .th-break { margin-top: var(--s3); }
 .th-break .pb-ledger li { font-size: 15px; }
 .pb-th-panel .pb-seg { flex-wrap: wrap; }
+
+/* Decoded job posting above the ladder */
+.pb-posting { margin: 0 0 var(--s5); padding: var(--s3) var(--s4) var(--s2); border: var(--strong); border-radius: var(--radius); background: var(--card); }
+.pb-posting__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); font-size: var(--t-small); margin-bottom: var(--s2); }
+.pb-posting__head button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
+.pb-posting .pb-ladder { margin: 0; }
+.pb-posting__note { font-size: 13px; color: var(--ink-2); margin: var(--s2) 0 0; }

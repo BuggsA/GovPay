@@ -1,0 +1,52 @@
+---
+// Where every number comes from: /about/data
+import Base from "../../layouts/Base.astro";
+import { T, YEAR, SOURCE, PD_FY, PD_SOURCE, pdFetchedAt } from "../../lib/engine.mjs";
+
+const TF = globalThis.GOVPAY_DATA.stateTax;
+const places = globalThis.GOVPAY_DATA.places;
+const rows = [
+  { what: "GS base pay, all 58 locality areas, SES and Executive Schedule", src: [[`${SOURCE[2025].label} (2025)`, SOURCE[2025].url], [`${SOURCE[2026].label} (2026)`, SOURCE[2026].url], ["Schedules 1, 4, 5 and 9"]], status: "Official", how: "Read from the Federal Register PDFs and checked cell by cell: step increments, the EX-IV cap, and a 1.0% raise in every cell from 2025 to 2026." },
+  { what: "Military basic pay", src: [["Same orders, Schedule 8"]], status: "Official", how: "Every grade and years-of-service column, including O-1E to O-3E. 2025 is the January table (junior enlisted got a further raise in April 2025)." },
+  { what: "Travel per diem (lower 48 and DC)", src: [[PD_SOURCE.label, PD_SOURCE.url], [`FY2025 to FY${PD_FY}, as of ${pdFetchedAt(PD_FY)}`]], status: "Official", how: "Downloaded from GSA's API and refreshed monthly by a GitHub Action." },
+  { what: "Which locality and per diem area each county is in", src: [["5 CFR 531.603(b)", "https://www.ecfr.gov/current/title-5/chapter-I/subchapter-B/part-531/subpart-F/section-531.603"], ["OMB/Census metro delineation, March 2020"], ["Census county list"]], status: "Official", how: `All ${places.counties.length.toLocaleString("en-US")} counties. The regulation doesn't name an edition of the metro definitions; Paybook uses March 2020, the latest that lists Connecticut by county. A few edge counties are worth checking against OPM's published list.` },
+  { what: "Cities, towns and census-designated places", src: [["Census 2020 place-by-county list", "https://www2.census.gov/geo/docs/reference/codes2020/national_place_by_county2020.txt"], ["ACS 2020-2024 population (B01003)"], ["Census Vintage 2024 city estimates"]], status: "Official", how: `${globalThis.GOVPAY_DATA.cities.cities.length.toLocaleString("en-US")} places with ${globalThis.GOVPAY_DATA.cities.minPop.toLocaleString("en-US")}+ people, including places like Arlington, VA and Bethesda, MD that have no city government. Each uses its county's areas; when a place spans counties in different areas, Paybook uses the county where most people live and says so.` },
+  { what: "Federal income tax, Social Security and Medicare", src: [["IRS Rev. Proc. 2025-32", T.SOURCES.federal], ["SSA 2026 wage base"]], status: "Official", how: "Tax year 2026 brackets and standard deduction. No credits or itemizing." },
+  { what: "State income tax", src: [["Tax Foundation, 2026 state rates and brackets", TF.url], ["Maryland Comptroller (county rates)", T.SOURCES.mdCounty], ["Utah Tax Commission", T.SOURCES.utah]], status: "Official", how: "All 50 states and DC: brackets, standard deductions, exemptions and the footnote rules that matter at federal pay levels. DC, MD, PA, UT and VA were also entered and checked by hand." },
+  { what: "State tax on military pay", src: [["MyAirForceBenefits state summary (tax year 2025)", T.MIL_SOURCE], ["Code of Virginia 58.1-322.02", "https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-322.02/"]], status: "Official", how: "By state of legal residence: 13 states exempt all active-duty pay, 10 exempt it while you're stationed elsewhere, and Virginia, Oregon and Louisiana give partial subtractions." },
+  { what: "BAS (food allowance)", src: [["DoD FMR Vol. 7A, Chapter 25 (DFAS)", "https://www.dfas.mil/MilitaryMembers/payentitlements/Pay-Tables/BAS/"]], status: "Official", how: "2025 and 2026 monthly rates: officers $320.78 and $328.48, enlisted $465.77 and $476.95." },
+  { what: "BAH (housing allowance)", src: [["DTMO BAH rate files (ASCII), 2025 and 2026", "https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/"], ["Census 2020 ZIP-to-county relationship"]], status: "Official", how: "All 338 housing areas, every grade, with and without dependents. 2026 uses DTMO's May 13, 2026 reissue (it raised Abilene/Dyess AFB). Each county uses the housing area covering most of its people; each base uses the area of a ZIP code on the base. Your exact ZIP can differ near area edges." },
+  { what: "Law enforcement officer (LEO) pay", src: [["OPM 2026 LEO special base rates (ALLLEO file)", "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/"]], status: "Official", how: "2026 is official: the LEO base table, checked against all 58 locality tables cell by cell. 2025 is estimated from it and the 2025 GS table until OPM's 2025 file is added. LEAP is capped by the premium pay limit." },
+  { what: "Trades (FWS) pay", src: [["DoD Wage and Salary Division (DCPAS) wage data", "https://wageandsalary.dcpas.osd.mil/WageData/wagedata/"], ["5 CFR 532, Appendix C (wage area definitions)", "https://www.ecfr.gov/current/title-5/chapter-I/subchapter-B/part-532"]], status: "Official", how: "WG, WL and WS hourly rates for all 175 regular wage schedules in use, FY2025 and FY2026. Each county uses the schedule DCPAS lists for it (Allen County, IN from the regulation, which the DCPAS list leaves out). In Alaska the schedule depends on road distance from Anchorage, Fairbanks or Juneau." },
+];
+const limits = [
+  "Take-home pay is an estimate: no tax credits, itemized deductions or spouse income.",
+  "Local income taxes (New York City, Ohio cities, Pennsylvania local earned-income tax and others) aren't included; Paybook names them when they apply.",
+  "BAH is set by ZIP code; Paybook uses one housing area per county, so near area edges your ZIP may differ.",
+  "State military pay rules cover full exemptions, out-of-state exemptions and the Virginia, Oregon and Louisiana subtractions; combat-zone, overseas and Guard/Reserve-only exclusions aren't included.",
+  "New York and Connecticut's high-income \"recapture\" and the Missouri and Oregon federal-tax deductions aren't included.",
+  "FY2027 trades schedules are delayed by DoD; 2027 trades pay is projected from FY2026.",
+  "Alaska, Hawaii and the territories use overseas (OCONUS) per diem and cost-of-living rules that Paybook doesn't have yet.",
+  `Next year's pay (${YEAR + 1}) is a projection until the official tables come out in December.`,
+];
+---
+<Base title="About the data: where Paybook's numbers come from" description="Every source behind Paybook's federal and military pay, per diem and take-home numbers, with dates, methods and known limits. Not affiliated with the U.S. government." path="/about/data" crumbs={[["About the data", "/about/data"]]}>
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>About</b> · The data</div>
+    <h1>Where the numbers come from</h1>
+    <p class="lede">Paybook is an independent tool. It is <b>not affiliated with the U.S. government</b>. Pay tables come straight from the official orders and agencies below. Anything that isn't official yet is labeled as an estimate wherever it appears.</p>
+    <div class="sources">
+      {rows.map((r) => (
+        <section class="source">
+          <h2>{r.what} <span class={`pb-stamp ${r.status === "Official" ? "pb-stamp--official" : ""}`}>{r.status}</span></h2>
+          <p class="source__from">{r.src.map(([label, url], i) => <>{i > 0 && " · "}{url ? <a class="pb-link" href={url}>{label}</a> : label}</>)}</p>
+          <p>{r.how}</p>
+        </section>
+      ))}
+    </div>
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Known limits</div>
+    <ul class="limits">{limits.map((l) => <li>{l}</li>)}</ul>
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Updates</div>
+    <p>Pay tables change each January, when the President's pay order takes effect. Per diem changes each October 1, at the start of the federal fiscal year. Found a number that doesn't match an official source? That's a bug. Please report it.</p>
+  </main>
+</Base>

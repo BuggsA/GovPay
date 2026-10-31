@@ -102,7 +102,7 @@
     if (status === "verified") return '<span class="pb-stamp pb-stamp--official">Official</span>';
     if (status === "projected") return '<span class="pb-stamp pb-stamp--proposed">Proposed</span>';
     if (status === "simulated") return '<span class="pb-stamp pb-stamp--estimate">Simulated</span>';
-    return `<span class="pb-stamp pb-stamp--estimate">${mil ? "BAH estimate" : "Estimate"}</span>`;
+    return '<span class="pb-stamp pb-stamp--estimate">Estimate</span>';
   }
   function placeName(id) { return G.location(id).name; }
   function sourceLine(year) { return year === 2025 ? "EO 14132" : year === 2026 ? "EO 14368" : "projected"; }
@@ -141,7 +141,7 @@
   function setMe(p, assumed) { state.me = p; state.assumed = assumed || []; state.preview = null; state.editing = false; state.draft = null; save(); render(); }
   function pickFromSearch(r) {
     if (r.locId) state.loc = r.locId;
-    if (r.kind === "profile") setMe(r.profile, r.assumed);
+    if (r.kind === "profile") { state.posting = null; setMe(r.profile, r.assumed); }
     else if (r.kind === "posting") { state.posting = r; setMe({ system: r.system, grade: r.grades[0], step: 1, leap: r.system === "LEO", schedule: r.schedule }, ["step 1"]); }
     else if (r.kind === "place" && state.me) { save(); render(); }
   }
@@ -186,7 +186,7 @@
         <li class="pb-ledger__total"><span>Total</span><span>${rowAmt(r.annual)}</span></li></ul>
       ${yoy != null ? `<p style="margin:var(--s3) 0 0;font-size:15px"><span class="pb-delta ${yoy >= 0 ? "pb-delta--up" : "pb-delta--down"}">${yoy >= 0 ? "+" : "−"}${f.usd(Math.abs(yoy))}</span> a year compared with ${state.year - 1} <span style="color:var(--ink-2)">(${(yoy / prev.annual * 100).toFixed(1)}%)</span></p>` : ""}
       <div id="th"></div>
-      <div class="pb-stub__foot"><span>paybook · ${sourceLine(state.year)}${mil ? " · BAH est." : ""} · take-home est.</span><span>Not affiliated with the U.S. government</span></div>`;
+      <div class="pb-stub__foot"><span>paybook · ${sourceLine(state.year)}${mil ? (r.mil && r.mil.bahStatus === "verified" ? " · BAH: DTMO" : " · BAH est.") : ""} · take-home est.</span><span>Not affiliated with the U.S. government</span></div>`;
     renderTakeHome(r, p);
     el.querySelectorAll("[data-per]").forEach((b) => (b.onclick = () => { state.period = b.dataset.per; state.periodTouched = true; renderStub(); }));
     $("#notes").innerHTML = `${state.assumed.length ? `<p class="sub" style="margin:var(--s2) 0"><b style="color:var(--ink)">Assumed:</b> ${esc(state.assumed.join(", "))}. Change it above.</p>` : ""}
@@ -201,19 +201,20 @@
     if (t.state === "MD" && !t.county) t.county = "Montgomery";
     return Object.assign({}, t, { dutyState: loc.state });
   }
-  // "Howard County, MD" -> "Howard"; "Baltimore city, MD" -> "Baltimore City"; "Baltimore County, MD" -> "Baltimore County"
+  // "Howard County, MD" (or Columbia, MD, in Howard) -> "Howard"; "Baltimore city, MD" -> "Baltimore City"
   function mdCountyOf(loc) {
-    if (loc.kind !== "county" || loc.state !== "MD") return null;
-    if (loc.short === "Baltimore city") return "Baltimore City";
-    if (loc.short === "Baltimore County") return "Baltimore County";
-    const n = loc.short.replace(/ County$/, "");
+    if (loc.state !== "MD" || !(loc.kind === "county" || loc.census)) return null;
+    const c = loc.census ? loc.county : loc.short;              // a Census city uses its main county
+    if (c === "Baltimore city") return "Baltimore City";
+    if (c === "Baltimore County") return "Baltimore County";
+    const n = c.replace(/ County$/, "");
     return T.MD_COUNTIES[n] != null ? n : null;
   }
   const round10 = (n) => f.usd(Math.round(n / 10) * 10);
   function renderTakeHome(r, p) {
     const el = $("#th"); if (!el) return;
     const mil = p.system === "MIL", o = taxOpts(), e = T.estimate(T.payFrom(r, p), o);
-    const stName = o.state === "NONE" ? "no state income tax" : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/City$/.test(o.county) ? "" : " County"}` : "");
+    const stName = o.state === "NONE" ? "no state income tax" : T.STATES[o.state] && T.STATES[o.state].none ? `${T.STATES[o.state].name}: no state income tax` : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/(City|County)$/.test(o.county) ? "" : " County"}` : "");
     const parts = [o.filing === "mfj" ? "Married, one income" : "Single", "standard deduction", stName];
     if (!mil) parts.push(`FERS ${(+o.fers + (p.system === "LEO" ? 0.5 : 0)).toFixed(1)}%`);
     parts.push(`TSP ${o.tspPct}% ${o.tspType === "roth" ? "Roth" : "traditional"}`);
@@ -232,7 +233,7 @@
           ${e.lines.map((l) => `<li><span>− ${esc(l.label)}</span><span>${f.usd(l.annual / 12)}</span></li>`).join("")}
           <li class="pb-ledger__total"><span>Take-home a month</span><span>${f.usd(e.monthly)}</span></li>
         </ul>
-        <p style="margin:var(--s3) 0 0">Income tax is about ${(e.effectiveIncomeTax * 100).toFixed(1)}% of your gross pay. This is an estimate using ${e.taxYear} rules for every pay year: no tax credits, no itemizing and no spouse income. ${o.state === "PA" ? "Pennsylvania local earned-income tax isn't included yet. " : ""}${mil && o.state !== "PA" && o.state !== "NONE" ? "Some states give service members partial deductions that aren't included; use your own rate if yours does. " : ""}Sources: <a class="pb-link" href="${T.SOURCES.federal}">IRS Rev. Proc. 2025-32</a>, <a class="pb-link" href="${T.SOURCES.states}">2026 state rates</a>${o.state === "MD" ? `, <a class="pb-link" href="${T.SOURCES.mdCounty}">Maryland Comptroller</a>` : ""}${o.state === "UT" ? `, <a class="pb-link" href="${T.SOURCES.utah}">Utah Tax Commission</a>` : ""}.</p>
+        <p style="margin:var(--s3) 0 0">Income tax is about ${(e.effectiveIncomeTax * 100).toFixed(1)}% of your gross pay. This is an estimate using ${e.taxYear} rules for every pay year: no tax credits, no itemizing and no spouse income. ${e.localNote ? `${e.localNote} isn't included. ` : ""}${mil && !e.noStateTax && !T.MIL_RULES[o.state] ? "Combat-zone and other special military exclusions aren't included. " : ""}Sources: <a class="pb-link" href="${T.SOURCES.federal}">IRS Rev. Proc. 2025-32</a>, <a class="pb-link" href="${T.SOURCES.states}">2026 state rates</a>${o.state === "MD" ? `, <a class="pb-link" href="${T.SOURCES.mdCounty}">Maryland Comptroller</a>` : ""}${o.state === "UT" ? `, <a class="pb-link" href="${T.SOURCES.utah}">Utah Tax Commission</a>` : ""}${mil ? `, <a class="pb-link" href="${T.MIL_SOURCE}">state military pay rules</a>` : ""}.</p>
       </div></details>`;
     $("#thEdit").onclick = () => { state.thOpen = !state.thOpen; renderTakeHome(r, p); };
     if (state.thOpen) wireThPanel(r, p);
@@ -281,9 +282,30 @@
     $("#back").onclick = () => { state.preview = null; renderDash(); };
     $("#keep").onclick = () => { state.me = state.preview; state.preview = null; save(); renderDash(); };
   }
+  // A decoded job posting (GS-0343-09/11/12): pay at each grade on it, here. Tap a grade to preview it.
+  function renderPosting(el) {
+    let box = $("#postingCard");
+    if (!box) { box = document.createElement("div"); box.id = "postingCard"; el.parentNode.insertBefore(box, el); }
+    const j = state.posting, me = state.me;
+    if (!j || !me || me.system !== j.system) { box.innerHTML = ""; return; }
+    const top = j.grades[j.grades.length - 1];
+    const rows = j.grades.map((g, i) => {
+      const prof = Object.assign({}, me, { grade: g, step: 1 }), r = G.compute(prof, state.year, state.loc), r10 = G.compute(Object.assign({}, prof, { step: 10 }), state.year, state.loc);
+      const role = j.grades.length === 1 ? "The grade on this posting" : i === 0 ? "Entry grade" : g === top ? "Full performance level (top of the ladder)" : "Next on the ladder";
+      const cur = me.grade === g && !state.preview;
+      return `<li class="${cur ? "is-you" : ""}"><button type="button" data-g="${g}"><span class="pb-ladder__name">${esc(j.schedule)}-${g} · step 1</span>
+        <span class="pb-ladder__when">${esc(role)} · up to ${f.usd(r10.annual)} at step 10</span><span class="pb-delta">${f.usd(r.annual)}<small>a year</small></span></button></li>`;
+    }).join("");
+    const notes = [].concat(j.retired ? ["USAJOBS lists this series as retired."] : [], j.assumed.filter((a) => !/^step/.test(a)).map((a) => a.charAt(0).toUpperCase() + a.slice(1) + "."));
+    box.innerHTML = `<div class="pb-posting"><div class="pb-posting__head"><span><b>Job posting</b> · ${esc(j.schedule)}-${esc(j.series)}${j.seriesName ? " · " + esc(j.seriesName) : ""}</span><button type="button" class="pb-link" id="postingClear">Clear</button></div>
+      <ol class="pb-ladder">${rows}</ol>${notes.length ? `<p class="pb-posting__note">${esc(notes.join(" "))}</p>` : ""}</div>`;
+    box.querySelectorAll("button[data-g]").forEach((b) => (b.onclick = () => { const g = +b.dataset.g; state.preview = g === me.grade ? null : Object.assign({}, me, { grade: g, step: 1 }); renderDash(); $("#stub").scrollIntoView({ behavior: "smooth", block: "center" }); }));
+    $("#postingClear").onclick = () => { state.posting = null; renderLadder(); };
+  }
   function renderLadder() {
     const p = shown(), now = G.compute(p, state.year, state.loc), items = G.progression(p, state.year, state.loc), mil = p.system === "MIL";
     const el = $("#ladder");
+    renderPosting(el);
     el.innerHTML = `<li class="is-you"><div class="pb-rung"><span class="pb-ladder__name">${esc(now.title)}</span><span class="pb-ladder__when">${state.preview ? "The level you're previewing" : "Where you are now"}</span><span class="pb-delta">${state.preview ? "Preview" : "You"}</span></div></li>` +
       (items.length ? items.map((x, i) => `<li><button type="button" data-i="${i}"><span class="pb-ladder__name">${esc(x.title)}</span>
         <span class="pb-ladder__when">${esc(KIND[x.kind])} · ${esc(x.when)}</span>
@@ -347,7 +369,9 @@
           return `<td class="${you ? "is-you" : ""}" ${you ? "" : `data-pick='${JSON.stringify({ system: "FWS", schedule: sch, grade: g, step: s })}'`}>${f.usd2(G.fws(state.year, sch, g, s, state.loc).hourly)}</td>`;
         }).join("")}</tr>`;
       });
-      html += `</tbody><caption>${sch} hourly rates · <span class="pb-stamp pb-stamp--estimate">Simulated</span> Trades pay needs wage-area data, which isn't in yet.</caption></table></div>`;
+      const r0 = G.fws(state.year, sch, 1, 1, state.loc);
+      const st = r0.status === "verified" ? `<span class="pb-stamp pb-stamp--official">Official</span> FY${state.year} schedule, effective ${esc(fmtDay(r0.effective))}` : r0.status === "projected" ? `<span class="pb-stamp pb-stamp--proposed">Projected</span> from the FY${state.year - 1} schedule` : r0.needsData ? "Loading wage schedules…" : '<span class="pb-stamp pb-stamp--estimate">Estimate</span>';
+      html += `</tbody><caption>${sch} hourly rates for ${esc(r0.areaName)} · ${st}. Source: DoD Wage and Salary Division (DCPAS).</caption></table></div>`;
     } else {
       const s = G.ses(state.year), ex = G.executiveSchedule(state.year);
       html += `<div class="facts">
@@ -358,7 +382,7 @@
         <p class="sub">${esc(s.note)} Level IV (${f.usd(ex.IV)}) also caps GS pay including locality. Source: ${sourceLine(state.year)}</p>`;
     }
     el.innerHTML = html;
-    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; renderTab(); }));
+    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; if (needsFws()) loadFws(); renderTab(); }));
     el.querySelectorAll("[data-pick]").forEach((td) => (td.onclick = () => pick(JSON.parse(td.dataset.pick))));
   }
 
@@ -373,7 +397,8 @@
       const w = G.bah(state.year, g, true, state.loc).monthly, wo = G.bah(state.year, g, false, state.loc).monthly, yours = a.system === "MIL" && a.mgrade === g;
       html += `<tr class="${yours ? "is-yours" : ""}"><th scope="row">${g}</th><td class="${yours && a.deps ? "is-you" : ""}">${f.usd(w)}</td><td class="${yours && !a.deps ? "is-you" : ""}">${f.usd(wo)}</td><td>${f.usd(w * 12)}</td></tr>`;
     });
-    el.innerHTML = html + `</tbody><caption>${state.year} monthly BAH · <span class="pb-stamp pb-stamp--estimate">Estimate</span> Real DTMO rates are on the way.</caption></table></div>`;
+    const st = first.status === "verified" ? '<span class="pb-stamp pb-stamp--official">Official</span> DTMO rate files' : first.status === "projected" ? '<span class="pb-stamp pb-stamp--proposed">Projected</span> from the latest DTMO rates' : '<span class="pb-stamp pb-stamp--estimate">Estimate</span>';
+    el.innerHTML = html + `</tbody><caption>${state.year} monthly BAH for ${esc(first.mhaName)} · ${st}. BAS: DoD FMR Vol. 7A, Ch. 25. O-8 and above get the O-7 rate.</caption></table></div>`;
   }
 
   function tabTravel(el) {
@@ -425,7 +450,21 @@
 
   // ------------------------------------------------------------ layout pieces
   let railPicker, sheetPicker, yearSw, ask;
+  // Trades (FWS) schedules are a separate data file (about 125 KB compressed), loaded only when needed.
+  let fwsLoading = false;
+  function needsFws() { return !(window.GOVPAY_DATA && window.GOVPAY_DATA.fws) && (shown().system === "FWS" || state.tableKind === "FWS"); }
+  function loadFws() {
+    if (fwsLoading) return; fwsLoading = true;
+    const near = document.querySelector('script[src*="data/bah.js"]');
+    const sc = document.createElement("script");
+    sc.src = near ? near.getAttribute("src").replace("bah.js", "fws.js") : "shared/data/fws.js";
+    sc.onload = () => renderDash();
+    sc.onerror = () => { fwsLoading = false; };
+    document.head.appendChild(sc);
+  }
+  const fmtDay = (iso) => (iso ? new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "");
   function renderDash() {
+    if (needsFws()) loadFws();
     renderPreviewBar(); renderControls(); renderStub(); renderLadder(); renderPlaceBtn(); renderTab();
     if (railPicker) railPicker.set(state.loc);
     if (sheetPicker) sheetPicker.set(state.loc);

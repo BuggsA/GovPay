@@ -19,9 +19,17 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
       - run: npm ci
+      - name: Reuse drawn link-preview images
+        uses: actions/cache@v4
+        with:
+          path: site/node_modules/.cache/paybook-og
+          key: og-${{ hashFiles('site/src/lib/og.mjs', 'site/src/lib/cards.mjs', 'shared/data/*.js') }}
+          restore-keys: og-
       - run: npm test
       - run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: "1"
+      - name: Page budget, tags and internal links
+        run: npm run check
       - name: Page count
         run: echo "Built $(find dist -name '*.html' | wc -l) pages"

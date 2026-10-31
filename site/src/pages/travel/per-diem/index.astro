@@ -1,0 +1,40 @@
+---
+// Per diem hub: the standard rate and every state. /travel/per-diem
+import Base from "../../../layouts/Base.astro";
+import { f, PD_FY, PD_SOURCE, pdStates, pdStandard, pdFetchedAt, mieTier } from "../../../lib/engine.mjs";
+
+const std = pdStandard(), states = pdStates();
+const tier = mieTier(PD_FY, std.mie);
+const all = states.flatMap((s) => s.areas);
+const top = all.slice().sort((a, b) => b.max - a.max)[0];
+const title = `FY${PD_FY} per diem rates by state: lodging and meals (M&IE)`;
+const description = `Federal travel per diem for FY${PD_FY} (Oct ${PD_FY - 1} to Sep ${PD_FY}): the standard rate is ${f.usd(std.lodging[0])} lodging plus ${f.usd(std.mie)} meals a day, and ${all.length} areas have higher rates. From GSA.`;
+---
+<Base title={title} description={description} path="/travel/per-diem" crumbs={[["Per diem", "/travel/per-diem"]]}>
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>FY{PD_FY}</b> · Oct {PD_FY - 1} to Sep {PD_FY} · Lower 48 and DC</div>
+    <h1>Per diem rates, FY{PD_FY}</h1>
+    <p class="lede">On official travel you get up to a set amount a night for lodging, plus a flat daily amount for meals and incidentals (M&IE). Most of the country uses the <b>standard rate: {f.usd(std.lodging[0])} lodging + {f.usd(std.mie)} M&IE</b>. {all.length} areas have their own, higher rates, up to {f.usd(top.max)} a night in {top.city}.</p>
+
+    <div class="pb-section-label"><b>01</b> · The standard rate</div>
+    <ul class="pb-ledger pd-std">
+      <li><span>Lodging, a night (max)</span><span>{f.usd(std.lodging[0])}</span></li>
+      <li><span>Meals and incidentals, a day</span><span>{f.usd(std.mie)}</span></li>
+      {tier && <li><span>First and last travel day (75%)</span><span>{f.usd2(tier.firstLastDay)}</span></li>}
+      {tier && <li><span>M&IE breakdown</span><span>Breakfast {f.usd(tier.breakfast)} · lunch {f.usd(tier.lunch)} · dinner {f.usd(tier.dinner)} · incidentals {f.usd(tier.incidental)}</span></li>}
+    </ul>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · By state</div>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">State</th><th scope="col">Areas with their own rate</th><th scope="col">Highest lodging</th><th scope="col">Highest M&IE</th></tr></thead>
+        <tbody>
+          {states.map((s) => (
+            <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/travel/per-diem/${s.slug}`}>{s.name}</a></th><td>{s.areas.length || "None (standard rate)"}</td><td>{f.usd(Math.max(std.lodging[0], ...s.areas.map((a) => a.max)))}</td><td>{f.usd(Math.max(std.mie, ...s.areas.map((a) => a.mie)))}</td></tr>
+          ))}
+        </tbody>
+        <caption>FY{PD_FY} rates as of {pdFetchedAt(PD_FY)}. Alaska, Hawaii and U.S. territories use overseas (OCONUS) rates from DTMO, which Paybook doesn't have yet. Source: <a class="pb-link" href={PD_SOURCE.url}>{PD_SOURCE.label}</a>.</caption>
+      </table>
+    </div>
+  </main>
+</Base>

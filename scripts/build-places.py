@@ -69,7 +69,7 @@ def parse_cfr(path):
         extras = []
         if "also including" in defn:
             tail = defn.split("also including", 1)[1]
-            extras = re.findall(r"([A-Z][A-Za-z.' \-]+? (?:County|Parish|city|Borough|Census Area|Municipality|City and Borough)), ([A-Z]{2})", tail)
+            extras = re.findall(r"([A-Z][A-Za-z.' \-]+? (?:County|Parish|city|City|Borough|Census Area|Municipality|City and Borough)), ([A-Z]{2})", tail)   # "City": Carson City, NV
         out.append({"num": int(num), "name": name.strip(), "core": core, "state": state_only.group(1) if state_only else None,
                     "extras": [(n.strip(), st) for n, st in extras], "rest": "Rest of U.S" in name})
     return out

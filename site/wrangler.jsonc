@@ -1,0 +1,13 @@
+// Cloudflare Workers (static assets only): Workers Builds runs `npm run build`, then `npx wrangler deploy`,
+// which uploads dist/. "name" must match the Worker's name in the Cloudflare dashboard.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "paybook",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /civilian/gs/12/san-diego-ca is served from san-diego-ca.html (Astro build.format "file")
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

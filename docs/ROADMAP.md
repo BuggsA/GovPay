@@ -29,7 +29,7 @@ Based on [CONCEPT.md](CONCEPT.md), [CONCEPT-REVIEW.md](CONCEPT-REVIEW.md), [DESI
 Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (GSA, FY2025–27, monthly refresh) · ◐ GS, locality, SES, EX and military basic pay (official pay orders, 2025–26).
 
 ### 1.1 GS family from OPM · M · ◐
-> **Progress (Oct 31, 2026):** GS base pay, all 58 locality areas, SES and the Executive Schedule for 2025 and 2026 are now **official**, from the pay Executive Orders. Still open: LEO special base rates (OPM-only table) and the 2026 LEO 3.8% special rates.
+> **Progress (Oct 31, 2026):** GS base pay, all 58 locality areas, SES and the Executive Schedule for 2025 and 2026 are now **official**, from the pay Executive Orders. LEO 2026 is official too (OPM's ALLLEO file, checked against all 58 locality tables); it showed the engine's assumed extra 2.8% LEO raise was wrong for every grade. Still open: OPM's 2025 LEO file (2025 is derived for now).
 - **Goal:** real civilian pay nationwide.
 - **Includes:** GS base tables plus **all ~58 locality areas** for 2025 and 2026; the Executive Schedule and SES range; LEO special base rates; a converter `scripts/convert-opm.mjs` that writes `data/opm/<year>/*.json`.
 - **Done when:**
@@ -39,13 +39,14 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Needs:** you upload the OPM files to `data/raw/opm/<year>/`. OPM blocks automated downloads.
 
 ### 1.2 Military pay from DFAS · S · ◐
-> **Progress (Oct 31, 2026):** basic pay for 2025 and 2026 is **official**, from the pay orders, and checked cell by cell (+3.8% everywhere except the April 2025 junior enlisted raise). Still open: BAS (DFAS) and the April 2025 junior enlisted table.
+> **Progress (Oct 31, 2026):** basic pay for 2025 and 2026 is **official**, from the pay orders, and checked cell by cell (+3.8% everywhere except the April 2025 junior enlisted raise). BAS 2025 and 2026 is official (DoD FMR Vol. 7A, Ch. 25). Still open: the April 2025 junior enlisted table.
 - **Goal:** real basic pay and BAS.
 - **Includes:** 2025 and 2026 basic pay tables (all grades and YOS columns, plus O-1E to O-3E) and BAS. A converter writes `data/dfas/<year>.json`.
 - **Done when:** a test checks 10 published cells, and the anchor-point estimates are deleted.
 - **Needs:** you upload the DFAS PDFs to `data/raw/dfas/`.
 
-### 1.3 BAH from DTMO · M · ☐
+### 1.3 BAH from DTMO · M · ◐
+> **Progress (Oct 31, 2026):** DTMO's 2025 and 2026 BAH ASCII files (`data/raw/dtmo/`, as downloaded) are converted by `scripts/convert-bah.py`: all 338 housing areas, every grade, with and without dependents. 2026 uses DTMO's May 13, 2026 reissue (only Abilene/Dyess AFB changed). Every county gets the area covering most of its people (Census ZIP-to-county + ACS population); bases use a ZIP on the base. Spot checks match published figures (San Diego E-5: $3,987 → $3,975 / $3,147). The old hand-entered BAH was badly off (14 of 19 area codes didn't exist; DC E-5 was $3,560 vs $3,132) and is gone. 338 BAH pages. **Still open:** exact lookup by ZIP code in the app.
 - **Goal:** real housing allowance everywhere.
 - **Includes:**
   - BAH rates by housing area, grade and dependents, for 2025 and 2026
@@ -55,7 +56,7 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Needs:** you upload the DTMO BAH ZIP files to `data/raw/dtmo/`.
 
 ### 1.4 Places: one place → three keys · M · ◐
-> **Progress (Oct 31, 2026):** every U.S. county now has its real GS locality area (5 CFR 531.603 + Census metro definitions) and GSA per diem area; the simulated states are gone. Search finds counties ("GS-12 San Diego", "howard county md") and offers each match when a name is ambiguous. Maryland counties set their own county tax. **Still open:** BAH by ZIP (needs DTMO), city names (e.g. "Houston" → Harris County), Alaska/Hawaii per diem.
+> **Progress (Oct 31, 2026):** every U.S. county now has its real GS locality area (5 CFR 531.603 + Census metro definitions) and GSA per diem area; the simulated states are gone. Search finds counties ("GS-12 San Diego", "howard county md") and offers each match when a name is ambiguous. Maryland counties set their own county tax. City names are in too: `scripts/build-cities.py` adds 6,752 cities, towns and census-designated places (5,000+ people, incl. Arlington VA, Bethesda MD) from Census files; each takes its main county's keys, search ranks them by population, and 248 places that span differently-mapped counties say which county they use. **Still open:** BAH by ZIP (needs DTMO), a military installations list, Alaska/Hawaii per diem.
 - **Goal:** the picker knows every place, and each place knows its GS area, BAH area and per diem area.
 - **Includes:**
   - County → GS locality, from OPM's locality definitions
@@ -65,8 +66,8 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Done when:** for 20 sample places (bases, cities and ZIPs), all three keys are correct, and the UI notes when they differ (for example, Quantico).
 - **Needs:** 1.1 and 1.3, plus checking that census.gov is reachable.
 
-### 1.5 State tax data · S · ◐
-> **Progress (Oct 31, 2026):** 2026 federal (IRS Rev. Proc. 2025-32), FICA, and state rules for DC, MD (+ every county, from the Comptroller), PA, UT (Tax Commission credit), VA are in `shared/tax.js` with sources. Still open: the other 45 states and PA local taxes.
+### 1.5 State tax data · S · ☑
+> **Progress (Oct 31, 2026):** every state and DC. `scripts/convert-statetax.py` turns Tax Foundation's 2026 workbook (`data/raw/taxfoundation/`) into `data/tax/2026.json` and `shared/data/statetax.js`, with self-checks. The engine applies brackets, standard deductions, exemptions and exemption credits, plus the footnote rules that matter at federal pay levels (AL federal-tax deduction and sliding deduction, AR low-income table, CT exemption and 2% band phase-outs, OH exemption tiers, WI deduction phase-out, IL exemption cap, VT 3% minimum). DC, MD, PA, UT and VA keep their hand-checked entries, and a test confirms the generated data matches them. State military pay rules (MyAirForceBenefits, tax year 2025; VA statute) are in too: full, out-of-state and partial exemptions by state of legal residence. **Still open:** combat-zone/overseas/Guard-only exclusions, local income taxes (NYC, Ohio cities...; the app names them as not included), NY/CT recapture above ~$100k, MO and OR federal-tax deductions.
 - **Goal:** inputs for take-home pay.
 - **Includes:** 2026 brackets, standard deductions and military-pay exemptions for every state, starting from Tax Foundation's table and checked against state sources for the focus states.
 - **Done when:** `data/tax/2026.json` exists, with a source link for each state.
@@ -125,7 +126,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** "GS-12 step 5 DC", "E-5 Norfolk" and "LEO GS-11 Quantico" each go from typing to a result in one step, and a reload restores it.
 - **Needs:** 2.2, plus real data from 1.1 and 1.2.
 
-### 3.2 Next level + preview · S · ☐
+### 3.2 Next level + preview · S · ◐
+> **Progress (Oct 31, 2026):** the ladder (next step, promotion, top of grade, longevity raise, next rank, tap to preview) is live in Paybook. Promotions now use the exact two-step rule (5 CFR 531.214), one grade at a time; 5 hand-checked cases are tested (the old average-step shortcut was wrong for 4 GS-1 steps). **Still open:** porting it to the Astro home page design (3.1).
 - **Goal:** "What's my next raise?"
 - **Includes:** a ladder of the next step, the promotion (two-step rule), the top of grade, the longevity raise and the next rank. Tapping a rung previews it, and "Back to my pay" returns.
 - **Done when:** a test checks 5 GS promotion results against the OPM rule.
@@ -146,7 +148,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Needs:** 3.1.
 
 ### 3.5 Take-home v1 · M · ◐
-> **Progress (Oct 31, 2026):** live on Paybook for the five focus states: filing status, state (legal residence for military, with PA's out-of-state exemption), Maryland county, FERS (regular and LEO rates), TSP traditional or Roth, health premium, own-rate override, and a "where your pay goes" breakdown. Checked against a hand calculation (GS-12/5 DC: $6,204 a month).
+> **Progress (Oct 31, 2026):** live on Paybook for every state (state tax from 1.5): filing status, state (legal residence for military, with PA's out-of-state exemption), Maryland county, FERS (regular and LEO rates), TSP traditional or Roth, health premium, own-rate override, and a "where your pay goes" breakdown. Checked against a hand calculation (GS-12/5 DC: $6,204 a month).
 - **Goal:** an honest estimate of take-home pay.
 - **Includes:**
   - Federal tax, Social Security/Medicare, FERS (0.8% / 3.1% / 4.4%), TSP % and state tax
@@ -160,7 +162,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Phase 4: Reach (search and sharing)
-### 4.1 Page templates + sitemap · M · ☐
+### 4.1 Page templates + sitemap · M · ◐
+> **Progress (Oct 31, 2026):** 1,319 pages: GS grade × area, a table per area, each GS grade across all 58 areas, a page per military pay grade (27), the pay chart, per diem (hub, 49 state pages, 288 area pages by month), sitemap, canonical tags and breadcrumb structured data. `npm run check` (in CI) enforces the 50 KB HTML budget (largest page 21 KB), title/description/canonical tags and zero broken internal links. **Still open:** BAH by area (needs DTMO), rank + base pages, Lighthouse check.
 - **Goal:** pages that search engines can list.
 - **Includes:**
   - Pages for each GS grade × locality area, each GS table, each military rank (with and without a base), BAH by area, per diem by area, the military pay chart, and a GS grade across all areas
@@ -168,7 +171,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** the build produces every page under a size budget (≤ 50 KB HTML + JS per page), and Lighthouse SEO scores ≥ 95.
 - **Needs:** Phase 1, plus 3.1–3.4.
 
-### 4.2 Share card + link previews · S · ☐
+### 4.2 Share card + link previews · S · ◐
+> **Progress (Oct 31, 2026):** every page has its own 1200×630 link-preview image showing its number (e.g. "GS-12 pay in San Diego, CA: $102,246 to $132,923"), drawn at build time in the stub design (`src/lib/cards.mjs` → `scripts/og-images.mjs`, satori + resvg, 4 threads, cached by content so a rebuild only redraws changed cards). `og:image` and `twitter:card` tags on every page; `npm run check` fails if an image is missing. **Still open:** check previews in Slack, iMessage and X once deployed; a share button and screenshot card on the calculator.
 - **Goal:** results people actually share.
 - **Includes:**
   - The stub as a screenshot-ready card
@@ -177,7 +181,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** a pasted link shows the right number in its preview in Slack, iMessage and X.
 - **Needs:** 4.1.
 
-### 4.3 Job-posting decoder · S · ☐
+### 4.3 Job-posting decoder · S · ☑
+> **Done (Oct 31, 2026):** the USAJOBS occupational series list (822 series, received by hand) is in `data/raw/usajobs/` → `scripts/convert-series.py` → `shared/data/series.js`. The parser reads `GS-0343-09/11/12` and USAJOBS ranges (`GS-0343-07-11` → 7/9/11), flags retired series, and defaults law-enforcement series (0007, 0082, 0083, 1811, 1895, 1896) to LEO pay with a note. The app shows a "Job posting" ladder with pay at each grade where you work; tap one to preview it. `/jobs` hub + 442 series pages. 10 real posting strings tested.
 - **Goal:** turn "GS-0343-09/11/12" into a career ladder with pay at each grade.
 - **Includes:** the OPM occupational series list, paste-in parsing, the ladder with pay for the chosen location, and `/jobs/<series>` pages.
 - **Done when:** 10 real USAJobs strings decode correctly.
@@ -189,7 +194,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** the 5 articles are published, with sources and "as of" dates.
 - **Needs:** 2.2.
 
-### 4.5 About the data page · S · ☐
+### 4.5 About the data page · S · ◐
+> **Progress (Oct 31, 2026):** `/about/data` lists every source with its date, status, method and known limits, linked from every page's footer. **Still open:** per-number links into it.
 - **Goal:** trust.
 - **Includes:** each source, its "as of" date, the methods, the known limits, and "Not affiliated with the U.S. government".
 - **Done when:** every number on the site links back to this page.
@@ -226,7 +232,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Later (not version 1)
-- FWS trades pay (needs a wage-area data source)
+- ☑ FWS trades pay: done Oct 31, 2026 (DCPAS wage data, every county mapped; wage-area pages still to add)
 - Full LEO special-rate tables and SES detail
 - Overseas pay: Alaska, Hawaii and the territories first, then OHA and OCONUS COLA (see [OCONUS.md](OCONUS.md))
 - Inflation view: "your pay vs. inflation since 2010"

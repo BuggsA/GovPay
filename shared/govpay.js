@@ -35,7 +35,6 @@
   // Civilian GS anchor table = 2025. Military anchor table = 2026.
   const RAISES = {
     gs:  { 2025: 0.020, 2026: 0.010, 2027: 0.010 },  // 2027 is an assumption
-    leoExtra: { 2026: 0.028, 2027: 0.0 },            // 2026: +2.8% special LEO adjustment
     mil: { 2025: 0.045, 2026: 0.038, 2027: 0.042 },  // 2027 ECI-based assumption
     bas: { 2025: 0.010, 2026: 0.024, 2027: 0.025 },
     bah: { 2025: 0.054, 2026: 0.042, 2027: 0.040 },
@@ -108,7 +107,9 @@
     priorEnlisted: ["O-1E", "O-2E", "O-3E"],
   };
 
-  const BAS_2026 = { enlisted: 476.95, officer: 328.48 }; // monthly
+  // BAS, monthly, from DoD FMR Vol. 7A, Chapter 25 (DFAS). Later years are projected with RAISES.bas.
+  const BAS = { 2025: { enlisted: 465.77, officer: 320.78 }, 2026: { enlisted: 476.95, officer: 328.48 } };
+  const BAS_YEARS = Object.keys(BAS).map(Number);
 
   // BAH ratio by grade relative to E-5 with dependents (approximates DoD's
   // housing-profile structure). Without-dependents ratio applied on top.
@@ -201,9 +202,13 @@
   }));
   // Every U.S. county (and county equivalent) from shared/data/places.js:
   // REAL GS locality area (5 CFR 531.603) and GSA per diem area for each one.
-  // BAH stays an estimate outside the researched bases until DTMO data is added.
+  // BAH: each county and base gets its DTMO housing area from shared/data/bah.js (scripts/convert-bah.py).
   const ALL_STATES = Object.assign({}, FOCUS_STATES, OTHER_STATES);
   const PLACES = (global.GOVPAY_DATA && global.GOVPAY_DATA.places) || null;
+  const BAH_DATA = (global.GOVPAY_DATA && global.GOVPAY_DATA.bah) || null;
+  const BAH_YEARS = BAH_DATA ? Object.keys(BAH_DATA.years).map(Number).sort() : [];
+  const BAH_COUNTY = BAH_DATA ? BAH_DATA.county.split(",") : null;
+  if (BAH_DATA) LOCATIONS.forEach((l) => { if (BAH_DATA.focus[l.id]) l.bahMha = BAH_DATA.focus[l.id]; });   // DTMO area of a ZIP on each base
   // County FIPS of the researched places, so a county shares its base's BAH and wage area.
   const FOCUS_FIPS = { dc: "11001", "fort-belvoir": "51059", quantico: "51153", dahlgren: "51099", norfolk: "51710", "langley-eustis": "51650",
     richmond: "51760", "fort-gregg-adams": "51149", "fort-meade": "24003", andrews: "24033", aberdeen: "24025", baltimore: "24510",
@@ -219,12 +224,13 @@
   });
   if (PLACES) {
     PLACES.areas.forEach((n) => { if (!GS_LOCALITIES[n]) GS_LOCALITIES[n] = { name: n, pct: 0, status: "verified" }; });
-    PLACES.counties.forEach(([fips, name, st, ai, pd]) => {
+    PLACES.counties.forEach(([fips, name, st, ai, pd], ci) => {
       const base = byFips[fips];
+      const mha = BAH_COUNTY && BAH_COUNTY[ci] ? BAH_COUNTY[ci] : base ? base.bahMha : "SIM" + st;
       LOCATIONS.push({
-        id: "c" + fips, fips, name: `${name}, ${st}`, short: name, state: st, stateName: ALL_STATES[st] || st, kind: "county",
-        gsLocality: PLACES.areas[ai], fwsArea: base ? base.fwsArea : "SIMF_" + st, bahMha: base ? base.bahMha : "SIM" + st,
-        perDiem: pd, perDiemNA: st === "AK" || st === "HI", status: "approx", simulated: false, bahSimulated: !base,
+        id: "c" + fips, fips, ci, name: `${name}, ${st}`, short: name, state: st, stateName: ALL_STATES[st] || st, kind: "county",
+        gsLocality: PLACES.areas[ai], fwsArea: base ? base.fwsArea : "SIMF_" + st, bahMha: mha,
+        perDiem: pd, perDiemNA: st === "AK" || st === "HI", status: "approx", simulated: false, bahSimulated: !(BAH_COUNTY && BAH_COUNTY[ci]) && !base,
       });
     });
   }
@@ -245,6 +251,8 @@
   function round2(n) { return Math.round(n * 100) / 100; }
   function round100(n) { return Math.round(n / 100) * 100; }
   function mapObj(o, f) { const r = {}; Object.keys(o).forEach((k) => (r[k] = f(o[k]))); return r; }
+  const STATUS_ORDER = ["verified", "approx", "projected", "simulated"];
+  const weakest = (list) => list.reduce((a, b) => (STATUS_ORDER.indexOf(b) > STATUS_ORDER.indexOf(a) ? b : a), "verified");
   function yearStatus(year) { return hasOrder(year) ? "verified" : year > LATEST ? "projected" : "approx"; }
   function factor(series, year, anchor) {
     // cumulative raise multiplier from anchor-year table to `year`
@@ -252,6 +260,21 @@
     if (year > anchor) for (let y = anchor + 1; y <= year; y++) f *= 1 + (series[y] || 0);
     if (year < anchor) for (let y = anchor; y > year; y--) f /= 1 + (series[y] || 0);
     return f;
+  }
+  // Cities, towns and census-designated places (5,000+ people) from Census files: each one takes its
+  // main county's keys. They're found by search; the picker's default list stays the researched places.
+  const CITIES = (global.GOVPAY_DATA && global.GOVPAY_DATA.cities) || null;
+  if (PLACES && CITIES) {
+    const countyLoc = new Map(LOCATIONS.filter((l) => l.kind === "county").map((l) => [l.fips, l]));
+    const focusNames = new Set(LOCATIONS.filter((l) => l.kind !== "county").map((l) => l.state + ":" + l.name.toLowerCase().replace(/,.*$|\s*\(.*\)$/g, "")));
+    CITIES.cities.forEach(([pf, name, ci, pop100, split]) => {
+      const c = countyLoc.get(PLACES.counties[ci][0]);
+      if (!c || focusNames.has(c.state + ":" + name.toLowerCase())) return;   // Richmond, Baltimore... already researched
+      LOCATIONS.push(Object.assign({}, c, {
+        id: "p" + c.fips.slice(0, 2) + pf, name: `${name}, ${c.state}`, short: name, kind: "city", census: true,
+        county: c.short, countyId: c.id, population: pop100 * 100, splitCounties: !!split,
+      }));
+    });
   }
   const LOC_INDEX = new Map(LOCATIONS.map((l) => [l.id, l]));
   // Old links used "sim-xx" for a whole state; send them to that state's first county.
@@ -328,12 +351,19 @@
   // ---------------------------------------------------------------------------
   // LEO (GS-1811 / 1801 etc.)
   // ---------------------------------------------------------------------------
+  // LEO base rates (GS-3 to GS-10 special rates; other grades equal GS) from OPM's ALLLEO file
+  // (shared/data/leo.js). Other years scale the nearest official table by the GS table, cell by cell.
+  const LEO_DATA = (global.GOVPAY_DATA && global.GOVPAY_DATA.leo) || null;
+  const LEO_YEARS = LEO_DATA ? Object.keys(LEO_DATA.years).map(Number).sort() : [];
   function leoBase(year, grade, step) {
-    const gsB = gsBase(year, grade, step);
-    const prem = LEO_PREMIUM[grade] || 0;
-    const extra = factor(RAISES.leoExtra, year, 2025);
-    return Math.round(gsB * (1 + prem) * extra);
+    if (LEO_DATA && LEO_DATA.years[year]) return LEO_DATA.years[year][grade][step - 1];
+    if (LEO_YEARS.length) {
+      const y = LEO_YEARS.reduce((a, b) => (Math.abs(b - year) < Math.abs(a - year) ? b : a));
+      return Math.round(gsBase(year, grade, step) * LEO_DATA.years[y][grade][step - 1] / gsBase(y, grade, step));
+    }
+    return Math.round(gsBase(year, grade, step) * (1 + (LEO_PREMIUM[grade] || 0)));   // rough fallback (old prototypes)
   }
+  const leoStatus = (year) => (LEO_DATA && LEO_DATA.years[year] ? "verified" : year > LATEST ? "projected" : "approx");
   function leo(year, grade, step, locId, opts) {
     opts = opts || {};
     const loc = location(locId);
@@ -342,32 +372,60 @@
     const base = leoBase(year, grade, step);
     const cap = exFor(year).IV;
     const adjusted = Math.min(Math.round(base * (1 + pct / 100)), cap);
-    const leap = opts.leap ? Math.round(adjusted * 0.25) : 0;
-    // LEAP + basic pay is subject to the premium-pay cap; simplified here.
+    // LEAP (25%, 5 U.S.C. 5545a) is premium pay: base + LEAP can't pass the premium pay cap (5 U.S.C. 5547),
+    // the greater of GS-15 step 10 with locality or EX-IV. With locality capped at EX-IV, that's EX-IV.
+    const leapFull = opts.leap ? Math.round(adjusted * 0.25) : 0;
+    const leap = Math.max(0, Math.min(leapFull, cap - adjusted));
     return {
       system: "LEO", grade, step, base, localityPct: pct, localityName: L.name,
-      special: LEO_PREMIUM[grade] ? true : false, adjusted, leap, annual: adjusted + leap,
-      // LEO special base rates are not in the pay order yet (OPM table), so LEO stays approximate.
-      status: L.status === "simulated" ? "simulated" : year > LATEST ? "projected" : "approx",
+      special: grade >= 3 && grade <= 10, adjusted, leap, leapCapped: leap < leapFull, annual: adjusted + leap,
+      status: L.status === "simulated" ? "simulated" : leoStatus(year),
     };
   }
 
   // ---------------------------------------------------------------------------
   // FWS (WG / WL / WS)
   // ---------------------------------------------------------------------------
+  // FWS (trades) pay from DCPAS wage schedules (shared/data/fws.js, scripts/convert-fws.py). The app loads
+  // that file only when someone picks trades pay, so everything here looks the data up at call time.
+  const fwsData = () => (global.GOVPAY_DATA && global.GOVPAY_DATA.fws) || null;
+  const FWS_ROWS = {};
+  function fwsCode(loc) {
+    const d = fwsData(); if (!d) return null;
+    const codes = FWS_ROWS._county || (FWS_ROWS._county = d.county.split(","));
+    let c = loc.kind === "county" ? loc : loc.countyId ? LOC_INDEX.get(loc.countyId) : loc.fips ? LOCATIONS.find((x) => x.kind === "county" && x.fips === loc.fips) : null;
+    return c && c.ci != null ? codes[c.ci] || null : null;
+  }
+  function fwsSchedule(y, code) {
+    const k = y + "|" + code;
+    if (FWS_ROWS[k]) return FWS_ROWS[k];
+    const e = fwsData().years[y] && fwsData().years[y][code];
+    if (!e) return null;
+    const dec = (txt) => txt.split(";").map((row) => { const n = row.split(",").map(Number); for (let i = 1; i < n.length; i++) n[i] += n[i - 1]; return n.map((c) => c / 100); });
+    return (FWS_ROWS[k] = { effective: e[0], WG: dec(e[1]), WL: dec(e[2]), WS: dec(e[3]) });
+  }
   function fws(year, schedule, grade, step, locId) {
     const loc = location(locId);
-    const area = FWS_AREAS[loc.fwsArea];
     const sch = FWS_SCHEDULES[schedule] || FWS_SCHEDULES.WG;
-    const g = Math.min(grade, sch.grades);
-    // WS grades 16..19 extend the curve
-    const step2 = g <= 15 ? FWS_WG_STEP2_2026[g] : FWS_WG_STEP2_2026[15] + (g - 15) * 1.6;
-    const hourly = round2(step2 * sch.factor * area.factor * FWS_STEP_PCT[step - 1] * factor(RAISES.fws, year, 2026));
-    return {
-      system: "FWS", schedule, grade: g, step, hourly, annual: Math.round(hourly * FWS_HOURS_PER_YEAR),
-      areaName: area.name, status: "simulated",
-    };
+    const g = Math.min(grade, sch.grades), st = Math.min(Math.max(step, 1), 5);
+    const code = fwsCode(loc);
+    if (code) {
+      const ys = Object.keys(fwsData().years).map(Number).sort();
+      const y = fwsData().years[year] ? year : year > ys[ys.length - 1] ? ys[ys.length - 1] : ys[0];
+      const s = fwsSchedule(y, code);
+      if (s) {
+        const hourly = round2(s[schedule === "WL" || schedule === "WS" ? schedule : "WG"][g - 1][st - 1] * factor(RAISES.fws, year, y));
+        const area = fwsData().areas[code] || "Wage area " + code;
+        return { system: "FWS", schedule, grade: g, step: st, hourly, annual: Math.round(hourly * FWS_HOURS_PER_YEAR),
+          areaName: area, areaCode: code, effective: s.effective, fy: y, status: year === y ? "verified" : year > y ? "projected" : "approx" };
+      }
+    }
+    const area = FWS_AREAS[loc.fwsArea] || FWS_AREAS["SIMF_" + loc.state];
+    const step2 = g <= 15 ? FWS_WG_STEP2_2026[g] : FWS_WG_STEP2_2026[15] + (g - 15) * 1.6;   // rough curve without the data file
+    const hourly = round2(step2 * sch.factor * area.factor * FWS_STEP_PCT[st - 1] * factor(RAISES.fws, year, 2026));
+    return { system: "FWS", schedule, grade: g, step: st, hourly, annual: Math.round(hourly * FWS_HOURS_PER_YEAR), areaName: area.name, status: "simulated", needsData: !fwsData() };
   }
+
 
   // ---------------------------------------------------------------------------
   // SES / Executive Schedule
@@ -424,17 +482,30 @@
   }
   function bas(year, grade) {
     const type = milGradeType(grade) === "enlisted" ? "enlisted" : "officer";
-    return round2(BAS_2026[type] * factor(RAISES.bas, year, 2026));
+    if (BAS[year]) return BAS[year][type];
+    const anchor = year > Math.max(...BAS_YEARS) ? Math.max(...BAS_YEARS) : Math.min(...BAS_YEARS);
+    return round2(BAS[anchor][type] * factor(RAISES.bas, year, anchor));
   }
+  const basStatus = (year) => (BAS[year] ? "verified" : year > Math.max(...BAS_YEARS) ? "projected" : "approx");
+  // BAH from DTMO's rate files (shared/data/bah.js): exact for the years published, projected
+  // with RAISES.bah after that. Without the data file (old prototypes) the rough placeholder is used.
+  const BAH_GRADE_INDEX = BAH_DATA ? Object.fromEntries(BAH_DATA.grades.map((g, i) => [g, i])) : null;
   function bah(year, grade, withDependents, locId) {
     const loc = location(locId);
-    const m = BAH_MHAS[loc.bahMha];
+    const g = BAH_GRADE_INDEX && (BAH_GRADE_INDEX[grade] != null ? grade : /^O-(8|9|10)$/.test(grade) ? "O-7" : null);  // O-8+ get the O-7 rate
+    if (BAH_DATA && g && BAH_DATA.names[loc.bahMha]) {
+      const ys = BAH_YEARS, y = BAH_DATA.years[year] ? year : year > ys[ys.length - 1] ? ys[ys.length - 1] : ys[0];
+      const row = BAH_DATA.years[y].rates[loc.bahMha];
+      const v = row[BAH_GRADE_INDEX[g] + (withDependents ? 0 : BAH_DATA.grades.length)] * factor(RAISES.bah, year, y);
+      return { monthly: Math.round(v), mhaName: BAH_DATA.names[loc.bahMha], mha: loc.bahMha,
+        status: year === y ? "verified" : year > y ? "projected" : "approx" };
+    }
+    const m = BAH_MHAS[loc.bahMha] || BAH_MHAS["SIM" + loc.state];
     const ratio = BAH_RATIO[grade] || 1;
     const junior = ["E-1", "E-2", "E-3", "E-4"].indexOf(grade) >= 0;
     let v = m.e5 * ratio * factor(RAISES.bah, year, 2026);
     if (!withDependents) v *= junior ? BAH_NODEP.junior : BAH_NODEP.other;
-    // BAH is hand-entered or simulated until the DTMO rate file is added, so never "verified".
-    return { monthly: Math.round(v), mhaName: m.name, mha: loc.bahMha, status: m.simulated ? "simulated" : year > LATEST ? "projected" : "approx" };
+    return { monthly: Math.round(v), mhaName: m.name, mha: loc.bahMha, status: "simulated" };
   }
   // Very rough federal tax advantage of tax-free allowances (BAH + BAS), for
   // illustration only: assumes 12% marginal federal + 4.5% state.
@@ -448,12 +519,12 @@
     const allowancesAnnual = (h.monthly + s) * 12;
     return {
       system: "MIL", grade, type: milGradeType(grade), yos, basic, bah: h.monthly, bas: s,
-      mhaName: h.mhaName, monthly, annual: Math.round(monthly * 12), basicAnnual: Math.round(basic * 12),
+      mhaName: h.mhaName, monthly, annual: round2(monthly * 12), basicAnnual: round2(basic * 12),
       taxAdvantage: taxAdvantage(allowancesAnnual),
       // "Regular Military Compensation"-style figure: cash + tax advantage
       rmc: Math.round(monthly * 12 + taxAdvantage(allowancesAnnual)),
-      basicStatus: yearStatus(year),
-      status: h.status === "simulated" ? "simulated" : year > LATEST ? "projected" : "approx",   // BAH/BAS still approximate
+      basicStatus: yearStatus(year), bahStatus: h.status, basStatus: basStatus(year),
+      status: weakest([yearStatus(year), h.status, basStatus(year)]),   // only "verified" when all three parts are
     };
   }
 
@@ -534,18 +605,21 @@
     if (p.system === "LEO") {
       const r = leo(year, p.grade, p.step, locId, { leap: p.leap });
       const notes = [r.special ? "GS-3 to GS-10 LEOs get special base rates above the regular GS table." : "GS-11 and above use the regular GS base table."];
-      if (year >= 2026) notes.push("2026 includes the extra 2.8% special adjustment for covered law enforcement officers (3.8% total).");
+      notes.push(r.status === "verified" ? `Official ${year} LEO rates (OPM).` : r.status === "projected" ? "Projected from the latest OPM LEO table." : `Estimated from the ${LEO_YEARS.join(", ")} OPM LEO table and the ${year} GS table.`);
       if (p.leap) notes.push("LEAP is 25% availability pay for criminal investigators (GS-1811 and similar).");
+      if (r.leapCapped) notes.push(`Base pay plus LEAP is capped at ${fmt.usd(exFor(year).IV)} a year (premium pay cap, 5 U.S.C. 5547), so LEAP here is less than 25%.`);
       const rows = [{ key: "base", label: r.special ? "LEO special base rate" : "Base pay", annual: r.base },
         { key: "locality", label: `Locality pay (${r.localityPct}%)`, annual: r.adjusted - r.base }];
-      if (r.leap) rows.push({ key: "leap", label: "LEAP (25%)", annual: r.leap });
+      if (r.leap) rows.push({ key: "leap", label: r.leapCapped ? "LEAP (capped)" : "LEAP (25%)", annual: r.leap });
       return { title: `LEO GS-${p.grade} Step ${p.step}`, annual: r.annual, hourly: round2(r.adjusted / 2087), status: r.status, rows, notes };
     }
     if (p.system === "FWS") {
       const r = fws(year, p.schedule, p.grade, Math.min(p.step, 5), locId);
       return { title: `${p.schedule}-${r.grade} Step ${Math.min(p.step, 5)}`, annual: r.annual, hourly: r.hourly, status: r.status,
         rows: [{ key: "base", label: `Hourly ${fmt.usd2(r.hourly)} × ${FWS_HOURS_PER_YEAR} hrs`, annual: r.annual }],
-        notes: [`Wage area: ${r.areaName}.`, "FWS (blue-collar) pay is set hourly by local wage surveys. It has 5 steps instead of 10. Night shift differentials are not included."] };
+        notes: [`Wage area: ${r.areaName}${r.areaCode ? ` (schedule ${r.areaCode})` : ""}.`,
+          r.effective ? `FY${r.fy} wage schedule, effective ${r.effective}${r.status === "projected" ? `, projected to ${year} with an assumed ${(RAISES.fws[year] * 100).toFixed(1)}% raise` : ""}. Source: DoD Wage and Salary Division.` : "Loading the official wage schedules…",
+          "FWS (trades) pay is set hourly by local wage surveys. It has 5 steps instead of 10. Night shift differentials are not included."].concat(location(locId).state === "AK" ? ["In Alaska the schedule depends on road distance (50 miles) from Anchorage, Fairbanks or Juneau, not the county."] : []) };
     }
     if (p.system === "SES") {
       const r = ses(year);
@@ -560,7 +634,7 @@
     return { title: `${p.mgrade} · ${p.yos} yrs`, annual: m.annual, status: m.status, mil: m,
       rows: [{ key: "base", label: "Basic pay", annual: m.basicAnnual },
         { key: "bah", label: `BAH (${p.deps ? "with" : "without"} dependents)`, annual: m.bah * 12, taxFree: true },
-        { key: "bas", label: "BAS", annual: Math.round(m.bas * 12), taxFree: true }],
+        { key: "bas", label: "BAS", annual: round2(m.bas * 12), taxFree: true }],   // keep cents so the monthly line shows the official rate
       notes: [].concat(year === 2025 && ["E-1", "E-2", "E-3", "E-4", "E-5"].indexOf(p.mgrade) >= 0 ? ["2025 basic pay shown is the January rate. Junior enlisted pay rose again on April 1, 2025."] : [], [`Housing area: ${m.mhaName}.`, `BAH and BAS are tax-free. That's worth about ${fmt.usd(m.taxAdvantage)} a year compared with taxable pay (rough estimate).`, "Special and incentive pays (flight, jump, sea, hazardous duty) are not included."]) };
   }
 
@@ -571,14 +645,14 @@
   const GS_STEP_WAIT_YRS = [1, 1, 1, 2, 2, 2, 3, 3, 3];         // step n -> n+1 (52/104/156 weeks)
   const FWS_STEP_WAIT = ["6 months", "18 months", "2 years", "2 years"];
   const yrs = (n) => (n === 1 ? "1 year" : n + " years");
-  // GS two-step promotion rule (simplified, base pay): lowest step of the new
-  // grade that is at least current rate + two step-increments of the old grade.
+  // Two-step promotion rule, 5 CFR 531.214: current rate plus two within-grade increases of the
+  // current grade (above step 8, the step 9-to-10 increase counts as one), then the lowest step of the
+  // next grade at or above it. A multi-grade promotion applies the rule one grade at a time.
   function promoteGS(baseFn, year, grade, step, toGrade) {
     let g = grade, s = step;
     while (g < toGrade) {
-      const cur = baseFn(year, g, s);
-      const inc = (baseFn(year, g, 10) - baseFn(year, g, 1)) / 9; // average step increment
-      const target = cur + 2 * inc;
+      const top = baseFn(year, g, 10), wgi = top - baseFn(year, g, 9);
+      const target = s <= 8 ? baseFn(year, g, s + 2) : top + (s - 8) * wgi;
       let ns = 10;
       for (let k = 1; k <= 10; k++) if (baseFn(year, g + 1, k) >= target) { ns = k; break; }
       g += 1; s = ns;
@@ -602,7 +676,7 @@
         const ladder = [5, 7, 9].indexOf(p.grade) >= 0 && p.grade + 2 <= 15;
         const to = ladder ? p.grade + 2 : p.grade + 1;
         const ns = promoteGS(baseFn, year, p.grade, p.step, to);
-        add("grade", `${pre}GS-${to} Step ${ns}`, ladder ? "Next grade on a two-grade career ladder" : "Promotion to the next grade", "when you're promoted (two-step rule, simplified)", Object.assign({}, p, { grade: to, step: ns }));
+        add("grade", `${pre}GS-${to} Step ${ns}`, ladder ? "Next grade on a two-grade career ladder" : "Promotion to the next grade", "when you're promoted (two-step rule)", Object.assign({}, p, { grade: to, step: ns }));
       }
       if (p.grade === 15) add("role", "Senior Executive Service", "Move into the SES (no locality pay, so it can pay less in high-cost areas)", "if selected for an SES position", { system: "SES", sesPoint: 0 });
       if (p.step < 9) {
@@ -654,13 +728,13 @@
     FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES, ALL_STATES,
     locations: () => LOCATIONS.slice(),
     focusLocations: () => LOCATIONS.filter((l) => !l.simulated),
-    location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,
-    milBasic, milTable, bas, bah, military, milGradeType, perDiem, perDiemArea, fiscalYear, trip, fmt,
+    promoteGS, location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,
+    fwsCode, milBasic, milTable, bas, bah, military, milGradeType, perDiem, perDiemArea, fiscalYear, trip, fmt,
     compute, progression, DEFAULT_PROFILE, FWS_HOURS_PER_YEAR,
     sources: {
       gs: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/",
       leo: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/ (LEO tables)",
-      fws: "https://www.cpms.osd.mil/Subpage/WageSchedules/ (DoD FWS schedules)",
+      fws: "https://wageandsalary.dcpas.osd.mil/BWN/AFWageSchedules/",
       ses: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/ (SES/EX)",
       mil: "https://www.dfas.mil/MilitaryMembers/payentitlements/Pay-Tables/",
       bah: "https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/",

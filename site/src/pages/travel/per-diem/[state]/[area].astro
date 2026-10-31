@@ -1,0 +1,59 @@
+---
+// One per diem area, month by month: /travel/per-diem/virginia/virginia-beach
+import Base from "../../../../layouts/Base.astro";
+import { G, f, PD_FY, PD_SOURCE, FY_MONTHS, pdStates, pdAreas, pdFetchedAt, mieTier, countiesFor } from "../../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return pdStates().flatMap((s) => s.areas.map((a) => ({ params: { state: s.slug, area: a.slug }, props: { s, a } })));
+}
+const { s, a } = Astro.props;
+const prev = pdAreas(PD_FY - 1).find((x) => x.id === a.id) || null;
+const tier = mieTier(PD_FY, a.mie);
+const counties = countiesFor(a.id).map((c) => c.short || c.name);
+const path = `/travel/per-diem/${s.slug}/${a.slug}`;
+const seasonal = a.min !== a.max;
+const title = `${a.city}, ${s.st} per diem (FY${PD_FY}): ${seasonal ? `${f.usd(a.min)}–${f.usd(a.max)}` : f.usd(a.max)} lodging + ${f.usd(a.mie)} M&IE`;
+const description = `FY${PD_FY} federal per diem for ${a.city}, ${s.name} (${a.counties}): lodging ${seasonal ? `${f.usd(a.min)} to ${f.usd(a.max)} a night by month` : `${f.usd(a.max)} a night`}, and ${f.usd(a.mie)} a day for meals and incidentals. From GSA.`;
+const others = s.areas.filter((x) => x.id !== a.id).slice(0, 6);
+---
+<Base title={title} description={description} path={path} crumbs={[["Per diem", "/travel/per-diem"], [s.name, `/travel/per-diem/${s.slug}`], [a.city, path]]}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/travel/per-diem">Per diem</a> / <a href={`/travel/per-diem/${s.slug}`}>{s.name}</a> / {a.city}</nav>
+    <div class="pb-section-label"><b>FY{PD_FY}</b> · {a.city}, {s.st}</div>
+    <h1>{a.city} per diem, FY{PD_FY}</h1>
+    <p class="lede">Federal travelers to {a.city} can be paid up to <b>{seasonal ? `${f.usd(a.min)} to ${f.usd(a.max)}` : f.usd(a.max)}</b> a night for lodging{seasonal && ", depending on the month"}, plus <b>{f.usd(a.mie)}</b> a day for meals and incidentals. This rate covers {a.counties}.</p>
+
+    <article class="pb-stub">
+      <div class="pb-stub__head"><span>Per diem · FY{PD_FY}</span><span class="pb-stamp pb-stamp--official">GSA</span></div>
+      <div class="pb-stub__who">{a.city}, {s.st}<small>{a.counties}</small></div>
+      <div class="pb-stub__number"><span class="hl">{f.usd(a.max + a.mie)}</span></div>
+      <div class="pb-stub__per">a day at most · {f.usd(a.max)} lodging + {f.usd(a.mie)} M&IE{seasonal && " (peak month)"}</div>
+      <ul class="pb-ledger">
+        <li><span>M&IE, full day</span><span>{f.usd(a.mie)}</span></li>
+        {tier && <li><span>M&IE, first and last day (75%)</span><span>{f.usd2(tier.firstLastDay)}</span></li>}
+        {tier && <li><span>Breakfast · lunch · dinner · incidentals</span><span>{f.usd(tier.breakfast)} · {f.usd(tier.lunch)} · {f.usd(tier.dinner)} · {f.usd(tier.incidental)}</span></li>}
+      </ul>
+      <div class="pb-stub__foot"><span>paybook · {PD_SOURCE.label}</span><span>Not affiliated with the U.S. government</span></div>
+    </article>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Lodging by month</div>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Month</th><th scope="col">Lodging a night</th><th scope="col">Lodging + M&IE</th>{prev && <th scope="col">vs FY{PD_FY - 1}</th>}</tr></thead>
+        <tbody>
+          {FY_MONTHS.map((m, k) => {
+            const y = k < 3 ? PD_FY - 1 : PD_FY, l = a.lodging[m.i], d = prev ? l - prev.lodging[m.i] : null;
+            return <tr><th scope="row">{m.name} {y}</th><td>{f.usd(l)}</td><td>{f.usd(l + a.mie)}</td>{prev && <td>{d === 0 ? "same" : <span class={`pb-delta pb-delta--${d > 0 ? "up" : "down"}`}>{d > 0 ? "+" : "−"}{f.usd(Math.abs(d))}</span>}</td>}</tr>;
+          })}
+        </tbody>
+        <caption>Lodging is a maximum before taxes; hotel taxes are reimbursed separately. As of {pdFetchedAt(PD_FY)}. Source: <a class="pb-link" href={PD_SOURCE.url}>{PD_SOURCE.label}</a>.</caption>
+      </table>
+    </div>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Keep exploring</div>
+    <div class="links">
+      {counties.length > 0 && <div><h2>Counties on this rate</h2><ul>{counties.map((c) => <li>{c}</li>)}</ul></div>}
+      <div><h2>More in {s.name}</h2><ul>{others.map((x) => <li><a href={`/travel/per-diem/${s.slug}/${x.slug}`}>{x.city}</a> <span class="muted">{f.usd(x.max)} + {f.usd(x.mie)}</span></li>)}<li><a href={`/travel/per-diem/${s.slug}`}>All {s.name} rates</a></li></ul></div>
+    </div>
+  </main>
+</Base>

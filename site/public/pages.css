@@ -15,3 +15,21 @@
 .muted { color: var(--ink-2); font-size: var(--t-small); }
 .area-full { display: block; font-weight: 400; font-size: 12px; color: var(--ink-2); white-space: normal; }
 .pb-table th[scope=row] a { font-weight: 700; }
+.grades { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0 0 var(--s5); align-items: center; }
+.grades .pb-chip { text-decoration: none; }
+.pd-std { max-width: 560px; }
+.sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--s4) var(--s6); }
+.source { border-top: var(--hair); padding-top: var(--s3); }
+.source h2 { font: 700 var(--t-h3)/1.25 var(--font-display); margin: 0 0 var(--s2); }
+.source h2 .pb-stamp { vertical-align: middle; margin-left: 6px; }
+.source p { margin: 0 0 var(--s2); color: var(--ink-2); }
+.source .source__from { color: var(--ink); font-size: var(--t-small); }
+.limits { padding-left: 1.2em; max-width: 760px; }
+.limits li { margin: var(--s2) 0; }
+.bah-state { margin: var(--s5) 0; }
+.bah-state h2 { font: 700 var(--t-h3)/1.2 var(--font-display); margin: 0 0 var(--s2); }
+.bah-list { list-style: none; padding: 0; margin: 0; columns: 3 220px; column-gap: var(--s5); }
+.bah-list li { break-inside: avoid; padding: 4px 0; }
+.bah-list a { color: var(--ink); font-weight: 600; }
+.links ul.cols { columns: 2 200px; }
+.zips { font: 500 13px/1.7 var(--font-mono); color: var(--ink-2); word-spacing: 4px; }

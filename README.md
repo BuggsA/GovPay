@@ -14,13 +14,13 @@ This repo currently holds **three design prototypes**, which share one data engi
 | `docs/` | Design rationale, data sources and plan, OCONUS notes |
 
 ## The real site (`site/`, Astro)
-`site/` builds the production site: the calculator plus a pre-built page for every GS grade in every locality area, every area's pay table and the military pay chart (931 pages), and a sitemap. It uses the same engine, data and design files as the calculator; `npm run build` copies them in first.
+`site/` builds the production site: the calculator plus pre-built pages for every GS grade in every locality area, every area's pay table, each GS grade nationwide, each military pay grade, the military pay chart, per diem by state and area, and an About-the-data page (1,319 pages), a sitemap, and a link-preview image for every page (drawn after the build and cached in `node_modules/.cache/paybook-og`). It uses the same engine, data and design files as the calculator; `npm run build` copies them in first.
 
 ```bash
-cd site && npm install && npm test && npm run build
+cd site && npm install && npm test && npm run build && npm run check
 ```
 
-To switch a Cloudflare Pages project to it: **Root directory** `site`, **Build command** `npm run build`, **Build output directory** `dist`, environment variable `NODE_VERSION=22`.
+Cloudflare (Workers with static assets, Workers Builds): **Root directory** `site`, **Build command** `npm run build`, **Deploy command** `npx wrangler deploy` (uses `site/wrangler.jsonc`; its `name` must match the Worker's name), build variable `NODE_VERSION=22`, production branch `main`.
 
 ## Run locally
 There is no build step. Open `index.html` directly, or serve the repo:

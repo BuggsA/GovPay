@@ -12,7 +12,7 @@ const grades = Array.from({ length: 15 }, (_, i) => i + 1), steps = Array.from({
 const title = `${YEAR} GS pay table for ${place} (${area.pct.toFixed(2)}% locality)`;
 const description = `Every GS grade and step in the ${area.name} locality area for ${YEAR}, with ${area.pct.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`;
 ---
-<Base title={title} description={description} path={`/civilian/gs/table/${area.slug}`}>
+<Base title={title} description={description} path={`/civilian/gs/table/${area.slug}`} crumbs={[["GS pay", "/civilian/gs"], [place, `/civilian/gs/table/${area.slug}`]]}>
   <main id="main" class="page article wide">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/civilian/gs">GS pay</a> / {place}</nav>
     <div class="pb-section-label"><b>{YEAR}</b> · General Schedule</div>

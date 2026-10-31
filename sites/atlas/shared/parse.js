@@ -14,7 +14,9 @@
   // The engine is looked up when parse() runs, so load order doesn't matter.
 
   // A small sample of OPM occupational series. The full list (~400) comes with the data pipeline.
-  const SERIES = {
+  // Occupational series names: the full USAJOBS list when shared/data/series.js is loaded (looked up at
+  // parse time, so load order doesn't matter), else a small sample.
+  const SAMPLE_SERIES = {
     "0080": "Security Administration", "0132": "Intelligence", "0201": "Human Resources Management",
     "0301": "Miscellaneous Administration and Program", "0343": "Management and Program Analysis",
     "0510": "Accounting", "0560": "Budget Analysis", "0610": "Nurse", "0801": "General Engineering",
@@ -22,6 +24,20 @@
     "1801": "General Inspection, Investigation, Enforcement, and Compliance", "1811": "Criminal Investigation",
     "1896": "Border Patrol Enforcement", "2210": "Information Technology Management",
   };
+  const seriesData = () => (global.GOVPAY_DATA && global.GOVPAY_DATA.series) || null;
+  const seriesNames = () => (seriesData() ? seriesData().names : SAMPLE_SERIES);
+  const leoSeries = () => (seriesData() ? seriesData().leo : ["1811", "1896"]);
+  // "09/11/12" -> [9, 11, 12]; a USAJOBS range "07-11" -> the two-grade ladder 7, 9, 11 below GS-11, else every grade
+  function gradeList(txt) {
+    const r = txt.match(/^(\d{1,2})\s*-\s*(\d{1,2})$/);
+    if (r) {
+      const lo = +r[1], hi = +r[2], out = [];
+      if (hi < lo) return [];
+      for (let g = lo; g <= hi; g += lo >= 5 && hi <= 11 && (hi - lo) % 2 === 0 ? 2 : 1) out.push(g);
+      return out;
+    }
+    return txt.split("/").map((x) => parseInt(x, 10));
+  }
 
   // Common rank names → pay grade. Ambiguous across services, so the first match wins and the UI shows the grade.
   const RANKS = [
@@ -57,7 +73,33 @@
 
   // Returns place ids that match the text, best first. A typed state ("md", "Maryland")
   // counts heavily; researched bases win ties; genuinely ambiguous names (Harris County,
-  // GA and TX) all come back so the UI can offer each one.
+  // GA and TX; Springfield) come back, up to 3, so the UI can offer each one.
+  // Every place's searchable names, built once (the place list never changes while the page is open).
+  let INDEX = null;
+  function placeIndex(G, stateNames) {
+    if (INDEX && INDEX.n === G.locations().length) return INDEX.rows;
+    const rows = G.locations().map((l) => {
+      let names = (ALIASES[l.id] || []).concat([l.name.toLowerCase().replace(/\s*\(.*\)$/, "")]);
+      if (l.kind === "county") {
+        const short = l.short.toLowerCase(), bare = short.replace(/ (county|parish|borough|city and borough|census area|municipality)$/, "");
+        names = names.concat([short, bare + " " + l.state.toLowerCase(), bare + ", " + l.state.toLowerCase()]);
+        if (bare !== short && !stateNames[bare]) names.push(bare);   // "san diego" finds San Diego County; "texas" doesn't find Texas County
+      } else if (l.census) {
+        // "San Buenaventura (Ventura)" -> also "ventura"; "Augusta-Richmond County" -> also "augusta"
+        const short = l.short.toLowerCase(), st = l.state.toLowerCase();
+        const alts = [short, short.replace(/\s*\(.*\)$/, "")];
+        const paren = short.match(/\(([^)]+)\)$/); if (paren) alts.push(paren[1]);
+        const consol = short.match(/^([^-/]+)[-/].*county$/); if (consol) alts.push(consol[1].trim());
+        names = [];
+        alts.forEach((a) => { if (!stateNames[a]) names.push(a); names.push(a + " " + st, a + ", " + st); });
+      }
+      // Researched places win ties; a city beats a same-named county; bigger cities first.
+      const bonus = l.census ? 0.5 + Math.min(0.4, (l.population || 0) / 2e7) : l.kind !== "county" ? 5 : 0;
+      return { l, names: [...new Set(names)].filter((n) => n.length >= 3), bonus };
+    });
+    INDEX = { n: G.locations().length, rows };
+    return rows;
+  }
   function findPlaces(t) {
     const G = global.GovPay;
     const stateNames = {};
@@ -67,27 +109,21 @@
     const tail = t.match(/(?:,\s*|\s)([a-z]{2})\s*$/);
     if (tail && G.ALL_STATES && G.ALL_STATES[tail[1].toUpperCase()]) typedStates.add(tail[1].toUpperCase());
     const best = new Map();
-    G.locations().forEach((l) => {
-      let names = (ALIASES[l.id] || []).concat([l.name.toLowerCase().replace(/\s*\(.*\)$/, "")]);
-      if (l.kind === "county") {
-        const short = l.short.toLowerCase(), bare = short.replace(/ (county|parish|borough|city and borough|census area|municipality)$/, "");
-        names = names.concat([short, bare + " " + l.state.toLowerCase(), bare + ", " + l.state.toLowerCase()]);
-        if (bare !== short && !stateNames[bare]) names.push(bare);   // "san diego" finds San Diego County; "texas" doesn't find Texas County
-      }
+    placeIndex(G, stateNames).forEach(({ l, names, bonus }) => {
       names.forEach((n) => {
-        if (n.length < 3 || !word(t, n)) return;
-        const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + (l.kind !== "county" ? 5 : 0);
+        if (t.indexOf(n) < 0 || !word(t, n)) return;
+        const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + bonus;
         if (!best.has(l.id) || best.get(l.id) < score) best.set(l.id, score);
       });
     });
     if (!best.size) {
       // A state alone picks that state's researched place, if it has one.
-      const l = G.locations().find((x) => x.kind !== "county" && typedStates.has(x.state));
+      const l = G.locations().find((x) => x.kind !== "county" && !x.census && typedStates.has(x.state));
       return l ? [l.id] : [];
     }
     const ranked = [...best.entries()].sort((x, y) => y[1] - x[1]);
     const top = ranked[0][1];
-    return ranked.filter(([, sc]) => sc === top).slice(0, 3).map(([id]) => id);
+    return ranked.filter(([, sc]) => sc > top - 1).slice(0, 3).map(([id]) => id);   // close matches are offered too
   }
   function findPlace(t) { return findPlaces(t)[0] || null; }
 
@@ -114,13 +150,20 @@
     const deps = /\b(with dependents|w\/ ?dep|with dep|married|kids|family)\b/.test(t) ? true : /\b(single|no dependents|without dependents|no dep)\b/.test(t) ? false : null;
 
     // --- job posting: GS-0343-09/11/12, GS-1811-07/09/11/12/13, WG-5803-10
-    const post = t.match(/\b(gs|gm|wg|wl|ws)[- ]?(\d{4})[- ]?((?:\d{1,2})(?:\s?\/\s?\d{1,2})*)\b/);
+    const post = t.match(/\b(gs|gm|wg|wl|ws)[- ]?(\d{4})[- ]?(\d{1,2}\s?-\s?\d{1,2}(?!\d)|\d{1,2}(?:\s?\/\s?\d{1,2})*)\b/);
     if (post) {
-      const grades = post[3].split("/").map((x) => parseInt(x, 10)).filter((g) => g >= 1 && g <= 15);
+      const sched = post[1].toUpperCase(), max = sched === "WS" ? 19 : 15;
+      const grades = [...new Set(gradeList(post[3]))].filter((g) => g >= 1 && g <= max).sort((a, b) => a - b);
       if (grades.length) {
-        const sys = post[1] === "gs" || post[1] === "gm" ? (post[2] === "1811" ? "LEO" : "GS") : "FWS";
-        out.push({ kind: "posting", series: post[2], seriesName: SERIES[post[2]] || null, system: sys, schedule: post[1].toUpperCase(), grades, locId,
-          label: `${post[1].toUpperCase()}-${post[2]} · grades ${grades.join(", ")}`, assumed: SERIES[post[2]] ? [] : ["series name not in the sample list"], score: 10 });
+        const leo = (sched === "GS" || sched === "GM") && leoSeries().indexOf(post[2]) >= 0;
+        const sys = sched === "GS" || sched === "GM" ? (leo ? "LEO" : "GS") : "FWS";
+        const name = seriesNames()[post[2]] || null;
+        const trade = +post[2] >= 2500;
+        const assumed = [].concat(name ? [] : ["series not in the USAJOBS list"], leo ? ["LEO pay, if the position is a law enforcement officer"] : [],
+          trade && sys !== "FWS" ? ["this series is usually a trades (wage grade) job"] : []);
+        out.push({ kind: "posting", series: post[2], seriesName: name, system: sys, schedule: sched, grades, locId,
+          retired: !!(seriesData() && seriesData().retired.indexOf(post[2]) >= 0),
+          label: `${sched}-${post[2]} · grades ${grades.join(", ")}`, assumed, score: 10 });
         return out;
       }
     }
@@ -184,5 +227,5 @@
     return out;
   }
 
-  global.GovPayParse = { parse, SERIES };
+  global.GovPayParse = { parse, get SERIES() { return seriesNames(); } };
 })(typeof window !== "undefined" ? window : globalThis);
