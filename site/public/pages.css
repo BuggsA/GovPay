@@ -37,3 +37,15 @@
 .privacy-list dt { font-weight: 700; margin-top: var(--s3); }
 .privacy-list dd { margin: 2px 0 0; color: var(--ink-2); }
 .optout { display: flex; gap: var(--s3); align-items: center; flex-wrap: wrap; }
+
+/* Home: reference pages under the calculator */
+.home-browse { max-width: var(--page-max); margin: var(--s8) auto 0; padding: 0 var(--gutter); }
+.home-browse h2 { font: 700 var(--t-h2, 28px)/1.15 var(--font-display); margin: var(--s2) 0; }
+.home-browse__list { list-style: none; padding: 0; margin: var(--s4) 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s3); }
+.home-browse__list a { display: block; padding: var(--s3) var(--s4); border: var(--hair); border-radius: var(--radius); background: var(--card); color: var(--ink); text-decoration: none; height: 100%; }
+.home-browse__list a:hover { border-color: var(--ink); }
+.home-browse__list b { display: block; font-family: var(--font-display); }
+.home-browse__list span { display: block; font-size: var(--t-small); color: var(--ink-2); margin-top: 2px; }
+/* Footer: every section, on every page */
+.pb-footer__nav { max-width: var(--page-max); margin: 0 auto; padding: var(--s4) var(--gutter) 0; font-size: var(--t-small); color: var(--ink-2); line-height: 2; }
+.pb-footer__nav a { color: var(--ink); }

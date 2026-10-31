@@ -2,9 +2,13 @@
 // Shared page frame: head, header, footer. Uses the same design files as the calculator.
 import { breadcrumbLd } from "../lib/engine.mjs";
 import { ogPath } from "../lib/cards.mjs";
-interface Props { title: string; description: string; path: string; crumbs?: [string, string][]; }
-const { title, description, path, crumbs } = Astro.props;
-const ld = crumbs && crumbs.length ? JSON.stringify(breadcrumbLd(Astro.site, [["Paybook", "/"], ...crumbs])) : null;
+interface Props { title: string; description: string; path: string; crumbs?: [string, string][]; noindex?: boolean; ld?: object[]; }
+const { title, path, crumbs, noindex, ld: extraLd } = Astro.props;
+// Search results show about 160 characters: cut longer descriptions at a word boundary (numbers come first).
+const clamp = (t: string, n = 160) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(" ", n - 1)).replace(/[,;:·(]+$/, "") + "…");
+const description = clamp(Astro.props.description);
+const lds = [...(crumbs && crumbs.length ? [breadcrumbLd(Astro.site, [["Paybook", "/"], ...crumbs])] : []), ...(extraLd || [])];
+const ld = lds.length ? JSON.stringify(lds.length === 1 ? lds[0] : lds) : null;
 const canonical = new URL(path, Astro.site).toString();
 const image = new URL(ogPath(path), Astro.site).toString();   // drawn by scripts/og-images.mjs after the build
 const nav = [
@@ -22,7 +26,7 @@ const nav = [
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <meta name="description" content={description}>
-  <link rel="canonical" href={canonical}>
+  {noindex ? <meta name="robots" content="noindex"> : <link rel="canonical" href={canonical}>}
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:url" content={canonical}>
@@ -62,6 +66,9 @@ const nav = [
   </header>
   <slot />
   <footer class="pb-footer">
+    <nav class="pb-footer__nav" aria-label="Browse">
+      <a href="/civilian/gs">GS pay by location</a> · <a href="/jobs">Job series</a> · <a href="/civilian/trades">Trades pay</a> · <a href="/military/pay-chart">Military pay chart</a> · <a href="/military/bah">BAH by duty station</a> · <a href="/travel/per-diem">Per diem</a> · <a href="/about/data">About the data</a> · <a href="/privacy">Privacy</a>
+    </nav>
     <div class="pb-footer__in">
       <span><b>paybook</b> is an independent estimate tool. <b>Not affiliated with the U.S. government.</b></span>
       <span>GS, locality, SES and military basic pay: official pay orders (EO 14132, EO 14368) · Per diem: GSA · Take-home: 2026 IRS and state rules · BAH: DTMO · BAS: DoD FMR · Trades: DCPAS · <a href="/about/data">About the data</a> · <a href="/privacy">Privacy</a></span>

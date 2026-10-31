@@ -1,8 +1,24 @@
 ---
 // Home: the calculator. Same markup and scripts as sites/ledger (copied into public/ at build).
 import Base from "../layouts/Base.astro";
+import { G, YEAR } from "../lib/engine.mjs";
+// Structured data: the site and its free calculator
+const ld = [
+  { "@context": "https://schema.org", "@type": "WebSite", name: "Paybook", url: "https://paybook.loopi.sh/", description: "Federal and military pay, read like a pay stub." },
+  { "@context": "https://schema.org", "@type": "WebApplication", name: "Paybook pay calculator", url: "https://paybook.loopi.sh/", applicationCategory: "FinanceApplication", operatingSystem: "Any", browserRequirements: "Requires JavaScript",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    description: `${YEAR} GS, LEO, trades, SES and military pay with locality, BAH, BAS, per diem and take-home pay for every U.S. county, city and ZIP code. Official pay tables.` },
+];
+const browse = [
+  ["/civilian/gs", "GS pay by location", `All ${G.localityAreas(YEAR).length} locality areas, every grade and step`],
+  ["/jobs", "Pay by job series", "Every GS occupation, from 0343 to 2210"],
+  ["/civilian/trades", "Trades (wage grade) pay", "WG, WL and WS hourly rates for every wage area"],
+  ["/military/pay-chart", `${YEAR} military pay chart`, "Basic pay for every rank and years of service"],
+  ["/military/bah", "BAH by duty station", "Housing allowance for every area, rank and dependent status"],
+  ["/travel/per-diem", "Per diem rates", "Lodging and meals for every state and city"],
+];
 ---
-<Base title="Paybook: federal and military pay, read like a pay stub" description="Type your GS grade, rank or a job posting. See your pay and take-home for where you work, and what your next step or promotion is worth. 2026 official pay tables." path="/">
+<Base title="Paybook: federal and military pay, read like a pay stub" description="Type your GS grade, rank or a job posting. See your pay, take-home and next raise where you work. Official 2026 GS, military, BAH and per diem tables." path="/" ld={ld}>
   <main id="main" class="page">
     <!-- first visit -->
     <section id="welcome" hidden></section>
@@ -40,6 +56,14 @@ import Base from "../layouts/Base.astro";
           <div id="pickerRail"></div>
         </aside>
       </div>
+    </section>
+
+    <!-- always visible: the reference pages, for people and search engines -->
+    <section class="home-browse" aria-labelledby="browseTitle">
+      <div class="pb-section-label"><b>{YEAR}</b> · Pay tables</div>
+      <h2 id="browseTitle">Browse official federal and military pay</h2>
+      <p class="sub">Paybook turns the official pay orders, OPM, DoD, DTMO and GSA tables into one place: civilian GS, law enforcement, trades and SES pay, military basic pay with BAH and BAS, travel per diem, and take-home pay after federal and state taxes. Not affiliated with the U.S. government.</p>
+      <ul class="home-browse__list">{browse.map(([href, t, d]) => <li><a href={href}><b>{t}</b><span>{d}</span></a></li>)}</ul>
     </section>
   </main>
 

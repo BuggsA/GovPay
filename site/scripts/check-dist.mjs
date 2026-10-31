@@ -18,7 +18,11 @@ for (const f of files.filter((x) => x.endsWith(".html"))) {
   const page = "/" + relative(dist, f), html = await readFile(f, "utf8"), size = (await stat(f)).size;
   if (size > biggest[1]) biggest = [page, size];
   if (size > BUDGET) problems.push(`${page}: ${(size / 1024).toFixed(1)} KB is over the ${BUDGET / 1024} KB budget`);
-  for (const tag of ["<title>", 'name="description"', 'rel="canonical"']) if (!html.includes(tag)) problems.push(`${page}: missing ${tag}`);
+  const noindex = html.includes('name="robots" content="noindex"');
+  for (const tag of ["<title>", 'name="description"'].concat(noindex ? [] : ['rel="canonical"'])) if (!html.includes(tag)) problems.push(`${page}: missing ${tag}`);
+  const desc = (html.match(/name="description" content="([^"]*)"/) || [])[1] || "";
+  const descLen = desc.replace(/&amp;/g, "&").replace(/&#39;|&quot;|&lt;|&gt;/g, "x").length;
+  if (descLen > 161) problems.push(`${page}: description is ${descLen} characters (search results show about 160)`);
   for (const [, href] of html.matchAll(/href="(\/[^"#?]*)/g)) if (!exists(decodeURI(href))) problems.push(`${page}: broken link ${href}`);
   const og = html.match(/property="og:image" content="https?:\/\/[^/]+(\/[^"]+)"/);
   if (!og) problems.push(`${page}: missing og:image`);
