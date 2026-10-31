@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paybook Style</title>
+  <meta name="description" content="Paybook's visual system: paper, ink and highlighter.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f6f3ec; --paper-2: #ede8dd; --card: #fffdf8; --ink: #17202a; --ink-2: #4d5661;
+      --rule: #d9d1c1; --hi: #ffe066; --hi-ink: #17202a; --accent: #0b6e5b; --pen: #b3412e;
+      --sans: "IBM Plex Sans", system-ui, sans-serif; --serif: "IBM Plex Serif", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme=light]) {
+        --paper: #14171a; --paper-2: #1c2024; --card: #191d21; --ink: #ece6da; --ink-2: #a9a397;
+        --rule: #2e353c; --hi: #e9c84c; --accent: #4fc2a6; --pen: #f08c74; color-scheme: dark;
+      }
+    }
+    :root[data-theme=dark] {
+      --paper: #14171a; --paper-2: #1c2024; --card: #191d21; --ink: #ece6da; --ink-2: #a9a397;
+      --rule: #2e353c; --hi: #e9c84c; --accent: #4fc2a6; --pen: #f08c74; color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { background: var(--paper); color: var(--ink); font: 17px/1.55 var(--sans); }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+    a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    h1, h2, h3 { margin: 0 0 .35em; line-height: 1.15; }
+    .serif { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; }
+    .muted { color: var(--ink-2); }
+    .num { font-variant-numeric: tabular-nums; }
+
+    /* habit 1: highlighter = you */
+    .hl { background: linear-gradient(transparent 12%, var(--hi) 12%, var(--hi) 88%, transparent 88%); color: var(--hi-ink);
+      padding: 0 .15em; margin: 0 -.15em; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+    .hl-swipe { position: relative; display: inline-block; z-index: 0; color: var(--ink); }
+    .hl-swipe::before { content: ""; position: absolute; z-index: -1; left: -.12em; right: -.18em; top: 34%; bottom: 4%;
+      background: var(--hi); transform: rotate(-1.2deg) skewX(-6deg); border-radius: 3px 8px 4px 10px; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme=light]) .hl-swipe::before { opacity: .55; } }
+    :root[data-theme=dark] .hl-swipe::before { opacity: .55; }
+
+    /* habit 2: numbered boxes */
+    .box { font: 600 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: flex; align-items: center; gap: 10px; margin: 0 0 14px; }
+    .box b { color: var(--ink); }
+    .box::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+    /* header */
+    .top { border-bottom: 1px solid var(--ink); }
+    .top-in { display: flex; align-items: center; gap: 24px; padding: 14px 16px; flex-wrap: wrap; }
+    .mark { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
+    .nav { display: flex; gap: 18px; font-size: 15px; flex-wrap: wrap; }
+    .nav a { color: var(--ink); text-decoration: none; padding-bottom: 2px; }
+    .nav a[aria-current] { border-bottom: 2px solid var(--ink); }
+    .years { margin-left: auto; display: flex; gap: 2px; font: 500 13px var(--mono); }
+    .years button { font: inherit; background: none; border: 1px solid transparent; color: var(--ink-2); padding: 4px 8px; border-radius: 3px; cursor: pointer; }
+    .years button[aria-pressed=true] { border-color: var(--ink); color: var(--ink); }
+    .theme { font: 500 13px var(--mono); background: none; border: 1px solid var(--rule); color: var(--ink); border-radius: 3px; padding: 4px 8px; cursor: pointer; }
+
+    section.blk { padding: 36px 0 8px; }
+    .lead { font-size: 19px; max-width: 680px; }
+
+    /* hero search */
+    .ask { margin-top: 18px; max-width: 680px; }
+    .ask label { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+    .ask-row { display: flex; margin-top: 6px; border: 1.5px solid var(--ink); border-radius: 4px; background: var(--card); }
+    .ask-row input { flex: 1; min-width: 0; font: 500 20px var(--sans); border: 0; background: transparent; color: var(--ink); padding: 14px 16px; outline: none; }
+    .ask-row button { font: 600 16px var(--sans); border: 0; background: var(--ink); color: var(--paper); padding: 0 20px; cursor: pointer; }
+    .eg { margin-top: 8px; font-size: 14px; color: var(--ink-2); display: flex; gap: 8px; flex-wrap: wrap; }
+    .eg button { font: 500 14px var(--sans); background: none; border: 0; border-bottom: 1px dashed var(--ink-2); color: var(--ink); padding: 0; cursor: pointer; }
+
+    /* grid */
+    .two { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; align-items: start; }
+    @media (max-width: 900px) { .two { grid-template-columns: minmax(0, 1fr); } }
+
+    /* habit 4: the stub */
+    .stub { background: var(--card); border: 1px solid var(--rule); border-radius: 4px 4px 0 0; position: relative; padding: 18px 20px 26px; }
+    .stub::after { content: ""; position: absolute; left: -1px; right: -1px; bottom: -9px; height: 10px;
+      background: radial-gradient(circle at 6px 0, transparent 5px, var(--card) 5.5px) 0 0 / 12px 10px repeat-x; }
+    .stub-head { display: flex; justify-content: space-between; gap: 10px; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px dashed var(--rule); padding-bottom: 10px; }
+    .who { margin-top: 14px; font-weight: 600; }
+    .who small { display: block; font-weight: 400; color: var(--ink-2); font-size: 14px; }
+    .big { font-size: clamp(48px, 9vw, 72px); font-weight: 700; letter-spacing: -.025em; line-height: 1.05; margin: 8px 0 2px; }
+    .per { display: flex; gap: 4px; margin: 10px 0 14px; flex-wrap: wrap; }
+    .per button { font: 500 14px var(--sans); border: 1px solid var(--rule); background: none; color: var(--ink); padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+    .per button[aria-pressed=true] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    /* habit 5: dotted leaders */
+    .ledger { list-style: none; padding: 0; margin: 0; }
+    .ledger li { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; }
+    .ledger li::after { content: ""; order: 1; flex: 1; border-bottom: 2px dotted var(--rule); transform: translateY(-4px); }
+    .ledger li span:last-child { order: 2; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ledger li.total { border-top: 1px solid var(--ink); margin-top: 6px; padding-top: 10px; font-weight: 700; }
+    .ledger li.total::after { border: 0; }
+    .ledger .tf { font: 500 11px var(--mono); color: var(--accent); letter-spacing: .05em; margin-left: 6px; }
+    .takehome { margin-top: 16px; padding: 12px 14px; background: var(--paper-2); border-radius: 3px; font-size: 15px; }
+    .takehome b { font-size: 19px; }
+    .stub-foot { margin-top: 18px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font: 500 12px var(--mono); color: var(--ink-2); }
+
+    /* habit 6: stamps */
+    .stamp { display: inline-block; font: 600 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 3px 7px;
+      border: 1.5px solid currentColor; border-radius: 3px; transform: rotate(-2deg); color: var(--pen); }
+    .stamp.est { color: var(--ink-2); transform: none; }
+
+    /* ladder (next level) */
+    .ladder { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ink); }
+    .ladder li { position: relative; padding: 10px 0 14px 22px; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; cursor: pointer; }
+    .ladder li::before { content: ""; position: absolute; left: -7px; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+    .ladder li.you::before { background: var(--hi); }
+    .ladder li:hover .rung { text-decoration: underline; text-underline-offset: 3px; }
+    .rung { font-weight: 700; }
+    .when { font-size: 14px; color: var(--ink-2); grid-column: 1; }
+    .delta { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accent); text-align: right; }
+    .delta small { display: block; font-weight: 400; font-size: 13px; color: var(--ink-2); }
+
+    /* table */
+    .tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; background: var(--card); }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 15px; }
+    th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+    th { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); background: var(--paper-2); }
+    th:first-child, td:first-child { position: sticky; left: 0; text-align: left; background: var(--card); font-weight: 600; border-right: 1px solid var(--rule); }
+    th:first-child { background: var(--paper-2); }
+    tr.yours td { background: color-mix(in srgb, var(--hi) 22%, var(--card)); }
+    td.you { background: var(--hi) !important; color: var(--hi-ink); font-weight: 700; }
+
+    /* location picker */
+    .picker { background: var(--card); border: 1px solid var(--rule); border-radius: 4px; padding: 14px; }
+    .picker input { width: 100%; font: 500 16px var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--ink); border-radius: 3px; padding: 10px 12px; }
+    .recent { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; font-size: 14px; }
+    .recent span { color: var(--ink-2); font: 500 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; align-self: center; }
+    .chip { font: 500 14px var(--sans); border: 1px solid var(--rule); background: none; color: var(--ink); border-radius: 3px; padding: 3px 8px; cursor: pointer; }
+    .chip.on { background: var(--hi); color: var(--hi-ink); border-color: var(--hi); font-weight: 600; }
+    .tiles { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin: 12px 0; }
+    .tiles button { aspect-ratio: 1; font: 600 10px var(--mono); border: 1px solid var(--rule); background: var(--paper); color: var(--ink-2); border-radius: 2px; padding: 0; cursor: pointer; }
+    .tiles button:hover { border-color: var(--ink); color: var(--ink); }
+    .tiles button[aria-pressed=true] { background: var(--hi); color: var(--hi-ink); border-color: var(--ink); }
+    .places { list-style: none; margin: 0; padding: 0; }
+    .places li { padding: 9px 0; border-top: 1px solid var(--rule); font-size: 15px; }
+    .places li b { display: block; }
+    .keys { font-size: 12.5px; color: var(--ink-2); }
+    .keys em { font-style: normal; color: var(--pen); }
+
+    /* buttons */
+    .btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .btn { font: 600 15px var(--sans); border-radius: 3px; padding: 10px 16px; cursor: pointer; border: 1.5px solid var(--ink); background: var(--ink); color: var(--paper); }
+    .btn.line { background: none; color: var(--ink); }
+
+    /* swatches & type */
+    .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .sw div { border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; background: var(--card); }
+    .sw i { display: block; height: 54px; border-bottom: 1px solid var(--rule); }
+    .sw p { margin: 0; padding: 8px 10px; font: 500 12px var(--mono); }
+    .sw p b { display: block; font: 600 13px var(--sans); }
+    .type-row { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid var(--rule); align-items: baseline; }
+    .type-row > span { font: 500 12px var(--mono); color: var(--ink-2); }
+    @media (max-width: 560px) { .type-row { grid-template-columns: 1fr; gap: 4px; } }
+
+    .rules { columns: 2 280px; column-gap: 32px; padding: 0; margin: 0; list-style: none; counter-reset: r; }
+    .rules li { break-inside: avoid; padding: 0 0 14px 34px; position: relative; }
+    .rules li::before { counter-increment: r; content: counter(r, decimal-leading-zero); position: absolute; left: 0; top: 2px; font: 600 12px var(--mono); color: var(--ink-2); }
+
+    .family { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .fam { border: 1px solid var(--rule); border-radius: 4px; background: var(--card); padding: 14px; }
+    .fam .fm { display: flex; align-items: center; gap: 8px; font-weight: 700; border-bottom: 1px solid var(--ink); padding-bottom: 8px; margin-bottom: 10px; }
+    .fam .fm i { width: 10px; height: 10px; border-radius: 1px; display: inline-block; }
+    .fam p { margin: 0; font-size: 14px; }
+    .rail-ad { border: 1px dashed var(--rule); border-radius: 4px; min-height: 250px; display: grid; place-items: center; text-align: center; color: var(--ink-2); font: 500 12px var(--mono); padding: 12px; }
+
+    .dont { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 24px; }
+    .dont li { padding-left: 22px; position: relative; font-size: 15px; }
+    .dont li::before { content: "×"; position: absolute; left: 0; color: var(--pen); font-weight: 700; }
+
+    footer { margin-top: 48px; border-top: 1px solid var(--ink); padding: 18px 0 40px; font-size: 14px; color: var(--ink-2); }
+    footer b { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-in">
+      <a class="mark" href="./">
+        <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+          <rect x="1" y="1" width="24" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M5 8.5h16M5 17.5h16" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+          <rect x="4" y="10.5" width="18" height="5" rx="1.2" fill="var(--hi)"/>
+          <path d="M5 13h10" stroke="#17202a" stroke-width="1.6"/>
+        </svg>
+        Paybook
+      </a>
+      <nav class="nav" aria-label="Main"><a href="#" aria-current="page">My pay</a><a href="#">Pay tables</a><a href="#">Compare</a><a href="#">Learn</a></nav>
+      <div class="years" role="group" aria-label="Pay year"><button aria-pressed="false">2025</button><button aria-pressed="true">2026</button><button aria-pressed="false">2027</button></div>
+      <button class="theme" id="theme" type="button">Dark</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="blk">
+      <div class="box"><b>00</b> Style tile · not a working page</div>
+      <h1 class="serif" style="font-size:clamp(32px,5vw,46px)">Paper, ink, and <span class="hl-swipe">one highlighter</span>.</h1>
+      <p class="lead muted">Pay arrives on paper: the LES, the SF-50, the printed table. People find their row and highlight it. Paybook works the same way. The page is calm and ruled like a form, and yellow always means <span class="hl">this is you</span>.</p>
+      <div class="ask">
+        <label for="ask">Your grade, rank or a job posting</label>
+        <div class="ask-row"><input id="ask" value="GS-12 step 5, Washington DC" aria-label="Your grade, rank or a job posting"><button type="button">Show pay</button></div>
+        <div class="eg">Try: <button>E-5 Norfolk</button><button>GS-0343-09/11/12</button><button>LEO GS-11 Quantico</button></div>
+      </div>
+    </section>
+
+    <section class="blk two">
+      <div>
+        <div class="box"><b>01</b> Your pay · the stub</div>
+        <article class="stub" aria-label="Pay stub example">
+          <div class="stub-head"><span>Pay stub · 2026</span><span class="stamp est">Estimate</span></div>
+          <div class="who">GS-12, Step 5 <small>Washington–Baltimore–Arlington locality · 33.94%</small></div>
+          <div class="big num"><span class="hl-swipe">$116,072</span></div>
+          <div class="muted num" style="font-size:15px">a year · $4,464 per paycheck · $55.62 an hour</div>
+          <div class="per" role="group" aria-label="Show amounts"><button aria-pressed="true">Year</button><button aria-pressed="false">Month</button><button aria-pressed="false">Paycheck</button><button aria-pressed="false">Hour</button></div>
+          <ul class="ledger">
+            <li><span>Base pay</span><span>$86,660</span></li>
+            <li><span>Locality pay</span><span>$29,412</span></li>
+            <li class="total"><span>Total</span><span>$116,072</span></li>
+          </ul>
+          <div class="takehome">Take-home is about <b class="num">$6,850</b> a month. <span class="muted">Single, standard deduction, Maryland, FERS 4.4%, TSP 5%.</span> <a href="#">Edit</a></div>
+          <div class="stub-foot"><span>paybook · OPM table as of Jan 11, 2026</span><span>Not affiliated with the U.S. government</span></div>
+        </article>
+      </div>
+      <aside>
+        <div class="box"><b>02</b> Next level</div>
+        <ol class="ladder">
+          <li class="you"><span class="rung">GS-12, Step 5</span><span class="delta">You</span><span class="when">Where you are now</span></li>
+          <li><span class="rung">Step 6</span><span class="delta">+$3,415<small>a year</small></span><span class="when">After 2 years at step 5</span></li>
+          <li><span class="rung">GS-13, Step 2</span><span class="delta">+$9,773<small>a year</small></span><span class="when">When promoted (two-step rule)</span></li>
+          <li><span class="rung">Step 10</span><span class="delta">+$17,072<small>a year</small></span><span class="when">The top of GS-12, about 13 years away</span></li>
+        </ol>
+        <p class="muted" style="font-size:14px;margin-top:10px">Tap a rung to preview that pay in your stub.</p>
+      </aside>
+    </section>
+
+    <section class="blk two">
+      <div>
+        <div class="box"><b>03</b> Pay table · your row stays in view</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Grade</th><th>Step 1</th><th>Step 2</th><th>Step 3</th><th>Step 4</th><th>Step 5</th><th>Step 6</th><th>Step 7</th></tr></thead>
+            <tbody>
+              <tr><td>GS-11</td><td>$85,447</td><td>$88,295</td><td>$91,142</td><td>$93,990</td><td>$96,837</td><td>$99,685</td><td>$102,532</td></tr>
+              <tr class="yours"><td>GS-12</td><td>$102,415</td><td>$105,829</td><td>$109,244</td><td>$112,658</td><td class="you">$116,072</td><td>$119,487</td><td>$122,902</td></tr>
+              <tr><td>GS-13</td><td>$121,785</td><td>$125,845</td><td>$129,904</td><td>$133,964</td><td>$138,024</td><td>$142,084</td><td>$146,143</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="font-size:14px">2026 · Washington–Baltimore–Arlington · <a href="#">Source: OPM</a> · <span class="stamp">Proposed</span> shows on next year's table only.</p>
+      </div>
+      <aside>
+        <div class="box"><b>04</b> Where you work</div>
+        <div class="picker">
+          <input value="" placeholder="City, ZIP or base" aria-label="Search places">
+          <div class="recent"><span>Recent</span><button class="chip">Norfolk, VA</button><button class="chip">Hill AFB</button></div>
+          <div class="tiles" id="tiles" role="group" aria-label="Filter by state"></div>
+          <div class="recent"><button class="chip on">Virginia ✕</button></div>
+          <ul class="places">
+            <li><b>MCB Quantico</b><span class="keys">GS: Washington–Baltimore 33.94% · BAH: <em>Quantico rate</em> · Per diem: Prince William</span></li>
+            <li><b>Naval Station Norfolk</b><span class="keys">GS: Virginia Beach–Norfolk 18.80% · BAH: Norfolk · Per diem: Norfolk</span></li>
+            <li><b>Richmond</b><span class="keys">GS: Richmond 22.28% · BAH: Richmond · Per diem: Richmond</span></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="blk">
+      <div class="box"><b>05</b> Color · light and dark</div>
+      <div class="sw">
+        <div><i style="background:var(--paper)"></i><p><b>Paper</b>#F6F3EC · #14171A</p></div>
+        <div><i style="background:var(--card)"></i><p><b>Card</b>#FFFDF8 · #191D21</p></div>
+        <div><i style="background:var(--ink)"></i><p><b>Ink</b>#17202A · #ECE6DA</p></div>
+        <div><i style="background:var(--rule)"></i><p><b>Rule</b>#D9D1C1 · #2E353C</p></div>
+        <div><i style="background:var(--hi)"></i><p><b>Highlighter = you</b>#FFE066 · #E9C84C</p></div>
+        <div><i style="background:var(--accent)"></i><p><b>Ledger green (site accent)</b>#0B6E5B · #4FC2A6</p></div>
+        <div><i style="background:var(--pen)"></i><p><b>Red pen = less / warning</b>#B3412E · #F08C74</p></div>
+      </div>
+    </section>
+
+    <section class="blk">
+      <div class="box"><b>06</b> Type · IBM Plex family</div>
+      <div class="type-row"><span>Number · Sans 700</span><div class="num" style="font-size:56px;font-weight:700;letter-spacing:-.025em;line-height:1">$4,385.00</div></div>
+      <div class="type-row"><span>Headline · Serif 600</span><div class="serif" style="font-size:34px">How locality pay works</div></div>
+      <div class="type-row"><span>Body · Sans 400 / 17</span><div>Base pay is the same everywhere. Then locality pay is added for where you work, from 17% to more than 40%.</div></div>
+      <div class="type-row"><span>Label · Mono 600</span><div class="box" style="margin:0"><b>01</b> Your pay</div></div>
+      <div class="type-row"><span>Stamps</span><div><span class="stamp">Proposed</span> &nbsp; <span class="stamp est">Estimate</span></div></div>
+      <div class="type-row"><span>Buttons</span><div class="btns"><button class="btn">Show my pay</button><button class="btn line">Compare</button><a href="#">How this is calculated</a></div></div>
+    </section>
+
+    <section class="blk two">
+      <div>
+        <div class="box"><b>07</b> House rules</div>
+        <ol class="rules">
+          <li><b>Highlighter means "you."</b> Your number, cell, state and rung get the yellow. Nothing else does.</li>
+          <li><b>Numbered boxes</b> label sections, the way a form does.</li>
+          <li><b>Rules, not shadows.</b> 1&nbsp;px lines, corners ≤&nbsp;4&nbsp;px, no gradients.</li>
+          <li><b>The stub</b> is the result and also the screenshot card. Its footer carries the URL.</li>
+          <li><b>Dotted leaders</b> make breakdowns read like a ledger.</li>
+          <li><b>Stamps only for exceptions,</b> like Proposed or Estimate. Not on every number.</li>
+        </ol>
+        <div class="box" style="margin-top:20px"><b>08</b> Never</div>
+        <ul class="dont">
+          <li>Gradients, glows, glass</li><li>Emoji or sparkle icons</li><li>Soft-shadow rounded cards everywhere</li>
+          <li>Hero followed by three identical cards</li><li>A badge on every number</li><li>Seals, eagles, .gov navy and red</li>
+        </ul>
+      </div>
+      <aside>
+        <div class="box"><b>09</b> Right rail</div>
+        <div class="rail-ad">300 × 250 space held for optional ads later.<br>Until then it holds the location picker or related links.</div>
+      </aside>
+    </section>
+
+    <section class="blk">
+      <div class="box"><b>10</b> Family resemblance · sibling sites change only the accent</div>
+      <div class="family">
+        <div class="fam"><div class="fm"><i style="background:#0b6e5b"></i>Paybook</div><p>Federal and military pay. Accent: ledger green.</p></div>
+        <div class="fam"><div class="fm"><i style="background:#2f55a4"></i>Example sibling A</div><p>Same paper, ink, highlighter, Plex and stub. Accent: cobalt.</p></div>
+        <div class="fam"><div class="fm"><i style="background:#9a4a1c"></i>Example sibling B</div><p>Same system. Accent: rust. The yellow still means "you".</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <b>Paybook</b> is an independent estimate tool. <b>Not affiliated with the U.S. government.</b> Figures come from OPM, DFAS, DTMO and GSA. Each page lists its sources and "as of" dates.
+  </footer>
+
+  <script>
+    // Equal-size state tiles; neutral until selected.
+    (function () {
+      var layout = { AK:[0,0],ME:[11,0],VT:[10,1],NH:[11,1],WA:[1,2],ID:[2,2],MT:[3,2],ND:[4,2],MN:[5,2],IL:[6,2],WI:[7,2],MI:[8,2],NY:[9,2],RI:[10,2],MA:[11,2],
+        OR:[1,3],NV:[2,3],WY:[3,3],SD:[4,3],IA:[5,3],IN:[6,3],OH:[7,3],PA:[8,3],NJ:[9,3],CT:[10,3],CA:[1,4],UT:[2,4],CO:[3,4],NE:[4,4],MO:[5,4],KY:[6,4],WV:[7,4],VA:[8,4],MD:[9,4],DE:[10,4],
+        AZ:[2,5],NM:[3,5],KS:[4,5],AR:[5,5],TN:[6,5],NC:[7,5],SC:[8,5],DC:[9,5],OK:[4,6],LA:[5,6],MS:[6,6],AL:[7,6],GA:[8,6],HI:[0,7],TX:[4,7],FL:[9,7] };
+      var el = document.getElementById("tiles"), html = "";
+      Object.keys(layout).forEach(function (st) {
+        var c = layout[st];
+        html += '<button type="button" style="grid-column:' + (c[0] + 1) + ';grid-row:' + (c[1] + 1) + '" aria-pressed="' + (st === "VA") + '" aria-label="' + st + '">' + st + "</button>";
+      });
+      el.innerHTML = html;
+      el.addEventListener("click", function (e) {
+        if (e.target.tagName !== "BUTTON") return;
+        el.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b === e.target)); });
+      });
+      var t = document.getElementById("theme");
+      t.onclick = function () {
+        var dark = document.documentElement.dataset.theme !== "dark" && !(document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        t.textContent = dark ? "Light" : "Dark";
+      };
+    })();
+  </script>
+</body>
+</html>
