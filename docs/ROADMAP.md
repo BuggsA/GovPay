@@ -232,7 +232,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Later (not version 1)
-- FWS trades pay (needs a wage-area data source)
+- ☑ FWS trades pay: done Oct 31, 2026 (DCPAS wage data, every county mapped; wage-area pages still to add)
 - Full LEO special-rate tables and SES detail
 - Overseas pay: Alaska, Hawaii and the territories first, then OHA and OCONUS COLA (see [OCONUS.md](OCONUS.md))
 - Inflation view: "your pay vs. inflation since 2010"

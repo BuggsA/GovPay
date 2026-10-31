@@ -20,8 +20,8 @@ const fams = [...new Set(gs.map((s) => s.family))].sort();
     ))}
     <section class="bah-state">
       <h2>Trades (Federal Wage System)</h2>
-      <p class="muted">These jobs are paid hourly on local wage schedules (WG, WL, WS), not the General Schedule. Paybook doesn't have the official wage schedules yet.</p>
-      <p>{trades.length} trades series, from {trades[0].code} to {trades[trades.length - 1].code}: electrical, metal work, plumbing, vehicle and aircraft maintenance, warehousing, food service, vessel jobs and more. A posting like <b>WG-5803-10</b> still works in <a class="pb-link" href="/">the calculator</a>, with estimated wage rates.</p>
+      <p class="muted">These jobs are paid hourly on local wage schedules (WG, WL, WS), not the General Schedule.</p>
+      <p>{trades.length} trades series, from {trades[0].code} to {trades[trades.length - 1].code}: electrical, metal work, plumbing, vehicle and aircraft maintenance, warehousing, food service, vessel jobs and more. A posting like <b>WG-5803-10</b> works in <a class="pb-link" href="/">the calculator</a>, with the official wage schedule for where you'd work.</p>
     </section>
     <p class="sub">Series list: USAJOBS occupational series code list (October 31, 2026).</p>
   </main>

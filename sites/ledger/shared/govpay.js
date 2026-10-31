@@ -228,7 +228,7 @@
       const base = byFips[fips];
       const mha = BAH_COUNTY && BAH_COUNTY[ci] ? BAH_COUNTY[ci] : base ? base.bahMha : "SIM" + st;
       LOCATIONS.push({
-        id: "c" + fips, fips, name: `${name}, ${st}`, short: name, state: st, stateName: ALL_STATES[st] || st, kind: "county",
+        id: "c" + fips, fips, ci, name: `${name}, ${st}`, short: name, state: st, stateName: ALL_STATES[st] || st, kind: "county",
         gsLocality: PLACES.areas[ai], fwsArea: base ? base.fwsArea : "SIMF_" + st, bahMha: mha,
         perDiem: pd, perDiemNA: st === "AK" || st === "HI", status: "approx", simulated: false, bahSimulated: !(BAH_COUNTY && BAH_COUNTY[ci]) && !base,
       });
@@ -386,19 +386,46 @@
   // ---------------------------------------------------------------------------
   // FWS (WG / WL / WS)
   // ---------------------------------------------------------------------------
+  // FWS (trades) pay from DCPAS wage schedules (shared/data/fws.js, scripts/convert-fws.py). The app loads
+  // that file only when someone picks trades pay, so everything here looks the data up at call time.
+  const fwsData = () => (global.GOVPAY_DATA && global.GOVPAY_DATA.fws) || null;
+  const FWS_ROWS = {};
+  function fwsCode(loc) {
+    const d = fwsData(); if (!d) return null;
+    const codes = FWS_ROWS._county || (FWS_ROWS._county = d.county.split(","));
+    let c = loc.kind === "county" ? loc : loc.countyId ? LOC_INDEX.get(loc.countyId) : loc.fips ? LOCATIONS.find((x) => x.kind === "county" && x.fips === loc.fips) : null;
+    return c && c.ci != null ? codes[c.ci] || null : null;
+  }
+  function fwsSchedule(y, code) {
+    const k = y + "|" + code;
+    if (FWS_ROWS[k]) return FWS_ROWS[k];
+    const e = fwsData().years[y] && fwsData().years[y][code];
+    if (!e) return null;
+    const dec = (txt) => txt.split(";").map((row) => { const n = row.split(",").map(Number); for (let i = 1; i < n.length; i++) n[i] += n[i - 1]; return n.map((c) => c / 100); });
+    return (FWS_ROWS[k] = { effective: e[0], WG: dec(e[1]), WL: dec(e[2]), WS: dec(e[3]) });
+  }
   function fws(year, schedule, grade, step, locId) {
     const loc = location(locId);
-    const area = FWS_AREAS[loc.fwsArea];
     const sch = FWS_SCHEDULES[schedule] || FWS_SCHEDULES.WG;
-    const g = Math.min(grade, sch.grades);
-    // WS grades 16..19 extend the curve
-    const step2 = g <= 15 ? FWS_WG_STEP2_2026[g] : FWS_WG_STEP2_2026[15] + (g - 15) * 1.6;
-    const hourly = round2(step2 * sch.factor * area.factor * FWS_STEP_PCT[step - 1] * factor(RAISES.fws, year, 2026));
-    return {
-      system: "FWS", schedule, grade: g, step, hourly, annual: Math.round(hourly * FWS_HOURS_PER_YEAR),
-      areaName: area.name, status: "simulated",
-    };
+    const g = Math.min(grade, sch.grades), st = Math.min(Math.max(step, 1), 5);
+    const code = fwsCode(loc);
+    if (code) {
+      const ys = Object.keys(fwsData().years).map(Number).sort();
+      const y = fwsData().years[year] ? year : year > ys[ys.length - 1] ? ys[ys.length - 1] : ys[0];
+      const s = fwsSchedule(y, code);
+      if (s) {
+        const hourly = round2(s[schedule === "WL" || schedule === "WS" ? schedule : "WG"][g - 1][st - 1] * factor(RAISES.fws, year, y));
+        const area = fwsData().areas[code] || "Wage area " + code;
+        return { system: "FWS", schedule, grade: g, step: st, hourly, annual: Math.round(hourly * FWS_HOURS_PER_YEAR),
+          areaName: area, areaCode: code, effective: s.effective, fy: y, status: year === y ? "verified" : year > y ? "projected" : "approx" };
+      }
+    }
+    const area = FWS_AREAS[loc.fwsArea] || FWS_AREAS["SIMF_" + loc.state];
+    const step2 = g <= 15 ? FWS_WG_STEP2_2026[g] : FWS_WG_STEP2_2026[15] + (g - 15) * 1.6;   // rough curve without the data file
+    const hourly = round2(step2 * sch.factor * area.factor * FWS_STEP_PCT[st - 1] * factor(RAISES.fws, year, 2026));
+    return { system: "FWS", schedule, grade: g, step: st, hourly, annual: Math.round(hourly * FWS_HOURS_PER_YEAR), areaName: area.name, status: "simulated", needsData: !fwsData() };
   }
+
 
   // ---------------------------------------------------------------------------
   // SES / Executive Schedule
@@ -590,7 +617,9 @@
       const r = fws(year, p.schedule, p.grade, Math.min(p.step, 5), locId);
       return { title: `${p.schedule}-${r.grade} Step ${Math.min(p.step, 5)}`, annual: r.annual, hourly: r.hourly, status: r.status,
         rows: [{ key: "base", label: `Hourly ${fmt.usd2(r.hourly)} × ${FWS_HOURS_PER_YEAR} hrs`, annual: r.annual }],
-        notes: [`Wage area: ${r.areaName}.`, "FWS (blue-collar) pay is set hourly by local wage surveys. It has 5 steps instead of 10. Night shift differentials are not included."] };
+        notes: [`Wage area: ${r.areaName}${r.areaCode ? ` (schedule ${r.areaCode})` : ""}.`,
+          r.effective ? `FY${r.fy} wage schedule, effective ${r.effective}${r.status === "projected" ? `, projected to ${year} with an assumed ${(RAISES.fws[year] * 100).toFixed(1)}% raise` : ""}. Source: DoD Wage and Salary Division.` : "Loading the official wage schedules…",
+          "FWS (trades) pay is set hourly by local wage surveys. It has 5 steps instead of 10. Night shift differentials are not included."].concat(location(locId).state === "AK" ? ["In Alaska the schedule depends on road distance (50 miles) from Anchorage, Fairbanks or Juneau, not the county."] : []) };
     }
     if (p.system === "SES") {
       const r = ses(year);
@@ -700,12 +729,12 @@
     locations: () => LOCATIONS.slice(),
     focusLocations: () => LOCATIONS.filter((l) => !l.simulated),
     promoteGS, location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,
-    milBasic, milTable, bas, bah, military, milGradeType, perDiem, perDiemArea, fiscalYear, trip, fmt,
+    fwsCode, milBasic, milTable, bas, bah, military, milGradeType, perDiem, perDiemArea, fiscalYear, trip, fmt,
     compute, progression, DEFAULT_PROFILE, FWS_HOURS_PER_YEAR,
     sources: {
       gs: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/",
       leo: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/ (LEO tables)",
-      fws: "https://www.cpms.osd.mil/Subpage/WageSchedules/ (DoD FWS schedules)",
+      fws: "https://wageandsalary.dcpas.osd.mil/BWN/AFWageSchedules/",
       ses: "https://www.opm.gov/policy-data-oversight/pay-leave/salaries-wages/ (SES/EX)",
       mil: "https://www.dfas.mil/MilitaryMembers/payentitlements/Pay-Tables/",
       bah: "https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/",

@@ -189,3 +189,18 @@ test("LEO pay matches OPM's 2026 ALLLEO file", () => {
   assert.equal(G.leo(2026, 7, 1, "dc").status, "verified");
   assert.equal(G.leo(2025, 7, 1, "dc").status, "approx");             // derived until OPM's 2025 file is added
 });
+
+test("Trades (FWS) pay matches DCPAS wage schedules", () => {
+  const id = (name) => G.locations().find((l) => l.name === name).id;
+  // Washington-Baltimore-Arlington (027): FY2026 WG-10 step 2 $36.18 and WG-13 step 2 $41.74 (published), FY2025 $35.82
+  assert.equal(G.fws(2026, "WG", 10, 2, "dc").hourly, 36.18);
+  assert.equal(G.fws(2026, "WG", 13, 2, "dc").hourly, 41.74);
+  assert.equal(G.fws(2025, "WG", 10, 2, "dc").hourly, 35.82);
+  assert.equal(G.fws(2026, "WG", 10, 2, "dc").status, "verified");
+  assert.equal(G.fws(2027, "WG", 10, 2, "dc").status, "projected");
+  assert.equal(G.fws(2026, "WG", 10, 2, "dc").annual, Math.round(36.18 * 2087));
+  assert.equal(G.fwsCode(G.location(id("Allen County, IN"))), "049");          // 5 CFR 532 App. C (missing from the DCPAS form)
+  assert.equal(G.fwsCode(G.location(id("Oglala Lakota County, SD"))), "150");   // listed by DCPAS under its old name, Shannon County
+  assert.ok(G.locations().filter((l) => l.kind === "county").every((l) => G.fwsCode(l)));   // every county has a schedule
+  assert.equal(G.fws(2026, "WS", 19, 5, "dc").grade, 19);                       // WS runs to grade 19
+});

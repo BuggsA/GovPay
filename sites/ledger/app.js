@@ -369,7 +369,9 @@
           return `<td class="${you ? "is-you" : ""}" ${you ? "" : `data-pick='${JSON.stringify({ system: "FWS", schedule: sch, grade: g, step: s })}'`}>${f.usd2(G.fws(state.year, sch, g, s, state.loc).hourly)}</td>`;
         }).join("")}</tr>`;
       });
-      html += `</tbody><caption>${sch} hourly rates · <span class="pb-stamp pb-stamp--estimate">Simulated</span> Trades pay needs wage-area data, which isn't in yet.</caption></table></div>`;
+      const r0 = G.fws(state.year, sch, 1, 1, state.loc);
+      const st = r0.status === "verified" ? `<span class="pb-stamp pb-stamp--official">Official</span> FY${state.year} schedule, effective ${esc(fmtDay(r0.effective))}` : r0.status === "projected" ? `<span class="pb-stamp pb-stamp--proposed">Projected</span> from the FY${state.year - 1} schedule` : r0.needsData ? "Loading wage schedules…" : '<span class="pb-stamp pb-stamp--estimate">Estimate</span>';
+      html += `</tbody><caption>${sch} hourly rates for ${esc(r0.areaName)} · ${st}. Source: DoD Wage and Salary Division (DCPAS).</caption></table></div>`;
     } else {
       const s = G.ses(state.year), ex = G.executiveSchedule(state.year);
       html += `<div class="facts">
@@ -380,7 +382,7 @@
         <p class="sub">${esc(s.note)} Level IV (${f.usd(ex.IV)}) also caps GS pay including locality. Source: ${sourceLine(state.year)}</p>`;
     }
     el.innerHTML = html;
-    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; renderTab(); }));
+    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; if (needsFws()) loadFws(); renderTab(); }));
     el.querySelectorAll("[data-pick]").forEach((td) => (td.onclick = () => pick(JSON.parse(td.dataset.pick))));
   }
 
@@ -448,7 +450,21 @@
 
   // ------------------------------------------------------------ layout pieces
   let railPicker, sheetPicker, yearSw, ask;
+  // Trades (FWS) schedules are a separate data file (about 125 KB compressed), loaded only when needed.
+  let fwsLoading = false;
+  function needsFws() { return !(window.GOVPAY_DATA && window.GOVPAY_DATA.fws) && (shown().system === "FWS" || state.tableKind === "FWS"); }
+  function loadFws() {
+    if (fwsLoading) return; fwsLoading = true;
+    const near = document.querySelector('script[src*="data/bah.js"]');
+    const sc = document.createElement("script");
+    sc.src = near ? near.getAttribute("src").replace("bah.js", "fws.js") : "shared/data/fws.js";
+    sc.onload = () => renderDash();
+    sc.onerror = () => { fwsLoading = false; };
+    document.head.appendChild(sc);
+  }
+  const fmtDay = (iso) => (iso ? new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "");
   function renderDash() {
+    if (needsFws()) loadFws();
     renderPreviewBar(); renderControls(); renderStub(); renderLadder(); renderPlaceBtn(); renderTab();
     if (railPicker) railPicker.set(state.loc);
     if (sheetPicker) sheetPicker.set(state.loc);
