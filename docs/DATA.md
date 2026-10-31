@@ -1,5 +1,16 @@
 # Data: sources, status and refresh plan
 
+## Source access (as of Oct 31, 2026)
+| Source | From this cloud session | Notes |
+|---|---|---|
+| GSA Per Diem API | Works | Real data in use. A free api.data.gov key goes in the `GSA_API_KEY` repository secret for the monthly Action. |
+| Tax Foundation | Works | For state income tax tables (take-home, later). |
+| OPM (GS, locality, LEO, SES) | Blocked by OPM's own servers ("Access Denied") | Automated downloads are refused. Don't try to get around this. |
+| DFAS (military pay, BAS) | Blocked by DFAS's own servers (403) | Same. |
+| DTMO (BAH) | Blocked by DTMO's own servers (403) | Same. |
+
+Ways to get the blocked sources: a person downloads the official files in a browser and commits them under `data/raw/`, or a GitHub Action fetches them if GitHub's runners aren't blocked (see the `probe-sources` workflow).
+
 ## What's in the prototype
 | Dataset | Years | Coverage | Status |
 |---|---|---|---|
@@ -12,7 +23,7 @@
 | Military basic pay | 2026 anchor points ≈ 2025 × 1.038; 2025 back-computed (÷1.038); 2027 +4.2% (assumed) | All grades, DFAS YOS columns, capped at EX-II/12 | approx / projected |
 | BAS | 2026 $476.95 enlisted / $328.48 officer | — | approx (verify with DFAS) |
 | BAH | E-5 with-dependents anchor per MHA × grade ratios | 19 MHAs in UT, MD, DC, PA, VA | approx |
-| Per diem | FY2026 seasonal lodging + M&IE (FY2025 assumed the same, FY2027 +2%) | 17 areas plus the standard CONUS rate ($110 / $68) | approx |
+| **Per diem** | **FY2025, FY2026, FY2027, from the GSA Per Diem API** (`scripts/fetch-perdiem.mjs`) | **All CONUS areas (~300) plus the standard rate** ($110/$68 in FY2025–26, $113/$68 in FY2027) | **verified (real)** |
 | Everything else | Generated with a seed per state | 45 other states | **simulated** |
 
 ## Production sources
