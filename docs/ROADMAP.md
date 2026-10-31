@@ -89,7 +89,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 | L9 Family kit | Shared CSS and accent swap for sibling sites | ☐ |
 
 ## Phase 2: Foundation
-### 2.1 Astro skeleton + engine as a module · M · ☐
+### 2.1 Astro skeleton + engine as a module · M · ◐
+> **Progress (Oct 31, 2026):** `site/` (Astro 7.3.8) builds 931 pages in about 3 seconds: the calculator, GS grade × locality area pages (15 × 58), a pay table per area, a GS hub, the military pay chart, and a sitemap. One source of truth: the build copies the shared engine, data and design files. 10 engine tests against official values; a CI workflow runs tests and the build on every push. **Still open:** switch the Cloudflare project to build `site/`.
 - **Goal:** the single-site base that can grow to thousands of pages.
 - **Includes:**
   - A new `site/` Astro project

@@ -1,0 +1,33 @@
+---
+// Full GS table for one locality area: /civilian/gs/table/washington-dc
+import Base from "../../../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, areaShort } from "../../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return G.localityAreas(G.CURRENT_YEAR).map((a) => ({ params: { area: a.slug }, props: { area: a } }));
+}
+const { area } = Astro.props;
+const place = areaShort(area.name);
+const grades = Array.from({ length: 15 }, (_, i) => i + 1), steps = Array.from({ length: 10 }, (_, i) => i + 1);
+const title = `${YEAR} GS pay table for ${place} (${area.pct.toFixed(2)}% locality)`;
+const description = `Every GS grade and step in the ${area.name} locality area for ${YEAR}, with ${area.pct.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`;
+---
+<Base title={title} description={description} path={`/civilian/gs/table/${area.slug}`}>
+  <main id="main" class="page article wide">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/civilian/gs">GS pay</a> / {place}</nav>
+    <div class="pb-section-label"><b>{YEAR}</b> · General Schedule</div>
+    <h1>GS pay table for {place}</h1>
+    <p class="lede">{area.name}: <b>{area.pct.toFixed(2)}%</b> locality pay on top of base pay. Tap a grade for its own page.</p>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Grade</th>{steps.map((s) => <th scope="col">Step {s}</th>)}</tr></thead>
+        <tbody>
+          {grades.map((g) => (
+            <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/civilian/gs/${g}/${area.slug}`}>GS-{g}</a></th>{steps.map((s) => <td>{f.usd(G.gsArea(YEAR, g, s, area.name).annual)}</td>)}</tr>
+          ))}
+        </tbody>
+        <caption>{YEAR} yearly pay with locality, capped at Executive Schedule level IV ({f.usd(G.executiveSchedule(YEAR).IV)}). Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>.</caption>
+      </table>
+    </div>
+  </main>
+</Base>

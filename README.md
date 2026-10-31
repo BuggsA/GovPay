@@ -13,6 +13,15 @@ This repo currently holds **three design prototypes**, which share one data engi
 | `shared/locpicker.js` | Searchable location picker shared by the sites |
 | `docs/` | Design rationale, data sources and plan, OCONUS notes |
 
+## The real site (`site/`, Astro)
+`site/` builds the production site: the calculator plus a pre-built page for every GS grade in every locality area, every area's pay table and the military pay chart (931 pages), and a sitemap. It uses the same engine, data and design files as the calculator; `npm run build` copies them in first.
+
+```bash
+cd site && npm install && npm test && npm run build
+```
+
+To switch a Cloudflare Pages project to it: **Root directory** `site`, **Build command** `npm run build`, **Build output directory** `dist`, environment variable `NODE_VERSION=22`.
+
 ## Run locally
 There is no build step. Open `index.html` directly, or serve the repo:
 ```bash

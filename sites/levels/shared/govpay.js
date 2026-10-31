@@ -283,6 +283,27 @@
     };
   }
 
+  // Locality AREAS straight from the pay order (all 58), for area pages.
+  function areaSlug(name) {
+    if (/^rest of u/i.test(name)) return "rest-of-us";
+    const m = name.match(/^([^,-]+)[^,]*,\s*([A-Z]{2})/);
+    return (m ? m[1].trim() + " " + m[2] : name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  }
+  function localityAreas(year) {
+    return order(year).locality.map((a) => ({ name: a.name, pct: a.pct, slug: areaSlug(a.name) }));
+  }
+  function gsArea(year, grade, step, areaName) {
+    const a = order(year).locality.find((x) => x.name === areaName);
+    if (!a) return null;
+    const base = gsBase(year, grade, step), cap = exFor(year).IV;
+    const raw = Math.round(base * (1 + a.pct / 100));
+    return { base, pct: a.pct, annual: Math.min(raw, cap), capped: raw > cap, hourly: round2(Math.min(raw, cap) / 2087) };
+  }
+  // Which app locations sit in a locality area (for "open in calculator" links).
+  function locationsInArea(areaName) {
+    return LOCATIONS.filter((l) => !l.simulated && GS_LOCALITIES[l.gsLocality] && GS_LOCALITIES[l.gsLocality].name === areaName);
+  }
+
   // ---------------------------------------------------------------------------
   // LEO (GS-1811 / 1801 etc.)
   // ---------------------------------------------------------------------------
@@ -610,7 +631,7 @@
     FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES,
     locations: () => LOCATIONS.slice(),
     focusLocations: () => LOCATIONS.filter((l) => !l.simulated),
-    location, gs, gsBase, gsTable, leo, leoBase, fws, ses, executiveSchedule,
+    location, gs, gsBase, gsTable, gsArea, localityAreas, areaSlug, locationsInArea, hasOrder, leo, leoBase, fws, ses, executiveSchedule,
     milBasic, milTable, bas, bah, military, milGradeType, perDiem, perDiemArea, fiscalYear, trip, fmt,
     compute, progression, DEFAULT_PROFILE, FWS_HOURS_PER_YEAR,
     sources: {

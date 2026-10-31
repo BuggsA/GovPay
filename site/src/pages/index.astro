@@ -1,0 +1,60 @@
+---
+// Home: the calculator. Same markup and scripts as sites/ledger (copied into public/ at build).
+import Base from "../layouts/Base.astro";
+---
+<Base title="Paybook: federal and military pay, read like a pay stub" description="Type your GS grade, rank or a job posting. See your pay and take-home for where you work, and what your next step or promotion is worth. 2026 official pay tables." path="/">
+  <main id="main" class="page">
+    <!-- first visit -->
+    <section id="welcome" hidden></section>
+
+    <!-- my pay -->
+    <section id="dash" hidden>
+      <div class="layout">
+        <div class="col-main">
+          <div id="ask" class="ask-compact"></div>
+          <div class="preview" id="preview" hidden></div>
+
+          <div class="pb-section-label"><b>01</b> · Your pay</div>
+          <div class="year-row" id="year"></div>
+          <div class="controls" id="controls"></div>
+          <button class="pb-place-btn only-mobile" id="placeBtn" type="button" aria-haspopup="dialog"></button>
+          <article class="pb-stub" id="stub" aria-live="polite"></article>
+          <div id="notes"></div>
+
+          <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Your next level</div>
+          <p class="sub">What your next raise, promotion or role change would pay. Tap one to preview it in your stub.</p>
+          <ol class="pb-ladder" id="ladder"></ol>
+
+          <div class="pb-section-label" id="explore" style="margin-top:var(--s7)"><b>03</b> · Explore</div>
+          <div class="pb-tabs" role="tablist" aria-label="Explore" id="tabs">
+            <button role="tab" data-tab="tables" aria-selected="true">Pay tables</button>
+            <button role="tab" data-tab="allowances" aria-selected="false">BAH &amp; BAS</button>
+            <button role="tab" data-tab="travel" aria-selected="false">Per diem</button>
+            <button role="tab" data-tab="compare" aria-selected="false">Compare</button>
+            <button role="tab" data-tab="guide" aria-selected="false">Learn the basics</button>
+          </div>
+          <div class="tabpanel" id="tabPanel" role="tabpanel"></div>
+        </div>
+        <aside class="rail" aria-label="Where you work">
+          <div class="pb-section-label"><b>04</b> · Where you work</div>
+          <div id="pickerRail"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="pb-sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+    <div class="pb-sheet__bar"><h2 id="sheetTitle">Where you work</h2><button class="pb-btn pb-btn--line pb-btn--small" id="sheetClose" type="button">Done</button></div>
+    <div id="pickerSheet"></div>
+  </div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/shared/data/payorder.js"></script>
+    <script is:inline src="/shared/data/perdiem.js"></script>
+    <script is:inline src="/shared/govpay.js"></script>
+    <script is:inline src="/shared/parse.js"></script>
+    <script is:inline src="/shared/tax.js"></script>
+    <script is:inline src="/ui/composite.js"></script>
+    <script is:inline src="/app.js"></script>
+  </Fragment>
+</Base>

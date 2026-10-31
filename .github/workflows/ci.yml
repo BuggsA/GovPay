@@ -1,0 +1,27 @@
+# Checks every push and pull request: engine tests against official values, then a full site build.
+name: Test and build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+        env:
+          ASTRO_TELEMETRY_DISABLED: "1"
+      - name: Page count
+        run: echo "Built $(find dist -name '*.html' | wc -l) pages"

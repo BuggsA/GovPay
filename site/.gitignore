@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+# copied from the repo's single sources by scripts/copy-assets.mjs before every build
+public/shared/
+public/ui/
+public/app.js
+public/styles.css

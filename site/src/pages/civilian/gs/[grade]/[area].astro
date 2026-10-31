@@ -1,0 +1,67 @@
+---
+// One page per GS grade × locality area: /civilian/gs/12/washington-dc
+import Base from "../../../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, areaShort, calcLink } from "../../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  const areas = G.localityAreas(G.CURRENT_YEAR);
+  return areas.flatMap((a) => Array.from({ length: 15 }, (_, i) => ({ params: { grade: String(i + 1), area: a.slug }, props: { area: a } })));
+}
+const { area } = Astro.props;
+const grade = +Astro.params.grade;
+const steps = Array.from({ length: 10 }, (_, i) => i + 1);
+const now = steps.map((s) => G.gsArea(YEAR, grade, s, area.name));
+const prev = steps.map((s) => G.gsArea(YEAR - 1, grade, s, area.name));
+const place = areaShort(area.name);
+const lo = now[0].annual, hi = now[9].annual;
+const anyCapped = now.some((r) => r.capped);
+const title = `GS-${grade} pay in ${place} (${YEAR}): ${f.usd(lo)} to ${f.usd(hi)}`;
+const description = `A GS-${grade} in the ${area.name} locality area earns ${f.usd(lo)} at step 1 to ${f.usd(hi)} at step 10 in ${YEAR}, including ${area.pct.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`;
+const path = `/civilian/gs/${grade}/${area.slug}`;
+const neighbors = [grade - 1, grade + 1].filter((g) => g >= 1 && g <= 15);
+const elsewhere = G.localityAreas(YEAR).filter((a) => a.slug !== area.slug).sort((a, b) => b.pct - a.pct);
+const pick = [elsewhere[0], elsewhere[1], ...elsewhere.filter((a) => a.slug === "washington-dc" || a.slug === "rest-of-us" || a.slug === "san-diego-ca")].filter((a, i, arr) => a && arr.findIndex((x) => x.slug === a.slug) === i).slice(0, 5);
+const inApp = G.locationsInArea(area.name).length > 0;
+---
+<Base title={title} description={description} path={path}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/civilian/gs">GS pay</a> / <a href={`/civilian/gs/table/${area.slug}`}>{place}</a> / GS-{grade}</nav>
+    <div class="pb-section-label"><b>GS-{grade}</b> · {area.name}</div>
+    <h1>GS-{grade} pay in {place}, {YEAR}</h1>
+    <p class="lede">A GS-{grade} here earns <b>{f.usd(lo)}</b> at step 1 and <b>{f.usd(hi)}</b> at step 10 a year. That includes <b>{area.pct.toFixed(2)}%</b> locality pay on top of the nationwide base table.</p>
+
+    <article class="pb-stub">
+      <div class="pb-stub__head"><span>Pay stub · {YEAR}</span><span class="pb-stamp pb-stamp--official">Official</span></div>
+      <div class="pb-stub__who">GS-{grade}, Step 1<small>{area.name} locality · {area.pct.toFixed(2)}%</small></div>
+      <div class="pb-stub__number"><span class="hl">{f.usd(lo)}</span></div>
+      <div class="pb-stub__per">a year · {f.usd(lo / 26)} per paycheck · {f.usd2(now[0].hourly)} an hour</div>
+      <ul class="pb-ledger">
+        <li><span>Base pay</span><span>{f.usd(now[0].base)}</span></li>
+        <li><span>Locality pay ({area.pct.toFixed(2)}%)</span><span>{f.usd(lo - now[0].base)}</span></li>
+        <li class="pb-ledger__total"><span>Total</span><span>{f.usd(lo)}</span></li>
+      </ul>
+      <p class="cta"><a class="pb-btn" href={calcLink({ system: "GS", grade, step: 1 }, area.name)}>See your take-home and next step</a></p>
+      <div class="pb-stub__foot"><span>paybook · {SOURCE[YEAR].label}</span><span>Not affiliated with the U.S. government</span></div>
+    </article>
+    {!inApp && <p class="sub">The calculator doesn't have places in this area yet, so it opens with Washington, DC. Change the place there.</p>}
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Every step</div>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Step</th><th scope="col">Yearly</th><th scope="col">Per paycheck</th><th scope="col">Per hour</th><th scope="col">Base pay</th><th scope="col">vs {YEAR - 1}</th></tr></thead>
+        <tbody>
+          {now.map((r, i) => (
+            <tr><th scope="row">Step {i + 1}</th><td>{f.usd(r.annual)}</td><td>{f.usd(r.annual / 26)}</td><td>{f.usd2(r.hourly)}</td><td>{f.usd(r.base)}</td><td><span class="pb-delta pb-delta--up">+{f.usd(r.annual - prev[i].annual)}</span></td></tr>
+          ))}
+        </tbody>
+        <caption>{YEAR} yearly pay with locality. Steps 2–4 come after 1 year each, steps 5–7 after 2 years, steps 8–10 after 3 years. {anyCapped && "Some steps are capped at Executive Schedule level IV. "}Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedules 1 and 9.</caption>
+      </table>
+    </div>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Keep exploring</div>
+    <div class="links">
+      <div><h2>Other grades here</h2><ul>{neighbors.map((g) => <li><a href={`/civilian/gs/${g}/${area.slug}`}>GS-{g} in {place}</a></li>)}<li><a href={`/civilian/gs/table/${area.slug}`}>Full {place} pay table</a></li></ul></div>
+      <div><h2>GS-{grade} elsewhere</h2><ul>{pick.map((a) => <li><a href={`/civilian/gs/${grade}/${a.slug}`}>{areaShort(a.name)}</a> <span class="muted">{a.pct.toFixed(2)}%</span></li>)}<li><a href="/civilian/gs">All {G.localityAreas(YEAR).length} locality areas</a></li></ul></div>
+    </div>
+  </main>
+</Base>

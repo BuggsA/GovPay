@@ -1,0 +1,27 @@
+---
+// Military basic pay chart: /military/pay-chart
+import Base from "../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, calcLink } from "../../lib/engine.mjs";
+
+const t = G.milTable(YEAR);
+const order = [].concat(G.MIL_GRADES.enlisted, G.MIL_GRADES.warrant, G.MIL_GRADES.officer, G.MIL_GRADES.priorEnlisted);
+const e1 = t.rows["E-1"][0], o10 = Math.max(...t.rows["O-10"].filter((v) => v != null));
+---
+<Base title={`${YEAR} military pay chart: monthly basic pay by rank and years`} description={`Official ${YEAR} monthly basic pay for every enlisted, warrant and officer grade by years of service, from ${f.usd(e1)} (E-1) to ${f.usd(o10)}. ${SOURCE[YEAR].label}.`} path="/military/pay-chart">
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>{YEAR}</b> · Uniformed services</div>
+    <h1>{YEAR} military pay chart</h1>
+    <p class="lede">Monthly basic pay by grade and years of service. It's the same at every duty station. Housing (BAH) and food (BAS) allowances are paid on top and aren't taxed. <a class="pb-link" href={calcLink({ system: "MIL", mgrade: "E-5", yos: 6 }, null)}>See your full pay with BAH and BAS</a>.</p>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Grade</th>{t.columns.map((c) => <th scope="col">{c === 0 ? "<2" : c}</th>)}</tr></thead>
+        <tbody>
+          {order.map((g) => (
+            <tr><th scope="row">{g}</th>{t.rows[g].map((v) => v == null ? <td class="is-empty">·</td> : <td>{f.usd(v)}</td>)}</tr>
+          ))}
+        </tbody>
+        <caption>{YEAR} monthly basic pay. Column headings are years of service ("over 2", "over 3"...). O-1E to O-3E are officers with over 4 years of prior enlisted or warrant service. Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 8.</caption>
+      </table>
+    </div>
+  </main>
+</Base>

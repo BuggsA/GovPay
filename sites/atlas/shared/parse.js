@@ -11,7 +11,7 @@
  */
 (function (global) {
   "use strict";
-  const G = global.GovPay;
+  // The engine is looked up when parse() runs, so load order doesn't matter.
 
   // A small sample of OPM occupational series. The full list (~400) comes with the data pipeline.
   const SERIES = {
@@ -56,6 +56,7 @@
   const word = (txt, w) => new RegExp("(^|[^a-z0-9])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "($|[^a-z0-9])").test(txt);
 
   function findPlace(t) {
+    const G = global.GovPay;
     const locs = G.locations();
     let best = null;
     // 1. explicit aliases and full names (longest match wins)
@@ -75,6 +76,7 @@
   function num(re, t) { const m = t.match(re); return m ? parseInt(m[1], 10) : null; }
 
   function parse(text) {
+    const G = global.GovPay;
     const t = norm(text);
     if (t.trim().length < 2) return [];
     const out = [];

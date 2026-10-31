@@ -1,0 +1,27 @@
+---
+// Hub: all locality areas, ranked. /civilian/gs
+import Base from "../../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, areaShort } from "../../../lib/engine.mjs";
+
+const areas = G.localityAreas(YEAR).slice().sort((a, b) => b.pct - a.pct);
+const sample = 12;
+const max = areas[0].pct, min = areas[areas.length - 1].pct;
+---
+<Base title={`GS pay by locality, ${YEAR}: all ${areas.length} areas`} description={`GS pay in all ${areas.length} locality areas for ${YEAR}, from ${min.toFixed(2)}% to ${max.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`} path="/civilian/gs">
+  <main id="main" class="page article wide">
+    <div class="pb-section-label"><b>{YEAR}</b> · General Schedule</div>
+    <h1>GS pay in every locality area</h1>
+    <p class="lede">Base pay is the same everywhere. Locality pay is added on top, from <b>{min.toFixed(2)}%</b> to <b>{max.toFixed(2)}%</b>. Below is GS-{sample} step 1 in each area.</p>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Locality area</th><th scope="col">Locality</th><th scope="col">GS-{sample} step 1</th><th scope="col">Full table</th></tr></thead>
+        <tbody>
+          {areas.map((a) => (
+            <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/civilian/gs/${sample}/${a.slug}`}>{areaShort(a.name)}</a><small class="area-full">{a.name}</small></th><td>{a.pct.toFixed(2)}%</td><td>{f.usd(G.gsArea(YEAR, sample, 1, a.name).annual)}</td><td><a class="pb-link" href={`/civilian/gs/table/${a.slug}`}>Table</a></td></tr>
+          ))}
+        </tbody>
+        <caption>Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 9. Places not in a named area get the Rest of U.S. rate.</caption>
+      </table>
+    </div>
+  </main>
+</Base>

@@ -1,0 +1,16 @@
+{
+  "name": "paybook-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "assets": "node scripts/copy-assets.mjs",
+    "dev": "npm run assets && astro dev",
+    "build": "npm run assets && astro build",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.8"
+  },
+  "engines": { "node": ">=22" }
+}
