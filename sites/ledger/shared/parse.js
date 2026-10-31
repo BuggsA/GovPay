@@ -57,7 +57,33 @@
 
   // Returns place ids that match the text, best first. A typed state ("md", "Maryland")
   // counts heavily; researched bases win ties; genuinely ambiguous names (Harris County,
-  // GA and TX) all come back so the UI can offer each one.
+  // GA and TX; Springfield) come back, up to 3, so the UI can offer each one.
+  // Every place's searchable names, built once (the place list never changes while the page is open).
+  let INDEX = null;
+  function placeIndex(G, stateNames) {
+    if (INDEX && INDEX.n === G.locations().length) return INDEX.rows;
+    const rows = G.locations().map((l) => {
+      let names = (ALIASES[l.id] || []).concat([l.name.toLowerCase().replace(/\s*\(.*\)$/, "")]);
+      if (l.kind === "county") {
+        const short = l.short.toLowerCase(), bare = short.replace(/ (county|parish|borough|city and borough|census area|municipality)$/, "");
+        names = names.concat([short, bare + " " + l.state.toLowerCase(), bare + ", " + l.state.toLowerCase()]);
+        if (bare !== short && !stateNames[bare]) names.push(bare);   // "san diego" finds San Diego County; "texas" doesn't find Texas County
+      } else if (l.census) {
+        // "San Buenaventura (Ventura)" -> also "ventura"; "Augusta-Richmond County" -> also "augusta"
+        const short = l.short.toLowerCase(), st = l.state.toLowerCase();
+        const alts = [short, short.replace(/\s*\(.*\)$/, "")];
+        const paren = short.match(/\(([^)]+)\)$/); if (paren) alts.push(paren[1]);
+        const consol = short.match(/^([^-/]+)[-/].*county$/); if (consol) alts.push(consol[1].trim());
+        names = [];
+        alts.forEach((a) => { if (!stateNames[a]) names.push(a); names.push(a + " " + st, a + ", " + st); });
+      }
+      // Researched places win ties; a city beats a same-named county; bigger cities first.
+      const bonus = l.census ? 0.5 + Math.min(0.4, (l.population || 0) / 2e7) : l.kind !== "county" ? 5 : 0;
+      return { l, names: [...new Set(names)].filter((n) => n.length >= 3), bonus };
+    });
+    INDEX = { n: G.locations().length, rows };
+    return rows;
+  }
   function findPlaces(t) {
     const G = global.GovPay;
     const stateNames = {};
@@ -67,27 +93,21 @@
     const tail = t.match(/(?:,\s*|\s)([a-z]{2})\s*$/);
     if (tail && G.ALL_STATES && G.ALL_STATES[tail[1].toUpperCase()]) typedStates.add(tail[1].toUpperCase());
     const best = new Map();
-    G.locations().forEach((l) => {
-      let names = (ALIASES[l.id] || []).concat([l.name.toLowerCase().replace(/\s*\(.*\)$/, "")]);
-      if (l.kind === "county") {
-        const short = l.short.toLowerCase(), bare = short.replace(/ (county|parish|borough|city and borough|census area|municipality)$/, "");
-        names = names.concat([short, bare + " " + l.state.toLowerCase(), bare + ", " + l.state.toLowerCase()]);
-        if (bare !== short && !stateNames[bare]) names.push(bare);   // "san diego" finds San Diego County; "texas" doesn't find Texas County
-      }
+    placeIndex(G, stateNames).forEach(({ l, names, bonus }) => {
       names.forEach((n) => {
-        if (n.length < 3 || !word(t, n)) return;
-        const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + (l.kind !== "county" ? 5 : 0);
+        if (t.indexOf(n) < 0 || !word(t, n)) return;
+        const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + bonus;
         if (!best.has(l.id) || best.get(l.id) < score) best.set(l.id, score);
       });
     });
     if (!best.size) {
       // A state alone picks that state's researched place, if it has one.
-      const l = G.locations().find((x) => x.kind !== "county" && typedStates.has(x.state));
+      const l = G.locations().find((x) => x.kind !== "county" && !x.census && typedStates.has(x.state));
       return l ? [l.id] : [];
     }
     const ranked = [...best.entries()].sort((x, y) => y[1] - x[1]);
     const top = ranked[0][1];
-    return ranked.filter(([, sc]) => sc === top).slice(0, 3).map(([id]) => id);
+    return ranked.filter(([, sc]) => sc > top - 1).slice(0, 3).map(([id]) => id);   // close matches are offered too
   }
   function findPlace(t) { return findPlaces(t)[0] || null; }
 

@@ -253,6 +253,21 @@
     if (year < anchor) for (let y = anchor; y > year; y--) f /= 1 + (series[y] || 0);
     return f;
   }
+  // Cities, towns and census-designated places (5,000+ people) from Census files: each one takes its
+  // main county's keys. They're found by search; the picker's default list stays the researched places.
+  const CITIES = (global.GOVPAY_DATA && global.GOVPAY_DATA.cities) || null;
+  if (PLACES && CITIES) {
+    const countyLoc = new Map(LOCATIONS.filter((l) => l.kind === "county").map((l) => [l.fips, l]));
+    const focusNames = new Set(LOCATIONS.filter((l) => l.kind !== "county").map((l) => l.state + ":" + l.name.toLowerCase().replace(/,.*$|\s*\(.*\)$/g, "")));
+    CITIES.cities.forEach(([pf, name, ci, pop100, split]) => {
+      const c = countyLoc.get(PLACES.counties[ci][0]);
+      if (!c || focusNames.has(c.state + ":" + name.toLowerCase())) return;   // Richmond, Baltimore... already researched
+      LOCATIONS.push(Object.assign({}, c, {
+        id: "p" + c.fips.slice(0, 2) + pf, name: `${name}, ${c.state}`, short: name, kind: "city", census: true,
+        county: c.short, countyId: c.id, population: pop100 * 100, splitCounties: !!split,
+      }));
+    });
+  }
   const LOC_INDEX = new Map(LOCATIONS.map((l) => [l.id, l]));
   // Old links used "sim-xx" for a whole state; send them to that state's first county.
   function location(id) {

@@ -55,7 +55,7 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 - **Needs:** you upload the DTMO BAH ZIP files to `data/raw/dtmo/`.
 
 ### 1.4 Places: one place → three keys · M · ◐
-> **Progress (Oct 31, 2026):** every U.S. county now has its real GS locality area (5 CFR 531.603 + Census metro definitions) and GSA per diem area; the simulated states are gone. Search finds counties ("GS-12 San Diego", "howard county md") and offers each match when a name is ambiguous. Maryland counties set their own county tax. **Still open:** BAH by ZIP (needs DTMO), city names (e.g. "Houston" → Harris County), Alaska/Hawaii per diem.
+> **Progress (Oct 31, 2026):** every U.S. county now has its real GS locality area (5 CFR 531.603 + Census metro definitions) and GSA per diem area; the simulated states are gone. Search finds counties ("GS-12 San Diego", "howard county md") and offers each match when a name is ambiguous. Maryland counties set their own county tax. City names are in too: `scripts/build-cities.py` adds 6,752 cities, towns and census-designated places (5,000+ people, incl. Arlington VA, Bethesda MD) from Census files; each takes its main county's keys, search ranks them by population, and 248 places that span differently-mapped counties say which county they use. **Still open:** BAH by ZIP (needs DTMO), a military installations list, Alaska/Hawaii per diem.
 - **Goal:** the picker knows every place, and each place knows its GS area, BAH area and per diem area.
 - **Includes:**
   - County → GS locality, from OPM's locality definitions

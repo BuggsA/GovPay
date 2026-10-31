@@ -111,3 +111,35 @@ test("Two-step promotion rule (5 CFR 531.214) on the 2026 GS table", () => {
   assert.equal(up(1, 5, 2), 3);     // GS-1's uneven steps: target GS-1/7 $26,771 -> GS-2/3 $26,839
   assert.equal(up(14, 9, 15), 6);   // $139,684 + $3,582 = $143,266, just over GS-15/5 $143,236
 });
+
+test("Cities and CDPs take their county's locality and per diem area (Census place-by-county)", () => {
+  const at = (name) => G.locations().find((l) => l.name === name);
+  const cases = [
+    ["Houston, TX", "Harris County", "Houston-The Woodlands, TX", "TX:Houston"],
+    ["Arlington, VA", "Arlington County", DC, "DC:District of Columbia"],          // a CDP, not a city
+    ["Bethesda, MD", "Montgomery County", DC, "DC:District of Columbia"],
+    ["Silver Spring, MD", "Montgomery County", DC, "DC:District of Columbia"],
+    ["Colorado Springs, CO", "El Paso County", "Colorado Springs, CO", "CO:Colorado Springs"],
+    ["Killeen, TX", "Bell County", "Rest of U.S.", null],                         // Fort Cavazos: standard per diem
+    ["Fayetteville, NC", "Cumberland County", "Raleigh-Durham-Cary, NC", "NC:Fayetteville"],   // Cumberland is named in the Raleigh area
+  ];
+  for (const [name, county, area, pd] of cases) {
+    const l = at(name);
+    assert.ok(l, name);
+    assert.equal(l.county, county, name);
+    assert.equal(G.GS_LOCALITIES[l.gsLocality].name.startsWith(area.split(",")[0]), true, `${name}: ${l.gsLocality}`);
+    assert.equal(l.perDiem, pd, name);
+  }
+  assert.ok(G.locations().filter((l) => l.census).length > 6500);
+  assert.equal(G.locations().filter((l) => l.name === "Richmond, VA" && l.census).length, 0);   // researched place isn't duplicated
+});
+
+test("Search finds cities: bigger city first, same-named counties offered", () => {
+  const names = (q) => [...new Set(P.parse(q).map((r) => r.locId && G.location(r.locId).name))];
+  assert.deepEqual(names("GS-12 Houston"), ["Houston, TX", "Houston County, AL", "Houston County, GA"]);
+  assert.equal(names("GS-11 springfield va")[0], "Springfield, VA");
+  assert.equal(names("gs-12 bethesda")[0], "Bethesda, MD");
+  assert.equal(names("gs 7 ventura")[0], "San Buenaventura (Ventura), CA");
+  assert.equal(names("gs-12 louisville")[0], "Louisville/Jefferson County, KY");
+  assert.deepEqual(P.parse("texas"), []);                                                     // a state alone isn't a city
+});

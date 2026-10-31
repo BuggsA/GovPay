@@ -128,10 +128,12 @@
       const all = G.locations();
       const q = query.trim().toLowerCase();
       let list;
-      const rank = (l) => (l.kind === "county" ? 1 : 0);              // researched bases and cities first, then counties
-      if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0).sort((a, b) => rank(a) - rank(b)).slice(0, 60);   // search covers every state
-      else if (filter) list = all.filter((l) => l.state === filter).sort((a, b) => rank(a) - rank(b));
-      else list = all.filter((l) => l.kind !== "county");
+      // researched bases and cities first, then Census cities and towns (biggest first), then counties
+      const rank = (l) => (l.kind === "county" ? 2 : l.census ? 1 : 0);
+      const order = (a, b) => rank(a) - rank(b) || (b.population || 0) - (a.population || 0);
+      if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0).sort(order).slice(0, 60);   // search covers every state
+      else if (filter) list = all.filter((l) => l.state === filter).sort(order);
+      else list = all.filter((l) => l.kind !== "county" && !l.census);
       const recent = getRecent().filter((r) => all.some((l) => l.id === r));
       const k = placeKeys(value, year());
       const cur = G.location(value);
@@ -143,17 +145,18 @@
           const c = TILES[st];
           return `<button type="button" style="grid-column:${c[0] + 1};grid-row:${c[1] + 1}" aria-pressed="${filter === st}" data-st="${st}" aria-label="${esc(STATE_NAMES[st] || st)}">${st}</button>`;
         }).join("")}</div>
-        <div class="pb-tiles__legend">Tap a state to see its counties.</div>
+        <div class="pb-tiles__legend">Tap a state to see its cities and counties.</div>
         ${filter && !q ? `<div class="pb-picker__row"><button type="button" class="pb-chip pb-chip--on" data-clear>${esc(STATE_NAMES[filter])} <span class="pb-chip__x" aria-hidden="true">×</span><span class="sr">clear filter</span></button></div>` : ""}
-        ${!q && !filter ? '<div class="pb-picker__row"><span class="cap">Researched bases and cities · or search any county</span></div>' : ""}
+        ${!q && !filter ? '<div class="pb-picker__row"><span class="cap">Researched bases and cities · or search any city, town or county</span></div>' : ""}
         <ul class="pb-places" aria-label="Places">${list.length ? list.map((l) => {
           const g = G.gs(year(), 1, 1, l.id);
-          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" ? l.short : l.name)}</b><span class="tag">${l.kind}</span><small>${esc(l.state)} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
+          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" || l.census ? l.short : l.name)}</b><span class="tag">${l.kind}</span><small>${esc(l.state)}${l.census ? " · " + esc(l.county) : ""} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
         }).join("") : `<li class="pb-places__empty">No place matches "${esc(query)}". Try a state name.</li>`}</ul>
         <div class="pb-uses" aria-live="polite"><b>${esc(cur.name)}</b> uses three different area lists:
           <dl><dt>GS pay</dt><dd>${esc(k.gs)}</dd>
           <dt>BAH</dt><dd class="${k.bahDiff ? "differs" : ""}">${esc(k.bah)}${k.bahDiff ? " · a different area" : ""}</dd>
           <dt>Per diem</dt><dd class="${k.pdDiff ? "differs" : ""}">${esc(k.pd)}${k.pdDiff ? " · a different area" : ""}</dd></dl>
+          ${cur.splitCounties ? `<div style="margin-top:6px">${esc(cur.short)} spans more than one county. This uses ${esc(cur.county)}, where most people live; if you work in another part, pick that county instead.</div>` : ""}
           ${k.bahEstimate ? '<div style="margin-top:6px">GS and per diem are official. BAH here is a rough estimate until DTMO rates are added.</div>' : ""}</div>`;
       const qi = $("input", el);
       qi.oninput = () => { query = qi.value; render(true); };

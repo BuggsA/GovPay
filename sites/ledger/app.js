@@ -201,19 +201,20 @@
     if (t.state === "MD" && !t.county) t.county = "Montgomery";
     return Object.assign({}, t, { dutyState: loc.state });
   }
-  // "Howard County, MD" -> "Howard"; "Baltimore city, MD" -> "Baltimore City"; "Baltimore County, MD" -> "Baltimore County"
+  // "Howard County, MD" (or Columbia, MD, in Howard) -> "Howard"; "Baltimore city, MD" -> "Baltimore City"
   function mdCountyOf(loc) {
-    if (loc.kind !== "county" || loc.state !== "MD") return null;
-    if (loc.short === "Baltimore city") return "Baltimore City";
-    if (loc.short === "Baltimore County") return "Baltimore County";
-    const n = loc.short.replace(/ County$/, "");
+    if (loc.state !== "MD" || !(loc.kind === "county" || loc.census)) return null;
+    const c = loc.census ? loc.county : loc.short;              // a Census city uses its main county
+    if (c === "Baltimore city") return "Baltimore City";
+    if (c === "Baltimore County") return "Baltimore County";
+    const n = c.replace(/ County$/, "");
     return T.MD_COUNTIES[n] != null ? n : null;
   }
   const round10 = (n) => f.usd(Math.round(n / 10) * 10);
   function renderTakeHome(r, p) {
     const el = $("#th"); if (!el) return;
     const mil = p.system === "MIL", o = taxOpts(), e = T.estimate(T.payFrom(r, p), o);
-    const stName = o.state === "NONE" ? "no state income tax" : T.STATES[o.state] && T.STATES[o.state].none ? `${T.STATES[o.state].name}: no state income tax` : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/City$/.test(o.county) ? "" : " County"}` : "");
+    const stName = o.state === "NONE" ? "no state income tax" : T.STATES[o.state] && T.STATES[o.state].none ? `${T.STATES[o.state].name}: no state income tax` : o.state === "OTHER" ? (o.otherRate ? `state tax ${o.otherRate}%` : "state tax not included") : T.STATES[o.state].name + (o.state === "MD" ? ` + ${o.county}${/(City|County)$/.test(o.county) ? "" : " County"}` : "");
     const parts = [o.filing === "mfj" ? "Married, one income" : "Single", "standard deduction", stName];
     if (!mil) parts.push(`FERS ${(+o.fers + (p.system === "LEO" ? 0.5 : 0)).toFixed(1)}%`);
     parts.push(`TSP ${o.tspPct}% ${o.tspType === "roth" ? "Roth" : "traditional"}`);
