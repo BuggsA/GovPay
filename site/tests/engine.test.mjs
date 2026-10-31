@@ -159,3 +159,18 @@ test("BAH matches DTMO's 2025 and 2026 rate files; BAS matches DoD FMR 7A ch. 25
   assert.deepEqual([m.basic, m.bah, m.bas, m.status], [4110, 2430, 476.95, "verified"]);
   assert.ok(G.locations().filter((l) => l.kind === "county").every((l) => !l.bahSimulated));
 });
+
+test("Job posting decoder: 10 real USAJOBS grade strings", () => {
+  const d = (q) => { const r = P.parse(q)[0]; return r && r.kind === "posting" ? [r.series, r.seriesName, r.system, r.grades.join("/")] : null; };
+  assert.deepEqual(d("GS-0343-09/11/12"), ["0343", "Management and Program Analysis", "GS", "9/11/12"]);
+  assert.deepEqual(d("GS-2210-12/13"), ["2210", "Information Technology Management", "GS", "12/13"]);
+  assert.deepEqual(d("GS-1811-07/09/11/12/13"), ["1811", "Criminal Investigation", "LEO", "7/9/11/12/13"]);
+  assert.deepEqual(d("GS-0560-11"), ["0560", "Budget Analysis", "GS", "11"]);
+  assert.deepEqual(d("GS-1102-05/07/09/11/12"), ["1102", "Contracting", "GS", "5/7/9/11/12"]);
+  assert.deepEqual(d("WG-5803-10"), ["5803", "Heavy Mobile Equipment Mechanic", "FWS", "10"]);
+  assert.deepEqual(d("GS-1896-05/07/09/11/12"), ["1896", "Border Patrol Enforcement", "LEO", "5/7/9/11/12"]);
+  assert.deepEqual(d("GS-0343-07-11"), ["0343", "Management and Program Analysis", "GS", "7/9/11"]);   // USAJOBS range, two-grade ladder
+  assert.deepEqual(d("GS 2210 11-13"), ["2210", "Information Technology Management", "GS", "11/12/13"]);
+  assert.equal(P.parse("GS-0610-11/12 San Diego")[0].locId, G.locations().find((l) => l.name === "San Diego, CA").id);
+  assert.equal(P.parse("gs-0357-05")[0].retired, true);
+});

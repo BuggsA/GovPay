@@ -141,7 +141,7 @@
   function setMe(p, assumed) { state.me = p; state.assumed = assumed || []; state.preview = null; state.editing = false; state.draft = null; save(); render(); }
   function pickFromSearch(r) {
     if (r.locId) state.loc = r.locId;
-    if (r.kind === "profile") setMe(r.profile, r.assumed);
+    if (r.kind === "profile") { state.posting = null; setMe(r.profile, r.assumed); }
     else if (r.kind === "posting") { state.posting = r; setMe({ system: r.system, grade: r.grades[0], step: 1, leap: r.system === "LEO", schedule: r.schedule }, ["step 1"]); }
     else if (r.kind === "place" && state.me) { save(); render(); }
   }
@@ -282,9 +282,30 @@
     $("#back").onclick = () => { state.preview = null; renderDash(); };
     $("#keep").onclick = () => { state.me = state.preview; state.preview = null; save(); renderDash(); };
   }
+  // A decoded job posting (GS-0343-09/11/12): pay at each grade on it, here. Tap a grade to preview it.
+  function renderPosting(el) {
+    let box = $("#postingCard");
+    if (!box) { box = document.createElement("div"); box.id = "postingCard"; el.parentNode.insertBefore(box, el); }
+    const j = state.posting, me = state.me;
+    if (!j || !me || me.system !== j.system) { box.innerHTML = ""; return; }
+    const top = j.grades[j.grades.length - 1];
+    const rows = j.grades.map((g, i) => {
+      const prof = Object.assign({}, me, { grade: g, step: 1 }), r = G.compute(prof, state.year, state.loc), r10 = G.compute(Object.assign({}, prof, { step: 10 }), state.year, state.loc);
+      const role = j.grades.length === 1 ? "The grade on this posting" : i === 0 ? "Entry grade" : g === top ? "Full performance level (top of the ladder)" : "Next on the ladder";
+      const cur = me.grade === g && !state.preview;
+      return `<li class="${cur ? "is-you" : ""}"><button type="button" data-g="${g}"><span class="pb-ladder__name">${esc(j.schedule)}-${g} · step 1</span>
+        <span class="pb-ladder__when">${esc(role)} · up to ${f.usd(r10.annual)} at step 10</span><span class="pb-delta">${f.usd(r.annual)}<small>a year</small></span></button></li>`;
+    }).join("");
+    const notes = [].concat(j.retired ? ["USAJOBS lists this series as retired."] : [], j.assumed.filter((a) => !/^step/.test(a)).map((a) => a.charAt(0).toUpperCase() + a.slice(1) + "."));
+    box.innerHTML = `<div class="pb-posting"><div class="pb-posting__head"><span><b>Job posting</b> · ${esc(j.schedule)}-${esc(j.series)}${j.seriesName ? " · " + esc(j.seriesName) : ""}</span><button type="button" class="pb-link" id="postingClear">Clear</button></div>
+      <ol class="pb-ladder">${rows}</ol>${notes.length ? `<p class="pb-posting__note">${esc(notes.join(" "))}</p>` : ""}</div>`;
+    box.querySelectorAll("button[data-g]").forEach((b) => (b.onclick = () => { const g = +b.dataset.g; state.preview = g === me.grade ? null : Object.assign({}, me, { grade: g, step: 1 }); renderDash(); $("#stub").scrollIntoView({ behavior: "smooth", block: "center" }); }));
+    $("#postingClear").onclick = () => { state.posting = null; renderLadder(); };
+  }
   function renderLadder() {
     const p = shown(), now = G.compute(p, state.year, state.loc), items = G.progression(p, state.year, state.loc), mil = p.system === "MIL";
     const el = $("#ladder");
+    renderPosting(el);
     el.innerHTML = `<li class="is-you"><div class="pb-rung"><span class="pb-ladder__name">${esc(now.title)}</span><span class="pb-ladder__when">${state.preview ? "The level you're previewing" : "Where you are now"}</span><span class="pb-delta">${state.preview ? "Preview" : "You"}</span></div></li>` +
       (items.length ? items.map((x, i) => `<li><button type="button" data-i="${i}"><span class="pb-ladder__name">${esc(x.title)}</span>
         <span class="pb-ladder__when">${esc(KIND[x.kind])} · ${esc(x.when)}</span>

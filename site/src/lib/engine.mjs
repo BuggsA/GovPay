@@ -5,6 +5,7 @@ import "../../../shared/data/perdiem.js";
 import "../../../shared/data/places.js";
 import "../../../shared/data/cities.js";
 import "../../../shared/data/bah.js";
+import "../../../shared/data/series.js";
 import "../../../shared/govpay.js";
 import "../../../shared/data/statetax.js";
 import "../../../shared/tax.js";
@@ -104,3 +105,13 @@ export function bahRow(code, year = BAH_YEAR) {
   const r = y.rates[code], n = BAHD.grades.length;
   return BAHD.grades.map((g, i) => ({ grade: g, with: r[i], without: r[n + i] }));
 }
+
+// ---------------------------------------------------------------- job series pages
+const SER = globalThis.GOVPAY_DATA.series;
+// Active white-collar (General Schedule) series get a page; trades (2500+) are listed on the hub.
+export function jobSeries() {
+  return Object.entries(SER.names).filter(([c]) => SER.retired.indexOf(c) < 0).map(([code, name]) => ({
+    code, name, family: code.slice(0, 2) + "00", trade: +code >= 2500, leo: SER.leo.indexOf(code) >= 0, slug: code,
+  }));
+}
+export const seriesFamilies = SER.families;

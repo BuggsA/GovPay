@@ -14,7 +14,9 @@
   // The engine is looked up when parse() runs, so load order doesn't matter.
 
   // A small sample of OPM occupational series. The full list (~400) comes with the data pipeline.
-  const SERIES = {
+  // Occupational series names: the full USAJOBS list when shared/data/series.js is loaded (looked up at
+  // parse time, so load order doesn't matter), else a small sample.
+  const SAMPLE_SERIES = {
     "0080": "Security Administration", "0132": "Intelligence", "0201": "Human Resources Management",
     "0301": "Miscellaneous Administration and Program", "0343": "Management and Program Analysis",
     "0510": "Accounting", "0560": "Budget Analysis", "0610": "Nurse", "0801": "General Engineering",
@@ -22,6 +24,20 @@
     "1801": "General Inspection, Investigation, Enforcement, and Compliance", "1811": "Criminal Investigation",
     "1896": "Border Patrol Enforcement", "2210": "Information Technology Management",
   };
+  const seriesData = () => (global.GOVPAY_DATA && global.GOVPAY_DATA.series) || null;
+  const seriesNames = () => (seriesData() ? seriesData().names : SAMPLE_SERIES);
+  const leoSeries = () => (seriesData() ? seriesData().leo : ["1811", "1896"]);
+  // "09/11/12" -> [9, 11, 12]; a USAJOBS range "07-11" -> the two-grade ladder 7, 9, 11 below GS-11, else every grade
+  function gradeList(txt) {
+    const r = txt.match(/^(\d{1,2})\s*-\s*(\d{1,2})$/);
+    if (r) {
+      const lo = +r[1], hi = +r[2], out = [];
+      if (hi < lo) return [];
+      for (let g = lo; g <= hi; g += lo >= 5 && hi <= 11 && (hi - lo) % 2 === 0 ? 2 : 1) out.push(g);
+      return out;
+    }
+    return txt.split("/").map((x) => parseInt(x, 10));
+  }
 
   // Common rank names → pay grade. Ambiguous across services, so the first match wins and the UI shows the grade.
   const RANKS = [
@@ -134,13 +150,20 @@
     const deps = /\b(with dependents|w\/ ?dep|with dep|married|kids|family)\b/.test(t) ? true : /\b(single|no dependents|without dependents|no dep)\b/.test(t) ? false : null;
 
     // --- job posting: GS-0343-09/11/12, GS-1811-07/09/11/12/13, WG-5803-10
-    const post = t.match(/\b(gs|gm|wg|wl|ws)[- ]?(\d{4})[- ]?((?:\d{1,2})(?:\s?\/\s?\d{1,2})*)\b/);
+    const post = t.match(/\b(gs|gm|wg|wl|ws)[- ]?(\d{4})[- ]?(\d{1,2}\s?-\s?\d{1,2}(?!\d)|\d{1,2}(?:\s?\/\s?\d{1,2})*)\b/);
     if (post) {
-      const grades = post[3].split("/").map((x) => parseInt(x, 10)).filter((g) => g >= 1 && g <= 15);
+      const sched = post[1].toUpperCase(), max = sched === "WS" ? 19 : 15;
+      const grades = [...new Set(gradeList(post[3]))].filter((g) => g >= 1 && g <= max).sort((a, b) => a - b);
       if (grades.length) {
-        const sys = post[1] === "gs" || post[1] === "gm" ? (post[2] === "1811" ? "LEO" : "GS") : "FWS";
-        out.push({ kind: "posting", series: post[2], seriesName: SERIES[post[2]] || null, system: sys, schedule: post[1].toUpperCase(), grades, locId,
-          label: `${post[1].toUpperCase()}-${post[2]} · grades ${grades.join(", ")}`, assumed: SERIES[post[2]] ? [] : ["series name not in the sample list"], score: 10 });
+        const leo = (sched === "GS" || sched === "GM") && leoSeries().indexOf(post[2]) >= 0;
+        const sys = sched === "GS" || sched === "GM" ? (leo ? "LEO" : "GS") : "FWS";
+        const name = seriesNames()[post[2]] || null;
+        const trade = +post[2] >= 2500;
+        const assumed = [].concat(name ? [] : ["series not in the USAJOBS list"], leo ? ["LEO pay, if the position is a law enforcement officer"] : [],
+          trade && sys !== "FWS" ? ["this series is usually a trades (wage grade) job"] : []);
+        out.push({ kind: "posting", series: post[2], seriesName: name, system: sys, schedule: sched, grades, locId,
+          retired: !!(seriesData() && seriesData().retired.indexOf(post[2]) >= 0),
+          label: `${sched}-${post[2]} · grades ${grades.join(", ")}`, assumed, score: 10 });
         return out;
       }
     }
@@ -204,5 +227,5 @@
     return out;
   }
 
-  global.GovPayParse = { parse, SERIES };
+  global.GovPayParse = { parse, get SERIES() { return seriesNames(); } };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -9,8 +9,9 @@
 | Tax Foundation | Works | State income tax tables, in use: `scripts/convert-statetax.py` converts the 2026 workbook (kept in `data/raw/taxfoundation/`). |
 | OPM (GS, locality, LEO, SES) | Blocked by OPM's own servers ("Access Denied") | Automated downloads are refused. Don't try to get around this. |
 | DFAS (military pay, BAS) | Blocked by DFAS's own servers (403) | Same. |
+| DCPAS wage schedules (FWS) | Works (plain download, Oct 31 2026) | `wageandsalary.dcpas.osd.mil`, incl. the bulk "Download Wage Data" page. FY2027 schedules are delayed by DoD until the FY2027 pay limits are released. |
 | DTMO (BAH) | Blocked by DTMO's own servers (403) | Same. **2025 and 2026 BAH files received by hand (Oct 31, 2026).** |
-| USAJOBS code lists (occupational series) | Blocked (Access Denied, Oct 31 2026) | Needed for the job-posting decoder; download `https://data.usajobs.gov/api/codelist/occupationalseries` in a browser and commit it under `data/raw/opm/`. |
+| USAJOBS code lists (occupational series) | Blocked (Access Denied, Oct 31 2026) | **Received by hand Oct 31, 2026**: `data/raw/usajobs/occupational-series.txt` (822 series). Refresh by downloading `https://data.usajobs.gov/api/codelist/occupationalseries` in a browser. |
 
 GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO all return 403, while GSA returns 200). So for these three sources, a person downloads the official files in a browser and commits them under `data/raw/<source>/<year>/`. Scripts then convert them to JSON. That's a few files once a year.
 

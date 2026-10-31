@@ -181,8 +181,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 - **Done when:** a pasted link shows the right number in its preview in Slack, iMessage and X.
 - **Needs:** 4.1.
 
-### 4.3 Job-posting decoder · S · ☐
-> **Blocked (Oct 31, 2026):** the occupational series list (USAJOBS code list API, OPM handbook) refuses automated downloads (Access Denied). Needs a one-time manual download into `data/raw/opm/`.
+### 4.3 Job-posting decoder · S · ☑
+> **Done (Oct 31, 2026):** the USAJOBS occupational series list (822 series, received by hand) is in `data/raw/usajobs/` → `scripts/convert-series.py` → `shared/data/series.js`. The parser reads `GS-0343-09/11/12` and USAJOBS ranges (`GS-0343-07-11` → 7/9/11), flags retired series, and defaults law-enforcement series (0007, 0082, 0083, 1811, 1895, 1896) to LEO pay with a note. The app shows a "Job posting" ladder with pay at each grade where you work; tap one to preview it. `/jobs` hub + 442 series pages. 10 real posting strings tested.
 - **Goal:** turn "GS-0343-09/11/12" into a career ladder with pay at each grade.
 - **Includes:** the OPM occupational series list, paste-in parsing, the ladder with pay for the chosen location, and `/jobs/<series>` pages.
 - **Done when:** 10 real USAJobs strings decode correctly.
