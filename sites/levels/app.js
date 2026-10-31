@@ -101,6 +101,7 @@
   }
 
   // ---------- deck ----------
+  function pinIndex(path, code) { return state.pins.findIndex((pp) => pp.path === path && pp.code === code); }
   function renderDeck() {
     const P = pathObj();
     $("#deckTitle").textContent = `${P.ico} ${P.name} levels`;
@@ -109,67 +110,82 @@
     const max = Math.max.apply(null, vals);
     $("#deck").innerHTML = P.levels.map((l, i) => {
       const r = calc(profileFor(l));
-      const pinned = state.pins.some((pp) => pp.code === l.code && pp.path === P.key);
+      const pi = pinIndex(P.key, l.code);
       return `<button class="lvl ${r.annual ? "" : "locked"}" type="button" data-i="${i}" aria-pressed="${i === state.level}" style="--t:${(i + 1) / P.levels.length}">
-        <span class="pinbtn" role="button" tabindex="0" data-pin="${i}" aria-pressed="${pinned}">${pinned ? "pinned" : "pin"}</span>
+        ${pi >= 0 ? `<span class="vs-mark" title="In head-to-head">VS ${"AB"[pi]}</span>` : ""}
         <div class="code">${l.code}</div>
         <div><div class="pay">${r.annual ? f.usd(r.annual) : "locked"}<small>${r.annual ? "per year" : "needs more years"}</small></div>
         <div class="meter"><span style="width:${((r.annual || 0) / max) * 100}%"></span></div></div></button>`;
     }).join("");
-    $("#deck").querySelectorAll(".lvl").forEach((b) => (b.onclick = (e) => {
-      if (e.target.dataset.pin != null) { togglePin(+e.target.dataset.pin); return; }
+    $("#deck").querySelectorAll(".lvl").forEach((b) => (b.onclick = () => {
       state.level = +b.dataset.i; state.yosOverride = null; renderDeck(); renderSheet();
     }));
   }
-  function togglePin(i) {
-    const P = pathObj(), l = P.levels[i];
-    const idx = state.pins.findIndex((pp) => pp.code === l.code && pp.path === P.key);
+  function toggleCurrentPin() {
+    const P = pathObj(), l = P.levels[state.level];
+    const idx = pinIndex(P.key, l.code);
     if (idx >= 0) state.pins.splice(idx, 1);
     else { state.pins.push({ path: P.key, code: l.code, p: profileFor(l), name: P.name }); if (state.pins.length > 2) state.pins.shift(); }
-    renderDeck(); renderVersus();
+    renderDeck(); fillSheet(); renderVersus();
   }
 
   // ---------- sheet ----------
+  // Built once per level; sliders only refresh numbers (fillSheet) so dragging stays smooth.
   const STAT_COLORS = { base: "var(--track)", locality: "var(--civ)", leap: "var(--ses)", bah: "var(--wo)", bas: "var(--fws)" };
   function renderSheet() {
-    const P = pathObj(), l = P.levels[state.level], p = profileFor(l), r = calc(p);
+    const P = pathObj(), p = profileFor(P.levels[state.level]);
     const knobs = [];
     if (P.system === "GS" || P.system === "LEO" || P.system === "FWS") {
       const maxStep = P.system === "FWS" ? 5 : 10;
-      knobs.push(`<label class="knob">Step <input type="range" min="1" max="${maxStep}" value="${Math.min(state.step, maxStep)}" data-step> <b>${Math.min(state.step, maxStep)}</b></label>`);
+      knobs.push(`<label class="knob">Step <input type="range" min="1" max="${maxStep}" value="${Math.min(state.step, maxStep)}" data-step> <b data-stepv>${Math.min(state.step, maxStep)}</b></label>`);
     }
     if (P.system === "LEO") knobs.push(`<label class="knob"><input type="checkbox" data-leap ${state.leap ? "checked" : ""}> LEAP</label>`);
     if (P.system === "MIL") {
-      knobs.push(`<label class="knob">Years <input type="range" min="0" max="40" value="${p.yos}" data-yos> <b>${p.yos}</b></label>`);
+      knobs.push(`<label class="knob">Years <input type="range" min="0" max="40" value="${p.yos}" data-yos> <b data-yosv>${p.yos}</b></label>`);
       knobs.push(`<label class="knob"><input type="checkbox" data-deps ${state.deps ? "checked" : ""}> Dependents</label>`);
     }
-    const total = r.annual || 1;
     $("#sheet").innerHTML = `
       <div>
         <p class="eyebrow">${P.name} · ${G.location(state.loc).name} · ${state.year}</p>
-        <div class="lvl-nav"><button type="button" class="nav-btn" data-nav="-1" aria-label="Previous level" ${state.level <= 0 ? "disabled" : ""}>−</button><h2>${r.title}</h2><button type="button" class="nav-btn" data-nav="1" aria-label="Next level" ${state.level >= P.levels.length - 1 ? "disabled" : ""}>+</button></div>
-        <div class="big">${r.annual ? f.usd(r.annual) : "Locked"}</div>
-        <div class="per">${r.annual ? `${f.usd(r.annual / 12)} / month${r.hourly ? ` · ${f.usd2(r.hourly)} / hour` : ""}` : ""} <span class="tag ${r.status}">${G.STATUS_INFO[r.status].label}</span></div>
-        ${r.rows.map((row) => `<div class="stat"><div class="row"><span>${row.label}${row.taxFree ? " 🛡 tax-free" : ""}</span><b>${f.usd(row.annual)}</b></div><div class="track"><span style="width:${(row.annual / total) * 100}%;background:${STAT_COLORS[row.key]}"></span></div></div>`).join("")}
+        <div class="lvl-nav"><button type="button" class="nav-btn" data-nav="-1" aria-label="Previous level" ${state.level <= 0 ? "disabled" : ""}>−</button><h2 id="sheetTitle"></h2><button type="button" class="nav-btn" data-nav="1" aria-label="Next level" ${state.level >= P.levels.length - 1 ? "disabled" : ""}>+</button></div>
+        <div id="sheetNums"></div>
         <div class="knobs">${knobs.join("")}</div>
-        <div class="fine">${r.notes.map((n) => `<p>${n}</p>`).join("")}</div>
+        <button type="button" class="vs-add" id="vsAdd"></button>
+        <div class="fine" id="sheetNotes"></div>
       </div>
       <div class="chart-card" id="chartCard"></div>`;
     const sh = $("#sheet");
     sh.querySelectorAll("[data-nav]").forEach((b) => (b.onclick = () => { state.level = Math.max(0, Math.min(P.levels.length - 1, state.level + +b.dataset.nav)); state.yosOverride = null; renderDeck(); renderSheet(); }));
-    const st = $("[data-step]", sh); if (st) st.oninput = () => { state.step = +st.value; renderPaths(); renderDeck(); renderSheet(); };
+    const st = $("[data-step]", sh); if (st) st.oninput = () => { state.step = +st.value; $("[data-stepv]", sh).textContent = st.value; renderPaths(); renderDeck(); fillSheet(); };
+    const yo = $("[data-yos]", sh); if (yo) yo.oninput = () => { state.yosOverride = +yo.value; $("[data-yosv]", sh).textContent = yo.value; renderDeck(); fillSheet(); };
     const lp = $("[data-leap]", sh); if (lp) lp.onchange = () => { state.leap = lp.checked; render(); };
-    const yo = $("[data-yos]", sh); if (yo) yo.oninput = () => { state.yosOverride = +yo.value; renderDeck(); renderSheet(); };
     const dp = $("[data-deps]", sh); if (dp) dp.onchange = () => { state.deps = dp.checked; render(); };
+    $("#vsAdd").onclick = toggleCurrentPin;
+    fillSheet();
     renderChart();
+  }
+  function fillSheet() {
+    const P = pathObj(), l = P.levels[state.level], r = calc(profileFor(l));
+    const total = r.annual || 1;
+    $("#sheetTitle").textContent = r.title;
+    $("#sheetNums").innerHTML = `
+      <div class="big">${r.annual ? f.usd(r.annual) : "Locked"}</div>
+      <div class="per">${r.annual ? `${f.usd(r.annual / 12)} / month${r.hourly ? ` · ${f.usd2(r.hourly)} / hour` : ""}` : ""} <span class="tag ${r.status}">${G.STATUS_INFO[r.status].label}</span></div>
+      ${r.rows.map((row) => `<div class="stat"><div class="row"><span>${row.label}${row.taxFree ? " 🛡 tax-free" : ""}</span><b>${f.usd(row.annual)}</b></div><div class="track"><span style="width:${(row.annual / total) * 100}%;background:${STAT_COLORS[row.key]}"></span></div></div>`).join("")}`;
+    $("#sheetNotes").innerHTML = r.notes.map((n) => `<p>${n}</p>`).join("");
+    const pi = pinIndex(P.key, l.code);
+    const btn = $("#vsAdd");
+    btn.setAttribute("aria-pressed", String(pi >= 0));
+    btn.innerHTML = pi >= 0 ? `✓ In head-to-head (${"AB"[pi]}) · tap to remove` : state.pins.length === 1 ? `⚔️ Compare with ${state.pins[0].code}` : state.pins.length === 2 ? "⚔️ Swap into head-to-head" : "⚔️ Add to head-to-head";
   }
 
   // ---------- career chart ----------
+  // Chart is drawn once; the slider only moves the cursor and readout.
   function renderChart() {
     const P = pathObj();
     const pts = P.career().map((c) => {
-      const p = Object.assign({ deps: state.deps }, c.profile);
-      return { yr: c.yr, label: c.label, annual: calc(p).annual || 0, title: calc(p).title };
+      const r = calc(Object.assign({ deps: state.deps }, c.profile));
+      return { yr: c.yr, label: c.label, annual: r.annual || 0, title: r.title };
     });
     const horizon = pts[pts.length - 1].yr;
     state.careerYr = Math.min(state.careerYr, horizon);
@@ -179,11 +195,10 @@
     const y = (v) => H - m.b - (v / maxV) * (H - m.t - m.b);
     const line = pts.map((p, i) => `${i ? "L" : "M"}${x(p.yr).toFixed(1)},${y(p.annual).toFixed(1)}`).join("");
     const area = `${line}L${x(horizon)},${y(0)}L${x(0)},${y(0)}Z`;
-    const ticks = 4, grid = range(0, ticks).map((i) => (maxV / ticks) * i);
+    const grid = range(0, 4).map((i) => (maxV / 4) * i);
     const ms = pts.filter((p, i) => i === 0 || p.label !== pts[i - 1].label);
-    const cur = pts.find((p) => p.yr === state.careerYr) || pts[0];
-    const first = pts[0].annual;
-    $("#chartCard").innerHTML = `
+    const card = $("#chartCard");
+    card.innerHTML = `
       <h3><span>Career path</span><span class="fine">${P.careerName}</span></h3>
       <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Pay over a ${horizon}-year career">
         <g class="grid">${grid.map((v) => `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/>`).join("")}</g>
@@ -191,19 +206,28 @@
           ${range(0, horizon).filter((v) => v % 5 === 0).map((v) => `<text x="${x(v)}" y="${H - 8}" text-anchor="middle">yr ${v}</text>`).join("")}</g>
         <path class="area" d="${area}"/><path class="line" d="${line}"/>
         <g class="ms">${ms.map((p, i) => `<circle cx="${x(p.yr)}" cy="${y(p.annual)}" r="5"/><text x="${x(p.yr) + (i % 2 ? 6 : -6)}" y="${y(p.annual) - 10}" text-anchor="${i % 2 ? "start" : "end"}">${p.label}</text>`).join("")}</g>
-        <g class="cursor"><line x1="${x(cur.yr)}" x2="${x(cur.yr)}" y1="${m.t}" y2="${H - m.b}"/><circle cx="${x(cur.yr)}" cy="${y(cur.annual)}" r="7"/></g>
+        <g class="cursor"><line y1="${m.t}" y2="${H - m.b}"/><circle r="7"/></g>
       </svg>
-      <input class="yearslider" type="range" min="0" max="${horizon}" value="${state.careerYr}" aria-label="Year in career">
-      <div class="readout"><span>Year ${cur.yr}: <b>${cur.title}</b></span><span><b>${f.usd(cur.annual)}</b> / yr · ${first ? "+" + Math.round(((cur.annual - first) / first) * 100) + "% since day one" : ""}</span></div>
-      <p class="fine">Uses ${state.year} tables (today's dollars). Real promotions and timing vary. Step rules on promotion are simplified.</p>`;
-    $(".yearslider", $("#chartCard")).oninput = (e) => { state.careerYr = +e.target.value; renderChart(); };
+      <input class="yearslider" type="range" min="0" max="${horizon}" step="1" value="${state.careerYr}" aria-label="Year in career">
+      <div class="readout"></div>
+      <p class="fine">Drag the slider to move through a career. Uses ${state.year} tables (today's dollars). Real promotions and timing vary.</p>`;
+    const cLine = $(".cursor line", card), cDot = $(".cursor circle", card), readout = $(".readout", card), first = pts[0].annual;
+    const move = () => {
+      const cur = pts.find((p) => p.yr === state.careerYr) || pts[0];
+      cLine.setAttribute("x1", x(cur.yr)); cLine.setAttribute("x2", x(cur.yr));
+      cDot.setAttribute("cx", x(cur.yr)); cDot.setAttribute("cy", y(cur.annual));
+      readout.innerHTML = `<span>Year ${cur.yr}: <b>${cur.title}</b></span><span><b>${f.usd(cur.annual)}</b> / yr · ${first ? "+" + Math.round(((cur.annual - first) / first) * 100) + "% since day one" : ""}</span>`;
+    };
+    $(".yearslider", card).oninput = (e) => { state.careerYr = +e.target.value; move(); };
+    move();
   }
 
-  // ---------- versus ----------
+  // ---------- versus + tray ----------
   function renderVersus() {
+    renderTray();
     const el = $("#versus");
     if (state.pins.length < 2) {
-      el.innerHTML = `<div class="vs-empty">⚔️ <b>Head to head:</b> pin two level cards from any paths to compare them. ${state.pins.length === 1 ? `(${state.pins[0].name} ${state.pins[0].code} is pinned — pick one more.)` : ""}</div>`;
+      el.innerHTML = `<div class="vs-empty">⚔️ <b>Head to head:</b> open any level and tap <b>Add to head-to-head</b>. Add two levels, from the same path or different ones. ${state.pins.length === 1 ? `<br><b>${state.pins[0].name} ${state.pins[0].code}</b> is ready. Pick one more.` : ""}</div>`;
       return;
     }
     const [a, b] = state.pins.map((pp) => Object.assign({ r: calc(pp.p) }, pp));
@@ -211,6 +235,18 @@
     const side = (s) => `<div class="vs-side" style="--c:${colorVar(s.path)}"><div class="fine">${s.name}</div><div class="name">${s.r.title}</div><div class="amt">${f.usd(s.r.annual)}</div><div class="fine">${s.r.rows.map((r) => `${r.label}: ${f.usd(r.annual)}`).join("<br>")}</div></div>`;
     el.innerHTML = `<div class="vs-card">${side(a)}<div class="vs-badge">VS</div>${side(b)}
       <div class="vs-result">${d === 0 ? "Dead even." : `<b>${(d > 0 ? b : a).r.title}</b> earns <b>${f.usd(Math.abs(d))}</b> more a year (cash only, in ${G.location(state.loc).name}).`}</div></div>`;
+  }
+  function renderTray() {
+    const el = $("#vsTray");
+    if (!state.pins.length) { el.hidden = true; return; }
+    el.hidden = false;
+    const slot = (pp, i) => pp
+      ? `<span class="tray-slot" style="--c:${colorVar(pp.path)}"><b>${"AB"[i]}</b> ${pp.code}<button type="button" data-rm="${i}" aria-label="Remove ${pp.code}">×</button></span>`
+      : `<span class="tray-slot empty"><b>B</b> pick another level</span>`;
+    el.innerHTML = `<div class="wrap tray-inner"><span class="tray-label">⚔️ Head to head</span>${slot(state.pins[0], 0)}<span class="tray-vs">vs</span>${slot(state.pins[1], 1)}
+      <button type="button" class="tray-go" ${state.pins.length < 2 ? "disabled" : ""}>See result ↓</button></div>`;
+    el.querySelectorAll("[data-rm]").forEach((b) => (b.onclick = () => { state.pins.splice(+b.dataset.rm, 1); renderDeck(); fillSheet(); renderVersus(); }));
+    $(".tray-go", el).onclick = () => $("#versus").scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   // ---------- side quests ----------
@@ -220,7 +256,7 @@
     $("#tripQuest").innerHTML = `<h3>🧳 Trip ticket</h3><p class="muted">Per diem for official travel to your selected location.</p>
       <div class="inputs"><label>Arrive<input type="date" value="${state.tripStart}" data-ts></label><label>Nights<input type="number" min="0" max="60" value="${state.tripNights}" data-tn></label></div>
       <div class="ticket"><div class="main">
-        <div class="kv"><span>Area</span><b>${pd.areaName}</b></div>
+        <div class="kv"><span>Area</span><b title="${pd.areaDetail}">${pd.areaName}</b></div>
         <div class="kv"><span>Lodging (max/night)</span><b>${f.usd(pd.lodging)}</b></div>
         <div class="kv"><span>M&amp;IE (per day · 75% first/last)</span><b>${f.usd(pd.mie)} · ${f.usd2(pd.firstLastMie)}</b></div>
         <div class="kv"><span>Lodging total</span><b>${f.usd(t.lodging)}</b></div>

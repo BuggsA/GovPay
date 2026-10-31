@@ -119,3 +119,9 @@ table.t th:not(:first-child), table.t td:not(:first-child) { text-align: right; 
 .cols .soon { opacity: .75; }
 .dropcap::first-letter { font-family: Fraunces, serif; float: left; font-size: 3.2em; line-height: .85; padding: 4px 6px 0 0; color: var(--accent); font-weight: 800; }
 .foot { font-size: 13px; color: var(--muted); padding: 20px 16px 48px; border-top: 3px double var(--rule); }
+
+.ms { display: inline-flex; align-items: center; border: 1px solid var(--ink); border-radius: 2px; }
+.ms button { font: inherit; font-size: 18px; line-height: 1; width: 34px; height: 32px; border: 0; background: none; color: var(--ink); cursor: pointer; }
+.ms button:hover { background: var(--ink); color: var(--paper); }
+.ms b { min-width: 52px; text-align: center; font-variant-numeric: tabular-nums; }
+.dp-more { font: inherit; font-size: 14px; width: 100%; text-align: left; padding: 8px 0; border: 0; border-bottom: 1px dotted var(--rule); background: none; color: var(--accent); cursor: pointer; font-weight: 600; }

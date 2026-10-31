@@ -100,13 +100,13 @@
   };
   const FWS_AREAS = {
     DCWA: { name: "Washington, DC wage area", factor: 1.14 },
-    BALT: { name: "Baltimore, MD wage area", factor: 1.07 },
+    BALT: { short: "Baltimore", name: "Baltimore, MD wage area", factor: 1.07 },
     STMD: { name: "St. Mary's, MD wage area", factor: 1.04 },
     PHIL: { name: "Philadelphia, PA wage area", factor: 1.09 },
-    PITT: { name: "Pittsburgh, PA wage area", factor: 0.99 },
+    PITT: { short: "Pittsburgh", name: "Pittsburgh, PA wage area", factor: 0.99 },
     HARR: { name: "Harrisburg, PA wage area", factor: 0.98 },
-    NORF: { name: "Norfolk-Portsmouth-Newport News-Virginia Beach, VA wage area", factor: 0.97 },
-    RICH: { name: "Richmond, VA wage area", factor: 0.96 },
+    NORF: { short: "Norfolk / Virginia Beach", name: "Norfolk-Portsmouth-Newport News-Virginia Beach, VA wage area", factor: 0.97 },
+    RICH: { short: "Richmond", name: "Richmond, VA wage area", factor: 0.96 },
     UTAH: { name: "Utah wage area", factor: 0.98 },
   };
   const FWS_HOURS_PER_YEAR = 2087;
@@ -189,25 +189,25 @@
   };
 
   // Per diem (GSA, FY-based). lodging = Jan..Dec nightly max; mie = daily M&IE.
-  const PD_STD = { name: "Standard CONUS rate", lodging: Array(12).fill(110), mie: 68 };
+  const PD_STD = { short: "Standard rate", name: "Standard CONUS rate (no special per diem area)", lodging: Array(12).fill(110), mie: 68 };
   const PER_DIEM = {
-    DC:   { name: "District of Columbia / Arlington / Fairfax / Montgomery / Prince George's", lodging: [196, 196, 276, 276, 276, 276, 207, 207, 276, 276, 196, 196], mie: 92 },
+    DC:   { short: "Washington, DC metro", name: "District of Columbia / Arlington / Fairfax / Montgomery / Prince George's", lodging: [196, 196, 276, 276, 276, 276, 207, 207, 276, 276, 196, 196], mie: 92 },
     BALT: { name: "Baltimore City, MD", lodging: Array(12).fill(179), mie: 86 },
-    ANNA: { name: "Annapolis / Anne Arundel, MD", lodging: [149, 149, 169, 189, 209, 209, 209, 189, 169, 169, 149, 149], mie: 86 },
-    FRED: { name: "Frederick, MD", lodging: Array(12).fill(136), mie: 74 },
-    HARF: { name: "Harford County, MD", lodging: Array(12).fill(121), mie: 74 },
-    STMA: { name: "St. Mary's County, MD", lodging: Array(12).fill(136), mie: 74 },
-    PHLA: { name: "Philadelphia, PA", lodging: [189, 189, 199, 219, 229, 219, 199, 199, 219, 229, 199, 189], mie: 92 },
+    ANNA: { short: "Annapolis", name: "Annapolis / Anne Arundel, MD", lodging: [149, 149, 169, 189, 209, 209, 209, 189, 169, 169, 149, 149], mie: 86 },
+    FRED: { short: "Frederick", name: "Frederick, MD", lodging: Array(12).fill(136), mie: 74 },
+    HARF: { short: "Harford County", name: "Harford County, MD", lodging: Array(12).fill(121), mie: 74 },
+    STMA: { short: "St. Mary's County", name: "St. Mary's County, MD", lodging: Array(12).fill(136), mie: 74 },
+    PHLA: { short: "Philadelphia", name: "Philadelphia, PA", lodging: [189, 189, 199, 219, 229, 219, 199, 199, 219, 229, 199, 189], mie: 92 },
     PITT: { name: "Pittsburgh, PA", lodging: Array(12).fill(159), mie: 80 },
-    HERS: { name: "Hershey / Harrisburg, PA", lodging: [129, 129, 129, 129, 149, 179, 179, 179, 139, 129, 129, 129], mie: 74 },
-    CUMB: { name: "Cumberland County, PA", lodging: Array(12).fill(124), mie: 74 },
+    HERS: { short: "Harrisburg / Hershey", name: "Hershey / Harrisburg, PA", lodging: [129, 129, 129, 129, 149, 179, 179, 179, 139, 129, 129, 129], mie: 74 },
+    CUMB: { short: "Cumberland County", name: "Cumberland County, PA", lodging: Array(12).fill(124), mie: 74 },
     NORF: { name: "Norfolk / Virginia Beach, VA", lodging: [117, 117, 117, 117, 136, 199, 199, 199, 136, 117, 117, 117], mie: 80 },
-    HAMP: { name: "Hampton / Newport News, VA", lodging: Array(12).fill(118), mie: 74 },
+    HAMP: { short: "Hampton / Newport News", name: "Hampton / Newport News, VA", lodging: Array(12).fill(118), mie: 74 },
     RICH: { name: "Richmond, VA", lodging: Array(12).fill(135), mie: 74 },
-    PWIL: { name: "Prince William / Manassas, VA", lodging: Array(12).fill(126), mie: 74 },
-    SLC:  { name: "Salt Lake City, UT", lodging: Array(12).fill(154), mie: 80 },
-    PARK: { name: "Park City, UT", lodging: [289, 289, 289, 149, 129, 139, 149, 149, 139, 129, 159, 289], mie: 86 },
-    OGDN: { name: "Ogden / Davis County, UT", lodging: Array(12).fill(125), mie: 74 },
+    PWIL: { short: "Manassas", name: "Prince William / Manassas, VA", lodging: Array(12).fill(126), mie: 74 },
+    SLC:  { short: "Salt Lake City", name: "Salt Lake City, UT", lodging: Array(12).fill(154), mie: 80 },
+    PARK: { short: "Park City", name: "Park City, UT", lodging: [289, 289, 289, 149, 129, 139, 149, 149, 139, 129, 159, 289], mie: 86 },
+    OGDN: { short: "Ogden", name: "Ogden / Davis County, UT", lodging: Array(12).fill(125), mie: 74 },
     STD:  PD_STD,
   };
   const MIE_FIRST_LAST_DAY = 0.75;
@@ -275,7 +275,7 @@
     const pdId = "SIMPD_" + st;
     const lodge = Math.round((110 + rnd() * 120) / 5) * 5;
     const mieTiers = [68, 74, 80, 86, 92];
-    PER_DIEM[pdId] = { name: OTHER_STATES[st] + " major city (simulated)", lodging: Array(12).fill(lodge), mie: mieTiers[Math.floor(rnd() * 5)], simulated: true };
+    PER_DIEM[pdId] = { short: OTHER_STATES[st] + " (simulated)", name: OTHER_STATES[st] + " major city (simulated)", lodging: Array(12).fill(lodge), mie: mieTiers[Math.floor(rnd() * 5)], simulated: true };
     LOCATIONS.push({
       id, name: OTHER_STATES[st] + " (simulated)", state: st, stateName: OTHER_STATES[st], kind: "state",
       gsLocality: locId, fwsArea: fwsId, bahMha: mha, perDiem: pdId, status: "simulated", simulated: true,
@@ -478,7 +478,7 @@
     const mie = Math.round(pd.mie * f);
     return {
       lodging, mie, total: lodging + mie, firstLastMie: round2(mie * MIE_FIRST_LAST_DAY),
-      areaName: pd.name, fiscalYear: "FY" + year,
+      areaName: pd.short || pd.name, areaDetail: pd.name, fiscalYear: "FY" + year,
       status: pd.simulated ? "simulated" : yearStatus(year),
     };
   }

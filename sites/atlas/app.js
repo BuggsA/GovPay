@@ -36,6 +36,7 @@
   const state = { year: G.CURRENT_YEAR, metric: "locality", state: "DC", loc: "dc", job: "gs12", gsG: 11, gsS: 1, mG: "E-6", mY: 10 };
 
   function locsIn(st) { return G.locations().filter((l) => l.state === st); }
+  function ms(key, label) { return `<span class="ms" data-ms="${key}"><button type="button" data-d="-1" aria-label="Lower">−</button><b>${label}</b><button type="button" data-d="1" aria-label="Raise">+</button></span>`; }
   function statusTag(s) { return `<span class="status ${s}" title="${G.STATUS_INFO[s].desc}">${G.STATUS_INFO[s].label}</span>`; }
 
   // ---------- masthead ----------
@@ -99,7 +100,6 @@
     const fwsA = G.fws(y, "WG", 1, 2, l.id);
     const mine = G.compute({ system: "GS", grade: state.gsG, step: state.gsS }, y, l.id);
     const mil = G.compute({ system: "MIL", mgrade: state.mG, yos: state.mY, deps: true }, y, l.id);
-    const opt = (vals, cur, lab) => vals.map((v) => `<option value="${v}" ${v == cur ? "selected" : ""}>${lab ? lab(v) : v}</option>`).join("");
     const allMil = [].concat(G.MIL_GRADES.enlisted, G.MIL_GRADES.warrant, G.MIL_GRADES.officer, G.MIL_GRADES.priorEnlisted);
 
     $("#profile").innerHTML = `
@@ -112,7 +112,7 @@
           <table class="t"><thead><tr><th>Grade</th><th>Step 1</th><th>Step 10</th></tr></thead><tbody>
             ${[5, 7, 9, 11, 12, 13, 14, 15].map((g) => `<tr><td>GS-${g}</td><td>${f.usd(G.gs(y, g, 1, l.id).annual)}</td><td>${f.usd(G.gs(y, g, 10, l.id).annual)}</td></tr>`).join("")}
           </tbody></table>
-          <div class="calc-line">Your grade <select data-gsg>${opt(range(1, 15), state.gsG, (v) => "GS-" + v)}</select> step <select data-gss>${opt(range(1, 10), state.gsS)}</select> → <b>${f.usd(mine.annual)}</b> / yr</div>
+          <div class="calc-line">Your grade ${ms("gsG", "GS-" + state.gsG)} step ${ms("gsS", state.gsS)} → <b>${f.usd(mine.annual)}</b> / yr</div>
           <table class="t" style="margin-top:14px"><thead><tr><th>Law enforcement</th><th>Base + locality</th><th>With LEAP</th></tr></thead><tbody>
             ${[[5, 1], [7, 1], [9, 1], [12, 5], [13, 5]].map(([g, s]) => { const r = G.leo(y, g, s, l.id, { leap: true }); return `<tr><td>LEO GS-${g}/${s}</td><td>${f.usd(r.adjusted)}</td><td>${f.usd(r.annual)}</td></tr>`; }).join("")}
           </tbody></table>
@@ -125,7 +125,7 @@
             ${["E-4", "E-6", "E-8", "W-2", "W-4", "O-1", "O-3", "O-5"].map((g) => `<tr><td>${g}</td><td>${f.usd(G.bah(y, g, true, l.id).monthly)}</td><td>${f.usd(G.bah(y, g, false, l.id).monthly)}</td></tr>`).join("")}
           </tbody></table>
           <p class="muted" style="font-size:13px;margin:8px 0 0">BAS: ${f.usd2(G.bas(y, "E-5"))} enlisted, ${f.usd2(G.bas(y, "O-1"))} officers, per month. Basic pay is the same everywhere.</p>
-          <div class="calc-line">Grade <select data-mg>${opt(allMil, state.mG)}</select> with <select data-my>${opt(range(0, 40), state.mY)}</select> yrs → <b>${mil.annual ? f.usd(mil.annual / 12) + " / mo" : "n/a at this YOS"}</b></div>
+          <div class="calc-line">Grade ${ms("mG", state.mG)} with ${ms("mY", state.mY)} yrs → <b>${mil.annual ? f.usd(mil.annual / 12) + " / mo" : "n/a at this YOS"}</b></div>
         </div>
         <div class="box">
           <h3>Trades &amp; executives ${statusTag("simulated")}</h3>
@@ -139,16 +139,18 @@
         <div class="box">
           <h3>Travel per diem ${statusTag(pd.status)}</h3>
           <div class="lead-num">${f.usd(pd.total)}<span style="font-size:18px">/day</span></div>
-          <div class="lead-cap">${pd.fiscalYear} · ${pd.areaName} · ${f.usd(pd.lodging)} lodging + ${f.usd(pd.mie)} M&amp;IE this month</div>
+          <div class="lead-cap">${pd.fiscalYear} · <span title="${pd.areaDetail}">${pd.areaName}</span> · ${f.usd(pd.lodging)} lodging + ${f.usd(pd.mie)} M&amp;IE this month</div>
           <div class="months">${months.map((m, i) => { const b = pmax === pmin ? 2 : Math.round(((m.lodging - pmin) / (pmax - pmin)) * 5); return `<div style="background:var(--seq-${b});${b >= 3 ? "color:var(--paper)" : ""}">${"JFMAMJJASOND"[i]}<b>${m.lodging}</b></div>`; }).join("")}</div>
           <p class="muted" style="font-size:13px;margin:10px 0 0">Maximum nightly lodging by month. M&amp;IE is ${f.usd(pd.mie)} a day, and 75% (${f.usd2(pd.firstLastMie)}) on the first and last travel days.</p>
         </div>
       </div>`;
     const p = $("#profile");
-    $("[data-gsg]", p).onchange = (e) => { state.gsG = +e.target.value; renderProfile(); };
-    $("[data-gss]", p).onchange = (e) => { state.gsS = +e.target.value; renderProfile(); };
-    $("[data-mg]", p).onchange = (e) => { state.mG = e.target.value; renderProfile(); };
-    $("[data-my]", p).onchange = (e) => { state.mY = +e.target.value; renderProfile(); };
+    // −/+ steppers instead of long dropdowns
+    const LISTS = { gsG: range(1, 15), gsS: range(1, 10), mG: allMil, mY: range(0, 40) };
+    p.querySelectorAll("[data-ms]").forEach((w) => w.querySelectorAll("button").forEach((b) => (b.onclick = () => {
+      const k = w.dataset.ms, list = LISTS[k], i = list.indexOf(state[k]) + +b.dataset.d;
+      if (i >= 0 && i < list.length) { state[k] = list[i]; renderProfile(); }
+    })));
   }
 
   // ---------- ranking dot plot ----------
@@ -160,10 +162,23 @@
     $("#ranking").innerHTML = `<div class="rank-head"><h2 class="sec-title">Same job, every place</h2>
       <div class="rank-controls"><select id="jobSel" aria-label="Job">${JOBS.map((j) => `<option value="${j.key}" ${j.key === state.job ? "selected" : ""}>${j.label}</option>`).join("")}</select></div></div>
       <p class="muted">Yearly cash pay for a <b>${J.label}</b> in ${state.year}, across the ${rows.length} locations in our five focus states. The gap from top to bottom is <b>${f.usd(max - min)}</b>.</p>
-      <div class="dotplot">${rows.map((r) => { const pct = ((r.v - lo) / (max - lo)) * 100; return `<div class="dp-row ${r.l.id === state.loc ? "sel" : ""}" data-l="${r.l.id}"><span>${r.l.name} <span class="muted">${r.l.state}</span></span><div class="dp-track"><div class="dp-bar" style="width:${pct}%"></div><div class="dp-dot" style="left:${pct}%"></div></div><span class="dp-val">${f.usd(r.v)}</span></div>`; }).join("")}</div>
+      <div class="dotplot">${visible(rows).map((r) => r.gap ? `<button type="button" class="dp-more" id="dpMore">… ${r.gap} more places · show all</button>` : (() => { const pct = ((r.v - lo) / (max - lo)) * 100; return `<div class="dp-row ${r.l.id === state.loc ? "sel" : ""}" data-l="${r.l.id}"><span>${r.l.name} <span class="muted">${r.l.state}</span></span><div class="dp-track"><div class="dp-bar" style="width:${pct}%"></div><div class="dp-dot" style="left:${pct}%"></div></div><span class="dp-val">${f.usd(r.v)}</span></div>`; })()).join("")}</div>
+      ${state.rankAll ? '<button type="button" class="dp-more" id="dpLess">Show fewer</button>' : ""}
       <p class="muted" style="font-size:12px">The scale starts at 90% of the lowest value, to make differences easier to see. Military figures include BAH and BAS.</p>`;
     $("#jobSel").onchange = (e) => { state.job = e.target.value; renderRanking(); };
+    const more = $("#dpMore"); if (more) more.onclick = () => { state.rankAll = true; renderRanking(); };
+    const less = $("#dpLess"); if (less) less.onclick = () => { state.rankAll = false; renderRanking(); };
     $("#ranking").querySelectorAll(".dp-row").forEach((r) => (r.onclick = () => { state.loc = r.dataset.l; state.state = G.location(state.loc).state; render(); window.scrollTo({ top: $("#profile").offsetTop - 10, behavior: "smooth" }); }));
+  }
+
+  // Show the top 5, bottom 5 and your selected place; collapse the middle.
+  function visible(rows) {
+    if (state.rankAll || rows.length <= 12) return rows;
+    const keep = new Set(rows.slice(0, 5).concat(rows.slice(-5)).map((r) => r.l.id).concat([state.loc]));
+    const out = []; let gap = 0;
+    rows.forEach((r) => { if (keep.has(r.l.id)) { if (gap) { out.push({ gap }); gap = 0; } out.push(r); } else gap++; });
+    if (gap) out.push({ gap });
+    return out;
   }
 
   // ---------- explainer ----------

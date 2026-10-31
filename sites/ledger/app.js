@@ -349,7 +349,7 @@
     const max = Math.max.apply(null, months.map((m) => m.lodging));
     const t = G.trip(state.year, state.loc, state.tripStart, state.tripNights);
     el.innerHTML = `
-      <h3>${pd.areaName} ${badge(pd.status)}</h3>
+      <h3 title="${pd.areaDetail}">${pd.areaName} ${badge(pd.status)}</h3>
       <p class="muted">${pd.fiscalYear} per diem. M&amp;IE is ${f.usd(pd.mie)} a day, and ${f.usd2(pd.firstLastMie)} (75%) on the first and last travel days.</p>
       <div class="months">${months.map((m, i) => `<div class="month" style="background:color-mix(in srgb, var(--accent) ${Math.round((0.15 + 0.85 * (m.lodging / max)) * 60)}%, var(--surface-2))"><span>${"JFMAMJJASOND"[i]}</span><b>${f.usd(m.lodging)}</b></div>`).join("")}</div>
       <h3>Trip estimator</h3>
