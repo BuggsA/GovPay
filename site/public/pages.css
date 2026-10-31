@@ -49,3 +49,4 @@
 /* Footer: every section, on every page */
 .pb-footer__nav { max-width: var(--page-max); margin: 0 auto; padding: var(--s4) var(--gutter) 0; font-size: var(--t-small); color: var(--ink-2); line-height: 2; }
 .pb-footer__nav a { color: var(--ink); }
+.leo-special h2 { font: 700 var(--t-h3)/1.25 var(--font-display); margin: var(--s2) 0; }

@@ -220,3 +220,20 @@ test("ZIP code places: DTMO's area for the exact ZIP, the county's other areas",
   assert.equal(G.gs(2026, 12, 5, id).localityName, G.gs(2026, 12, 5, "c12087").localityName);
   assert.equal(G.addZip("00000", ["CA038", "99999"]), null);    // unknown county: no place
 });
+
+test("2026 law enforcement special rates (OPM tables L001-L058) for covered positions", async () => {
+  const { readFileSync } = await import("node:fs");
+  const raw = readFileSync(new URL("../../data/raw/opm/2026/SpecialRates_2026.txt", import.meta.url), "latin1");
+  const cell = (table, g, s) => +raw.split(/\r?\n/).find((l) => l.startsWith(`${table}GS${String(g).padStart(2, "0")}${String(s).padStart(2, "0")}`)).slice(10, 16);
+  const DCN = "Washington-Baltimore-Arlington, DC-MD-VA-WV-PA";
+  const t = globalThis.GOVPAY_DATA.leoSpecial.years["2026"].tables[DCN].table;
+  const covered = G.leo(2026, 13, 1, "dc", { covered: true }), plain = G.leo(2026, 13, 1, "dc");
+  assert.equal(covered.adjusted, cell(t, 13, 1));                               // straight from OPM's file
+  assert.ok(covered.adjusted / plain.adjusted > 1.027 && covered.adjusted / plain.adjusted < 1.029);   // about 2.8% more
+  assert.equal(G.leo(2026, 1, 1, "c13121", { covered: true }).adjusted, cell("L004", 1, 1));          // Atlanta = L004
+  assert.equal(G.leo(2026, 15, 10, "dc", { covered: true, leap: true }).annual, 197200);             // capped at EX-IV
+  assert.equal(G.leo(2025, 13, 1, "dc", { covered: true }).lesr, null);                              // starts in 2026
+  const p = { system: "LEO", grade: 13, step: 1, leap: false };
+  assert.equal(G.compute(p, 2026, "dc").annual, covered.annual);                                      // on by default
+  assert.equal(G.compute(Object.assign({}, p, { lesr: false }), 2026, "dc").annual, plain.annual);
+});

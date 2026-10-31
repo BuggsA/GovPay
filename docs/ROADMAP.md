@@ -30,6 +30,8 @@ Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (
 
 ### 1.1 GS family from OPM · M · ◐
 > **Progress (Oct 31, 2026):** GS base pay, all 58 locality areas, SES and the Executive Schedule for 2025 and 2026 are now **official**, from the pay Executive Orders. LEO 2026 is official too (OPM's ALLLEO file, checked against all 58 locality tables); it showed the engine's assumed extra 2.8% LEO raise was wrong for every grade. Still open: OPM's 2025 LEO file (2025 is derived for now).
+>
+> **Update (Oct 31, 2026):** the 2.8% was real after all, but as a *special rate* for covered positions (CPM 2025-25 and CPM 2026-01), not a base-table raise. OPM's 2026 special rate file is in `data/raw/opm/2026/`; tables L001–L058 are now applied for covered LEO (on by default, with a switch). Still open: the GS-base tables L060–L117 and carried-over tables L119–L140 for covered non-GL positions, and the 322 occupation special rate tables (need OPM's AllSRTables index to name each table's occupations and areas).
 - **Goal:** real civilian pay nationwide.
 - **Includes:** GS base tables plus **all ~58 locality areas** for 2025 and 2026; the Executive Schedule and SES range; LEO special base rates; a converter `scripts/convert-opm.mjs` that writes `data/opm/<year>/*.json`.
 - **Done when:**
@@ -234,7 +236,7 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 
 ## Later (not version 1)
 - ☑ FWS trades pay: done Oct 31, 2026 (DCPAS wage data, every county mapped, a page per wage schedule at /civilian/trades)
-- Full LEO special-rate tables and SES detail
+- LEO special-rate tables L060–L140 (GS-base and carried-over groups), occupation special rates, and SES detail
 - Overseas pay: Alaska, Hawaii and the territories first, then OHA and OCONUS COLA (see [OCONUS.md](OCONUS.md))
 - Inflation view: "your pay vs. inflation since 2010"
 - Retirement and high-3 projection

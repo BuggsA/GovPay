@@ -8,6 +8,7 @@ import "../../../shared/data/bah.js";
 import "../../../shared/data/series.js";
 import "../../../shared/data/leo.js";
 import "../../../shared/data/fws.js";   // the browser loads this one on demand
+import "../../../shared/data/leospecial.js";
 import "../../../shared/govpay.js";
 import "../../../shared/data/statetax.js";
 import "../../../shared/tax.js";
