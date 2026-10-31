@@ -204,3 +204,10 @@ test("Trades (FWS) pay matches DCPAS wage schedules", () => {
   assert.ok(G.locations().filter((l) => l.kind === "county").every((l) => G.fwsCode(l)));   // every county has a schedule
   assert.equal(G.fws(2026, "WS", 19, 5, "dc").grade, 19);                       // WS runs to grade 19
 });
+
+test("BAH county mapping weights ZIP areas by land, not water (fixed: 177 counties were off)", () => {
+  const mha = (fips) => G.bahMhaOf(G.location("c" + fips));
+  assert.equal(mha("12087"), "FL069");   // Monroe County, FL -> Florida Keys (Key West 33040 is FL069 in DTMO's ZIP list)
+  assert.equal(G.bah(2026, "E-5", true, "c06081").mhaName, "San Francisco, CA");   // San Mateo County
+  assert.equal(G.bah(2026, "E-5", true, "c04021").mhaName, "Phoenix, AZ");         // Pinal County
+});
