@@ -94,3 +94,10 @@
 
 /* Shown while a data file loads */
 .pb-loading { color: var(--ink-2); padding: var(--s4) 0; margin: 0; }
+
+/* Travel tab: a destination separate from the duty location */
+.trip-dest { margin-bottom: var(--s4); max-width: 560px; }
+.trip-dest .pb-field { margin: 0; }
+.trip-results { margin: var(--s2) 0 0; max-height: 300px; overflow: auto; }
+.trip-note { font-size: var(--t-small); color: var(--ink-2); margin: var(--s2) 0 0; }
+.trip-note b { color: var(--ink); }

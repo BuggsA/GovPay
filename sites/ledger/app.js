@@ -16,9 +16,10 @@
   const KIND = { step: "Next step", grade: "Promotion", top: "Top of grade", yos: "Longevity raise", promo: "Promotion", role: "New role" };
   const STORE = "paybook.v1";
 
+  // tripStart defaults to two weeks out, so per diem shows the rates for an upcoming trip
   const state = {
     year: G.CURRENT_YEAR, loc: "dc", me: null, preview: null, draft: null, editing: false, assumed: [],
-    period: "year", tab: "tables", tableKind: null, tripStart: G.CURRENT_YEAR + "-04-14", tripNights: 3,
+    period: "year", tab: "tables", tableKind: null, tripStart: new Date(Date.now() + 14 * 864e5).toISOString().slice(0, 10), tripNights: 3, tripDest: null, tripQuery: "",
     b: Object.assign({}, G.DEFAULT_PROFILE, { system: "MIL", mgrade: "O-3", yos: 8, deps: true }),
     tax: { filing: "single", state: null, county: null, fers: "4.4", tspPct: 5, tspType: "trad", health: "", ownRate: "", otherRate: "", chosen: false },
     thOpen: false,
@@ -30,12 +31,13 @@
     let d = null;
     try { d = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { /* storage off */ }
     if (d && d.tax) Object.assign(state.tax, d.tax);          // tax settings are personal: always from this browser
+    if (d && d.tripDest) state.tripDest = d.tripDest;         // where you travel to, separate from where you work
     const q = new URLSearchParams(location.hash.slice(1));
     if (q.has("s")) { fromHash(q); return; }                   // a shared link sets the job and place
     if (d && d.me) { state.me = d.me; state.loc = d.loc || state.loc; }
   }
   function save() {
-    try { localStorage.setItem(STORE, JSON.stringify({ me: state.me, loc: state.loc, tax: state.tax })); } catch (e) { /* storage off */ }
+    try { localStorage.setItem(STORE, JSON.stringify({ me: state.me, loc: state.loc, tax: state.tax, tripDest: state.tripDest })); } catch (e) { /* storage off */ }
     writeHash();
   }
   function writeHash() {
@@ -407,11 +409,36 @@
     el.innerHTML = html + `</tbody><caption>${state.year} monthly BAH for ${esc(first.mhaName)} · ${st}. BAS: DoD FMR Vol. 7A, Ch. 25. O-8 and above get the O-7 rate.</caption></table></div>`;
   }
 
+  // Per diem is for where you travel, which is usually not where you work: the travel tab has its own
+  // destination (state.tripDest), and changing it leaves your duty location, pay and taxes alone.
+  function tripDestId() {
+    const d = state.tripDest;
+    return d && G.location(d).id === d ? d : state.loc;
+  }
+  function tripMatches(q) {
+    q = q.trim().toLowerCase();
+    if (q.length < 2) return [];
+    const rank = (l) => (l.kind === "county" ? 2 : l.census ? 1 : 0);
+    return G.locations().filter((l) => (l.name + " " + l.stateName).toLowerCase().indexOf(q) >= 0)
+      .sort((a, b) => rank(a) - rank(b) || (b.population || 0) - (a.population || 0)).slice(0, 8);
+  }
   function tabTravel(el) {
-    const months = range(1, 12).map((m) => G.perDiem(state.year, state.loc, m)), pd = months[0];
+    const dest = tripDestId(), away = dest !== state.loc;
+    const fy = G.fiscalYear(new Date(state.tripStart + "T12:00:00"));
+    const months = range(1, 12).map((m) => G.perDiem(fy, dest, m)), pd = months[0];
     const max = Math.max.apply(null, months.map((m) => m.lodging)), min = Math.min.apply(null, months.map((m) => m.lodging));
-    const t = G.trip(state.year, state.loc, state.tripStart, state.tripNights);
-    el.innerHTML = `<div class="facts">
+    const t = G.trip(fy, dest, state.tripStart, state.tripNights);
+    const q = state.tripQuery, zip = /^\d{5}$/.test(q.trim()) ? q.trim() : null;
+    const found = zip ? [G.location("z" + zip)].filter((l) => l.id === "z" + zip) : tripMatches(q);
+    if (zip && !found.length) G.zipPlace(zip).then((id) => { if (id && state.tripQuery.trim() === zip) tabTravel(el); });
+    el.innerHTML = `<div class="trip-dest">
+        <div class="pb-field"><label class="pb-field__label" for="tripQ">Going to</label>
+          <input class="pb-input" id="tripQ" type="search" autocomplete="off" placeholder="City, base, county or ZIP code" value="${esc(q)}"></div>
+        ${q.trim().length >= 2 ? `<ul class="pb-places trip-results" aria-label="Destinations">${found.length ? found.map((l) => `<li><button type="button" data-dest="${l.id}"><b>${esc(l.kind === "county" || l.census || l.kind === "zip" ? l.short : l.name)}</b><span class="tag">${l.kind === "zip" ? "ZIP" : l.kind}</span><small>${esc(l.state)}${l.census || l.kind === "zip" ? " · " + esc(l.county) : ""}</small></button></li>`).join("") : `<li class="pb-places__empty">${zip ? `Looking up ZIP ${esc(zip)}…` : `No place matches "${esc(q)}".`}</li>`}</ul>` : ""}
+        <p class="trip-note">${away ? `Per diem for <b>${esc(placeName(dest))}</b>. Your duty location (${esc(placeName(state.loc))}) and pay don't change. <a href="#" class="pb-link" id="tripReset">Same as duty location</a>`
+          : `Showing your duty location, ${esc(placeName(dest))}. Per diem usually isn't paid for travel within your local area: search where you're going.`}</p>
+      </div>
+      <div class="facts">
         <div class="fact"><span class="pb-field__label">Per diem area</span><b style="font-size:17px" title="${esc(pd.areaDetail)}">${esc(pd.areaName)}</b><small>${pd.fiscalYear} · GSA · official</small></div>
         <div class="fact"><span class="pb-field__label">Meals &amp; incidentals</span><b>${f.usd(pd.mie)}</b><small>a day · ${f.usd2(pd.firstLastMie)} on first and last day</small></div>
         <div class="fact"><span class="pb-field__label">Lodging, max a night</span><b>${min === max ? f.usd(min) : f.usd(min) + "–" + f.usd(max)}</b><small>${min === max ? "all year" : "depends on the month"}</small></div></div>
@@ -422,10 +449,21 @@
         <div class="pb-field"><label class="pb-field__label" for="tripNights">Nights</label><input class="pb-input" type="number" id="tripNights" min="0" max="60" value="${state.tripNights}" style="max-width:120px"></div>
       </div>
       <ul class="pb-ledger" style="max-width:520px"><li><span>Lodging, ${state.tripNights} night${state.tripNights === 1 ? "" : "s"}</span><span>${f.usd(t.lodging)}</span></li><li><span>Meals &amp; incidentals, ${state.tripNights + 1} days</span><span>${f.usd2(t.mie)}</span></li><li class="pb-ledger__total"><span>Most you'd be reimbursed</span><span>${f.usd2(t.total)}</span></li></ul>
-      <p class="sub" style="margin-top:var(--s3)">Each day uses its own month and fiscal year. Your agency's travel rules (JTR or FTR) decide the final amount.</p>`;
-    $("#tripStart", el).onchange = (e) => { state.tripStart = e.target.value; tabTravel(el); };
+      <p class="sub" style="margin-top:var(--s3)">Rates for ${pd.fiscalYear} (October to September), from the arrival date. Each day uses its own month and fiscal year. Your agency's travel rules (JTR or FTR) decide the final amount.</p>`;
+    const qi = $("#tripQ", el);
+    qi.onfocus = () => { if (!G.has("cities")) G.need(["cities"]).then(() => { if (state.tripQuery.trim().length >= 2) tabTravel(el); }, () => {}); };
+    qi.oninput = () => { state.tripQuery = qi.value; tabTravel(el); const n = $("#tripQ", el); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+    el.querySelectorAll("[data-dest]").forEach((b) => (b.onclick = () => {
+      state.tripDest = b.dataset.dest; state.tripQuery = ""; save();
+      if (A) track("place", Object.assign({ kind: "trip" }, A.placeKeys(state.tripDest)));
+      tabTravel(el);
+    }));
+    const reset = $("#tripReset", el);
+    if (reset) reset.onclick = (e) => { e.preventDefault(); state.tripDest = null; save(); tabTravel(el); };
+    $("#tripStart", el).onchange = (e) => { state.tripStart = e.target.value || state.tripStart; tabTravel(el); };
     $("#tripNights", el).onchange = (e) => { state.tripNights = Math.max(0, Math.min(60, +e.target.value || 0)); tabTravel(el); };
   }
+
 
   function tabCompare(el) {
     const b = state.b, ra = G.compute(state.me, state.year, state.loc);
@@ -464,12 +502,16 @@
     if (p && p.system === "MIL") n.push("bah");
     if ((p && p.system === "FWS") || state.tableKind === "FWS") n.push("fws");
     if (state.tab === "allowances") n.push("bah");
-    if (state.tab === "travel") n.push("perDiem");
+    if (state.tab === "travel") { n.push("perDiem"); if (/^p/.test(state.tripDest || "")) n.push("cities"); }
     if (/^p/.test(state.loc)) n.push("cities");
     return n.filter((x) => !G.has(x) && !failed[x]);
   }
   // true = ready now; false = loading, and fn runs again when it's in (or failed: then it renders with what it has)
   function whenReady(fn) {
+    if (state.tab === "travel" && /^z\d{5}$/.test(state.tripDest || "") && G.location(state.tripDest).id !== state.tripDest) {
+      G.zipPlace(state.tripDest.slice(1)).then((found) => { if (!found) state.tripDest = null; fn(); }, () => { state.tripDest = null; fn(); });
+      return false;
+    }
     if (/^z\d{5}$/.test(state.loc) && G.location(state.loc).id !== state.loc) {   // a saved or shared ZIP place
       G.zipPlace(state.loc.slice(1)).then((found) => { if (!found) state.loc = "dc"; fn(); }, () => { state.loc = "dc"; fn(); });
       return false;
