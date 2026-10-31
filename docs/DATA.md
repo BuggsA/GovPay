@@ -3,6 +3,7 @@
 ## Source access (as of Oct 31, 2026)
 | Source | From this cloud session | Notes |
 |---|---|---|
+| Federal Register pay Executive Orders, via GovInfo (GPO) | Works | **The official legal source** for GS, locality, SES, EX and military basic pay. `scripts/convert-payorder.py` parses the PDF, cleans scanning errors and validates every table (step increments, caps, monotonic pay, a 1% GS raise and a 3.8% military raise across years). |
 | GSA Per Diem API | Works | Real data in use. A free api.data.gov key goes in the `GSA_API_KEY` repository secret for the monthly Action. |
 | Tax Foundation | Works | For state income tax tables (take-home, later). |
 | OPM (GS, locality, LEO, SES) | Blocked by OPM's own servers ("Access Denied") | Automated downloads are refused. Don't try to get around this. |
@@ -14,13 +15,13 @@ GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO
 ## What's in the prototype
 | Dataset | Years | Coverage | Status |
 |---|---|---|---|
-| GS base table | 2025 table entered by hand; 2026 = 2025 × 1.01; 2027 = +1% (assumed) | All grades and steps | approx / projected |
-| GS locality % | 2026 (frozen at 2025 levels) | DC-Baltimore 33.94, Philadelphia 28.99, Pittsburgh 21.03, Harrisburg 19.43, Richmond 22.28, Virginia Beach-Norfolk 18.80, Rest of U.S. 17.06 (all of Utah) | verified |
+| **GS base table** | **2025, 2026 from the pay Executive Orders** (EO 14132, EO 14368); 2027 projected (+1% assumed) | All grades and steps | **verified (official)** / projected |
+| **GS locality %** | **2025, 2026 from the pay orders (Schedule 9)** | **All 58 locality areas** (the app maps 7 of them to places so far) | **verified (official)** |
 | GS cap | EX-IV: 2025 $195,200 · 2026 $197,200 | — | verified |
 | LEO | Special-rate premium applied to GS-3 to GS-10, plus the 2026 2.8% LEO adjustment; LEAP 25% | GS-3 to GS-15 | approx |
 | FWS (WG/WL/WS) | Shape of the curve only | 9 wage areas in the focus states | **simulated** |
-| SES / EX | 2025 and 2026 published; 2027 +1% | SES min = 120% of GS-15/1 | verified / projected |
-| Military basic pay | 2026 anchor points ≈ 2025 × 1.038; 2025 back-computed (÷1.038); 2027 +4.2% (assumed) | All grades, DFAS YOS columns, capped at EX-II/12 | approx / projected |
+| **SES / EX** | **2025, 2026 from the pay orders** (Schedules 4 and 5); 2027 projected | Min/max with and without certified appraisal; EX I–V | **verified (official)** / projected |
+| **Military basic pay** | **2025, 2026 from the pay orders (Schedule 8)**; 2027 projected (+4.2% assumed, statutory caps kept) | All grades incl. O-1E–O-3E, YOS under 2 through over 40 | **verified (official)** / projected. 2025 = January rates (junior enlisted rose again April 1, 2025) |
 | BAS | 2026 $476.95 enlisted / $328.48 officer | — | approx (verify with DFAS) |
 | BAH | E-5 with-dependents anchor per MHA × grade ratios | 19 MHAs in UT, MD, DC, PA, VA | approx |
 | **Per diem** | **FY2025, FY2026, FY2027, from the GSA Per Diem API** (`scripts/fetch-perdiem.mjs`) | **All CONUS areas (~300) plus the standard rate** ($110/$68 in FY2025–26, $113/$68 in FY2027) | **verified (real)** |

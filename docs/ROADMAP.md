@@ -26,9 +26,10 @@ Based on [CONCEPT.md](CONCEPT.md), [CONCEPT-REVIEW.md](CONCEPT-REVIEW.md), [DESI
 ---
 
 ## Phase 1: Real data
-Nothing ships with simulated numbers (concept §10). Per diem is already done (☑ GSA, FY2025–27, monthly refresh).
+Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (GSA, FY2025–27, monthly refresh) · ◐ GS, locality, SES, EX and military basic pay (official pay orders, 2025–26).
 
-### 1.1 GS family from OPM · M · ☐
+### 1.1 GS family from OPM · M · ◐
+> **Progress (Oct 31, 2026):** GS base pay, all 58 locality areas, SES and the Executive Schedule for 2025 and 2026 are now **official**, from the pay Executive Orders. Still open: LEO special base rates (OPM-only table) and the 2026 LEO 3.8% special rates.
 - **Goal:** real civilian pay nationwide.
 - **Includes:** GS base tables plus **all ~58 locality areas** for 2025 and 2026; the Executive Schedule and SES range; LEO special base rates; a converter `scripts/convert-opm.mjs` that writes `data/opm/<year>/*.json`.
 - **Done when:**
@@ -37,7 +38,8 @@ Nothing ships with simulated numbers (concept §10). Per diem is already done (�
   - The approximate GS numbers are gone from the engine.
 - **Needs:** you upload the OPM files to `data/raw/opm/<year>/`. OPM blocks automated downloads.
 
-### 1.2 Military pay from DFAS · S · ☐
+### 1.2 Military pay from DFAS · S · ◐
+> **Progress (Oct 31, 2026):** basic pay for 2025 and 2026 is **official**, from the pay orders, and checked cell by cell (+3.8% everywhere except the April 2025 junior enlisted raise). Still open: BAS (DFAS) and the April 2025 junior enlisted table.
 - **Goal:** real basic pay and BAS.
 - **Includes:** 2025 and 2026 basic pay tables (all grades and YOS columns, plus O-1E to O-3E) and BAS. A converter writes `data/dfas/<year>.json`.
 - **Done when:** a test checks 10 published cells, and the anchor-point estimates are deleted.

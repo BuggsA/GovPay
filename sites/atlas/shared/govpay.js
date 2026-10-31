@@ -26,9 +26,9 @@
   // ---------------------------------------------------------------------------
   const CURRENT_YEAR = 2026;
   const YEARS = [
-    { year: 2025, label: "2025", status: "approx", note: "Last year" },
-    { year: 2026, label: "2026", status: "approx", note: "This year" },
-    { year: 2027, label: "2027 (projected)", status: "projected", note: "Next year — not yet published; assumed raises" },
+    { year: 2025, label: "2025", status: "verified", note: "Last year · official pay order (EO 14132)" },
+    { year: 2026, label: "2026", status: "verified", note: "This year · official pay order (EO 14368)" },
+    { year: 2027, label: "2027 (projected)", status: "projected", note: "Next year · not yet published; assumed raises on 2026 tables" },
   ];
 
   // Annual across-the-board raises, applied relative to the anchor tables.
@@ -43,34 +43,21 @@
   };
 
   // ---------------------------------------------------------------------------
-  // General Schedule — 2025 base table (anchor). Annual dollars, steps 1..10.
+  // OFFICIAL pay tables from the annual pay Executive Order (Federal Register),
+  // converted by scripts/convert-payorder.py into shared/data/payorder.js.
+  // GS base, locality %, SES, Executive Schedule and military basic pay.
+  // Years without an order (next year) are PROJECTED from the latest real year.
   // ---------------------------------------------------------------------------
-  const GS_BASE_2025 = {
-    1:  [22360, 23110, 23853, 24592, 25334, 25770, 26505, 27245, 27275, 27970],
-    2:  [25142, 25740, 26573, 27275, 27583, 28394, 29205, 30016, 30827, 31638],
-    3:  [27433, 28347, 29261, 30175, 31089, 32003, 32917, 33831, 34745, 35659],
-    4:  [30795, 31822, 32849, 33876, 34903, 35930, 36957, 37984, 39011, 40038],
-    5:  [34454, 35603, 36752, 37901, 39050, 40199, 41348, 42497, 43646, 44795],
-    6:  [38407, 39687, 40967, 42247, 43527, 44807, 46087, 47367, 48647, 49927],
-    7:  [42679, 44102, 45525, 46948, 48371, 49794, 51217, 52640, 54063, 55486],
-    8:  [47265, 48841, 50417, 51993, 53569, 55145, 56721, 58297, 59873, 61449],
-    9:  [52205, 53945, 55685, 57425, 59165, 60905, 62645, 64385, 66125, 67865],
-    10: [57489, 59405, 61321, 63237, 65153, 67069, 68985, 70901, 72817, 74733],
-    11: [63163, 65268, 67373, 69478, 71583, 73688, 75793, 77898, 80003, 82108],
-    12: [75706, 78230, 80754, 83278, 85802, 88326, 90850, 93374, 95898, 98422],
-    13: [90025, 93026, 96027, 99028, 102029, 105030, 108031, 111032, 114033, 117034],
-    14: [106382, 109928, 113474, 117020, 120566, 124112, 127658, 131204, 134750, 138296],
-    15: [125133, 129304, 133475, 137646, 141817, 145988, 150159, 154330, 158501, 162672],
-  };
+  const PAY_DATA = (global.GOVPAY_DATA && global.GOVPAY_DATA.payOrder) || {};
+  const PAY_YEARS = Object.keys(PAY_DATA).map(Number).sort();
+  const LATEST = PAY_YEARS.length ? PAY_YEARS[PAY_YEARS.length - 1] : CURRENT_YEAR;
+  function hasOrder(year) { return !!PAY_DATA[year]; }
+  function order(year) { return PAY_DATA[year] || PAY_DATA[LATEST]; }
+  const EX = {};
+  PAY_YEARS.forEach((y) => (EX[y] = PAY_DATA[y].executiveSchedule));
 
-  // Executive Schedule (verified 2026; 2025 = published 2025; 2027 projected).
-  const EX = {
-    2025: { I: 250600, II: 225700, III: 207500, IV: 195200, V: 183100 },
-    2026: { I: 253100, II: 228000, III: 209600, IV: 197200, V: 184900 },
-  };
-  EX[2027] = mapObj(EX[2026], (v) => round100(v * 1.01));
-
-  // GS locality pay areas (2026 verified; locality % were frozen at 2025 levels).
+  // GS locality pay areas used by the focus locations. pct is filled from the
+  // pay order for each year (see localityPct); the value here is only a fallback.
   const GS_LOCALITIES = {
     DCB: { name: "Washington-Baltimore-Arlington, DC-MD-VA-WV-PA", pct: 33.94, status: "verified" },
     PHL: { name: "Philadelphia-Reading-Camden, PA-NJ-DE-MD", pct: 28.99, status: "verified" },
@@ -110,40 +97,9 @@
   };
   const FWS_HOURS_PER_YEAR = 2087;
 
-  // ---------------------------------------------------------------------------
-  // Military basic pay — 2026 monthly, anchor points [YOS, $] interpolated
-  // into the DFAS column layout. APPROXIMATE (≈2025 × 1.038).
-  // ---------------------------------------------------------------------------
-  const MIL_YOS = [0, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 30, 34, 38, 40];
-  const MIL_ANCHORS = {
-    "E-1": { min: 0, pts: [[0, 2499]] },
-    "E-2": { min: 0, pts: [[0, 2800]] },
-    "E-3": { min: 0, pts: [[0, 2945], [2, 3130], [4, 3320]] },
-    "E-4": { min: 0, pts: [[0, 3262], [2, 3429], [3, 3615], [4, 3798], [6, 3960]] },
-    "E-5": { min: 0, pts: [[0, 3470], [2, 3735], [3, 3918], [4, 4096], [6, 4385], [8, 4686], [10, 4933], [12, 4963]] },
-    "E-6": { min: 0, pts: [[0, 3788], [2, 4168], [4, 4561], [6, 4747], [8, 4942], [10, 5382], [12, 5554], [14, 5885], [16, 5987], [18, 6062]] },
-    "E-7": { min: 0, pts: [[0, 4380], [2, 4780], [4, 5250], [6, 5470], [8, 5672], [10, 5737], [12, 6083], [14, 6347], [16, 6603], [18, 6878], [20, 7032], [22, 7290], [24, 7590], [26, 7652], [30, 7652]] },
-    "E-8": { min: 8, pts: [[8, 6300], [10, 6580], [12, 6752], [14, 6958], [16, 7183], [18, 7586], [20, 7792], [22, 8139], [24, 8333], [26, 8810], [30, 8810]] },
-    "E-9": { min: 10, pts: [[10, 7695], [12, 7870], [14, 8090], [16, 8350], [18, 8613], [20, 9030], [22, 9384], [24, 9756], [26, 10325], [30, 10842], [34, 11384], [38, 11954], [40, 11954]] },
-    "W-1": { min: 0, pts: [[0, 4256], [2, 4714], [3, 4837], [4, 5097], [6, 5404], [8, 5858], [10, 6070], [12, 6366], [14, 6657], [16, 6886], [18, 7097], [20, 7354], [30, 7650]] },
-    "W-2": { min: 0, pts: [[0, 4849], [2, 5307], [3, 5449], [4, 5545], [6, 5859], [8, 6348], [10, 6590], [12, 6829], [14, 7120], [16, 7349], [18, 7556], [20, 7802], [22, 7964], [24, 8095], [30, 8442]] },
-    "W-3": { min: 0, pts: [[0, 5480], [2, 5708], [3, 5943], [4, 6020], [6, 6265], [8, 6748], [10, 7251], [12, 7488], [14, 7762], [16, 8044], [18, 8552], [20, 8895], [22, 9100], [24, 9318], [30, 9597]] },
-    "W-4": { min: 0, pts: [[0, 6001], [2, 6455], [3, 6640], [4, 6822], [6, 7136], [8, 7447], [10, 7762], [12, 8235], [14, 8650], [16, 9045], [18, 9368], [20, 9683], [22, 10146], [24, 10527], [30, 10577], [40, 11100]] },
-    "W-5": { min: 20, pts: [[20, 10733], [22, 11278], [24, 11683], [26, 12098], [30, 12704], [34, 13339], [38, 13494], [40, 13494]] },
-    "O-1E": { min: 4, pts: [[4, 6195], [6, 6417], [8, 6650], [10, 6880], [12, 7114], [14, 7400], [22, 7703]] },
-    "O-2E": { min: 4, pts: [[4, 7036], [6, 7181], [8, 7409], [10, 7795], [12, 8094], [14, 8316], [22, 8932]] },
-    "O-3E": { min: 4, pts: [[4, 8002], [6, 8386], [8, 8807], [10, 9079], [12, 9528], [14, 9905], [16, 10122], [22, 10465]] },
-    "O-1": { min: 0, pts: [[0, 3972], [2, 4135], [3, 4998]] },
-    "O-2": { min: 0, pts: [[0, 4576], [2, 5212], [3, 6003], [4, 6205], [6, 6332]] },
-    "O-3": { min: 0, pts: [[0, 5296], [2, 6003], [3, 6479], [4, 7084], [6, 7424], [8, 7797], [10, 8037], [12, 8433], [14, 8611], [16, 8611]] },
-    "O-4": { min: 0, pts: [[0, 6024], [2, 6973], [3, 7438], [4, 7542], [6, 7973], [8, 8436], [10, 9013], [12, 9463], [14, 9774], [16, 9953], [18, 10066]] },
-    "O-5": { min: 0, pts: [[0, 6982], [2, 7865], [3, 8409], [4, 8512], [6, 8851], [8, 9054], [10, 9502], [12, 9830], [14, 10254], [16, 10903], [18, 11211], [20, 11516], [22, 12093]] },
-    "O-6": { min: 0, pts: [[0, 8375], [2, 9201], [3, 9805], [4, 9805], [6, 9842], [8, 10264], [10, 10320], [12, 10320], [14, 10906], [16, 11942], [18, 12551], [20, 13159], [22, 13505], [24, 13856], [26, 14535], [30, 15300]] },
-    "O-7": { min: 0, pts: [[0, 11045], [2, 11558], [3, 11796], [4, 11985], [6, 12326], [8, 12664], [10, 13054], [12, 13442], [14, 13833], [16, 14470], [18, 15059], [30, 15746]] },
-    "O-8": { min: 0, pts: [[0, 13292], [2, 13728], [3, 14017], [4, 14097], [6, 14458], [8, 15060], [10, 15200], [12, 15772], [14, 15936], [16, 16429], [18, 17143], [20, 17800], [24, 17989]] },
-    "O-9": { min: 20, pts: [[20, 18787], [22, 19000]] },
-    "O-10": { min: 20, pts: [[20, 19000]] },
-  };
+  // Military basic pay comes from the pay order (Schedule 8), monthly, by DFAS
+  // years-of-service column: under 2, over 2, over 3, ... over 40.
+  const MIL_YOS = (PAY_DATA[LATEST] && PAY_DATA[LATEST].militaryBasicPay.columns) || [0, 2, 3, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40];
   // Monthly cap = Executive Schedule level II / 12.
   const MIL_GRADES = {
     enlisted: ["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9"],
@@ -276,7 +232,7 @@
   function round2(n) { return Math.round(n * 100) / 100; }
   function round100(n) { return Math.round(n / 100) * 100; }
   function mapObj(o, f) { const r = {}; Object.keys(o).forEach((k) => (r[k] = f(o[k]))); return r; }
-  function yearStatus(year) { return year > CURRENT_YEAR ? "projected" : "approx"; }
+  function yearStatus(year) { return hasOrder(year) ? "verified" : year > LATEST ? "projected" : "approx"; }
   function factor(series, year, anchor) {
     // cumulative raise multiplier from anchor-year table to `year`
     let f = 1;
@@ -285,31 +241,42 @@
     return f;
   }
   function location(id) { return LOCATIONS.find((l) => l.id === id) || LOCATIONS[0]; }
-  function exFor(year) { return EX[year] || EX[CURRENT_YEAR]; }
+  function exFor(year) {
+    if (EX[year]) return EX[year];
+    const f = factor(RAISES.gs, year, LATEST);           // projected year
+    return mapObj(EX[LATEST], (v) => round100(v * f));
+  }
+  function localityPct(year, locId) {
+    const L = GS_LOCALITIES[locId];
+    if (!L || L.status === "simulated") return L ? L.pct : 0;
+    const hit = order(year).locality.find((a) => a.name === L.name);
+    return hit ? hit.pct : L.pct;
+  }
 
   // ---------------------------------------------------------------------------
   // GS
   // ---------------------------------------------------------------------------
   function gsBase(year, grade, step) {
-    const row = GS_BASE_2025[grade];
+    const row = order(year).gs[String(grade)];
     if (!row) return null;
-    const v = row[step - 1] * factor(RAISES.gs, year, 2025);
-    return Math.round(v);
+    if (hasOrder(year)) return row[step - 1];
+    return Math.round(row[step - 1] * factor(RAISES.gs, year, LATEST));   // projected
   }
   function gsTable(year) {
     const t = {};
-    for (let g = 1; g <= 15; g++) t[g] = GS_BASE_2025[g].map((_, i) => gsBase(year, g, i + 1));
+    for (let g = 1; g <= 15; g++) t[g] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((s) => gsBase(year, g, s));
     return t;
   }
   function gs(year, grade, step, locId) {
     const loc = location(locId);
     const L = GS_LOCALITIES[loc.gsLocality];
+    const pct = localityPct(year, loc.gsLocality);
     const base = gsBase(year, grade, step);
     const cap = exFor(year).IV;
-    const raw = Math.round(base * (1 + L.pct / 100));
+    const raw = Math.round(base * (1 + pct / 100));
     const annual = Math.min(raw, cap);
     return {
-      system: "GS", grade, step, base, localityPct: L.pct, localityName: L.name,
+      system: "GS", grade, step, base, localityPct: pct, localityName: L.name,
       locality: annual - base, annual, capped: raw > cap, cap,
       hourly: round2(annual / 2087), biweekly: round2(annual / 26),
       status: L.status === "simulated" ? "simulated" : yearStatus(year),
@@ -329,15 +296,17 @@
     opts = opts || {};
     const loc = location(locId);
     const L = GS_LOCALITIES[loc.gsLocality];
+    const pct = localityPct(year, loc.gsLocality);
     const base = leoBase(year, grade, step);
     const cap = exFor(year).IV;
-    const adjusted = Math.min(Math.round(base * (1 + L.pct / 100)), cap);
+    const adjusted = Math.min(Math.round(base * (1 + pct / 100)), cap);
     const leap = opts.leap ? Math.round(adjusted * 0.25) : 0;
     // LEAP + basic pay is subject to the premium-pay cap; simplified here.
     return {
-      system: "LEO", grade, step, base, localityPct: L.pct, localityName: L.name,
+      system: "LEO", grade, step, base, localityPct: pct, localityName: L.name,
       special: LEO_PREMIUM[grade] ? true : false, adjusted, leap, annual: adjusted + leap,
-      status: L.status === "simulated" ? "simulated" : yearStatus(year),
+      // LEO special base rates are not in the pay order yet (OPM table), so LEO stays approximate.
+      status: L.status === "simulated" ? "simulated" : year > LATEST ? "projected" : "approx",
     };
   }
 
@@ -363,14 +332,15 @@
   // ---------------------------------------------------------------------------
   function ses(year) {
     const ex = exFor(year);
-    const min = Math.round(gsBase(year, 15, 1) * 1.2);
+    const real = hasOrder(year) ? PAY_DATA[year].ses : null;
     return {
-      system: "SES", min, maxCertified: ex.II, maxUncertified: ex.III,
+      system: "SES", min: real ? real.min : Math.round(gsBase(year, 15, 1) * 1.2),
+      maxCertified: real ? real.maxCertified : ex.II, maxUncertified: real ? real.maxUncertified : ex.III,
       note: "SES members do not receive locality pay. Pay is set by agency within the range.",
-      status: year > CURRENT_YEAR ? "projected" : "verified",
+      status: yearStatus(year),
     };
   }
-  function executiveSchedule(year) { return Object.assign({ status: year > CURRENT_YEAR ? "projected" : "verified" }, exFor(year)); }
+  function executiveSchedule(year) { return Object.assign({ status: yearStatus(year) }, exFor(year)); }
 
   // ---------------------------------------------------------------------------
   // Military
@@ -381,35 +351,33 @@
     if (grade.endsWith("E")) return "priorEnlisted";
     return "officer";
   }
-  function interp(pts, yos) {
-    if (yos <= pts[0][0]) return pts[0][1];
-    for (let i = 1; i < pts.length; i++) {
-      if (yos <= pts[i][0]) {
-        const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
-        return y0 + ((y1 - y0) * (yos - x0)) / (x1 - x0);
-      }
-    }
-    return pts[pts.length - 1][1];
-  }
   function yosColumn(yos) {
     let col = 0;
     MIL_YOS.forEach((c) => { if (yos >= c) col = c; });
     return col;
   }
+  function milRow(year, grade) { return order(year).militaryBasicPay.rows[grade] || null; }
+  // First years-of-service column where a grade has a rate (e.g. E-9 starts at 10).
+  function milMinYos(grade) {
+    const row = milRow(LATEST, grade);
+    if (!row) return 0;
+    const i = row.findIndex((v) => v != null);
+    return MIL_YOS[i] || 0;
+  }
   function milBasic(year, grade, yos) {
-    const a = MIL_ANCHORS[grade];
-    if (!a) return null;
-    const col = yosColumn(yos);
-    if (col < a.min) return null;
-    // The anchor curve gives the value at a column; snap to DFAS column.
-    let v = interp(a.pts, col) * factor(RAISES.mil, year, 2026);
-    const capMonthly = exFor(year).II / 12;
-    v = Math.min(v, capMonthly);
-    return round2(Math.round(v * 10) / 10);
+    const row = milRow(year, grade);
+    if (!row) return null;
+    const v = row[MIL_YOS.indexOf(yosColumn(yos))];
+    if (v == null) return null;
+    if (hasOrder(year)) return v;
+    // projected year: apply the assumed raise, respecting the statutory caps
+    const ex = exFor(year);
+    const cap = ["O-7", "O-8", "O-9", "O-10"].indexOf(grade) >= 0 ? ex.II / 12 : ex.V / 12;
+    return Math.floor(Math.min(v * factor(RAISES.mil, year, LATEST), cap) * 10) / 10;
   }
   function milTable(year) {
     const t = {};
-    Object.keys(MIL_ANCHORS).forEach((g) => (t[g] = MIL_YOS.map((c) => milBasic(year, g, c))));
+    Object.keys(order(year).militaryBasicPay.rows).forEach((g) => (t[g] = MIL_YOS.map((c) => milBasic(year, g, c))));
     return { columns: MIL_YOS.slice(), rows: t };
   }
   function bas(year, grade) {
@@ -441,7 +409,8 @@
       taxAdvantage: taxAdvantage(allowancesAnnual),
       // "Regular Military Compensation"-style figure: cash + tax advantage
       rmc: Math.round(monthly * 12 + taxAdvantage(allowancesAnnual)),
-      status: h.status === "simulated" ? "simulated" : yearStatus(year),
+      basicStatus: yearStatus(year),
+      status: h.status === "simulated" ? "simulated" : year > LATEST ? "projected" : "approx",   // BAH/BAS still approximate
     };
   }
 
@@ -548,7 +517,7 @@
       rows: [{ key: "base", label: "Basic pay", annual: m.basicAnnual },
         { key: "bah", label: `BAH (${p.deps ? "with" : "without"} dependents)`, annual: m.bah * 12, taxFree: true },
         { key: "bas", label: "BAS", annual: Math.round(m.bas * 12), taxFree: true }],
-      notes: [`Housing area: ${m.mhaName}.`, `BAH and BAS are tax-free. That's worth about ${fmt.usd(m.taxAdvantage)} a year compared with taxable pay (rough estimate).`, "Special and incentive pays (flight, jump, sea, hazardous duty) are not included."] };
+      notes: [].concat(year === 2025 && ["E-1", "E-2", "E-3", "E-4", "E-5"].indexOf(p.mgrade) >= 0 ? ["2025 basic pay shown is the January rate. Junior enlisted pay rose again on April 1, 2025."] : [], [`Housing area: ${m.mhaName}.`, `BAH and BAS are tax-free. That's worth about ${fmt.usd(m.taxAdvantage)} a year compared with taxable pay (rough estimate).`, "Special and incentive pays (flight, jump, sea, hazardous duty) are not included."]) };
   }
 
   // ---------------------------------------------------------------------------
@@ -613,7 +582,7 @@
       const i = list.indexOf(p.mgrade);
       if (i >= 0 && i < list.length - 1) {
         const ng = list[i + 1];
-        const yos = Math.max(p.yos, MIL_ANCHORS[ng].min);
+        const yos = Math.max(p.yos, milMinYos(ng));
         add("promo", `${ng} · ${yos} yrs`, "Promotion to the next rank", yos > p.yos ? `earliest at ${yos} years of service` : "when you're promoted", Object.assign({}, p, { mgrade: ng, yos }));
       }
     }
