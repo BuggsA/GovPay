@@ -35,7 +35,6 @@
   // Civilian GS anchor table = 2025. Military anchor table = 2026.
   const RAISES = {
     gs:  { 2025: 0.020, 2026: 0.010, 2027: 0.010 },  // 2027 is an assumption
-    leoExtra: { 2026: 0.028, 2027: 0.0 },            // 2026: +2.8% special LEO adjustment
     mil: { 2025: 0.045, 2026: 0.038, 2027: 0.042 },  // 2027 ECI-based assumption
     bas: { 2025: 0.010, 2026: 0.024, 2027: 0.025 },
     bah: { 2025: 0.054, 2026: 0.042, 2027: 0.040 },
@@ -352,12 +351,19 @@
   // ---------------------------------------------------------------------------
   // LEO (GS-1811 / 1801 etc.)
   // ---------------------------------------------------------------------------
+  // LEO base rates (GS-3 to GS-10 special rates; other grades equal GS) from OPM's ALLLEO file
+  // (shared/data/leo.js). Other years scale the nearest official table by the GS table, cell by cell.
+  const LEO_DATA = (global.GOVPAY_DATA && global.GOVPAY_DATA.leo) || null;
+  const LEO_YEARS = LEO_DATA ? Object.keys(LEO_DATA.years).map(Number).sort() : [];
   function leoBase(year, grade, step) {
-    const gsB = gsBase(year, grade, step);
-    const prem = LEO_PREMIUM[grade] || 0;
-    const extra = factor(RAISES.leoExtra, year, 2025);
-    return Math.round(gsB * (1 + prem) * extra);
+    if (LEO_DATA && LEO_DATA.years[year]) return LEO_DATA.years[year][grade][step - 1];
+    if (LEO_YEARS.length) {
+      const y = LEO_YEARS.reduce((a, b) => (Math.abs(b - year) < Math.abs(a - year) ? b : a));
+      return Math.round(gsBase(year, grade, step) * LEO_DATA.years[y][grade][step - 1] / gsBase(y, grade, step));
+    }
+    return Math.round(gsBase(year, grade, step) * (1 + (LEO_PREMIUM[grade] || 0)));   // rough fallback (old prototypes)
   }
+  const leoStatus = (year) => (LEO_DATA && LEO_DATA.years[year] ? "verified" : year > LATEST ? "projected" : "approx");
   function leo(year, grade, step, locId, opts) {
     opts = opts || {};
     const loc = location(locId);
@@ -366,13 +372,14 @@
     const base = leoBase(year, grade, step);
     const cap = exFor(year).IV;
     const adjusted = Math.min(Math.round(base * (1 + pct / 100)), cap);
-    const leap = opts.leap ? Math.round(adjusted * 0.25) : 0;
-    // LEAP + basic pay is subject to the premium-pay cap; simplified here.
+    // LEAP (25%, 5 U.S.C. 5545a) is premium pay: base + LEAP can't pass the premium pay cap (5 U.S.C. 5547),
+    // the greater of GS-15 step 10 with locality or EX-IV. With locality capped at EX-IV, that's EX-IV.
+    const leapFull = opts.leap ? Math.round(adjusted * 0.25) : 0;
+    const leap = Math.max(0, Math.min(leapFull, cap - adjusted));
     return {
       system: "LEO", grade, step, base, localityPct: pct, localityName: L.name,
-      special: LEO_PREMIUM[grade] ? true : false, adjusted, leap, annual: adjusted + leap,
-      // LEO special base rates are not in the pay order yet (OPM table), so LEO stays approximate.
-      status: L.status === "simulated" ? "simulated" : year > LATEST ? "projected" : "approx",
+      special: grade >= 3 && grade <= 10, adjusted, leap, leapCapped: leap < leapFull, annual: adjusted + leap,
+      status: L.status === "simulated" ? "simulated" : leoStatus(year),
     };
   }
 
@@ -571,11 +578,12 @@
     if (p.system === "LEO") {
       const r = leo(year, p.grade, p.step, locId, { leap: p.leap });
       const notes = [r.special ? "GS-3 to GS-10 LEOs get special base rates above the regular GS table." : "GS-11 and above use the regular GS base table."];
-      if (year >= 2026) notes.push("2026 includes the extra 2.8% special adjustment for covered law enforcement officers (3.8% total).");
+      notes.push(r.status === "verified" ? `Official ${year} LEO rates (OPM).` : r.status === "projected" ? "Projected from the latest OPM LEO table." : `Estimated from the ${LEO_YEARS.join(", ")} OPM LEO table and the ${year} GS table.`);
       if (p.leap) notes.push("LEAP is 25% availability pay for criminal investigators (GS-1811 and similar).");
+      if (r.leapCapped) notes.push(`Base pay plus LEAP is capped at ${fmt.usd(exFor(year).IV)} a year (premium pay cap, 5 U.S.C. 5547), so LEAP here is less than 25%.`);
       const rows = [{ key: "base", label: r.special ? "LEO special base rate" : "Base pay", annual: r.base },
         { key: "locality", label: `Locality pay (${r.localityPct}%)`, annual: r.adjusted - r.base }];
-      if (r.leap) rows.push({ key: "leap", label: "LEAP (25%)", annual: r.leap });
+      if (r.leap) rows.push({ key: "leap", label: r.leapCapped ? "LEAP (capped)" : "LEAP (25%)", annual: r.leap });
       return { title: `LEO GS-${p.grade} Step ${p.step}`, annual: r.annual, hourly: round2(r.adjusted / 2087), status: r.status, rows, notes };
     }
     if (p.system === "FWS") {

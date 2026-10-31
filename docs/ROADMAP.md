@@ -29,7 +29,7 @@ Based on [CONCEPT.md](CONCEPT.md), [CONCEPT-REVIEW.md](CONCEPT-REVIEW.md), [DESI
 Nothing ships with simulated numbers (concept §10). Done so far: ☑ per diem (GSA, FY2025–27, monthly refresh) · ◐ GS, locality, SES, EX and military basic pay (official pay orders, 2025–26).
 
 ### 1.1 GS family from OPM · M · ◐
-> **Progress (Oct 31, 2026):** GS base pay, all 58 locality areas, SES and the Executive Schedule for 2025 and 2026 are now **official**, from the pay Executive Orders. Still open: LEO special base rates (OPM-only table) and the 2026 LEO 3.8% special rates.
+> **Progress (Oct 31, 2026):** GS base pay, all 58 locality areas, SES and the Executive Schedule for 2025 and 2026 are now **official**, from the pay Executive Orders. LEO 2026 is official too (OPM's ALLLEO file, checked against all 58 locality tables); it showed the engine's assumed extra 2.8% LEO raise was wrong for every grade. Still open: OPM's 2025 LEO file (2025 is derived for now).
 - **Goal:** real civilian pay nationwide.
 - **Includes:** GS base tables plus **all ~58 locality areas** for 2025 and 2026; the Executive Schedule and SES range; LEO special base rates; a converter `scripts/convert-opm.mjs` that writes `data/opm/<year>/*.json`.
 - **Done when:**

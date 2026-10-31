@@ -174,3 +174,17 @@ test("Job posting decoder: 10 real USAJOBS grade strings", () => {
   assert.equal(P.parse("GS-0610-11/12 San Diego")[0].locId, G.locations().find((l) => l.name === "San Diego, CA").id);
   assert.equal(P.parse("gs-0357-05")[0].retired, true);
 });
+
+test("LEO pay matches OPM's 2026 ALLLEO file", () => {
+  const area = (name) => G.locations().find((l) => G.GS_LOCALITIES[l.gsLocality] && G.GS_LOCALITIES[l.gsLocality].name.startsWith(name)).id;
+  // cells read straight from the file: ATL grade 5 step 1, AK grade 13 step 1, AL (Albany) grade 10 step 1, RUS grade 3 step 4
+  assert.equal(G.leo(2026, 5, 1, area("Atlanta")).annual, 53129);
+  assert.equal(G.leo(2026, 13, 1, area("Alaska")).annual, 120348);
+  assert.equal(G.leo(2026, 10, 1, area("Albany")).annual, 72461);
+  assert.equal(G.leoBase(2026, 13, 1), G.gsBase(2026, 13, 1));        // GS-11 and up: no special rate, no extra adjustment
+  assert.equal(G.leoBase(2026, 7, 1), 48854);                        // GL-7 step 1
+  const capped = G.leo(2026, 13, 10, "dc", { leap: true });          // $158,322 + 25% LEAP would be $197,903
+  assert.deepEqual([capped.annual, capped.leapCapped], [197200, true]);
+  assert.equal(G.leo(2026, 7, 1, "dc").status, "verified");
+  assert.equal(G.leo(2025, 7, 1, "dc").status, "approx");             // derived until OPM's 2025 file is added
+});

@@ -21,7 +21,7 @@ GitHub Actions runners are blocked too (checked Oct 31, 2026: OPM, DFAS and DTMO
 | **GS base table** | **2025, 2026 from the pay Executive Orders** (EO 14132, EO 14368); 2027 projected (+1% assumed) | All grades and steps | **verified (official)** / projected |
 | **GS locality %** | **2025, 2026 from the pay orders (Schedule 9)** | **All 58 locality areas** (the app maps 7 of them to places so far) | **verified (official)** |
 | GS cap | EX-IV: 2025 $195,200 · 2026 $197,200 | — | verified |
-| LEO | Special-rate premium applied to GS-3 to GS-10, plus the 2026 2.8% LEO adjustment; LEAP 25% | GS-3 to GS-15 | approx |
+| **LEO** | **2026 from OPM's ALLLEO file** (`data/raw/opm/2026/`, `scripts/convert-leo.py`): the LEO base table, verified against all 58 locality tables cell by cell; 2025 derived from it and the 2025 GS table; LEAP 25% capped at EX-IV (5 U.S.C. 5547) | GS-1 to GS-15 (special rates at GS-3 to GS-10) | **verified (official)** 2026 / approx 2025 |
 | FWS (WG/WL/WS) | Shape of the curve only | 9 wage areas in the focus states | **simulated** |
 | **SES / EX** | **2025, 2026 from the pay orders** (Schedules 4 and 5); 2027 projected | Min/max with and without certified appraisal; EX I–V | **verified (official)** / projected |
 | **Military basic pay** | **2025, 2026 from the pay orders (Schedule 8)**; 2027 projected (+4.2% assumed, statutory caps kept) | All grades incl. O-1E–O-3E, YOS under 2 through over 40 | **verified (official)** / projected. 2025 = January rates (junior enlisted rose again April 1, 2025) |
