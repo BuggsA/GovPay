@@ -94,7 +94,7 @@ export function bahAreas() {
   const zipsBy = {};
   Object.entries(BAH_FULL.zips).forEach(([z, m]) => (zipsBy[m] = zipsBy[m] || []).push(z));
   const countiesBy = {};
-  G.locations().filter((l) => l.kind === "county").forEach((l) => (countiesBy[l.bahMha] = countiesBy[l.bahMha] || []).push(l));
+  G.locations().filter((l) => l.kind === "county").forEach((l) => { const m = G.bahMhaOf(l); (countiesBy[m] = countiesBy[m] || []).push(l); });
   _areas = Object.entries(BAHD.names).map(([code, name]) => {
     const rural = code.startsWith("ZZ");
     const st = rural ? null : (name.match(/,\s*([A-Z]{2})$/) || [])[1] || code.slice(0, 2);

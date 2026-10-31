@@ -30,6 +30,10 @@
     let items = [], active = -1;
 
     function payFor(profile, locId) { return G.compute(profile, opts.getYear(), locId || opts.getLoc()); }
+    // Cities and job series load the first time someone uses the box; open suggestions refresh when they arrive.
+    const warm = () => G.need(["cities", "series"]).then(() => { if (input.value.trim()) render(); }, () => {});
+    input.addEventListener("focus", warm, { once: true });
+    input.addEventListener("input", warm, { once: true });
     function render() {
       const q = input.value;
       const res = P.parse(q);
@@ -111,7 +115,9 @@
 
   // What areas a place uses, and whether they differ from each other.
   function placeKeys(locId, year) {
-    const g = G.gs(year, 1, 1, locId), b = G.bah(year, "E-5", true, locId), p = G.perDiem(year, locId, 1);
+    const g = G.gs(year, 1, 1, locId);
+    if (!G.has("bah") || !G.has("perDiem")) return { gs: `${g.localityName} · ${g.localityPct.toFixed(2)}%`, bah: "…", pd: "…", loading: true };
+    const b = G.bah(year, "E-5", true, locId), p = G.perDiem(year, locId, 1);
     const gw = words(g.localityName);
     const bahDiff = !words(b.mhaName).some((w) => gw.indexOf(w) >= 0);
     const pdDiff = p.standard ? g.localityName !== "Rest of U.S." : !words(p.areaName + " " + p.areaDetail).some((w) => gw.indexOf(w) >= 0);
@@ -160,6 +166,13 @@
           ${k.bahEstimate ? '<div style="margin-top:6px">GS and per diem are official. BAH here is a rough placeholder.</div>' : ""}</div>`;
       const qi = $("input", el);
       qi.oninput = () => { query = qi.value; render(true); };
+      // Searching places needs cities.js; the area names need bah.js and perdiem.js. Load them when the
+      // picker is actually on screen (always on desktop, only once the sheet opens on a phone).
+      qi.onfocus = () => { if (!G.has("cities")) G.need(["cities"]).then(() => render(true), () => {}); };
+      if (k.loading && el.offsetParent !== null) {
+        const go = () => G.need(["bah", "perDiem"]).then(() => render(), () => {});
+        (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(go);
+      }
       if (keepFocus) { qi.focus(); qi.setSelectionRange(qi.value.length, qi.value.length); }
       el.querySelectorAll("[data-st]").forEach((b) => (b.onclick = () => { filter = filter === b.dataset.st ? null : b.dataset.st; query = ""; render(); }));
       const cl = $("[data-clear]", el); if (cl) cl.onclick = () => { filter = null; render(); };

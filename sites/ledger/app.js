@@ -48,7 +48,8 @@
   }
   function fromHash(q) {
     state.year = G.YEARS.some((y) => y.year === +q.get("y")) ? +q.get("y") : state.year;
-    if (G.locations().some((l) => l.id === q.get("l"))) state.loc = q.get("l");
+    const l = q.get("l") || "";
+    if (/^p\d{7}$/.test(l) || G.locations().some((x) => x.id === l)) state.loc = l;   // a city loads with cities.js
     const p = Object.assign({}, G.DEFAULT_PROFILE, { system: q.get("s") });
     if (p.system === "MIL") { p.mgrade = q.get("g") || p.mgrade; p.yos = +q.get("yos") || 0; p.deps = q.get("d") !== "0"; }
     else if (p.system === "SES") p.sesPoint = +q.get("pt") || 0;
@@ -172,7 +173,7 @@
     const yoy = prev && prev.annual ? r.annual - prev.annual : null;
     const periods = mil ? [["month", "Month"], ["check", "Paycheck"], ["year", "Year"]] : [["year", "Year"], ["month", "Month"], ["check", "Paycheck"], ["hour", "Hour"]];
     const div = { year: 1, month: 12, check: mil ? 24 : 26, hour: 2087 }[state.period];
-    const unit = { year: "a year", month: "a month", check: mil ? "per paycheck (1st and 15th)" : "per paycheck, every 2 weeks", hour: "an hour" }[state.period];
+    const unit = { year: "a year", month: "a month", check: mil ? "per paycheck (1st and 15th, 24 a year)" : "per paycheck, every 2 weeks (26 a year)", hour: "an hour" }[state.period];
     const big = r.annual / div;
     const fmtBig = state.period === "hour" ? f.usd2(big) : f.usd(big);
     const perLine = mil
@@ -323,6 +324,7 @@
 
   // ------------------------------------------------------------ explore tabs
   function renderTab() {
+    if (!whenReady(renderTab)) { $("#tabPanel").innerHTML = '<p class="pb-loading">Loading…</p>'; return; }
     document.querySelectorAll("#tabs [role=tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === state.tab)));
     ({ tables: tabTables, allowances: tabAllowances, travel: tabTravel, compare: tabCompare, guide: tabGuide })[state.tab]($("#tabPanel"));
   }
@@ -386,7 +388,7 @@
         <p class="sub">${esc(s.note)} Level IV (${f.usd(ex.IV)}) also caps GS pay including locality. Source: ${sourceLine(state.year)}</p>`;
     }
     el.innerHTML = html;
-    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; track("tool", { tool: "table-" + b.dataset.k }); if (needsFws()) loadFws(); renderTab(); }));
+    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; track("tool", { tool: "table-" + b.dataset.k }); renderTab(); }));
     el.querySelectorAll("[data-pick]").forEach((td) => (td.onclick = () => pick(JSON.parse(td.dataset.pick))));
   }
 
@@ -454,21 +456,28 @@
 
   // ------------------------------------------------------------ layout pieces
   let railPicker, sheetPicker, yearSw, ask;
-  // Trades (FWS) schedules are a separate data file (about 125 KB compressed), loaded only when needed.
-  let fwsLoading = false;
-  function needsFws() { return !(window.GOVPAY_DATA && window.GOVPAY_DATA.fws) && (shown().system === "FWS" || state.tableKind === "FWS"); }
-  function loadFws() {
-    if (fwsLoading) return; fwsLoading = true;
-    const near = document.querySelector('script[src*="data/bah.js"]');
-    const sc = document.createElement("script");
-    sc.src = near ? near.getAttribute("src").replace("bah.js", "fws.js") : "shared/data/fws.js";
-    sc.onload = () => renderDash();
-    sc.onerror = () => { fwsLoading = false; };
-    document.head.appendChild(sc);
+  // Big data files load only when the view needs them (GovPay.need): BAH for military pay and the
+  // allowances tab, per diem for the travel tab, cities when the place is a city, trades schedules for FWS.
+  const failed = {};
+  function dataNeeded() {
+    const p = shown(), n = [];
+    if (p && p.system === "MIL") n.push("bah");
+    if ((p && p.system === "FWS") || state.tableKind === "FWS") n.push("fws");
+    if (state.tab === "allowances") n.push("bah");
+    if (state.tab === "travel") n.push("perDiem");
+    if (/^p/.test(state.loc)) n.push("cities");
+    return n.filter((x) => !G.has(x) && !failed[x]);
+  }
+  // true = ready now; false = loading, and fn runs again when it's in (or failed: then it renders with what it has)
+  function whenReady(fn) {
+    const m = dataNeeded();
+    if (!m.length) return true;
+    G.need(m).then(fn, () => { m.forEach((x) => (failed[x] = true)); fn(); });
+    return false;
   }
   const fmtDay = (iso) => (iso ? new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "");
   function renderDash() {
-    if (needsFws()) loadFws();
+    if (!whenReady(renderDash)) { const st = $("#stub"); if (st && !st.textContent.trim()) st.innerHTML = '<p class="pb-loading">Loading…</p>'; return; }
     renderPreviewBar(); renderControls(); renderStub(); renderLadder(); renderPlaceBtn(); renderTab();
     if (railPicker) railPicker.set(state.loc);
     if (sheetPicker) sheetPicker.set(state.loc);
@@ -485,6 +494,7 @@
     const first = !state.me || state.editing;
     $("#welcome").hidden = !first; $("#dash").hidden = first;
     if (first) { renderWelcome(); return; }
+    if (!whenReady(render)) return;           // e.g. a saved place that's a city: load cities.js first
     mountDash(); renderDash();
     if (A) A.profile(state.me, state.loc);   // once per visit (repeats are dropped)
   }
@@ -499,7 +509,7 @@
     document.querySelectorAll("[data-nav]").forEach((x) => (x === a ? x.setAttribute("aria-current", "page") : x.removeAttribute("aria-current")));
   }));
   const sheet = $("#sheet"), opener = $("#placeBtn");
-  opener.onclick = () => { sheet.hidden = false; document.body.style.overflow = "hidden"; const i = sheet.querySelector("input"); if (i) i.focus(); };
+  opener.onclick = () => { sheet.hidden = false; document.body.style.overflow = "hidden"; if (sheetPicker) sheetPicker.refresh(); const i = sheet.querySelector("input"); if (i) i.focus(); };
   const closeSheet = () => { sheet.hidden = true; document.body.style.overflow = ""; opener.focus(); };
   $("#sheetClose").onclick = closeSheet;
   sheet.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
