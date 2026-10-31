@@ -23,7 +23,7 @@ const elsewhere = G.localityAreas(YEAR).filter((a) => a.slug !== area.slug).sort
 const pick = [elsewhere[0], elsewhere[1], ...elsewhere.filter((a) => a.slug === "washington-dc" || a.slug === "rest-of-us" || a.slug === "san-diego-ca")].filter((a, i, arr) => a && arr.findIndex((x) => x.slug === a.slug) === i).slice(0, 5);
 const inApp = G.locationsInArea(area.name).length > 0;
 ---
-<Base title={title} description={description} path={path}>
+<Base title={title} description={description} path={path} crumbs={[["GS pay", "/civilian/gs"], [place, `/civilian/gs/table/${area.slug}`], [`GS-${grade}`, path]]}>
   <main id="main" class="page article">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/civilian/gs">GS pay</a> / <a href={`/civilian/gs/table/${area.slug}`}>{place}</a> / GS-{grade}</nav>
     <div class="pb-section-label"><b>GS-{grade}</b> · {area.name}</div>
@@ -61,7 +61,7 @@ const inApp = G.locationsInArea(area.name).length > 0;
     <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Keep exploring</div>
     <div class="links">
       <div><h2>Other grades here</h2><ul>{neighbors.map((g) => <li><a href={`/civilian/gs/${g}/${area.slug}`}>GS-{g} in {place}</a></li>)}<li><a href={`/civilian/gs/table/${area.slug}`}>Full {place} pay table</a></li></ul></div>
-      <div><h2>GS-{grade} elsewhere</h2><ul>{pick.map((a) => <li><a href={`/civilian/gs/${grade}/${a.slug}`}>{areaShort(a.name)}</a> <span class="muted">{a.pct.toFixed(2)}%</span></li>)}<li><a href="/civilian/gs">All {G.localityAreas(YEAR).length} locality areas</a></li></ul></div>
+      <div><h2>GS-{grade} elsewhere</h2><ul>{pick.map((a) => <li><a href={`/civilian/gs/${grade}/${a.slug}`}>{areaShort(a.name)}</a> <span class="muted">{a.pct.toFixed(2)}%</span></li>)}<li><a href={`/civilian/gs/${grade}`}>GS-{grade} in all {G.localityAreas(YEAR).length} locality areas</a></li></ul></div>
     </div>
   </main>
 </Base>

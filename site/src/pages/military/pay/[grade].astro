@@ -1,0 +1,68 @@
+---
+// One page per military pay grade: /military/pay/e-5
+import Base from "../../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, calcLink, MIL_ORDER, milSlug, yosLabel } from "../../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return MIL_ORDER.map((g) => ({ params: { grade: milSlug(g) }, props: { grade: g } }));
+}
+const { grade } = Astro.props;
+const t = G.milTable(YEAR), tPrev = G.milTable(YEAR - 1);
+const cols = t.columns.map((c, i) => ({ c, now: t.rows[grade][i], prev: tPrev.rows[grade] ? tPrev.rows[grade][i] : null })).filter((x) => x.now != null);
+// Collapse runs of equal pay (pay stops rising at many grades) into one row: "Over 22 to over 40".
+const rows = [];
+cols.forEach((x) => { const last = rows[rows.length - 1]; if (last && last.now === x.now) last.to = x.c; else rows.push({ ...x, from: x.c, to: x.c }); });
+const type = G.milGradeType(grade);
+const kind = { enlisted: "enlisted", warrant: "warrant officer", officer: "officer" }[type] || "officer";
+const lo = cols[0].now, hi = cols[cols.length - 1].now;
+const bas = G.bas(YEAR, grade);
+const prior = /E$/.test(grade);
+const an = type === "warrant" ? "a" : "an";
+const title = `${grade} pay (${YEAR}): ${f.usd2(lo)} to ${f.usd2(hi)} a month`;
+const description = `${YEAR} monthly basic pay for ${an} ${grade}${prior ? " (prior enlisted)" : ""}, from ${f.usd2(lo)} (${yosLabel(cols[0].c).toLowerCase()} years) to ${f.usd2(hi)}. Every years-of-service step, plus BAS. Official ${SOURCE[YEAR].label} rates.`;
+const path = `/military/pay/${milSlug(grade)}`;
+const i = MIL_ORDER.indexOf(grade);
+const near = [MIL_ORDER[i - 1], MIL_ORDER[i + 1]].filter((g) => g && G.milGradeType(g) === type && /E$/.test(g) === prior);
+const sampleYos = cols.find((x) => x.c >= 6) ? cols.find((x) => x.c >= 6).c : cols[0].c;
+---
+<Base title={title} description={description} path={path} crumbs={[["Military pay", "/military/pay-chart"], [grade, path]]}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/military/pay-chart">Military pay</a> / {grade}</nav>
+    <div class="pb-section-label"><b>{grade}</b> · {YEAR} · {kind}{prior && ", prior enlisted"}</div>
+    <h1>{grade} pay, {YEAR}</h1>
+    <p class="lede">{an === "a" ? "A" : "An"} {grade} earns <b>{f.usd2(lo)}</b> to <b>{f.usd2(hi)}</b> a month in basic pay, depending on years of service. That's {f.usd(lo * 12)} to {f.usd(hi * 12)} a year, the same at every duty station.{prior && " O-1E to O-3E rates apply to officers with more than 4 years of prior enlisted or warrant officer service."}</p>
+
+    <article class="pb-stub">
+      <div class="pb-stub__head"><span>Basic pay · {YEAR}</span><span class="pb-stamp pb-stamp--official">Official</span></div>
+      <div class="pb-stub__who">{grade}, {yosLabel(cols[0].c).toLowerCase()} years<small>Monthly, before allowances</small></div>
+      <div class="pb-stub__number"><span class="hl">{f.usd2(lo)}</span></div>
+      <div class="pb-stub__per">a month · {f.usd(lo * 12)} a year · {f.usd2(lo / 2)} per paycheck (twice a month)</div>
+      <ul class="pb-ledger">
+        <li><span>Basic pay (taxed)</span><span>{f.usd2(lo)}</span></li>
+        <li><span>BAS, food (not taxed, estimate)</span><span>{f.usd2(bas)}</span></li>
+        <li><span>BAH, housing (not taxed)</span><span>Depends on base</span></li>
+      </ul>
+      <p class="cta"><a class="pb-btn" href={calcLink({ system: "MIL", mgrade: grade, yos: sampleYos }, null)}>Add BAH for your base</a></p>
+      <div class="pb-stub__foot"><span>paybook · {SOURCE[YEAR].label}</span><span>Not affiliated with the U.S. government</span></div>
+    </article>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · By years of service</div>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Years of service</th><th scope="col">Monthly</th><th scope="col">Yearly</th><th scope="col">vs {YEAR - 1}</th></tr></thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr><th scope="row">{r.from === r.to ? yosLabel(r.from) : `${yosLabel(r.from)} to ${r.to}`}</th><td>{f.usd2(r.now)}</td><td>{f.usd(r.now * 12)}</td><td>{r.prev != null ? <span class="pb-delta pb-delta--up">+{f.usd2(r.now - r.prev)}</span> : "·"}</td></tr>
+          ))}
+        </tbody>
+        <caption>{YEAR} monthly basic pay. "Over 4" means more than 4 years of service. {YEAR - 1} figures are the January rates. Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedule 8. BAS is an estimate until the DFAS table is loaded.</caption>
+      </table>
+    </div>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Keep exploring</div>
+    <div class="links">
+      <div><h2>Nearby grades</h2><ul>{near.map((g) => <li><a href={`/military/pay/${milSlug(g)}`}>{g} pay</a></li>)}<li><a href="/military/pay-chart">Full {YEAR} pay chart</a></li></ul></div>
+      <div><h2>Civilian pay</h2><ul><li><a href="/civilian/gs">GS pay by location</a></li></ul></div>
+    </div>
+  </main>
+</Base>

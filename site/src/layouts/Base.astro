@@ -1,7 +1,9 @@
 ---
 // Shared page frame: head, header, footer. Uses the same design files as the calculator.
-interface Props { title: string; description: string; path: string; }
-const { title, description, path } = Astro.props;
+import { breadcrumbLd } from "../lib/engine.mjs";
+interface Props { title: string; description: string; path: string; crumbs?: [string, string][]; }
+const { title, description, path, crumbs } = Astro.props;
+const ld = crumbs && crumbs.length ? JSON.stringify(breadcrumbLd(Astro.site, [["Paybook", "/"], ...crumbs])) : null;
 const canonical = new URL(path, Astro.site).toString();
 const nav = [
   ["/", "My pay"],
@@ -29,6 +31,7 @@ const nav = [
   <link rel="stylesheet" href="/ui/components.css">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/pages.css">
+  {ld && <script type="application/ld+json" set:html={ld} />}
   <slot name="head" />
 </head>
 <body>
@@ -40,7 +43,7 @@ const nav = [
         paybook
       </a>
       <nav class="pb-nav" aria-label="Main">
-        {nav.map(([href, label]) => <a href={href} aria-current={(href === "/" ? path === "/" : path.startsWith(href)) ? "page" : undefined}>{label}</a>)}
+        {nav.map(([href, label]) => <a href={href} aria-current={(href === "/" ? path === "/" : (path === href || path.startsWith(href + "/") || (href === "/military/pay-chart" && path.startsWith("/military/")))) ? "page" : undefined}>{label}</a>)}
       </nav>
       <div class="pb-header__end"><button class="theme-btn" id="theme" type="button" aria-label="Switch light or dark">Dark</button></div>
     </div>

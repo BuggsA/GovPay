@@ -7,11 +7,12 @@ const areas = G.localityAreas(YEAR).slice().sort((a, b) => b.pct - a.pct);
 const sample = 12;
 const max = areas[0].pct, min = areas[areas.length - 1].pct;
 ---
-<Base title={`GS pay by locality, ${YEAR}: all ${areas.length} areas`} description={`GS pay in all ${areas.length} locality areas for ${YEAR}, from ${min.toFixed(2)}% to ${max.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`} path="/civilian/gs">
+<Base title={`GS pay by locality, ${YEAR}: all ${areas.length} areas`} description={`GS pay in all ${areas.length} locality areas for ${YEAR}, from ${min.toFixed(2)}% to ${max.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`} path="/civilian/gs" crumbs={[["GS pay", "/civilian/gs"]]}>
   <main id="main" class="page article wide">
     <div class="pb-section-label"><b>{YEAR}</b> · General Schedule</div>
     <h1>GS pay in every locality area</h1>
     <p class="lede">Base pay is the same everywhere. Locality pay is added on top, from <b>{min.toFixed(2)}%</b> to <b>{max.toFixed(2)}%</b>. Below is GS-{sample} step 1 in each area.</p>
+    <p class="grades">One grade everywhere: {Array.from({ length: 15 }, (_, i) => i + 1).map((g) => <a class="pb-chip" href={`/civilian/gs/${g}`}>GS-{g}</a>)}</p>
     <div class="pb-table-wrap">
       <table class="pb-table">
         <thead><tr><th scope="col">Locality area</th><th scope="col">Locality</th><th scope="col">GS-{sample} step 1</th><th scope="col">Full table</th></tr></thead>

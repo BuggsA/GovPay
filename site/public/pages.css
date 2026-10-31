@@ -15,3 +15,5 @@
 .muted { color: var(--ink-2); font-size: var(--t-small); }
 .area-full { display: block; font-weight: 400; font-size: 12px; color: var(--ink-2); white-space: normal; }
 .pb-table th[scope=row] a { font-weight: 700; }
+.grades { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0 0 var(--s5); align-items: center; }
+.grades .pb-chip { text-decoration: none; }
