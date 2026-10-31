@@ -22,6 +22,13 @@ cd site && npm install && npm test && npm run build && npm run check
 
 Cloudflare (Workers with static assets, Workers Builds): **Root directory** `site`, **Build command** `npm run build`, **Deploy command** `npx wrangler deploy` (uses `site/wrangler.jsonc`; its `name` must match the Worker's name), build variable `NODE_VERSION=22`, production branch `main`.
 
+## Anonymous usage counts
+`site/worker.js` records a fixed set of anonymous events (pages, pay system and grade band, locality area and state, tools used) in Workers Analytics Engine. No cookies, IP addresses, persistent IDs or typed text; off with Global Privacy Control, Do Not Track, or the switch on `/privacy`. Raw events are kept three months. To read them:
+```bash
+cd site && CF_ACCOUNT_ID=... CF_API_TOKEN=... npm run analytics -- 30 --save
+```
+The token needs "Account Analytics: Read". `--save` keeps monthly totals in `~/paybook-analytics/` (outside the repo).
+
 ## Run locally
 There is no build step. Open `index.html` directly, or serve the repo:
 ```bash
@@ -41,7 +48,7 @@ Create one Pages project per site, connected to this GitHub repo:
 
 | Project | Dev | Prod (planned) | Build output directory |
 |---|---|---|---|
-| `paybook` | https://paybook.hhouse.dev | paybook.loopi.sh | `sites/ledger` |
+| `paybook` | https://paybook.hhouse.dev | **https://paybook.loopi.sh (live)** | `site/` (Astro, Cloudflare Worker) |
 | `payup` | https://payup.hhouse.dev | payup.loopi.sh | `sites/levels` |
 | `paymap` | https://paymap.hhouse.dev | paymap.loopi.sh | `sites/atlas` |
 

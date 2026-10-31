@@ -91,8 +91,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 | L9 Family kit | Shared CSS and accent swap for sibling sites | ☐ |
 
 ## Phase 2: Foundation
-### 2.1 Astro skeleton + engine as a module · M · ◐
-> **Progress (Oct 31, 2026):** `site/` (Astro 7.3.8) builds 931 pages in about 3 seconds: the calculator, GS grade × locality area pages (15 × 58), a pay table per area, a GS hub, the military pay chart, and a sitemap. One source of truth: the build copies the shared engine, data and design files. 10 engine tests against official values; a CI workflow runs tests and the build on every push. **Still open:** switch the Cloudflare project to build `site/`.
+### 2.1 Astro skeleton + engine as a module · M · ☑
+> **Progress (Oct 31, 2026):** `site/` (Astro 7.3.8) builds 931 pages in about 3 seconds: the calculator, GS grade × locality area pages (15 × 58), a pay table per area, a GS hub, the military pay chart, and a sitemap. One source of truth: the build copies the shared engine, data and design files. 10 engine tests against official values; a CI workflow runs tests and the build on every push. **Live (Oct 31, 2026):** the `paybook` Cloudflare Worker builds `site/` from `main`; production is https://paybook.loopi.sh (canonical URLs, sitemap and preview images use it), paybook.hhouse.dev serves the same build.
 - **Goal:** the single-site base that can grow to thousands of pages.
 - **Includes:**
   - A new `site/` Astro project
@@ -218,7 +218,8 @@ Pages live in `sites/ledger/design/` (paybook.hhouse.dev/design/). Each piece is
 ---
 
 ## Phase 6: Launch
-### 6.1 Quality pass · S · ☐
+### 6.1 Quality pass · S · ◐
+> **Progress (Oct 31, 2026):** anonymous usage counts are in (Workers Analytics Engine via `site/worker.js`, `shared/analytics.js`, a `/privacy` notice with an opt-out, `npm run analytics` for segment reports). Still open: accessibility, Lighthouse, dark-mode review, home page data weight.
 - **Goal:** solid before the public sees it.
 - **Includes:** accessibility (axe, keyboard, screen reader), performance budget, a dark-mode review, every number checked at 390 px, and privacy-friendly analytics (Cloudflare Web Analytics).
 - **Done when:** no axe violations, and Lighthouse ≥ 95 in every category on 5 key pages.

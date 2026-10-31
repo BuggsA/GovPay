@@ -1,0 +1,68 @@
+---
+// Privacy notice: what the anonymous usage counts collect (shared/analytics.js, worker.js), and an opt-out.
+import Base from "../layouts/Base.astro";
+const updated = "October 31, 2026";
+const collected = [
+  ["Pages you open", "For example, /civilian/gs/12/san-diego-ca. These are public pages; the address holds no personal information."],
+  ["Your pay system and grade band", "For example, General Schedule, GS 12-13, or Military, E-5/6. A range, never your exact step, salary or take-home pay."],
+  ["The locality area and state of the place you pick", "For example, San Diego, California. Never a street, ZIP code, city or county."],
+  ["Which tools you use", "For example, opening pay tables, BAH, per diem or the take-home panel, switching the pay year, or decoding a job posting (only its job family and grade band, such as 0300 and GS 12-13)."],
+  ["Take-home settings", "Filing status (single or married) and the state you chose for income tax. Not your income, TSP, health premium or own tax rate."],
+  ["Whether you have dependents", "Military only, yes or no, because it changes housing allowance."],
+];
+const never = [
+  "Your name, email, phone or any account. Paybook has no accounts.",
+  "Your IP address, device, browser or anything that could follow you to other sites. No cookies, no tracking pixels, no third-party trackers.",
+  "Anything you type into the search box. We record only what kind of thing it found (a grade, a place, a job posting).",
+  "Your exact pay, step, years of service, or address.",
+];
+---
+<Base title="Privacy · Paybook" description="What Paybook's anonymous usage counts collect, what they never collect, and how to turn them off." path="/privacy" crumbs={[["Privacy", "/privacy"]]}>
+  <main id="main" class="page article">
+    <div class="pb-section-label"><b>Privacy</b> · Updated {updated}</div>
+    <h1>Privacy</h1>
+    <p class="lede">Paybook counts how its tools are used, anonymously, so we can see which ones help people and which topics matter to them. We don't know who you are and don't try to find out.</p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>01</b> · What we collect</div>
+    <dl class="privacy-list">{collected.map(([what, how]) => <><dt>{what}</dt><dd>{how}</dd></>)}</dl>
+    <p>Each visit gets a random number that lasts until you close the tab, so a visit's actions can be counted together. It's new every visit, so it can't connect your visits or identify you.</p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>02</b> · What we never collect</div>
+    <ul class="limits">{never.map((n) => <li>{n}</li>)}</ul>
+    <p>Your calculator settings (grade, place, take-home choices) are saved only in your own browser so the page remembers them. They're never sent to us.</p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>03</b> · Where it goes and how long it's kept</div>
+    <p>The counts are stored in Cloudflare Workers Analytics Engine, which runs this site, and are kept for three months. We may keep monthly totals (for example, "1,200 visits looked at BAH in San Diego") longer. Totals like that contain no individual visits.</p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>04</b> · How we use it</div>
+    <p>To decide what to build and improve, and to understand what people in different jobs and places look for. We may share totals like the example above, for instance with companies whose products could fit those groups. We don't sell or share individual visits, and there's nothing in them that identifies you.</p>
+    <p>If Paybook ever offers to connect you with a company, for example a lender or an insurance provider, it will only happen when you choose to, and we'll show you exactly what would be shared before anything is sent. Any recommendations will be ranked by how well they fit you, and paid relationships will be labeled.</p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>05</b> · Turn it off</div>
+    <p>Usage counts are off automatically if your browser sends <b>Global Privacy Control</b> or <b>Do Not Track</b>. You can also turn them off here; the choice is saved in this browser.</p>
+    <p class="optout"><span id="optState">Usage counts are <b>on</b> in this browser.</span> <button type="button" class="pb-btn pb-btn--quiet pb-btn--small" id="optBtn">Turn off</button></p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>06</b> · Changes</div>
+    <p>If we change what we collect, we'll update this page and the date at the top first. Paybook is an independent tool and is not affiliated with the U.S. government.</p>
+
+    <div class="pb-section-label" style="margin-top:var(--s6)"><b>07</b> · Contact</div>
+    <p>Questions about privacy or this data: <a class="pb-link" href="mailto:buggsworks@proton.me">buggsworks@proton.me</a>.</p>
+  </main>
+  <Fragment slot="scripts">
+    <script is:inline>
+      (function () {
+        var A = window.PaybookAnalytics, s = document.getElementById("optState"), b = document.getElementById("optBtn");
+        if (!A || !s || !b) return;
+        function show() {
+          var nav = navigator, auto = nav.globalPrivacyControl === true || nav.doNotTrack === "1";
+          var on = A.enabled();
+          s.innerHTML = auto && !on ? "Usage counts are <b>off</b>: your browser asks sites not to track." : "Usage counts are <b>" + (on ? "on" : "off") + "</b> in this browser.";
+          b.textContent = on ? "Turn off" : "Turn on";
+          b.hidden = auto && !on;
+        }
+        b.onclick = function () { A.setEnabled(!A.enabled()); show(); };
+        show();
+      })();
+    </script>
+  </Fragment>
+</Base>

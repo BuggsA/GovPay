@@ -138,11 +138,14 @@
     $("#wDone", el).onclick = () => { setMe(Object.assign({}, d), []); window.scrollTo(0, 0); };
     const c = $("#wCancel", el); if (c) c.onclick = () => { state.editing = false; state.draft = null; render(); };
   }
-  function setMe(p, assumed) { state.me = p; state.assumed = assumed || []; state.preview = null; state.editing = false; state.draft = null; save(); render(); }
+  // Anonymous usage counts (shared/analytics.js, /privacy). Optional: the app works the same without it.
+  const A = window.PaybookAnalytics || null;
+  const track = (name, props) => { if (A) A.track(name, props); };
+  function setMe(p, assumed) { state.me = p; state.assumed = assumed || []; state.preview = null; state.editing = false; state.draft = null; save(); render(); if (A) A.profile(p, state.loc); }
   function pickFromSearch(r) {
     if (r.locId) state.loc = r.locId;
     if (r.kind === "profile") { state.posting = null; setMe(r.profile, r.assumed); }
-    else if (r.kind === "posting") { state.posting = r; setMe({ system: r.system, grade: r.grades[0], step: 1, leap: r.system === "LEO", schedule: r.schedule }, ["step 1"]); }
+    else if (r.kind === "posting") { state.posting = r; if (A) track("posting", { sys: r.system, family: r.series.slice(0, 2) + "00", band: A.band({ system: r.system, grade: r.grades[r.grades.length - 1], schedule: r.schedule }) }); setMe({ system: r.system, grade: r.grades[0], step: 1, leap: r.system === "LEO", schedule: r.schedule }, ["step 1"]); }
     else if (r.kind === "place" && state.me) { save(); render(); }
   }
 
@@ -235,7 +238,7 @@
         </ul>
         <p style="margin:var(--s3) 0 0">Income tax is about ${(e.effectiveIncomeTax * 100).toFixed(1)}% of your gross pay. This is an estimate using ${e.taxYear} rules for every pay year: no tax credits, no itemizing and no spouse income. ${e.localNote ? `${e.localNote} isn't included. ` : ""}${mil && !e.noStateTax && !T.MIL_RULES[o.state] ? "Combat-zone and other special military exclusions aren't included. " : ""}Sources: <a class="pb-link" href="${T.SOURCES.federal}">IRS Rev. Proc. 2025-32</a>, <a class="pb-link" href="${T.SOURCES.states}">2026 state rates</a>${o.state === "MD" ? `, <a class="pb-link" href="${T.SOURCES.mdCounty}">Maryland Comptroller</a>` : ""}${o.state === "UT" ? `, <a class="pb-link" href="${T.SOURCES.utah}">Utah Tax Commission</a>` : ""}${mil ? `, <a class="pb-link" href="${T.MIL_SOURCE}">state military pay rules</a>` : ""}.</p>
       </div></details>`;
-    $("#thEdit").onclick = () => { state.thOpen = !state.thOpen; renderTakeHome(r, p); };
+    $("#thEdit").onclick = () => { state.thOpen = !state.thOpen; if (state.thOpen) track("tool", { tool: "takehome" }); renderTakeHome(r, p); };
     if (state.thOpen) wireThPanel(r, p);
   }
   function thPanel(o, mil, p) {
@@ -263,6 +266,7 @@
       if ($("#thOther")) t.otherRate = num("#thOther", 20);
       if ($("#thFers")) t.fers = $("#thFers").value;
       t.tspPct = num("#thTsp", 100) || 0; t.health = num("#thHealth", 5000); t.ownRate = num("#thOwn", 60);
+      track("takehome", { filing: t.filing, tax: /^[A-Z]{2,5}$/.test(t.state || "") ? t.state : "" });
     };
     form.querySelectorAll("[data-filing]").forEach((b) => (b.onclick = () => { read(); t.filing = b.dataset.filing; save(); renderTakeHome(r, p); }));
     form.querySelectorAll("[data-tsp]").forEach((b) => (b.onclick = () => { read(); t.tspType = b.dataset.tsp; save(); renderTakeHome(r, p); }));
@@ -322,7 +326,7 @@
     document.querySelectorAll("#tabs [role=tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === state.tab)));
     ({ tables: tabTables, allowances: tabAllowances, travel: tabTravel, compare: tabCompare, guide: tabGuide })[state.tab]($("#tabPanel"));
   }
-  document.querySelectorAll("#tabs [role=tab]").forEach((b) => (b.onclick = () => { state.tab = b.dataset.tab; renderTab(); }));
+  document.querySelectorAll("#tabs [role=tab]").forEach((b) => (b.onclick = () => { state.tab = b.dataset.tab; track("tool", { tool: state.tab }); renderTab(); }));
   function pick(np) {
     const merged = Object.assign({}, state.me, np);
     state.preview = JSON.stringify(merged) === JSON.stringify(state.me) ? null : merged;
@@ -382,7 +386,7 @@
         <p class="sub">${esc(s.note)} Level IV (${f.usd(ex.IV)}) also caps GS pay including locality. Source: ${sourceLine(state.year)}</p>`;
     }
     el.innerHTML = html;
-    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; if (needsFws()) loadFws(); renderTab(); }));
+    el.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { state.tableKind = b.dataset.k; track("tool", { tool: "table-" + b.dataset.k }); if (needsFws()) loadFws(); renderTab(); }));
     el.querySelectorAll("[data-pick]").forEach((td) => (td.onclick = () => pick(JSON.parse(td.dataset.pick))));
   }
 
@@ -470,10 +474,10 @@
     if (sheetPicker) sheetPicker.set(state.loc);
     if (!state.preview) writeHash();
   }
-  function setLoc(id) { state.loc = id; if (!state.tax.chosen) { state.tax.state = null; state.tax.county = null; } if (!state.preview) save(); renderDash(); }
+  function setLoc(id) { if (A) { const l = G.location(id); track("place", Object.assign({ kind: l.kind }, A.placeKeys(id))); } state.loc = id; if (!state.tax.chosen) { state.tax.state = null; state.tax.county = null; } if (!state.preview) save(); renderDash(); }
   function mountDash() {
     if (!ask) ask = PB.searchBox($("#ask"), { getLoc: () => state.loc, getYear: () => state.year, onPick: pickFromSearch });
-    if (!yearSw) yearSw = PB.yearSwitch($("#year"), { value: state.year, onChange: (y) => { state.year = y; if (!state.preview) save(); railPicker.refresh(); sheetPicker.refresh(); renderDash(); } });
+    if (!yearSw) yearSw = PB.yearSwitch($("#year"), { value: state.year, onChange: (y) => { state.year = y; track("year", { y: String(y) }); if (!state.preview) save(); railPicker.refresh(); sheetPicker.refresh(); renderDash(); } });
     if (!railPicker) railPicker = PB.locationPicker($("#pickerRail"), { value: state.loc, getYear: () => state.year, onChange: setLoc });
     if (!sheetPicker) sheetPicker = PB.locationPicker($("#pickerSheet"), { value: state.loc, getYear: () => state.year, onChange: setLoc });
   }
@@ -482,6 +486,7 @@
     $("#welcome").hidden = !first; $("#dash").hidden = first;
     if (first) { renderWelcome(); return; }
     mountDash(); renderDash();
+    if (A) A.profile(state.me, state.loc);   // once per visit (repeats are dropped)
   }
 
   // header + sheet + theme
