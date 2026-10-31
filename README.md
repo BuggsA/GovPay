@@ -20,7 +20,7 @@ This repo currently holds **three design prototypes**, which share one data engi
 cd site && npm install && npm test && npm run build && npm run check
 ```
 
-To switch a Cloudflare Pages project to it: **Root directory** `site`, **Build command** `npm run build`, **Build output directory** `dist`, environment variable `NODE_VERSION=22`.
+Cloudflare (Workers with static assets, Workers Builds): **Root directory** `site`, **Build command** `npm run build`, **Deploy command** `npx wrangler deploy` (uses `site/wrangler.jsonc`; its `name` must match the Worker's name), build variable `NODE_VERSION=22`, production branch `main`.
 
 ## Run locally
 There is no build step. Open `index.html` directly, or serve the repo:

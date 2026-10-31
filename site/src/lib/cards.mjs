@@ -11,6 +11,7 @@ export function allCards() {
   const byPct = areas.slice().sort((a, b) => b.pct - a.pct);
 
   add("/", { kicker: `${YEAR} federal and military pay`, title: "Your federal pay, read like a pay stub", sub: "GS, LEO, SES and military pay, take-home and your next raise" });
+  add("/404", { kicker: "Not found", title: "That page doesn't exist", sub: "Find federal and military pay by grade, rank, place or job posting" });
   add("/about/data", { kicker: "About the data", title: "Where Paybook's numbers come from", sub: "Official pay orders, GSA, IRS, Census and Tax Foundation" });
   add("/civilian/gs", { kicker: `General Schedule · ${YEAR}`, title: `GS pay in all ${areas.length} locality areas`, number: `+${byPct[byPct.length - 1].pct.toFixed(2)}% to +${byPct[0].pct.toFixed(2)}%`, sub: "locality pay on top of the nationwide base table", stamp: "Official" });
   for (let g = 1; g <= 15; g++) {
