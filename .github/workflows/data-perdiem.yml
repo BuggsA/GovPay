@@ -1,0 +1,38 @@
+# Refresh real per diem rates from the GSA Per Diem API and open a PR with the diff.
+# GSA publishes new fiscal-year rates each August; checking monthly also catches mid-year changes.
+# Add a free api.data.gov key as the repository secret GSA_API_KEY (DEMO_KEY is rate-limited).
+name: Refresh per diem data
+
+on:
+  schedule:
+    - cron: "17 9 3 * *"   # 09:17 UTC on the 3rd of every month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  perdiem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download rates
+        env:
+          GSA_API_KEY: ${{ secrets.GSA_API_KEY }}
+        run: node scripts/fetch-perdiem.mjs
+      - name: Copy shared files into each site
+        run: ./scripts/sync-shared.sh
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: data/perdiem-refresh
+          commit-message: "Refresh per diem rates from GSA"
+          title: "Data: refresh per diem rates from GSA"
+          body: |
+            Automated refresh from the GSA Per Diem API (`scripts/fetch-perdiem.mjs`).
+            Review the changes in `data/perdiem/*.json` before merging.
+          labels: data
