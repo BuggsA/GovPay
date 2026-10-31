@@ -4,63 +4,90 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Paybook</title>
-  <meta name="description" content="Your federal or military pay, clearly: what you make now and what your next step, grade or rank pays.">
+  <meta name="description" content="Your federal civilian or military pay, read like a pay stub: what you make now and what your next step, grade or rank pays.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z' fill='%231b1a17'/%3E%3Crect x='7' y='11.5' width='14' height='5' fill='%23ffd84d'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ui/tokens.css">
+  <link rel="stylesheet" href="ui/components.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#" id="homeLink">
-        <span class="brand-mark" aria-hidden="true">$</span>
-        <span>Paybook</span>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="pb-header">
+    <div class="pb-header__in">
+      <a class="pb-wordmark" href="#" id="home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 4h22v7a3 3 0 0 0 0 6v7H3v-7a3 3 0 0 0 0-6z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="11.5" width="14" height="5" fill="var(--hi)"/><path d="M8 14h9" stroke="#1b1a17" stroke-width="2"/></svg>
+        paybook
       </a>
-      <label class="ctl ctl-inline">
-        <span>Pay year</span>
-        <div class="seg" id="yearSeg" role="radiogroup" aria-label="Pay year"></div>
-      </label>
+      <nav class="pb-nav" aria-label="Main">
+        <a href="#" data-nav="pay" aria-current="page">My pay</a>
+        <a href="#explore" data-nav="tables">Pay tables</a>
+        <a href="#explore" data-nav="compare">Compare</a>
+        <a href="#explore" data-nav="guide">Learn</a>
+      </nav>
+      <div class="pb-header__end"><button class="theme-btn" id="theme" type="button" aria-label="Switch light or dark">Dark</button></div>
     </div>
   </header>
 
-  <main class="wrap">
-    <!-- First visit: three quick questions -->
-    <section class="setup" id="setup" hidden></section>
+  <main id="main" class="page">
+    <!-- first visit -->
+    <section id="welcome" hidden></section>
 
-    <!-- After setup: my pay -->
+    <!-- my pay -->
     <section id="dash" hidden>
-      <div class="preview-banner" id="previewBanner" hidden></div>
-      <section class="panel me" id="me" aria-live="polite"></section>
+      <div class="layout">
+        <div class="col-main">
+          <div id="ask" class="ask-compact"></div>
+          <div class="preview" id="preview" hidden></div>
 
-      <section class="next">
-        <div class="section-head">
-          <h2>Your next level</h2>
-          <p class="muted">What your next raise, promotion or role change would pay. Tap a card to preview it.</p>
+          <div class="pb-section-label"><b>01</b> · Your pay</div>
+          <div class="year-row" id="year"></div>
+          <div class="controls" id="controls"></div>
+          <button class="pb-place-btn only-mobile" id="placeBtn" type="button" aria-haspopup="dialog"></button>
+          <article class="pb-stub" id="stub" aria-live="polite"></article>
+          <div id="notes"></div>
+
+          <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Your next level</div>
+          <p class="sub">What your next raise, promotion or role change would pay. Tap one to preview it in your stub.</p>
+          <ol class="pb-ladder" id="ladder"></ol>
+
+          <div class="pb-section-label" id="explore" style="margin-top:var(--s7)"><b>03</b> · Explore</div>
+          <div class="pb-tabs" role="tablist" aria-label="Explore" id="tabs">
+            <button role="tab" data-tab="tables" aria-selected="true">Pay tables</button>
+            <button role="tab" data-tab="allowances" aria-selected="false">BAH &amp; BAS</button>
+            <button role="tab" data-tab="travel" aria-selected="false">Per diem</button>
+            <button role="tab" data-tab="compare" aria-selected="false">Compare</button>
+            <button role="tab" data-tab="guide" aria-selected="false">Learn the basics</button>
+          </div>
+          <div class="tabpanel" id="tabPanel" role="tabpanel"></div>
         </div>
-        <div class="next-grid" id="nextGrid"></div>
-      </section>
-
-      <nav class="tabs" role="tablist" aria-label="Explore more">
-        <button role="tab" data-tab="tables" aria-selected="true">Pay tables</button>
-        <button role="tab" data-tab="allowances">BAH &amp; BAS</button>
-        <button role="tab" data-tab="travel">Per diem &amp; trips</button>
-        <button role="tab" data-tab="compare">Compare</button>
-        <button role="tab" data-tab="guide">New to federal pay?</button>
-      </nav>
-      <section class="panel tabpanel" id="tabPanel"></section>
+        <aside class="rail" aria-label="Where you work">
+          <div class="pb-section-label"><b>04</b> · Where you work</div>
+          <div id="pickerRail"></div>
+        </aside>
+      </div>
     </section>
   </main>
 
-  <footer class="wrap foot">
-    <p><strong>Prototype data.</strong> Each figure has a tag. <span class="badge verified">Verified</span> figures match published numbers. <span class="badge approx">Approximate</span> figures are close to the official tables but haven't been checked cell by cell. <span class="badge simulated">Simulated</span> figures are placeholders, used for states outside UT, MD, DC, PA and VA and for wage-grade schedules. <span class="badge projected">Projected</span> figures are for 2027. For official numbers, use OPM, DFAS, DTMO and GSA. Your selections are saved only in this browser.</p>
-    <p class="muted">Overseas (OCONUS) pay is documented but not modeled yet.</p>
+  <div class="pb-sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+    <div class="pb-sheet__bar"><h2 id="sheetTitle">Where you work</h2><button class="pb-btn pb-btn--line pb-btn--small" id="sheetClose" type="button">Done</button></div>
+    <div id="pickerSheet"></div>
+  </div>
+
+  <footer class="pb-footer">
+    <div class="pb-footer__in">
+      <span><b>paybook</b> is an independent estimate tool. <b>Not affiliated with the U.S. government.</b> Your details stay in this browser.</span>
+      <span>GS, locality, SES and military basic pay: official pay orders (EO 14132, EO 14368) · Per diem: GSA · BAH, BAS, LEO special rates and trades pay: estimates for now · 2027: proposed</span>
+    </div>
   </footer>
 
   <script src="shared/data/payorder.js"></script>
   <script src="shared/data/perdiem.js"></script>
   <script src="shared/govpay.js"></script>
-  <script src="shared/locpicker.js"></script>
+  <script src="shared/parse.js"></script>
+  <script src="ui/composite.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

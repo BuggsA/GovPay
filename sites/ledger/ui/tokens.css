@@ -89,3 +89,4 @@ a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness:
 .num { font-variant-numeric: tabular-nums; }
 .label { font: 600 var(--t-label)/1.2 var(--font-mono); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-2); }
 .hl { background: linear-gradient(transparent 14%, var(--hi) 14%, var(--hi) 86%, transparent 86%); color: var(--hi-ink); padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+[hidden] { display: none !important; }
