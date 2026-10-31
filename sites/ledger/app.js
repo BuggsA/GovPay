@@ -45,7 +45,7 @@
     const parts = [`y=${state.year}`, `l=${state.loc}`, `s=${p.system}`];
     if (p.system === "MIL") parts.push(`g=${p.mgrade}`, `yos=${p.yos}`, `d=${p.deps ? 1 : 0}`);
     else if (p.system === "SES") parts.push(`pt=${p.sesPoint}`);
-    else { parts.push(`g=${p.grade}`, `st=${p.step}`); if (p.system === "FWS") parts.push(`sch=${p.schedule}`); if (p.system === "LEO") parts.push(`leap=${p.leap ? 1 : 0}`); }
+    else { parts.push(`g=${p.grade}`, `st=${p.step}`); if (p.system === "FWS") parts.push(`sch=${p.schedule}`); if (p.system === "LEO") parts.push(`leap=${p.leap ? 1 : 0}`, `sr=${p.lesr === false ? 0 : 1}`); }
     history.replaceState(null, "", "#" + parts.join("&"));
   }
   function fromHash(q) {
@@ -55,7 +55,7 @@
     const p = Object.assign({}, G.DEFAULT_PROFILE, { system: q.get("s") });
     if (p.system === "MIL") { p.mgrade = q.get("g") || p.mgrade; p.yos = +q.get("yos") || 0; p.deps = q.get("d") !== "0"; }
     else if (p.system === "SES") p.sesPoint = +q.get("pt") || 0;
-    else { p.grade = +q.get("g") || p.grade; p.step = +q.get("st") || p.step; p.schedule = q.get("sch") || p.schedule; p.leap = q.get("leap") !== "0"; }
+    else { p.grade = +q.get("g") || p.grade; p.step = +q.get("st") || p.step; p.schedule = q.get("sch") || p.schedule; p.leap = q.get("leap") !== "0"; p.lesr = q.get("sr") !== "0"; }
     if (SYSTEMS.some((s) => s.k === p.system)) state.me = p;
   }
 
@@ -73,7 +73,8 @@
       const minG = p.system === "LEO" ? 3 : 1; if (p.grade < minG) p.grade = minG; if (p.step > 10) p.step = 10;
       return field("Grade", stepper("grade", range(minG, 15), p.grade, "grade", (v) => "GS-" + v)) +
         field("Step", stepper("step", range(1, 10), p.step, "step", (v) => "Step " + v)) +
-        (p.system === "LEO" ? field("", `<label class="check"><input type="checkbox" data-leap ${p.leap ? "checked" : ""}> I get LEAP (25%)</label>`) : "");
+        (p.system === "LEO" ? field("", `<label class="check"><input type="checkbox" data-leap ${p.leap ? "checked" : ""}> I get LEAP (25%)</label>`) +
+          field("", `<label class="check"><input type="checkbox" data-lesr ${p.lesr !== false ? "checked" : ""}> Covered by the 2026 law enforcement special rate <a class="pb-link" href="/about/data#leo-special" title="Who's covered">(who?)</a></label>`) : "");
     }
     if (p.system === "FWS") {
       const max = G.FWS_SCHEDULES[p.schedule].grades; if (p.grade > max) p.grade = max; if (p.step > 5) p.step = 2;
@@ -97,6 +98,7 @@
       w.querySelectorAll("button").forEach((b) => (b.onclick = () => { const i = sel.selectedIndex + +b.dataset.dir; if (i >= 0 && i < sel.options.length) apply(sel.options[i].value); }));
     });
     const lp = $("[data-leap]", el); if (lp) lp.onchange = () => { p.leap = lp.checked; onChange(); };
+    const lsr = $("[data-lesr]", el); if (lsr) lsr.onchange = () => { p.lesr = lsr.checked; onChange(); };
     const sc = $("[data-sched]", el); if (sc) sc.onchange = () => { p.schedule = sc.value; onChange(); };
     const sr = $("[data-ses]", el); if (sr) sr.oninput = () => { p.sesPoint = +sr.value; sr.nextElementSibling.textContent = Math.round(p.sesPoint * 100) + "%"; onChange(true); };
     el.querySelectorAll("[data-deps]").forEach((b) => (b.onclick = () => { p.deps = b.dataset.deps === "1"; onChange(); }));
@@ -501,6 +503,7 @@
     const p = shown(), n = [];
     if (p && p.system === "MIL") n.push("bah");
     if ((p && p.system === "FWS") || state.tableKind === "FWS") n.push("fws");
+    if (p && p.system === "LEO" && p.lesr !== false && state.year >= 2026) n.push("leoSpecial");
     if (state.tab === "allowances") n.push("bah");
     if (state.tab === "travel") { n.push("perDiem"); if (/^p/.test(state.tripDest || "")) n.push("cities"); }
     if (/^p/.test(state.loc)) n.push("cities");

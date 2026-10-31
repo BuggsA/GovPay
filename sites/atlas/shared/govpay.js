@@ -411,6 +411,20 @@
     }
     return Math.round(gsBase(year, grade, step) * (1 + (LEO_PREMIUM[grade] || 0)));   // rough fallback (old prototypes)
   }
+  // 2026 law enforcement special rates (OPM CPM 2025-25 and CPM 2026-01): about 2.8% more than the LEO locality
+  // rate for covered positions (FBI, DEA, ATF, Marshals and IRS agents, Border Patrol, CBP, ICE, BOP officers,
+  // Interior and more). A covered employee gets the greater of the special rate and the locality rate.
+  const leoSpecialData = () => (global.GOVPAY_DATA && global.GOVPAY_DATA.leoSpecial) || null;
+  function leoSpecialRate(year, grade, step, areaName) {
+    const d = leoSpecialData();
+    if (!d) return null;
+    const ys = Object.keys(d.years).map(Number).sort();
+    if (!ys.length || year < ys[0]) return null;                       // these tables start in 2026
+    const y = d.years[year] ? year : ys[ys.length - 1], t = d.years[y].tables[areaName];
+    if (!t) return null;
+    const v = t.rates[grade - 1][step - 1];
+    return { rate: y === year ? v : Math.min(Math.round(v * factor(RAISES.gs, year, y)), exFor(year).IV), table: t.table, effective: d.years[y].effective, projected: y !== year };
+  }
   const leoStatus = (year) => (LEO_DATA && LEO_DATA.years[year] ? "verified" : year > LATEST ? "projected" : "approx");
   function leo(year, grade, step, locId, opts) {
     opts = opts || {};
@@ -419,14 +433,18 @@
     const pct = localityPct(year, loc.gsLocality);
     const base = leoBase(year, grade, step);
     const cap = exFor(year).IV;
-    const adjusted = Math.min(Math.round(base * (1 + pct / 100)), cap);
+    const locRate = Math.min(Math.round(base * (1 + pct / 100)), cap);
+    const sr = opts.covered ? leoSpecialRate(year, grade, step, L.name) : null;
+    const adjusted = sr && sr.rate > locRate ? sr.rate : locRate;       // greater of special rate and locality rate (5 U.S.C. 5305(h))
     // LEAP (25%, 5 U.S.C. 5545a) is premium pay: base + LEAP can't pass the premium pay cap (5 U.S.C. 5547),
     // the greater of GS-15 step 10 with locality or EX-IV. With locality capped at EX-IV, that's EX-IV.
     const leapFull = opts.leap ? Math.round(adjusted * 0.25) : 0;
     const leap = Math.max(0, Math.min(leapFull, cap - adjusted));
     return {
       system: "LEO", grade, step, base, localityPct: pct, localityName: L.name,
-      special: grade >= 3 && grade <= 10, adjusted, leap, leapCapped: leap < leapFull, annual: adjusted + leap,
+      special: grade >= 3 && grade <= 10, adjusted, locRate, leap, leapCapped: leap < leapFull, annual: adjusted + leap,
+      lesr: sr ? { table: sr.table, effective: sr.effective, uplift: adjusted - locRate, projected: sr.projected } : null,
+      needsData: !!(opts.covered && year >= 2026 && !leoSpecialData()),
       status: L.status === "simulated" ? "simulated" : leoStatus(year),
     };
   }
@@ -639,7 +657,7 @@
   //             leap, mgrade, yos, deps }
   // returns { title, annual, rows:[{key,label,annual,taxFree}], notes:[], status, hourly? }
   // ---------------------------------------------------------------------------
-  const DEFAULT_PROFILE = { system: "GS", grade: 12, step: 5, schedule: "WG", leap: true, mgrade: "E-5", yos: 6, deps: true, sesPoint: 0.5 };
+  const DEFAULT_PROFILE = { system: "GS", grade: 12, step: 5, schedule: "WG", leap: true, lesr: true, mgrade: "E-5", yos: 6, deps: true, sesPoint: 0.5 };
   function compute(p, year, locId) {
     p = Object.assign({}, DEFAULT_PROFILE, p);
     const loc = location(locId);
@@ -651,13 +669,16 @@
         rows: [{ key: "base", label: "Base pay", annual: r.base }, { key: "locality", label: `Locality pay (${r.localityPct}%)`, annual: r.locality }], notes };
     }
     if (p.system === "LEO") {
-      const r = leo(year, p.grade, p.step, locId, { leap: p.leap });
+      const r = leo(year, p.grade, p.step, locId, { leap: p.leap, covered: p.lesr !== false });
       const notes = [r.special ? "GS-3 to GS-10 LEOs get special base rates above the regular GS table." : "GS-11 and above use the regular GS base table."];
       notes.push(r.status === "verified" ? `Official ${year} LEO rates (OPM).` : r.status === "projected" ? "Projected from the latest OPM LEO table." : `Estimated from the ${LEO_YEARS.join(", ")} OPM LEO table and the ${year} GS table.`);
       if (p.leap) notes.push("LEAP is 25% availability pay for criminal investigators (GS-1811 and similar).");
       if (r.leapCapped) notes.push(`Base pay plus LEAP is capped at ${fmt.usd(exFor(year).IV)} a year (premium pay cap, 5 U.S.C. 5547), so LEAP here is less than 25%.`);
       const rows = [{ key: "base", label: r.special ? "LEO special base rate" : "Base pay", annual: r.base },
-        { key: "locality", label: `Locality pay (${r.localityPct}%)`, annual: r.adjusted - r.base }];
+        { key: "locality", label: `Locality pay (${r.localityPct}%)`, annual: r.locRate - r.base }];
+      if (r.lesr && r.lesr.uplift > 0) rows.push({ key: "lesr", label: `Law enforcement special rate (table ${r.lesr.table})`, annual: r.lesr.uplift });
+      if (r.lesr) notes.push(`Covered law enforcement positions get OPM's 2026 special rate (table ${r.lesr.table}, effective January 11, 2026): about 2.8% above the locality rate, for a 3.8% raise. Coverage depends on agency and position (CPM 2025-25, CPM 2026-01).`);
+      else if (p.lesr === false && year >= 2026) notes.push("Not counting the 2026 law enforcement special rate. Turn it on if your position is covered (most FBI, DEA, ATF, Marshals, IRS-CI, Border Patrol, CBP, ICE, BOP and Interior law enforcement).");
       if (r.leap) rows.push({ key: "leap", label: r.leapCapped ? "LEAP (capped)" : "LEAP (25%)", annual: r.leap });
       return { title: `LEO GS-${p.grade} Step ${p.step}`, annual: r.annual, hourly: round2(r.adjusted / 2087), status: r.status, rows, notes };
     }
@@ -774,7 +795,7 @@
   // ---------------------------------------------------------------------------
   // Data files loaded on demand in the browser (preloaded at build time and in tests)
   // ---------------------------------------------------------------------------
-  const DATA_FILES = { bah: "bah.js", cities: "cities.js", perDiem: "perdiem.js", series: "series.js", fws: "fws.js" };
+  const DATA_FILES = { bah: "bah.js", cities: "cities.js", perDiem: "perdiem.js", series: "series.js", fws: "fws.js", leoSpecial: "leospecial.js" };
   const DATA_BASE = (function () {
     try { const sc = global.document && global.document.currentScript; return sc && sc.src ? sc.src.replace(/govpay\.js(\?.*)?$/, "data/") : null; } catch (e) { return null; }
   })();

@@ -58,9 +58,9 @@
       if (active >= items.length || active < 0) active = 0;
       // Military pay needs bah.js and trades pay needs fws.js: until they're in, show "…" rather than a placeholder.
       const sysOf = (r) => (r.profile ? r.profile.system : r.system);
-      const want = [].concat(items.some((r) => sysOf(r) === "MIL") ? ["bah"] : [], items.some((r) => sysOf(r) === "FWS") ? ["fws"] : []).filter((n) => !G.has(n));
+      const want = [].concat(items.some((r) => sysOf(r) === "MIL") ? ["bah"] : [], items.some((r) => sysOf(r) === "FWS") ? ["fws"] : [], items.some((r) => sysOf(r) === "LEO") ? ["leoSpecial"] : []).filter((n) => !G.has(n));
       if (want.length) G.need(want).then(() => { if (!list.hidden) render(); }, () => {});
-      const waiting = (r) => (sysOf(r) === "MIL" && !G.has("bah")) || (sysOf(r) === "FWS" && !G.has("fws"));
+      const waiting = (r) => (sysOf(r) === "MIL" && !G.has("bah")) || (sysOf(r) === "FWS" && !G.has("fws")) || (sysOf(r) === "LEO" && !G.has("leoSpecial"));
       list.innerHTML = items.map((r, i) => {
         const loc = G.location(r.locId || opts.getLoc());
         const where = r.locId ? loc.name : `${loc.name} (your place)`;
