@@ -1,7 +1,7 @@
 {
  "fy": 2026,
  "source": "GSA Per Diem API (open.gsa.gov/api/perdiem)",
- "fetchedAt": "2026-10-31",
+ "fetchedAt": "2026-11-03",
  "note": "FY2026 runs Oct 1, 2025 to Sep 30, 2026. Lodging is listed Jan..Dec.",
  "standard": {
   "mie": 68,
