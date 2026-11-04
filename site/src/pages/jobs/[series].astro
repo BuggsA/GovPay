@@ -23,9 +23,9 @@ const description = `What a GS-${s.code} ${s.name} earns in ${YEAR}: every GS gr
     <p class="lede">Series {s.code} is paid on the General Schedule, so pay depends on the <b>grade</b> on the posting and the <b>locality area</b> where you work, not the series itself.{s.leo && " Law enforcement officer positions in this series are paid on the higher LEO special rates instead."} A posting like <b>GS-{s.code}-09/11/12</b> starts at GS-9 and can grow to GS-12 without competing again.</p>
     <p class="cta"><a class="pb-btn" href={`/#s=${s.leo ? "LEO" : "GS"}&g=9&st=1&y=${YEAR}`}>See pay where you'd work</a></p>
     <div class="pb-table-wrap" style="margin-top:var(--s5)">
-      <table class="pb-table">
+      <table class="pb-table fit-phone wrap">
         <thead><tr><th scope="col">Grade</th>{cols.map((a) => <th scope="col">{areaShort(a.name)}<br /><small>step 1 – step 10</small></th>)}</tr></thead>
-        <tbody>{grades.map((g) => <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/civilian/gs/${g}`}>GS-{g}</a></th>{cols.map((a) => <td>{f.usd(G.gsArea(YEAR, g, 1, a.name).annual)} – {f.usd(G.gsArea(YEAR, g, 10, a.name).annual)}</td>)}</tr>)}</tbody>
+        <tbody>{grades.map((g) => <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/civilian/gs/${g}`}>GS-{g}</a></th>{cols.map((a) => <td>{f.usd(G.gsArea(YEAR, g, 1, a.name).annual)} –<wbr /> {f.usd(G.gsArea(YEAR, g, 10, a.name).annual)}</td>)}</tr>)}</tbody>
         <caption>{YEAR} yearly General Schedule pay with locality{s.leo ? " (not LEO rates)" : ""}. Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>. Series name: USAJOBS.</caption>
       </table>
     </div>

@@ -68,7 +68,16 @@
     "salt-lake-city": ["salt lake", "salt lake city", "slc"], dugway: ["dugway", "tooele"], "park-city": ["park city"],
   };
 
-  const norm = (s) => " " + String(s || "").toLowerCase().replace(/[–—]/g, "-").replace(/[^a-z0-9/.\- ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
+  // Base names are written many ways: "Ft. Hood", "Eglin Air Force Base", "Naval Air Station Pensacola".
+  // canon() folds them to one spelling, for both what people type and the names in the index.
+  const CANON = [
+    [/\bft\.? /g, "fort "], [/\bair force base\b/g, "afb"], [/\bspace force base\b/g, "sfb"], [/\bspace force station\b/g, "sfs"],
+    [/\bair reserve base\b/g, "arb"], [/\bnaval air station\b/g, "nas"], [/\bmarine corps air station\b/g, "mcas"],
+    [/\bmarine corps base\b/g, "mcb"], [/\bjoint base\b/g, "jb"], [/\bnaval support activity\b/g, "nsa"],
+    [/\bnaval station\b/g, "ns"], [/\bnaval base\b/g, "nb"], [/\bair force\b/g, "af"], [/\b(?:saint|st\.) /g, "st "], [/\bmt\. /g, "mt "],
+  ];
+  const canon = (s) => CANON.reduce((a, [re, to]) => a.replace(re, to), s);
+  const norm = (s) => " " + canon(String(s || "").toLowerCase().replace(/[–—]/g, "-").replace(/[^a-z0-9/.\- ]+/g, " ").replace(/\s+/g, " ").trim() + " ") + " ";
   const word = (txt, w) => new RegExp("(^|[^a-z0-9])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "($|[^a-z0-9])").test(txt);
 
   // Returns place ids that match the text, best first. A typed state ("md", "Maryland")
@@ -93,9 +102,18 @@
         names = [];
         alts.forEach((a) => { if (!stateNames[a]) names.push(a); names.push(a + " " + st, a + ", " + st); });
       }
+      if (l.installation) {
+        // "Eglin AFB" also as "eglin air force base" (canon), "afb eglin"; plus the names people use ("eglin", "fort cavazos").
+        const full = canon(l.name.toLowerCase().replace(/[^a-z0-9/.\- ]+/g, " ").replace(/\s+/g, " ").trim());
+        const ty = full.match(/^(nas|ns|nb|afb|sfb|sfs|arb|mcas|mcb|jb|nsa) (.+)$/) || full.match(/^(.+) (nas|ns|nb|afb|sfb|sfs|arb|mcas|mcb|jb|nsa)$/);
+        const swapped = ty ? ty[2] + " " + ty[1] : null;   // the type word on the other side
+        const strong = [full].concat(swapped ? [swapped] : []), weak = [];
+        (l.aliases || []).forEach((a) => (/\s/.test(a) || /^(fort|camp|jb|nas|afb)/.test(a) ? strong : weak).push(canon(a + " ").trim()));
+        return { l, names: [...new Set(strong)].filter((n) => n.length >= 3), weak: weak.filter((n) => n.length >= 3), bonus: 5 };
+      }
       // Researched places win ties; a city beats a same-named county; bigger cities first.
       const bonus = l.census ? 0.5 + Math.min(0.4, (l.population || 0) / 2e7) : l.kind !== "county" ? 5 : 0;
-      return { l, names: [...new Set(names)].filter((n) => n.length >= 3), bonus };
+      return { l, names: [...new Set(names.map((n) => canon(n + " ").trim()))].filter((n) => n.length >= 3), bonus };
     });
     INDEX = { n: G.locations().length, rows };
     return rows;
@@ -109,16 +127,19 @@
     const tail = t.match(/(?:,\s*|\s)([a-z]{2})\s*$/);
     if (tail && G.ALL_STATES && G.ALL_STATES[tail[1].toUpperCase()]) typedStates.add(tail[1].toUpperCase());
     const best = new Map();
-    placeIndex(G, stateNames).forEach(({ l, names, bonus }) => {
-      names.forEach((n) => {
-        if (t.indexOf(n) < 0 || !word(t, n)) return;
-        const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + bonus;
-        if (!best.has(l.id) || best.get(l.id) < score) best.set(l.id, score);
-      });
+    const hit = (l, n, bonus) => {
+      if (t.indexOf(n) < 0 || !word(t, n)) return;
+      const score = n.length + (typedStates.has(l.state) ? 1000 : 0) + bonus;
+      if (!best.has(l.id) || best.get(l.id) < score) best.set(l.id, score);
+    };
+    placeIndex(G, stateNames).forEach(({ l, names, weak, bonus }) => {
+      names.forEach((n) => hit(l, n, bonus));
+      // A one-word base name ("bangor", "coronado") may be a town too: it ties with the town, so both are offered.
+      if (weak) weak.forEach((n) => hit(l, n, 1));
     });
     if (!best.size) {
       // A state alone picks that state's researched place, if it has one.
-      const l = G.locations().find((x) => x.kind !== "county" && !x.census && typedStates.has(x.state));
+      const l = G.locations().find((x) => x.kind !== "county" && !x.census && !x.installation && typedStates.has(x.state));
       return l ? [l.id] : [];
     }
     const ranked = [...best.entries()].sort((x, y) => y[1] - x[1]);
@@ -128,6 +149,25 @@
   function findPlace(t) { return findPlaces(t)[0] || null; }
 
   function num(re, t) { const m = t.match(re); return m ? parseInt(m[1], 10) : null; }
+  // The step people typed: "step 3", "step3", "st 3", "s3", "step three", "third step", or a number right
+  // after the grade ("gs-12-3", "gs 12 3", "gs12/3"). null if none.
+  const WORDS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+    first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, seventh: 7, eighth: 8, ninth: 9, tenth: 10 };
+  const WORD_RE = Object.keys(WORDS).join("|");
+  function stepOf(t, afterGrade) {
+    let m = t.match(/\b(?:step|stp|st)\s?#?\s?(\d{1,2})\b/) || t.match(/\bs(\d{1,2})\b/);
+    if (m) return +m[1];
+    m = t.match(new RegExp("\\bstep (" + WORD_RE + ")\\b")) || t.match(new RegExp("\\b(" + WORD_RE + ") step\\b"));
+    if (m) return WORDS[m[1]];
+    m = afterGrade.match(/^\s?[-\/,]?\s?(\d{1,2})(?!\d)(?!\s?(?:\+\s*)?(?:yrs?|years?|yos|%))/);
+    return m ? +m[1] : null;
+  }
+  // A step past the top of the scale shows the top step and says so; no step typed shows the usual start.
+  function fitStep(step, max, dflt, assumed) {
+    if (step == null || step < 1) { assumed.push("step " + dflt); return dflt; }
+    if (step > max) { assumed.push(`step ${max}, the top step (steps go 1 to ${max})`); return max; }
+    return step;
+  }
 
   function parse(text) {
     const out = parseOne(text);
@@ -171,13 +211,16 @@
     const yos = num(/\b(\d{1,2})\s*(?:\+\s*)?(?:yrs?|years?|yos)\b/, t);
     const isLeo = /\b(leo|1811|law enforcement|criminal investigator|special agent|federal agent)\b/.test(t);
 
-    // --- GS / LEO: "gs-12", "gs 12 step 5", "gs12/5", "12-5"
-    let m = t.match(/\bgs[- ]?(\d{1,2})(?:\s?\/\s?(\d{1,2}))?\b/);
+    // --- GS / LEO: "gs-12", "gs 12 step 5", "gs12/5", "gs-12-5", "grade 12 step 5", "12 step 5", "12-5"
+    let m = t.match(/\b(?:gs|gm)[- ]?(\d{1,2})(?!\d)/), gsAt = m ? m.index + m[0].length : 0;
+    if (!m && !/\b([eow]|wg|wl|ws)[- ]?\d/.test(t)) {
+      m = t.match(/\bgrade\s?(\d{1,2})(?!\d)/) || t.match(/\b(\d{1,2})(?=\s?,?\s?(?:step|stp)\b)/) || t.match(/^\s(\d{1,2})(?=\s?[-\/]\s?\d{1,2}\s*$)/);
+      if (m) gsAt = m.index + m[0].length;
+    }
     if (m && +m[1] >= 1 && +m[1] <= 15) {
       const grade = +m[1];
-      let step = m[2] ? +m[2] : num(/\bstep\s?(\d{1,2})\b/, t) || num(/\bs(\d{1,2})\b/, t);
       const assumed = [];
-      if (!step || step > 10) { step = 1; assumed.push("step 1"); }
+      const step = fitStep(stepOf(t, t.slice(gsAt)), 10, 1, assumed);
       const sys = isLeo && grade >= 3 ? "LEO" : "GS";
       out.push({ kind: "profile", profile: { system: sys, grade, step, leap: isLeo }, locId, assumed, score: 9,
         label: `${sys === "LEO" ? "LEO " : ""}GS-${grade}, Step ${step}` });
@@ -186,10 +229,10 @@
     }
 
     // --- FWS: wg-10, wl 8, ws-12
-    m = t.match(/\b(wg|wl|ws)[- ]?(\d{1,2})\b/);
+    m = t.match(/\b(wg|wl|ws)[- ]?(\d{1,2})(?!\d)/);
     if (m) {
-      let step = num(/\bstep\s?(\d)\b/, t); const assumed = [];
-      if (!step || step > 5) { step = 2; assumed.push("step 2"); }
+      const assumed = [];
+      const step = fitStep(stepOf(t, t.slice(m.index + m[0].length)), 5, 2, assumed);
       out.push({ kind: "profile", profile: { system: "FWS", schedule: m[1].toUpperCase(), grade: +m[2], step }, locId, assumed, score: 8,
         label: `${m[1].toUpperCase()}-${+m[2]}, Step ${step}`, note: "Trades pay is simulated for now" });
       return out;

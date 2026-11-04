@@ -4,6 +4,7 @@ import "../../../shared/data/payorder.js";
 import "../../../shared/data/perdiem.js";
 import "../../../shared/data/places.js";
 import "../../../shared/data/cities.js";
+import "../../../shared/data/bases.js";
 import "../../../shared/data/bah.js";
 import "../../../shared/data/series.js";
 import "../../../shared/data/leo.js";
@@ -140,4 +141,56 @@ export function fwsAreas() {
 export function fwsTable(area, schedule, year = FWS_YEAR) {
   const loc = area.counties[0].id, n = G.FWS_SCHEDULES[schedule].grades;
   return Array.from({ length: n }, (_, i) => [1, 2, 3, 4, 5].map((s) => G.fws(year, schedule, i + 1, s, loc)));
+}
+
+// ---------------------------------------------------------------- base (installation) pages
+// Every military base people search for: the researched ones in govpay.js (Norfolk, Quantico, Hill AFB...)
+// and the installation list (shared/data/bases.js). { id, name, slug, state, stateName, county, aliases, loc }
+let _bases = null;
+export function bases() {
+  if (_bases) return _bases;
+  const counties = new Map(G.locations().filter((l) => l.kind === "county").map((l) => [l.fips, l]));
+  _bases = G.locations().filter((l) => l.kind === "base").map((l) => {
+    const c = l.countyId ? G.location(l.countyId) : l.fips ? counties.get(l.fips) : null;
+    return { id: l.id, name: l.name, slug: slugify(l.name), state: l.state, stateName: l.stateName, county: c ? c.short : null, aliases: l.aliases || [], loc: l };
+  }).sort((a, b) => a.name.localeCompare(b.name));
+  const seen = new Set();
+  _bases.forEach((b) => { if (seen.has(b.slug)) throw new Error("two bases share the address /bases/" + b.slug); seen.add(b.slug); });
+  return _bases;
+}
+// What a base's pay depends on: GS locality area, BAH housing area, per diem area, trades wage area, with links.
+export function basePay(b) {
+  const gs1 = G.gs(YEAR, 12, 1, b.id);
+  const area = G.localityAreas(YEAR).find((a) => a.slug === G.areaSlug(gs1.localityName));
+  const mha = G.bahMhaOf(b.loc), bahArea = bahAreas().find((a) => a.code === mha) || null;
+  const pdArea = b.loc.perDiem ? pdAreas().find((a) => a.id === b.loc.perDiem && !pdDupe(a)) || pdAreas().find((a) => a.city === "District of Columbia" && a.state === "DC" && b.loc.perDiem.endsWith("District of Columbia")) : null;
+  const pdState = pdStates().find((s) => s.st === (pdArea ? pdArea.state : b.state)) || null;
+  const code = G.fwsCode(b.loc), fwsArea = code ? fwsAreas().find((a) => a.code === code) || null : null;
+  return {
+    area, pct: gs1.localityPct, bahArea, pdArea, pdState, fwsArea,
+    gsLink: area ? `/civilian/gs/table/${area.slug}` : "/civilian/gs",
+    bahLink: bahArea ? `/military/bah/${bahArea.slug}` : "/military/bah",
+    pdLink: pdArea && pdState ? `/travel/per-diem/${pdState.slug}/${pdArea.slug}` : pdState ? `/travel/per-diem/${pdState.slug}` : "/travel/per-diem",
+    fwsLink: fwsArea ? `/civilian/trades/${fwsArea.slug}` : "/civilian/trades",
+  };
+}
+// A base's other names for display: "fort cavazos" -> "Fort Cavazos", "jblm" -> "JBLM"; names that only
+// repeat words of the official name ("eglin" for Eglin AFB) are left out.
+const ACRONYMS = new Set("afb arb sfb sfs nas nsa ns nb jb jeb jbab jber jbsa jblm jbmdl mdl mcas mcb mcbh mcrd nab nuwc nswc nws nps dli ntc uscg uscga usma usna usafa ypg wsmr aedc dscc dla cbc ncbc jrtc nrl navsea flw ccad bamc pnsy nnsy psns dfas nbvc nbsd nsn apg dm la af ii".split(" "));
+export function otherNames(b) {
+  const official = new Set(b.name.toLowerCase().split(/[^a-z0-9]+/));
+  return b.aliases.filter((a) => !a.split(/[^a-z0-9]+/).filter(Boolean).every((w) => official.has(w)))
+    .map((a) => a.replace(/[a-z0-9]+/g, (w) => (ACRONYMS.has(w) || !/[aeiouy]/.test(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))));
+}
+// Bases by GS locality area slug and by BAH housing area code, for links from those pages.
+let _baseIdx = null;
+export function basesBy() {
+  if (_baseIdx) return _baseIdx;
+  const area = {}, mha = {};
+  bases().forEach((b) => {
+    const p = basePay(b);
+    if (p.area) (area[p.area.slug] = area[p.area.slug] || []).push(b);
+    if (p.bahArea) (mha[p.bahArea.code] = mha[p.bahArea.code] || []).push(b);
+  });
+  return (_baseIdx = { area, mha });
 }

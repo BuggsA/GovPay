@@ -1,6 +1,6 @@
 // The link-preview card for every pre-built page: path -> { kicker, title, number, sub, stamp }.
 // Numbers come from the same engine calls the pages make (military pay keeps its cents, as on the pages). Used by scripts/og-images.mjs and Base.astro.
-import { G, f, YEAR, SOURCE, areaShort, PD_FY, pdStates, pdStandard, MIL_ORDER, milSlug, BAH_YEAR, bahAreas, bahRow, jobSeries, FWS_YEAR, fwsAreas, fwsTable } from "./engine.mjs";
+import { G, f, YEAR, SOURCE, areaShort, PD_FY, pdStates, pdStandard, MIL_ORDER, milSlug, BAH_YEAR, bahAreas, bahRow, jobSeries, FWS_YEAR, fwsAreas, fwsTable, bases, basePay } from "./engine.mjs";
 
 export const ogPath = (path) => `/og${path === "/" ? "/index" : path}.png`;
 
@@ -62,6 +62,12 @@ export function allCards() {
       number: `${a.min === a.max ? f.usd(a.max) : `${f.usd(a.min)}–${f.usd(a.max)}`} + ${f.usd(a.mie)}`,
       sub: `lodging a night${a.min === a.max ? "" : " (by month)"} + meals and incidentals a day`, stamp: "GSA",
     }));
+  });
+  const bl = bases();
+  add("/bases", { kicker: `Military bases · ${YEAR}`, title: `Pay at ${bl.length} military bases`, sub: "GS pay, BAH, trades pay and per diem at each one" });
+  bl.forEach((b) => {
+    const p = basePay(b), r = p.bahArea && bahRow(p.bahArea.code).find((x) => x.grade === "E-5");
+    add(`/bases/${b.slug}`, { kicker: `${b.name} · ${b.state} · ${YEAR}`, title: `Pay at ${b.name}`, number: `+${p.pct.toFixed(2)}% GS locality`, sub: `GS-12 step 1 ${f.usd(G.gs(YEAR, 12, 1, b.id).annual)}${r ? ` · E-5 BAH ${f.usd(r.with)} a month` : ""}`, stamp: "Official" });
   });
   return cards;
 }

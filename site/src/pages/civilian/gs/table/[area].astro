@@ -1,7 +1,7 @@
 ---
 // Full GS table for one locality area: /civilian/gs/table/washington-dc
 import Base from "../../../../layouts/Base.astro";
-import { G, f, YEAR, SOURCE, areaShort } from "../../../../lib/engine.mjs";
+import { G, f, YEAR, SOURCE, areaShort, basesBy } from "../../../../lib/engine.mjs";
 
 export function getStaticPaths() {
   return G.localityAreas(G.CURRENT_YEAR).map((a) => ({ params: { area: a.slug }, props: { area: a } }));
@@ -9,6 +9,7 @@ export function getStaticPaths() {
 const { area } = Astro.props;
 const place = areaShort(area.name);
 const grades = Array.from({ length: 15 }, (_, i) => i + 1), steps = Array.from({ length: 10 }, (_, i) => i + 1);
+const here = basesBy().area[area.slug] || [];
 const title = `${YEAR} GS pay table for ${place} (${area.pct.toFixed(2)}% locality)`;
 const description = `Every GS grade and step in the ${area.name} locality area for ${YEAR}, with ${area.pct.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`;
 ---
@@ -29,5 +30,10 @@ const description = `Every GS grade and step in the ${area.name} locality area f
         <caption>{YEAR} yearly pay with locality, capped at Executive Schedule level IV ({f.usd(G.executiveSchedule(YEAR).IV)}). Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>.</caption>
       </table>
     </div>
+    {here.length > 0 && <>
+      <div class="pb-section-label" style="margin-top:var(--s7)">Military bases in this locality area</div>
+      <ul class="bah-list">{here.slice(0, 60).map((b) => <li><a href={`/bases/${b.slug}`}>{b.name}</a> <span class="muted">{b.state}</span></li>)}</ul>
+      {here.length > 60 && <p class="sub"><a class="pb-link" href="/bases">All {here.length} bases</a></p>}
+    </>}
   </main>
 </Base>

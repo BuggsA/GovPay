@@ -50,3 +50,20 @@
 .pb-footer__nav { max-width: var(--page-max); margin: 0 auto; padding: var(--s4) var(--gutter) 0; font-size: var(--t-small); color: var(--ink-2); line-height: 2; }
 .pb-footer__nav a { color: var(--ink); }
 .leo-special h2 { font: 700 var(--t-h3)/1.25 var(--font-display); margin: var(--s2) 0; }
+/* Pay tables that fit a phone: years move under the rank, and the less-used column hides (narrow screens only). */
+.pb-table .yrs { display: none; font: 500 12px/1.3 var(--font-body); color: var(--ink-2); }
+@media (max-width: 560px) {
+  .fit-phone .col-yrs, .fit-phone .col-wide { display: none; }
+  .fit-phone .yrs { display: block; }
+  .fit-phone th, .fit-phone td { padding: 9px 8px; }
+}
+/* Phones: headings and row labels may wrap and padding tightens, so tables of up to ~6 columns fit without
+   scrolling sideways. Wide grids (the GS table, the military pay chart) still scroll, first column pinned. */
+@media (max-width: 560px) {
+  .page .pb-table { font-size: 14px; }
+  .page .pb-table th, .page .pb-table td { padding: 8px 7px; }
+  .page .pb-table thead th { white-space: normal; letter-spacing: .04em; line-height: 1.25; vertical-align: bottom; }
+  .page .pb-table th[scope=row] { white-space: normal; min-width: 4.5em; }
+}
+@media (max-width: 560px) { .fit-phone.wrap td { white-space: normal; } }
+@media (max-width: 380px) { .page .pb-table th, .page .pb-table td { padding: 8px 5px; } .page .pb-table { font-size: 13.5px; } }
