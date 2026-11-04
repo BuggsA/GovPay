@@ -1,7 +1,7 @@
 ---
 // One page per GS grade × locality area: /civilian/gs/12/washington-dc
 import Base from "../../../../layouts/Base.astro";
-import { G, f, YEAR, SOURCE, areaShort, calcLink } from "../../../../lib/engine.mjs";
+import { G, f, YEAR, SOURCE, areaShort, calcLink, basesBy } from "../../../../lib/engine.mjs";
 
 export function getStaticPaths() {
   const areas = G.localityAreas(G.CURRENT_YEAR);
@@ -18,6 +18,9 @@ const anyCapped = now.some((r) => r.capped);
 const title = `GS-${grade} pay in ${place} (${YEAR}): ${f.usd(lo)} to ${f.usd(hi)}`;
 const description = `A GS-${grade} in the ${area.name} locality area earns ${f.usd(lo)} at step 1 to ${f.usd(hi)} at step 10 in ${YEAR}, including ${area.pct.toFixed(2)}% locality pay. Official ${SOURCE[YEAR].label} rates.`;
 const path = `/civilian/gs/${grade}/${area.slug}`;
+// Up to 6 bases in this area; each grade's page shows a different six, so every base gets links.
+const inArea = basesBy().area[area.slug] || [];
+const baseLinks = inArea.length <= 6 ? inArea : Array.from({ length: 6 }, (_, i) => inArea[((grade - 1) * 6 + i) % inArea.length]);
 const neighbors = [grade - 1, grade + 1].filter((g) => g >= 1 && g <= 15);
 const elsewhere = G.localityAreas(YEAR).filter((a) => a.slug !== area.slug).sort((a, b) => b.pct - a.pct);
 const pick = [elsewhere[0], elsewhere[1], ...elsewhere.filter((a) => a.slug === "washington-dc" || a.slug === "rest-of-us" || a.slug === "san-diego-ca")].filter((a, i, arr) => a && arr.findIndex((x) => x.slug === a.slug) === i).slice(0, 5);
@@ -62,6 +65,7 @@ const inApp = G.locationsInArea(area.name).length > 0;
     <div class="links">
       <div><h2>Other grades here</h2><ul>{neighbors.map((g) => <li><a href={`/civilian/gs/${g}/${area.slug}`}>GS-{g} in {place}</a></li>)}<li><a href={`/civilian/gs/table/${area.slug}`}>Full {place} pay table</a></li></ul></div>
       <div><h2>GS-{grade} elsewhere</h2><ul>{pick.map((a) => <li><a href={`/civilian/gs/${grade}/${a.slug}`}>{areaShort(a.name)}</a> <span class="muted">{a.pct.toFixed(2)}%</span></li>)}<li><a href={`/civilian/gs/${grade}`}>GS-{grade} in all {G.localityAreas(YEAR).length} locality areas</a></li></ul></div>
+      {baseLinks.length > 0 && <div><h2>Bases in {place}</h2><ul>{baseLinks.map((b) => <li><a href={`/bases/${b.slug}`}>{b.name}</a> <span class="muted">{b.state}</span></li>)}</ul></div>}
     </div>
   </main>
 </Base>

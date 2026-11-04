@@ -62,3 +62,17 @@ test("A step past the top shows the top step and says so", () => {
   assert.equal(label("GS-3 step 12"), "GS-3, Step 10");
   assert.equal(label("WG-10 step 7"), "WG-10, Step 5");
 });
+
+test("Every base has a page address and links to its GS, BAH and per diem pages", async () => {
+  const { bases, basePay, otherNames } = await import("../src/lib/engine.mjs");
+  const all = bases();
+  assert.ok(all.length >= 180);
+  assert.equal(new Set(all.map((b) => b.slug)).size, all.length);
+  const eglin = all.find((b) => b.slug === "eglin-afb"), p = basePay(eglin);
+  assert.equal(p.gsLink, "/civilian/gs/table/rest-of-us");
+  assert.equal(p.bahLink, "/military/bah/eglin-afb-fl");
+  assert.match(p.pdLink, /^\/travel\/per-diem\/florida\//);
+  assert.ok(all.some((b) => b.slug === "naval-station-norfolk"));   // researched bases get pages too
+  assert.deepEqual(otherNames(all.find((b) => b.slug === "joint-base-lewis-mcchord")).slice(0, 2), ["JBLM", "Fort Lewis"]);
+  for (const b of all) { const x = basePay(b); assert.ok(x.area, b.name + ": no GS locality area"); }
+});

@@ -227,7 +227,7 @@
   // County FIPS of the researched places, so a county shares its base's BAH and wage area.
   const FOCUS_FIPS = { dc: "11001", "fort-belvoir": "51059", quantico: "51153", dahlgren: "51099", norfolk: "51710", "langley-eustis": "51650",
     richmond: "51760", "fort-gregg-adams": "51149", "fort-meade": "24003", andrews: "24033", aberdeen: "24025", baltimore: "24510",
-    "pax-river": "24037", "fort-detrick": "24021", philadelphia: "42101", pittsburgh: "42003", carlisle: "42041", harrisburg: "42043",
+    "pax-river": "24037", "fort-detrick": "24021", philadelphia: "42101", pittsburgh: "42003", carlisle: "42041", mechanicsburg: "42041", harrisburg: "42043",
     "hill-afb": "49011", "salt-lake-city": "49035", dugway: "49045", "park-city": "49043" };
   const byFips = {};
   LOCATIONS.forEach((l) => { const f = FOCUS_FIPS[l.id]; if (f && !byFips[f]) byFips[f] = l; if (f) l.fips = f; });

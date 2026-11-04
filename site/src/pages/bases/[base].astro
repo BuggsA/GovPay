@@ -1,0 +1,89 @@
+---
+// One military base: GS pay, military pay with BAH, trades pay and per diem there. /bases/eglin-afb
+import Base from "../../layouts/Base.astro";
+import { G, f, YEAR, SOURCE, BAH_YEAR, BAH_SOURCE, FWS_YEAR, PD_FY, bases, basePay, bahRow, calcLink, areaShort, otherNames } from "../../lib/engine.mjs";
+
+export function getStaticPaths() {
+  return bases().map((b) => ({ params: { base: b.slug }, props: { b } }));
+}
+const { b } = Astro.props;
+const p = basePay(b);
+const path = `/bases/${b.slug}`;
+const where = `${b.county ? b.county + ", " : ""}${b.stateName}`;
+const areaName = p.area ? areaShort(p.area.name) : "Rest of U.S.";
+const gs = (g, s) => G.gs(YEAR, g, s, b.id).annual;
+const bah = p.bahArea ? bahRow(p.bahArea.code) : null;
+const bahAt = (g) => bah && bah.find((r) => r.grade === g);
+const TYPICAL = [["E-1", 0], ["E-3", 2], ["E-4", 3], ["E-5", 6], ["E-6", 10], ["E-7", 14], ["E-8", 18], ["O-1", 0], ["O-2", 2], ["O-3", 6], ["O-4", 12], ["O-5", 18]];
+const mil = bah ? TYPICAL.map(([g, yos]) => {
+  const basic = G.milBasic(BAH_YEAR, g, yos), r = bahAt(g), food = G.bas(BAH_YEAR, g);
+  return { g, yos, basic, with: r.with, without: r.without, food, total: basic + r.with + food };
+}) : [];
+const e5 = bahAt("E-5");
+const pdNA = b.loc.perDiemNA;
+const pdMonths = pdNA ? [] : Array.from({ length: 12 }, (_, i) => G.perDiem(PD_FY, b.id, i + 1));
+const pdLo = pdNA ? 0 : Math.min(...pdMonths.map((m) => m.lodging)), pdHi = pdNA ? 0 : Math.max(...pdMonths.map((m) => m.lodging));
+const pdMie = pdNA ? 0 : pdMonths[0].mie, pdStd = !pdNA && pdMonths[0].standard;
+const pdText = pdLo === pdHi ? f.usd(pdHi) : `${f.usd(pdLo)}–${f.usd(pdHi)}`;
+const wg = p.fwsArea ? [5, 8, 10, 12].map((g) => ({ g, r: G.fws(FWS_YEAR, "WG", g, 2, b.id) })) : [];
+const others = bases().filter((x) => x.state === b.state && x.id !== b.id).slice(0, 12);
+const title = `${b.name} pay (${YEAR}): GS, BAH and per diem`;
+const facts = `${YEAR} pay at ${b.name}, ${b.state}: GS-12 step 1 ${f.usd(gs(12, 1))} (${areaName}, ${p.pct.toFixed(2)}% locality)${e5 ? `, E-5 BAH ${f.usd(e5.with)} with dependents` : ""}${pdNA ? "" : `, per diem ${pdText} + ${f.usd(pdMie)}`}.`;
+const description = facts.length <= 144 ? facts + " Official rates." : facts;
+const aka = otherNames({ ...b, aliases: b.aliases.filter((a) => !/^ft /.test(a)) }).slice(0, 6);   // "ft cavazos" repeats "fort cavazos"
+const grades = Array.from({ length: 15 }, (_, i) => i + 1);
+const ld = [{ "@context": "https://schema.org", "@type": "Place", name: b.name, alternateName: aka.length ? aka : undefined,
+  address: { "@type": "PostalAddress", addressRegion: b.state, addressCountry: "US", ...(b.loc.zip ? { postalCode: b.loc.zip } : {}) } }];
+---
+<Base title={title} description={description} path={path} crumbs={[["Bases", "/bases"], [b.name, path]]} ld={ld}>
+  <main id="main" class="page article">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/bases">Bases</a> / {b.name}</nav>
+    <div class="pb-section-label"><b>{YEAR}</b> · {where}</div>
+    <h1>{b.name} pay, {YEAR}</h1>
+    <p class="lede">{b.name} is in {where}. Civilians here are paid on the <a class="pb-link" href={p.gsLink}>{areaName}</a> GS table, with <b>{p.pct.toFixed(2)}%</b> locality pay{e5 && <>; an E-5 with dependents gets <b>{f.usd(e5.with)}</b> a month in BAH</>}{!pdNA && <>; travelers get <b>{pdText}</b> a night for lodging plus <b>{f.usd(pdMie)}</b> a day for meals</>}.</p>
+    {aka.length > 0 && <p class="sub">Also known as {aka.join(", ")}.</p>}
+    <p class="cta"><a class="pb-btn" href={calcLink({ system: "GS", grade: 12, step: 1 }, null, b.id)}>Your exact pay here</a> <a class="pb-link" href={calcLink({ system: "MIL", mgrade: "E-5", yos: 6 }, null, b.id)} style="margin-left:var(--s4)">Military pay here</a></p>
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · GS pay at {b.name}</div>
+    <div class="pb-table-wrap">
+      <table class="pb-table">
+        <thead><tr><th scope="col">Grade</th><th scope="col">Step 1</th><th scope="col">Step 10</th></tr></thead>
+        <tbody>{grades.map((g) => <tr><th scope="row">{p.area ? <a class="pb-link pb-link--ink" href={`/civilian/gs/${g}/${p.area.slug}`}>GS-{g}</a> : `GS-${g}`}</th><td>{f.usd(gs(g, 1))}</td><td>{f.usd(gs(g, 10))}</td></tr>)}</tbody>
+        <caption>A year, {YEAR}, including {p.pct.toFixed(2)}% locality pay for the {p.area ? p.area.name : "Rest of U.S."} area. Official {SOURCE[YEAR].label} rates. <a class="pb-link" href={p.gsLink}>Every grade and step</a>.</caption>
+      </table>
+    </div>
+
+    {bah && <>
+      <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Military pay and BAH at {b.name}</div>
+      <div class="pb-table-wrap">
+        <table class="pb-table">
+          <thead><tr><th scope="col">Rank</th><th scope="col">Years</th><th scope="col">Basic</th><th scope="col">BAH, family</th><th scope="col">BAH, single</th><th scope="col">Total</th></tr></thead>
+          <tbody>{mil.map((t) => <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/military/pay/${t.g.toLowerCase()}`}>{t.g}</a></th><td>{t.yos === 0 ? "under 2" : `over ${t.yos}`}</td><td>{f.usd2(t.basic)}</td><td>{f.usd(t.with)}</td><td>{f.usd(t.without)}</td><td><b>{f.usd2(t.total)}</b></td></tr>)}</tbody>
+          <caption>{BAH_YEAR} rates for the <a class="pb-link" href={p.bahLink}>{p.bahArea.name}</a> housing area ({p.bahArea.code}){b.loc.zip ? `, the area for ZIP ${b.loc.zip} on base` : ""}. Monthly. "Family" is BAH with dependents. Total is basic pay + BAH with dependents + BAS. BAH and BAS are tax-free. Source: <a class="pb-link" href={BAH_SOURCE.url}>{BAH_SOURCE.label}</a>.</caption>
+        </table>
+      </div>
+    </>}
+
+    {wg.length > 0 && <>
+      <div class="pb-section-label" style="margin-top:var(--s7)"><b>{bah ? "03" : "02"}</b> · Trades (wage grade) pay</div>
+      <div class="pb-table-wrap">
+        <table class="pb-table">
+          <thead><tr><th scope="col">Grade</th><th scope="col">An hour</th><th scope="col">A year</th></tr></thead>
+          <tbody>{wg.map(({ g, r }) => <tr><th scope="row">WG-{g}</th><td>{f.usd2(r.hourly)}</td><td>{f.usd(r.annual)}</td></tr>)}</tbody>
+          <caption>Step 2, the <a class="pb-link" href={p.fwsLink}>{p.fwsArea.name}</a> wage schedule ({p.fwsArea.code}). Source: DCPAS.</caption>
+        </table>
+      </div>
+    </>}
+
+    <div class="pb-section-label" style="margin-top:var(--s7)"><b>{["02", "03", "04"][(bah ? 1 : 0) + (wg.length ? 1 : 0)]}</b> · Per diem for travel to {b.name}</div>
+    {pdNA
+      ? <p>Alaska and Hawaii use overseas (OCONUS) per diem rates set by DTMO, which Paybook doesn't cover yet.</p>
+      : <p>FY{PD_FY}: lodging up to <b>{pdText}</b> a night{pdLo !== pdHi && ", depending on the month"}, and <b>{f.usd(pdMie)}</b> a day for meals and incidentals. {pdStd ? "This is the standard rate, which covers places without their own rate." : <>This is the <a class="pb-link" href={p.pdLink}>{p.pdArea ? p.pdArea.city : "local"}</a> rate.</>} <a class="pb-link" href={p.pdLink}>Per diem details</a>.</p>}
+
+    {others.length > 0 && <>
+      <div class="pb-section-label" style="margin-top:var(--s7)">Other bases in {b.stateName}</div>
+      <ul class="bah-list">{others.map((x) => <li><a href={`/bases/${x.slug}`}>{x.name}</a></li>)}</ul>
+    </>}
+    <p class="sub"><a class="pb-link" href="/bases">All bases</a> · <a class="pb-link" href={p.bahLink}>BAH for this area</a> · <a class="pb-link" href={p.gsLink}>GS pay table</a></p>
+  </main>
+</Base>

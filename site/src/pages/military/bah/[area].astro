@@ -1,7 +1,7 @@
 ---
 // One housing area: every grade, with and without dependents. /military/bah/norfolk-portsmouth-va
 import Base from "../../../layouts/Base.astro";
-import { G, f, BAH_YEAR, BAH_SOURCE, bahAreas, bahRow, calcLink } from "../../../lib/engine.mjs";
+import { G, f, BAH_YEAR, BAH_SOURCE, bahAreas, bahRow, calcLink, basesBy } from "../../../lib/engine.mjs";
 
 export function getStaticPaths() {
   return bahAreas().map((a) => ({ params: { area: a.slug }, props: { a } }));
@@ -13,6 +13,7 @@ const place = a.rural ? `rural county group ${a.code.slice(2)}` : a.name;
 const path = `/military/bah/${a.slug}`;
 const title = `${a.rural ? `Rural BAH group ${a.code.slice(2)}` : `${a.name} BAH`} (${BAH_YEAR}): E-5 ${f.usd(at("E-5").with)} with dependents`;
 const description = `${BAH_YEAR} BAH for ${place}: E-5 ${f.usd(at("E-5").with)} with dependents and ${f.usd(at("E-5").without)} without; O-3 ${f.usd(at("O-3").with)}. Every grade, official DTMO rates.`;
+const here = basesBy().mha[a.code] || [];
 const counties = a.counties.map((c) => c.name).sort();
 const loc = a.counties[0] || G.locations().find((l) => G.bahMhaOf(l) === a.code);
 // Total monthly pay here for common ranks at a typical point in a career (basic pay + BAH with dependents + BAS).
@@ -50,6 +51,8 @@ const grades = ["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "
         <caption>{BAH_YEAR} rates, with dependents, at a typical point in a career. BAH and BAS are tax-free. Special pays (flight, sea, hazardous duty) aren't included. {loc && <>Change rank, years or dependents in <a class="pb-link" href={calcLink({ system: "MIL", mgrade: "E-5", yos: 6 }, null, loc.id)}>the calculator</a>.</>}</caption>
       </table>
     </div>
+
+    {here.length > 0 && <p class="sub">Bases in this housing area: {here.map((b, i) => <>{i > 0 && ", "}<a class="pb-link" href={`/bases/${b.slug}`}>{b.name}</a></>)}.</p>}
 
     <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Where this rate applies</div>
     <div class="links">

@@ -1,5 +1,5 @@
 // sitemap.xml listing every pre-built page.
-import { G, MIL_ORDER, milSlug, pdStates, bahAreas, jobSeries, fwsAreas } from "../lib/engine.mjs";
+import { G, MIL_ORDER, milSlug, pdStates, bahAreas, jobSeries, fwsAreas, bases } from "../lib/engine.mjs";
 
 // Every page is rebuilt from the data on each deploy, so the build date is when it last changed.
 const lastmod = new Date().toISOString().slice(0, 10);
@@ -18,6 +18,7 @@ export function GET({ site }) {
   paths.push("/civilian/trades"); fwsAreas().forEach((a) => paths.push(`/civilian/trades/${a.slug}`));
   paths.push("/military/bah"); bahAreas().forEach((a) => paths.push(`/military/bah/${a.slug}`));
   MIL_ORDER.forEach((g) => paths.push(`/military/pay/${milSlug(g)}`));
+  paths.push("/bases"); bases().forEach((b) => paths.push(`/bases/${b.slug}`));
   const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     paths.map((p) => `  <url><loc>${new URL(p, site).toString()}</loc><lastmod>${lastmod}</lastmod></url>`).join("\n") + `\n</urlset>\n`;
   return new Response(body, { headers: { "Content-Type": "application/xml" } });

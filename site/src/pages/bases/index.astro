@@ -1,0 +1,28 @@
+---
+// Every base with a page, by state. /bases
+import Base from "../../layouts/Base.astro";
+import { G, f, YEAR, bases, basePay, bahRow } from "../../lib/engine.mjs";
+
+const all = bases().map((b) => {
+  const p = basePay(b), r = p.bahArea && bahRow(p.bahArea.code).find((x) => x.grade === "E-5");
+  return { b, pct: p.pct, e5: r ? r.with : null };
+});
+const states = [...new Set(all.map((x) => x.b.state))].sort((x, y) => G.ALL_STATES[x].localeCompare(G.ALL_STATES[y]));
+const title = `Pay at ${all.length} military bases (${YEAR}): GS, BAH and per diem`;
+const description = `GS pay, military BAH and per diem at ${all.length} U.S. military bases, from Eglin AFB to Naval Base San Diego and Fort Hood. ${YEAR} official rates.`;
+---
+<Base title={title} description={description} path="/bases" crumbs={[["Bases", "/bases"]]}>
+  <main id="main" class="page article wide">
+    <nav class="crumbs" aria-label="Breadcrumb">Bases</nav>
+    <div class="pb-section-label"><b>{YEAR}</b> · Military bases</div>
+    <h1>Pay at military bases, {YEAR}</h1>
+    <p class="lede">Each base page shows what civilians earn on the GS table there, what service members get in BAH, trades pay, and the per diem rate for visitors. The number by each base is its GS locality pay.</p>
+    {states.map((st) => (
+      <section class="bah-state">
+        <h2>{G.ALL_STATES[st]}</h2>
+        <ul class="bah-list">{all.filter((x) => x.b.state === st).map((x) => <li><a href={`/bases/${x.b.slug}`}>{x.b.name}</a> <span class="muted">{x.pct.toFixed(2)}%{x.e5 ? ` · E-5 BAH ${f.usd(x.e5)}` : ""}</span></li>)}</ul>
+      </section>
+    ))}
+    <p class="sub">Not listed? Search any base, city or ZIP code in <a class="pb-link" href="/">the calculator</a>.</p>
+  </main>
+</Base>
