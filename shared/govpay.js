@@ -298,6 +298,26 @@
     });
   }
   attachCities();
+  // Military installations (shared/data/bases.js, id "i-eglin-afb"): found by search like cities. Each takes
+  // its county's GS locality, per diem and wage area, and DTMO's housing area for a ZIP on the base.
+  // (bases.js loads with cities.js: GovPay.need)
+  let basesAttached = false;
+  function attachBases() {
+    const BASES = (global.GOVPAY_DATA && global.GOVPAY_DATA.bases) || null;
+    if (basesAttached || !PLACES || !BASES) return;
+    basesAttached = true;
+    BASES.bases.forEach(([name, zip, mha, fips, , ...aliases]) => {
+      const c = LOC_INDEX.get("c" + fips);
+      if (!c) return;
+      const id = "i-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const l = Object.assign({}, c, {
+        id, name, short: name, kind: "base", installation: true, aliases, zip, zipMha: mha,
+        county: c.short, countyId: c.id,
+      });
+      LOCATIONS.push(l); LOC_INDEX.set(id, l);
+    });
+  }
+  attachBases();
   // ZIP code places (id "z92136"): DTMO's housing area for that exact ZIP; GS locality, per diem and wage
   // schedule from its main county. Not in locations() lists, so they don't crowd search; location() finds them.
   function addZip(zip, entry) {
@@ -326,6 +346,11 @@
     return zipChunks[pfx].then((chunk) => addZip(zip, chunk[zip]));
   }
   // Old links used "sim-xx" for a whole state; send them to that state's first county.
+  // Text a place picker searches: its name, state and any other names (a base's "fort cavazos", "jblm").
+  function placeText(l) {
+    return (l.name + " " + l.stateName + " " + l.state + " " + (l.aliases || []).join(" ")).toLowerCase().replace(/\bft\.? /g, "fort ").replace(/\bst\. /g, "st ");
+  }
+  const pickerQuery = (q) => q.trim().toLowerCase().replace(/\bft\.? /g, "fort ").replace(/\bst\. /g, "st ").replace(/\s+/g, " ");
   function location(id) {
     const l = LOC_INDEX.get(id);
     if (l) return l;
@@ -795,7 +820,7 @@
   // ---------------------------------------------------------------------------
   // Data files loaded on demand in the browser (preloaded at build time and in tests)
   // ---------------------------------------------------------------------------
-  const DATA_FILES = { bah: "bah.js", cities: "cities.js", perDiem: "perdiem.js", series: "series.js", fws: "fws.js", leoSpecial: "leospecial.js" };
+  const DATA_FILES = { bah: "bah.js", cities: "cities.js", bases: "bases.js", perDiem: "perdiem.js", series: "series.js", fws: "fws.js", leoSpecial: "leospecial.js" };
   const DATA_BASE = (function () {
     try { const sc = global.document && global.document.currentScript; return sc && sc.src ? sc.src.replace(/govpay\.js(\?.*)?$/, "data/") : null; } catch (e) { return null; }
   })();
@@ -804,20 +829,23 @@
   // GovPay.need(["bah", "cities"]).then(...) — resolves once those files are in (at once if they already are).
   function need(names) {
     if (has("cities")) attachCities();
-    const list = [].concat(names || []).filter((n) => DATA_FILES[n] && !has(n));
+    if (has("bases")) attachBases();
+    names = [].concat(names || []);
+    if (names.indexOf("cities") >= 0 && names.indexOf("bases") < 0) names.push("bases");   // places people search for come together
+    const list = names.filter((n) => DATA_FILES[n] && !has(n));
     return Promise.all(list.map((n) => loading[n] || (loading[n] = new Promise((resolve, reject) => {
       if (!global.document || !DATA_BASE) { resolve(); return; }
       const sc = global.document.createElement("script");
       sc.src = DATA_BASE + DATA_FILES[n];
       sc.async = true;
-      sc.onload = () => { if (n === "cities") attachCities(); resolve(); };
+      sc.onload = () => { if (n === "cities") attachCities(); if (n === "bases") attachBases(); resolve(); };
       sc.onerror = () => { delete loading[n]; reject(new Error("couldn't load " + DATA_FILES[n])); };
       global.document.head.appendChild(sc);
     })))).then(() => undefined);
   }
 
   global.GovPay = {
-    need, has, bahMhaOf, zipPlace, addZip,
+    need, has, bahMhaOf, zipPlace, addZip, placeText, pickerQuery,
     CURRENT_YEAR, YEARS, RAISES, STATUS_INFO, EQUIVALENTS, MIL_GRADES, MIL_YOS,
     FWS_SCHEDULES, GS_LOCALITIES, FOCUS_STATES, OTHER_STATES, ALL_STATES,
     locations: () => LOCATIONS.slice(),

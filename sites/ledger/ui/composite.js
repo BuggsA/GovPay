@@ -153,7 +153,7 @@
         const z = G.location("z" + q);
         if (z.id === "z" + q) list = [z];
         else { list = []; G.zipPlace(q).then((found) => { if (found && query.trim() === q) render(true); }); }
-      } else if (q) list = all.filter((l) => (l.name + " " + l.stateName + " " + l.state).toLowerCase().indexOf(q) >= 0).sort(order).slice(0, 60);   // search covers every state
+      } else if (q) { const pq = G.pickerQuery(q); list = all.filter((l) => G.placeText(l).indexOf(pq) >= 0).sort(order).slice(0, 60); }   // search covers every state
       else if (filter) list = all.filter((l) => l.state === filter).sort(order);
       else list = all.filter((l) => l.kind !== "county" && !l.census);
       const recent = getRecent().filter((r) => all.some((l) => l.id === r));
@@ -172,7 +172,7 @@
         ${!q && !filter ? '<div class="pb-picker__row"><span class="cap">Researched bases and cities · or search any city, town or county</span></div>' : ""}
         <ul class="pb-places" aria-label="Places">${list.length ? list.map((l) => {
           const g = G.gs(year(), 1, 1, l.id);
-          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" || l.census || l.kind === "zip" ? l.short : l.name)}</b><span class="tag">${l.kind === "zip" ? "ZIP" : l.kind}</span><small>${esc(l.state)}${l.census || l.kind === "zip" ? " · " + esc(l.county) : ""} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
+          return `<li><button type="button" data-id="${l.id}" aria-current="${l.id === value}"><b>${esc(l.kind === "county" || l.census || l.kind === "zip" ? l.short : l.name)}</b><span class="tag">${l.kind === "zip" ? "ZIP" : l.kind}</span><small>${esc(l.state)}${l.census || l.kind === "zip" || l.installation ? " · " + esc(l.county) : ""} · GS locality ${g.localityPct.toFixed(2)}%</small></button></li>`;
         }).join("") : `<li class="pb-places__empty">${/^\d{5}$/.test(query.trim()) ? `Looking up ZIP ${esc(query.trim())}…` : `No place matches "${esc(query)}". Try a state name or a ZIP code.`}</li>`}</ul>
         <div class="pb-uses" aria-live="polite"><b>${esc(cur.name)}</b> uses three different area lists:
           <dl><dt>GS pay</dt><dd>${esc(k.gs)}</dd>

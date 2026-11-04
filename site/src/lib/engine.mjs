@@ -4,6 +4,7 @@ import "../../../shared/data/payorder.js";
 import "../../../shared/data/perdiem.js";
 import "../../../shared/data/places.js";
 import "../../../shared/data/cities.js";
+import "../../../shared/data/bases.js";
 import "../../../shared/data/bah.js";
 import "../../../shared/data/series.js";
 import "../../../shared/data/leo.js";

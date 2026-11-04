@@ -51,7 +51,7 @@
   function fromHash(q) {
     state.year = G.YEARS.some((y) => y.year === +q.get("y")) ? +q.get("y") : state.year;
     const l = q.get("l") || "";
-    if (/^p\d{7}$|^z\d{5}$/.test(l) || G.locations().some((x) => x.id === l)) state.loc = l;   // a city loads with cities.js, a ZIP with its lookup file
+    if (/^p\d{7}$|^z\d{5}$|^i-[a-z0-9-]+$/.test(l) || G.locations().some((x) => x.id === l)) state.loc = l;   // a city or base loads with cities.js, a ZIP with its lookup file
     const p = Object.assign({}, G.DEFAULT_PROFILE, { system: q.get("s") });
     if (p.system === "MIL") { p.mgrade = q.get("g") || p.mgrade; p.yos = +q.get("yos") || 0; p.deps = q.get("d") !== "0"; }
     else if (p.system === "SES") p.sesPoint = +q.get("pt") || 0;
@@ -421,7 +421,8 @@
     q = q.trim().toLowerCase();
     if (q.length < 2) return [];
     const rank = (l) => (l.kind === "county" ? 2 : l.census ? 1 : 0);
-    return G.locations().filter((l) => (l.name + " " + l.stateName).toLowerCase().indexOf(q) >= 0)
+    const pq = G.pickerQuery(q);
+    return G.locations().filter((l) => G.placeText(l).indexOf(pq) >= 0)
       .sort((a, b) => rank(a) - rank(b) || (b.population || 0) - (a.population || 0)).slice(0, 8);
   }
   function tabTravel(el) {
@@ -505,8 +506,8 @@
     if ((p && p.system === "FWS") || state.tableKind === "FWS") n.push("fws");
     if (p && p.system === "LEO" && p.lesr !== false && state.year >= 2026) n.push("leoSpecial");
     if (state.tab === "allowances") n.push("bah");
-    if (state.tab === "travel") { n.push("perDiem"); if (/^p/.test(state.tripDest || "")) n.push("cities"); }
-    if (/^p/.test(state.loc)) n.push("cities");
+    if (state.tab === "travel") { n.push("perDiem"); if (/^(p|i-)/.test(state.tripDest || "")) n.push("cities"); }
+    if (/^p/.test(state.loc) || /^i-/.test(state.loc)) n.push("cities");   // a saved city or base
     return n.filter((x) => !G.has(x) && !failed[x]);
   }
   // true = ready now; false = loading, and fn runs again when it's in (or failed: then it renders with what it has)
