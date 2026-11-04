@@ -50,11 +50,11 @@ const inApp = G.locationsInArea(area.name).length > 0;
 
     <div class="pb-section-label" style="margin-top:var(--s7)"><b>01</b> · Every step</div>
     <div class="pb-table-wrap">
-      <table class="pb-table">
-        <thead><tr><th scope="col">Step</th><th scope="col">Yearly</th><th scope="col">Per paycheck</th><th scope="col">Per hour</th><th scope="col">Base pay</th><th scope="col">vs {YEAR - 1}</th></tr></thead>
+      <table class="pb-table fit-phone">
+        <thead><tr><th scope="col">Step</th><th scope="col">Yearly</th><th scope="col">Per paycheck</th><th scope="col">Per hour</th><th scope="col" class="col-wide">Base pay</th><th scope="col">vs {YEAR - 1}</th></tr></thead>
         <tbody>
           {now.map((r, i) => (
-            <tr><th scope="row">Step {i + 1}</th><td>{f.usd(r.annual)}</td><td>{f.usd(r.annual / 26)}</td><td>{f.usd2(r.hourly)}</td><td>{f.usd(r.base)}</td><td><span class="pb-delta pb-delta--up">+{f.usd(r.annual - prev[i].annual)}</span></td></tr>
+            <tr><th scope="row">Step {i + 1}</th><td>{f.usd(r.annual)}</td><td>{f.usd(r.annual / 26)}</td><td>{f.usd2(r.hourly)}</td><td class="col-wide">{f.usd(r.base)}</td><td><span class="pb-delta pb-delta--up">+{f.usd(r.annual - prev[i].annual)}</span></td></tr>
           ))}
         </tbody>
         <caption>{YEAR} yearly pay with locality. Steps 2–4 come after 1 year each, steps 5–7 after 2 years, steps 8–10 after 3 years. {anyCapped && "Some steps are capped at Executive Schedule level IV. "}Source: <a class="pb-link" href={SOURCE[YEAR].url}>{SOURCE[YEAR].label}</a>, Schedules 1 and 9.</caption>

@@ -27,9 +27,9 @@ const table = (rows, sch) => rows.map((r, i) => ({ grade: `${sch}-${i + 1}`, cel
       <>
         <div class="pb-section-label" style="margin-top:var(--s6)"><b>0{k + 1}</b> · {sch} · {label}</div>
         <div class="pb-table-wrap">
-          <table class="pb-table">
-            <thead><tr><th scope="col">Grade</th>{[1, 2, 3, 4, 5].map((s) => <th scope="col">Step {s}</th>)}{sch === "WG" && prev && <th scope="col">vs FY{FWS_YEAR - 1} (step 2)</th>}</tr></thead>
-            <tbody>{table(rows, sch).map((r, i) => <tr><th scope="row">{r.grade}</th>{r.cells.map((c) => <td>{f.usd2(c)}</td>)}{sch === "WG" && prev && <td>{(() => { const d = r.cells[1] - prev[i][1].hourly; return Math.abs(d) < 0.005 ? "same" : <span class={`pb-delta pb-delta--${d > 0 ? "up" : "down"}`}>{d > 0 ? "+" : "−"}{f.usd2(Math.abs(d))}</span>; })()}</td>}</tr>)}</tbody>
+          <table class="pb-table fit-phone">
+            <thead><tr><th scope="col">Grade</th>{[1, 2, 3, 4, 5].map((s) => <th scope="col">Step {s}</th>)}{sch === "WG" && prev && <th scope="col" class="col-wide">vs FY{FWS_YEAR - 1} (step 2)</th>}</tr></thead>
+            <tbody>{table(rows, sch).map((r, i) => <tr><th scope="row">{r.grade}</th>{r.cells.map((c) => <td>{f.usd2(c)}</td>)}{sch === "WG" && prev && <td class="col-wide">{(() => { const d = r.cells[1] - prev[i][1].hourly; return Math.abs(d) < 0.005 ? "same" : <span class={`pb-delta pb-delta--${d > 0 ? "up" : "down"}`}>{d > 0 ? "+" : "−"}{f.usd2(Math.abs(d))}</span>; })()}</td>}</tr>)}</tbody>
             <caption>Hourly rates, FY{FWS_YEAR} schedule {a.code}, effective {effective}. Source: <a class="pb-link" href={FWS_SOURCE.url}>{FWS_SOURCE.label}</a>.</caption>
           </table>
         </div>

@@ -56,10 +56,11 @@ const ld = [{ "@context": "https://schema.org", "@type": "Place", name: b.name, 
     {bah && <>
       <div class="pb-section-label" style="margin-top:var(--s7)"><b>02</b> · Military pay and BAH at {b.name}</div>
       <div class="pb-table-wrap">
-        <table class="pb-table">
-          <thead><tr><th scope="col">Rank</th><th scope="col">Years</th><th scope="col">Basic</th><th scope="col">BAH, family</th><th scope="col">BAH, single</th><th scope="col">Total</th></tr></thead>
-          <tbody>{mil.map((t) => <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/military/pay/${t.g.toLowerCase()}`}>{t.g}</a></th><td>{t.yos === 0 ? "under 2" : `over ${t.yos}`}</td><td>{f.usd2(t.basic)}</td><td>{f.usd(t.with)}</td><td>{f.usd(t.without)}</td><td><b>{f.usd2(t.total)}</b></td></tr>)}</tbody>
-          <caption>{BAH_YEAR} rates for the <a class="pb-link" href={p.bahLink}>{p.bahArea.name}</a> housing area ({p.bahArea.code}){b.loc.zip ? `, the area for ZIP ${b.loc.zip} on base` : ""}. Monthly. "Family" is BAH with dependents. Total is basic pay + BAH with dependents + BAS. BAH and BAS are tax-free. Source: <a class="pb-link" href={BAH_SOURCE.url}>{BAH_SOURCE.label}</a>.</caption>
+        <table class="pb-table fit-phone">
+          <thead><tr><th scope="col">Rank</th><th scope="col" class="col-yrs">Years</th><th scope="col">Basic</th><th scope="col">BAH, family</th><th scope="col" class="col-wide">BAH, single</th><th scope="col">Total</th></tr></thead>
+          <tbody>{mil.map((t) => { const yrs = t.yos === 0 ? "under 2" : `over ${t.yos}`;
+            return <tr><th scope="row"><a class="pb-link pb-link--ink" href={`/military/pay/${t.g.toLowerCase()}`}>{t.g}</a><small class="yrs">{yrs} yrs</small></th><td class="col-yrs">{yrs}</td><td>{f.usd(t.basic)}</td><td>{f.usd(t.with)}</td><td class="col-wide">{f.usd(t.without)}</td><td><b>{f.usd(t.total)}</b></td></tr>; })}</tbody>
+          <caption>{BAH_YEAR} rates for the <a class="pb-link" href={p.bahLink}>{p.bahArea.name}</a> housing area ({p.bahArea.code}){b.loc.zip ? `, the area for ZIP ${b.loc.zip} on base` : ""}. A month, to the dollar. "Family" is BAH with dependents. Total is basic pay + BAH with dependents + BAS. BAH and BAS are tax-free. Source: <a class="pb-link" href={BAH_SOURCE.url}>{BAH_SOURCE.label}</a>.</caption>
         </table>
       </div>
     </>}
